@@ -77,7 +77,7 @@ type VerifiablePresentationDataModel = PresentationDataModel & ProofDataModel;
  * @param {string} data
  * @returns {object}
  */
-export const parse = (data: string): any => {
+export function parse(data: string): any {
     try {
         return JSON.parse(data);
     } catch (e) {
@@ -92,7 +92,7 @@ export const parse = (data: string): any => {
  *
  * @returns {Promise}
  */
-export const getRandomUserData = (): Promise<RandomUserData> => {
+export function getRandomUserData(): Promise<RandomUserData> {
     return fetch(RANDOM_USER_DATA_API_URL)
         .then((response) => response.json())
         .then((result: RandomUserDataResponse) => {
@@ -111,7 +111,7 @@ export const getRandomUserData = (): Promise<RandomUserData> => {
  *
  * @return {string}
  */
-export const convertByteArrayToHex = (bytes: Uint8Array): string => {
+export function convertByteArrayToHex(bytes: Uint8Array): string {
     const hex = [];
 
     /* eslint-disable no-plusplus,no-bitwise */
@@ -125,15 +125,15 @@ export const convertByteArrayToHex = (bytes: Uint8Array): string => {
     return hex.join('');
 };
 
-export const isVerifiablePresentation = (
+export function isVerifiablePresentation(
     payload: VerifiablePresentationDataModel | unknown
-): payload is VerifiablePresentationDataModel => {
+): payload is VerifiablePresentationDataModel {
     return !!(payload as VerifiablePresentationDataModel).verifiableCredential?.length;
 };
 
-export const isVerifiableCredential = (
+export function isVerifiableCredential(
     payload: VerifiableCredentialDataModel | unknown
-): payload is VerifiableCredentialDataModel => {
+): payload is VerifiableCredentialDataModel {
     return !!(payload as VerifiableCredentialDataModel).credentialSubject;
 };
 
@@ -146,7 +146,7 @@ export const isVerifiableCredential = (
  *
  * @returns {void}
  */
-export const goto = (path: string, params?: { [key: string]: string }): void => {
+export function goto(path: string, params?: { [key: string]: string }): void {
     window.location.hash = `${path}${params ? `?${new URLSearchParams(params).toString()}` : ''}`;
 };
 
@@ -159,7 +159,7 @@ export const goto = (path: string, params?: { [key: string]: string }): void => 
  *
  * @returns {void}
  */
-export const delay = (ms: number): void => {
+export function delay(ms: number): void {
     const startPoint = new Date().getTime();
     while (new Date().getTime() - startPoint <= ms);
 };
@@ -168,7 +168,7 @@ export const delay = (ms: number): void => {
 /**
  * Persist a writable Svelte store to local storage
  */
-export const persistent = <T>(key: string, initialValue: T, saveTransformation?: (value: T) => T): Writable<T> => {
+export function persistent<T>(key: string, initialValue: T, saveTransformation?: (value: T) => T): Writable<T> {
     let value = initialValue;
 
     try {
@@ -189,4 +189,4 @@ export const persistent = <T>(key: string, initialValue: T, saveTransformation?:
     return state;
 };
 
-export const generateRandomId = (): string => uuidv4();
+export function generateRandomId(): string { return uuidv4(); }
