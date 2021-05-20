@@ -1,6 +1,6 @@
 {
-  "appId": "com.hello.svelte",
-  "appName": "Hello Svelte",
+  "appId": "org.iota.zebra",
+  "appName": "Zebra",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "public",
