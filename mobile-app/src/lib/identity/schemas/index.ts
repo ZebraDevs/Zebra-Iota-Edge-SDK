@@ -1,5 +1,15 @@
 // TODO: check rule
 // eslint-disable-next-line no-shadow
+export enum SchemaNames {
+    ADDRESS = 'Address',
+    PERSONAL_DATA = 'PersonalData',
+    TEST_RESULT = 'TestResult',
+    VISA_APPLICATION = 'VisaApplication',
+    BANK_ACCOUNT = 'BankAccount',
+    COMPANY = 'Company',
+    CONTACT_DETAILS = 'ContactDetails',
+    INSURANCE = 'Insurance',
+}
 
 export const AddressSchema = {
     type: 'object',
@@ -304,16 +314,16 @@ export const InsuranceSchema = {
     },
 };
 
-export const SchemaNames = {
-    ADDRESS : 'Address',
-    PERSONAL_DATA : 'PersonalData',
-    TEST_RESULT : 'TestResult',
-    VISA_APPLICATION : 'VisaApplication',
-    BANK_ACCOUNT : 'BankAccount',
-    COMPANY : 'Company',
-    CONTACT_DETAILS : 'ContactDetails',
-    INSURANCE : 'Insurance',
-}
+// export const SchemaNames = {
+//     ADDRESS : 'Address',
+//     PERSONAL_DATA : 'PersonalData',
+//     TEST_RESULT : 'TestResult',
+//     VISA_APPLICATION : 'VisaApplication',
+//     BANK_ACCOUNT : 'BankAccount',
+//     COMPANY : 'Company',
+//     CONTACT_DETAILS : 'ContactDetails',
+//     INSURANCE : 'Insurance',
+// }
 
 export const Schemas = {
     [SchemaNames.ADDRESS]: AddressSchema,
@@ -326,7 +336,7 @@ export const Schemas = {
     [SchemaNames.INSURANCE]: InsuranceSchema,
 };
 
-export const DIDMapping = {
+export const DIDMapping: { [DID: string]: { logo: string; issuerLabel: string; theme: string } } = {
     'did:IOTA:CQMOHTVOCNYQHTSUBSDPNLRBYTBBAHRTOQZZCN9DUWXCVGAYOYGFBEQJOCFXPSCKPPNAZPKALAVYMZICF': {
         issuerLabel: 'Government',
         logo: 'government',

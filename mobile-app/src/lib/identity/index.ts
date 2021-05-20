@@ -5,7 +5,20 @@ import { IOTA_NODE_URL, DEVNET } from '../config';
 import Keychain from '../keychain';
 import { SchemaNames, DIDMapping } from './schemas';
 import { parse } from '../helpers';
-import * as IotaIdentity from '../identity.rs/web';
+import type { InternalCredentialDataModel } from '../store';
+import * as IotaIdentity from '../identity.rs/web/identity_wasm';
+
+/**
+ *  Identity object
+ */
+ export type Identity = {
+    didDoc: string;
+    publicAuthKey: string;
+    privateAuthKey: string;
+    doc: any;
+    keys: any;
+    method: any;
+};
 
 const CLIENT_CONFIG = {
     node: IOTA_NODE_URL,
@@ -29,13 +42,13 @@ const {
  *
  * @returns {Promise}
  */
-export const createIdentity = () => {
+export const createIdentity = (): Promise<Identity> => {
     return new Promise(async (resolve, reject) => {
         // Initialize the Library - Is cached after first initialization
         await IotaIdentity.init();
 
         // Generate a new keypair
-        const { key, doc } = new Document(KeyType.Ed25519);
+        const { key, doc }: any = new Document(KeyType.Ed25519);
 
         // Add a Merkle Key Collection method for Bob, so compromised keys can be revoked.
         const keys = new KeyCollection(KeyType.Ed25519, 8);
@@ -70,7 +83,7 @@ export const createIdentity = () => {
  *
  * @returns {Promise}
  */
-export const storeIdentity = (identifier, identity) => {
+export const storeIdentity = (identifier: string, identity: Identity): Promise<{ value: boolean }> => {
     return Keychain.set(identifier, JSON.stringify(identity));
 };
 
@@ -83,13 +96,13 @@ export const storeIdentity = (identifier, identity) => {
  *
  * @returns {Promise}
  */
-export const retrieveIdentity = (identifier = 'did') => {
+export const retrieveIdentity = (identifier = 'did'): Promise<Identity> => {
     return Keychain.get(identifier)
         .then((data) => parse(data.value))
         .catch(() => null);
 };
 
-export const retrieveCredentials = (ids) => {
+export const retrieveCredentials = (ids: string[]): Promise<InternalCredentialDataModel[]> => {
     return Promise.all(ids.map((id) => Keychain.get(id) ))
         .then((data) => data.map((entry) => parse(entry.value) ))
         .catch((e) => {
@@ -109,8 +122,12 @@ export const retrieveCredentials = (ids) => {
  *
  * @returns {Promise}
  */
-export const createSelfSignedCredential = async (issuer, schemaName, data) => {
-    return new Promise(async (resolve, reject) => {
+ export const createSelfSignedCredential = async (
+    issuer: Identity,
+    schemaName: SchemaNames,
+    data: any
+): Promise<IotaIdentity.VerifiableCredential> => {
+    return new Promise<IotaIdentity.VerifiableCredential>(async (resolve, reject) => {
         // Initialize the Library - Is cached after first initialization
         await IotaIdentity.init();
 
@@ -160,7 +177,7 @@ export const createSelfSignedCredential = async (issuer, schemaName, data) => {
  *
  * @returns {Promise}
  */
-export const storeCredential = (credentialId, credential) => {
+export const storeCredential = (credentialId: string, credential: InternalCredentialDataModel): Promise<{ value: boolean }> => {
     return Keychain.set(credentialId, JSON.stringify(credential));
 };
 
@@ -173,7 +190,7 @@ export const storeCredential = (credentialId, credential) => {
  *
  * @returns {Promise}
  */
-export const removeCredential = (credentialId) => {
+export const removeCredential = (credentialId: string): Promise<{ value: boolean }> => {
     return Keychain.remove(credentialId);
 };
 
@@ -186,7 +203,7 @@ export const removeCredential = (credentialId) => {
  *
  * @returns {Promise}
  */
-export const retrieveCredential = (credentialId) => {
+export const retrieveCredential = (credentialId: string): Promise<IotaIdentity.VerifiableCredential> => {
     return Keychain.get(credentialId)
         .then( async (data) =>
             parse(data.value)
@@ -205,48 +222,52 @@ export const retrieveCredential = (credentialId) => {
  *
  * @returns {Promise}
  */
-export const createVerifiablePresentation = (issuer, credentials, challengeNonce) => {
-    return new Promise( async (resolve, reject) => {
-        //Initialize the Library - Is cached after first initialization
-        await IotaIdentity.init();
+//  export const createVerifiablePresentation = (
+//     issuer: Identity,
+//     credentials : any[],
+//     challengeNonce: string
+// ): Promise<IotaIdentity.VerifiablePresentation> => {
+//     return new Promise<IotaIdentity.VerifiablePresentation>( async (resolve, reject) => {
+//         //Initialize the Library - Is cached after first initialization
+//         await IotaIdentity.init();
 
-        //Prepare some variables
-        let issuerDid = Document.fromJSON(JSON.parse(issuer.didDoc));
-        let issuerKeypair = IotaIdentity.Key.fromBase58(issuer.publicAuthKey, issuer.privateAuthKey);
+//         //Prepare some variables
+//         let issuerDid = Document.fromJSON(JSON.parse(issuer.didDoc));
+//         let issuerKeypair = IotaIdentity.Key.fromBase58(issuer.publicAuthKey, issuer.privateAuthKey);
 
-        //Create a DID Authentication Credential
-        let didAuthCred = new IotaIdentity.VerifiableCredential(
-            issuerDid,
-            issuerKeypair,
-            { DID: issuerDid.id, challengeNonce: challengeNonce},
-            "DIDAuthenticationCredential"
-        );
+//         //Create a DID Authentication Credential
+//         let didAuthCred = new IotaIdentity.VerifiableCredential(
+//             issuerDid,
+//             issuerKeypair,
+//             { DID: issuerDid.id, challengeNonce: challengeNonce},
+//             "DIDAuthenticationCredential"
+//         );
 
-        //Add the credentials
-        let vcs = [didAuthCred];
-        for(let i=0; i < credentials.length; i++) {
-            vcs.push(IotaIdentity.VerifiableCredential.fromJSON(credentials[i]));
-        }
+//         //Add the credentials
+//         let vcs : IotaIdentity.VerifiableCredential[] = [didAuthCred];
+//         for (let i=0; i < credentials.length; i++) {
+//             vcs.push(IotaIdentity.VerifiableCredential.fromJSON(credentials[i]));
+//         }
 
-        //Create the Presentation
-        let vp = new IotaIdentity.VerifiablePresentation(issuerDid, issuerKeypair, vcs);
-        resolve(vp);
-    });
-};
+//         //Create the Presentation
+//         let vp = new IotaIdentity.VerifiablePresentation(issuerDid, issuerKeypair, vcs);
+//         resolve(vp);
+//     });
+// };
 
-export const verifyVerifiablePresentation = (presentation, challenge) => {
-    return new Promise(async (resolve, reject) => {
+export const verifyVerifiablePresentation = (presentation: any, challenge : string|number): Promise<boolean> => {
+    return new Promise<boolean>(async (resolve, reject) => {
         //Initialize the Library - Is cached after first initialization
         await IotaIdentity.init();
         try {
             //Create from VP
             let vp = IotaIdentity.VerifiablePresentation.fromJSON(presentation);
 
-            let result = IotaIdentity.checkPresentation(vp.toString(), CLIENT_CONFIG);
-            let challengeNonce = vp.toJSON()["verifiableCredential"][0]["credentialSubject"]["challengeNonce"];
+            let result: boolean = IotaIdentity.checkPresentation(vp.toString(), CLIENT_CONFIG);
+            let challengeNonce: string = vp.toJSON()["verifiableCredential"][0]["credentialSubject"]["challengeNonce"];
             //Nonce Challenge
-            let challengeResult = false;
-            if(typeof challenge === "string") {
+            let challengeResult: boolean = false;
+            if (typeof challenge === "string") {
                 challengeResult = (challenge == challengeNonce);
             } else { //Time Challenge
                 challengeResult = (parseInt(challengeNonce) > challenge);
@@ -258,7 +279,14 @@ export const verifyVerifiablePresentation = (presentation, challenge) => {
     });
 };
 
-export const enrichCredential = (credential) => {
+export type VerifiableCredentialEnrichment = {
+    issuerLabel: string;
+    logo: string;
+    credentialLabel: string;
+    theme: string;
+};
+
+export const enrichCredential = (credential: any): Promise<VerifiableCredentialEnrichment> => {
     const override = DIDMapping[credential.issuer];
     return new Promise((resolve, reject) => {
         const enrichment = {
@@ -271,7 +299,7 @@ export const enrichCredential = (credential) => {
     });
 };
 
-export const prepareCredentialForDisplay = (credential) => {
+export const prepareCredentialForDisplay = (credential: any): any => {
     // TODO: deep copy
     const copy = { ...credential, credentialSubject: { ...credential.credentialSubject } };
     // TODO: typing
@@ -280,7 +308,7 @@ export const prepareCredentialForDisplay = (credential) => {
     }
     return copy;
 };
-export const preparePresentationForDisplay = (presentation) => {
+export const preparePresentationForDisplay = (presentation: any): any => {
     // TODO: deep copy
     const copy = { ...presentation, verifiableCredential: presentation.verifiableCredential };
 

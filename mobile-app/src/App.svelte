@@ -1,5 +1,6 @@
 <script>
   	import { onMount } from 'svelte';
+	import { Router, Route } from 'svelte-routing';
 	import { getRandomUserData, goto, delay, generateRandomId } from './lib/helpers';
 	import { createIdentity, storeIdentity, retrieveIdentity, createSelfSignedCredential } from './lib/identity';
   	import { SchemaNames } from './lib/identity/schemas';
@@ -54,9 +55,16 @@
 				});
 			}, 500);
   	});
+
+	let url = window.location.pathname;
 </script>
 
 <main>
+	<!-- <Router url="{url}">
+		<Route path="/" component="{HomePage}" />
+		<Route path="/home" component="{HomePage}" />
+		<Route path="/index.html" component="{HomePage}" />
+	</Router> -->
 	<h1>Welcome into mobile app!</h1>
 	<h3>{identityJSON}</h3>
 	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
