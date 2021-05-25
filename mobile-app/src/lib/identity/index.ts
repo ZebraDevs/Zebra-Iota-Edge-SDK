@@ -1,12 +1,9 @@
-/* tslint:disable */
-/* eslint-disable */
-
 import { IOTA_NODE_URL, DEVNET } from '../config';
 import Keychain from '../keychain';
 import { SchemaNames, DIDMapping } from './schemas';
 import { parse } from '../helpers';
 import type { InternalCredentialDataModel } from '../store';
-import * as IotaIdentity from '../identity.rs/web/identity_wasm';
+import * as IotaIdentity from '@iota/identity-wasm/web';
 
 /**
  *  Identity object

@@ -57,13 +57,13 @@ export default {
 		}),
 		copy({
 			targets: [{
-				src: './src/lib/identity.rs/web/identity_wasm_bg.wasm',
+				src: 'node_modules/@iota/identity-wasm/web/identity_wasm_bg.wasm',
 				dest: 'public',
 				rename: 'identity_wasm_bg.wasm'
 			}]
 		}),
 		wasm({
-		  	sync: ['./src/lib/identity.rs/web/identity_wasm_bg.wasm', 'identity_wasm_bg.wasm'],
+		  	sync: ['node_modules/@iota/identity-wasm/web/identity_wasm_bg.wasm', 'identity_wasm_bg.wasm'],
 		}),
     	// we'll extract any component CSS out into
     	// a separate file - better for performance
