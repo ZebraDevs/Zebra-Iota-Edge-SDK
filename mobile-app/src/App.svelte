@@ -2,58 +2,59 @@
   	import { onMount } from 'svelte';
 	import { Router, Route } from 'svelte-routing';
 	import { getRandomUserData, goto, delay, generateRandomId } from './lib/helpers';
-	import { createIdentity, storeIdentity, retrieveIdentity, createSelfSignedCredential } from './lib/identity';
+	import { createIdentity, storeIdentity, retrieveIdentity, retrieveCredential, createSelfSignedCredential } from './lib/identity';
   	import { SchemaNames } from './lib/identity/schemas';
 	import { error, hasSetupAccount, storedCredentials, account } from './lib/store';
 
-	let identityJSON = 'no';
+	let identityJSON = 'none';
 	let isCreatingCredentials = false;
 
 	onMount(() => {
-		setTimeout(() => {
+		setTimeout(async () => {
 			error.set(null);
 			// account.set({ name: 'empty' });
 
-			retrieveIdentity()
-				.then((identity) =>
-					identity
-						? Promise.resolve(identity)
-						: Promise.race([
-							createIdentity(),
-							new Promise((resolve, reject) => {
-								setTimeout(() => reject(new Error('Error creating identity')), 20000);
-							}),
-						]).then((newIdentity) => storeIdentity('did', newIdentity).then(() => newIdentity))
-				)
-				.then(async (identity) => {
-					identityJSON = JSON.stringify(identity, null, 2);
-					await createSelfSignedCredential(identity, SchemaNames.CONTACT_DETAILS, {
-						UserContacts: {
-							Email: 'email@company.com',
-							Phone: '111-222-3333',
-						},
-					})
-				})
-				.then((result) => {
-					const [addressCredential, personalDataCredential, contactDetailsCredential] = result;
+			try {
+				isCreatingCredentials = true;
+				const identity = await createIdentity();
+				identityJSON = JSON.stringify(identity, null, 2);
 
-					storedCredentials.update((prev) =>
-						[...prev, ...[addressCredential, personalDataCredential, contactDetailsCredential]].map((credential) => ({
-							credentialDocument: { ...credential },
-							metaInformation: { issuer: 'selv' },
-							id: generateRandomId()
-						}))
-					);
+				console.log(444, identity)
 
-					isCreatingCredentials = false;
-					// hasSetupAccount.set(true);
-					// goto('onboarding/home');
-				})
-				.catch((err) => {
-					error.set('Error creating identity. Please try again.');
-					isCreatingCredentials = false;
+				await storeIdentity('did', identity);
+
+				const storedIdentity = await retrieveIdentity();
+
+				const credential = await createSelfSignedCredential(storedIdentity, SchemaNames.CONTACT_DETAILS, {
+					UserContacts: {
+						Email: 'email@company.com',
+						Phone: '111-222-3333',
+					},
 				});
-			}, 500);
+				console.log(456, credential)
+
+				console.log(555, storedIdentity)
+
+				const credentialId = generateRandomId();
+				storedCredentials.update((prev) =>
+					[...prev, credential].map((cred) => ({
+						credentialDocument: { ...cred },
+						metaInformation: { issuer: 'iota' },
+						id: credentialId
+					}))
+				);
+
+				const storedCredential = await retrieveCredential(credentialId);
+
+				console.log(777, credentialId, storedCredential)
+
+				isCreatingCredentials = false;
+			} catch (err) {
+				error.set('Error creating identity. Please try again.');
+				isCreatingCredentials = false;
+			}
+
+		}, 500);
   	});
 
 	let url = window.location.pathname;
@@ -65,9 +66,8 @@
 		<Route path="/home" component="{HomePage}" />
 		<Route path="/index.html" component="{HomePage}" />
 	</Router> -->
-	<h1>Welcome into mobile app!</h1>
-	<h3>{identityJSON}</h3>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
+	<h1>Welcome!</h1>
+	<h3>2: {identityJSON}</h3>
 </main>
 
 <style>
