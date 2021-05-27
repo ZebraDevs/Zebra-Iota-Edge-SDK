@@ -54,15 +54,14 @@ storedCredentials.subscribe((value) => {
     });
     value.map((credential) => {
         if (!credential.enrichment) {
-            enrichCredential(credential.credentialDocument).then((enrichment) => {
-                storedCredentials.update((prev) =>
-                    prev.map((prevCredential) =>
-                        prevCredential.id === credential.id
-                            ? { ...prevCredential, enrichment }
-                            : prevCredential
-                    )
-                );
-            });
+            const enrichment = enrichCredential(credential.credentialDocument)
+            storedCredentials.update((prev) =>
+                prev.map((prevCredential) =>
+                    prevCredential.id === credential.id
+                        ? { ...prevCredential, enrichment }
+                        : prevCredential
+                )
+            );
         }
         return storeCredential(credential.id, credential);
     });
@@ -76,9 +75,8 @@ export const currentPresentation = writable<{
 currentPresentation.subscribe((presentation) => {
     if (presentation && !presentation.enrichment) {
         // TODO: which document to use for enrichment
-        enrichCredential(presentation.presentationDocument.verifiableCredential[0]).then((enrichment) => {
-            currentPresentation.update((prev) => ({ ...prev, enrichment }));
-        });
+        const enrichment = enrichCredential(presentation.presentationDocument.verifiableCredential[0])
+        currentPresentation.update((prev) => ({ ...prev, enrichment }));
     }
 });
 
@@ -86,9 +84,8 @@ export const currentCredentialToAccept = writable<InternalCredentialDataModel>(n
 
 currentCredentialToAccept.subscribe((credential) => {
     if (credential && !credential.enrichment) {
-        enrichCredential(credential.credentialDocument).then((enrichment) => {
-            currentCredentialToAccept.update((prev) => ({ ...prev, enrichment }));
-        });
+        const enrichment = enrichCredential(credential.credentialDocument)
+        currentCredentialToAccept.update((prev) => ({ ...prev, enrichment }));
     }
 });
 

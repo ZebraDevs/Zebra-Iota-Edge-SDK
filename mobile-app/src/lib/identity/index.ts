@@ -283,17 +283,15 @@ export type VerifiableCredentialEnrichment = {
     theme: string;
 };
 
-export function enrichCredential(credential: any): Promise<VerifiableCredentialEnrichment> {
+export function enrichCredential(credential: any): VerifiableCredentialEnrichment {
     const override = DIDMapping[credential.issuer];
-    return new Promise((resolve, reject) => {
-        const enrichment = {
-            issuerLabel: override?.issuerLabel ?? 'selv', // credential.issuer
-            logo: override?.logo ?? 'personal',
-            credentialLabel: credential?.type[1],
-            theme: override?.theme ?? '#550000',
-        };
-        resolve(enrichment);
-    });
+    const enrichment = {
+        issuerLabel: override?.issuerLabel ?? 'selv', // credential.issuer
+        logo: override?.logo ?? 'personal',
+        credentialLabel: credential?.type[1],
+        theme: override?.theme ?? '#550000',
+    };
+    return enrichment;
 };
 
 export function prepareCredentialForDisplay(credential: any): any {
