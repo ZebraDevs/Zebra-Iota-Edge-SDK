@@ -2,7 +2,15 @@
   	import { onMount } from 'svelte';
 	import { Router, Route } from 'svelte-routing';
 	import { getRandomUserData, goto, delay, generateRandomId } from './lib/helpers';
-	import { createIdentity, storeIdentity, retrieveIdentity, retrieveCredential, createSelfSignedCredential } from './lib/identity';
+	import { 
+		createIdentity, 
+		storeIdentity, 
+		retrieveIdentity, 
+		retrieveCredential, 
+		createSelfSignedCredential,
+		createVerifiablePresentation,
+		verifyVerifiablePresentation
+	 } from './lib/identity';
   	import { SchemaNames } from './lib/identity/schemas';
 	import { error, hasSetupAccount, storedCredentials, account } from './lib/store';
 
@@ -48,6 +56,11 @@
 
 				console.log(777, credentialId, storedCredential)
 
+				const verifiablePresentation = await createVerifiablePresentation(storedIdentity, credential);
+				console.log(888, verifiablePresentation)
+				const verificationResult = await verifyVerifiablePresentation(verifiablePresentation);
+				console.log(999, verificationResult)
+				
 				isCreatingCredentials = false;
 			} catch (err) {
 				error.set('Error creating identity. Please try again.');

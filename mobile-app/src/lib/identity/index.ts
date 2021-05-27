@@ -28,9 +28,10 @@ const {
     Document,
     KeyCollection,
     KeyType,
+    KeyPair,
     VerificationMethod,
     VerifiableCredential,
-    // VerifiablePresentation,
+    VerifiablePresentation,
 } = IotaIdentity;
 
 /**
@@ -129,6 +130,9 @@ export function retrieveCredentials(ids: string[]): Promise<InternalCredentialDa
 
     // Prepare credential Data
     const IssuerDidDoc = Document.fromJSON(JSON.parse(issuer.didDoc));
+    const IssuerKeys = KeyCollection.fromJSON(issuer.keys);
+    const IssuerDoc = Document.fromJSON(issuer.doc);
+    const IssuerMethod = VerificationMethod.fromJSON(issuer.method);
 
     // Prepare a credential subject
     const credentialSubject = {
@@ -143,10 +147,6 @@ export function retrieveCredentials(ids: string[]): Promise<InternalCredentialDa
         issuer: IssuerDidDoc.id.toString(),
         credentialSubject,
     });
-
-    const IssuerKeys = KeyCollection.fromJSON(issuer.keys);
-    const IssuerDoc = Document.fromJSON(issuer.doc);
-    const IssuerMethod = VerificationMethod.fromJSON(issuer.method);
 
     // Sign the credential with User's Merkle Key Collection method
     const signedVc = IssuerDoc.signCredential(unsignedVc, {
@@ -226,61 +226,42 @@ export function retrieveCredential(credentialId: string): Promise<IotaIdentity.V
  *
  * @returns {Promise}
  */
-//  export function createVerifiablePresentation(
-//     issuer: Identity,
-//     credentials : any[],
-//     challengeNonce: string
-// ): Promise<IotaIdentity.VerifiablePresentation> {
-//     return new Promise<IotaIdentity.VerifiablePresentation>( async (resolve, reject) => {
-//         //Initialize the Library - Is cached after first initialization
-//         await IotaIdentity.init();
+ export async function createVerifiablePresentation(
+    issuer: Identity,
+    signedVc : IotaIdentity.VerifiableCredential,
+): Promise<IotaIdentity.VerifiablePresentation> {
+    //Initialize the Library - Is cached after first initialization
+    await IotaIdentity.init();
 
-//         //Prepare some variables
-//         let issuerDid = Document.fromJSON(JSON.parse(issuer.didDoc));
-//         let issuerKeypair = IotaIdentity.Key.fromBase58(issuer.publicAuthKey, issuer.privateAuthKey);
+    // Prepare presentation Data
+    const IssuerKey = KeyPair.fromJSON(issuer.key);
+    const IssuerDoc = Document.fromJSON(issuer.doc);
 
-//         //Create a DID Authentication Credential
-//         let didAuthCred = new IotaIdentity.VerifiableCredential(
-//             issuerDid,
-//             issuerKeypair,
-//             { DID: issuerDid.id, challengeNonce: challengeNonce},
-//             "DIDAuthenticationCredential"
-//         );
+    // Create a Verifiable Presentation from the Credential - signed by user's key
+    const unsignedVp = new VerifiablePresentation(IssuerDoc, signedVc)
 
-//         //Add the credentials
-//         let vcs : IotaIdentity.VerifiableCredential[] = [didAuthCred];
-//         for (let i=0; i < credentials.length; i++) {
-//             vcs.push(IotaIdentity.VerifiableCredential.fromJSON(credentials[i]));
-//         }
+    const signedVp = IssuerDoc.signPresentation(unsignedVp, {
+        method: "#key",
+        secret: IssuerKey.secret,
+    })
 
-//         //Create the Presentation
-//         let vp = new IotaIdentity.VerifiablePresentation(issuerDid, issuerKeypair, vcs);
-//         resolve(vp);
-//     });
-// };
+    return signedVp.toJSON();
+};
 
-export function verifyVerifiablePresentation(presentation: any, challenge : string|number): Promise<boolean> {
-    return new Promise<boolean>(async (resolve, reject) => {
-        //Initialize the Library - Is cached after first initialization
-        await IotaIdentity.init();
-        try {
-            //Create from VP
-            let vp = IotaIdentity.VerifiablePresentation.fromJSON(presentation);
-
-            let result: boolean = IotaIdentity.checkPresentation(vp.toString(), CLIENT_CONFIG);
-            let challengeNonce: string = vp.toJSON()["verifiableCredential"][0]["credentialSubject"]["challengeNonce"];
-            //Nonce Challenge
-            let challengeResult: boolean = false;
-            if (typeof challenge === "string") {
-                challengeResult = (challenge == challengeNonce);
-            } else { //Time Challenge
-                challengeResult = (parseInt(challengeNonce) > challenge);
-            }
-            resolve(result && challengeResult);
-        } catch (err) {
-            reject("Error during VP Check: " + err);
-        }
-    });
+export async function verifyVerifiablePresentation(
+    presentation: IotaIdentity.VerifiablePresentation
+): Promise<boolean> {
+    //Initialize the Library - Is cached after first initialization
+    await IotaIdentity.init();
+    try {
+        //Create from VP
+        const verifiablePresentation = VerifiablePresentation.fromJSON(presentation);
+        const result = await IotaIdentity.checkPresentation(verifiablePresentation.toString(), CLIENT_CONFIG);
+        return result?.verified;
+    } catch (err) {
+        console.error("Error during VP Check: " + err);
+        return false;
+    }
 };
 
 export type VerifiableCredentialEnrichment = {
