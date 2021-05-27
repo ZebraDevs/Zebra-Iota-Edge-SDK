@@ -124,44 +124,51 @@ export function retrieveCredentials(ids: string[]): Promise<InternalCredentialDa
     schemaName: SchemaNames,
     data: any
 ): Promise<IotaIdentity.VerifiableCredential> {
-    return new Promise<IotaIdentity.VerifiableCredential>(async (resolve, reject) => {
-        // Initialize the Library - Is cached after first initialization
-        await IotaIdentity.init();
+    // Initialize the Library - Is cached after first initialization
+    await IotaIdentity.init();
 
-        // Prepare credential Data
-        const IssuerDidDoc = Document.fromJSON(JSON.parse(issuer.didDoc));
+    // Prepare credential Data
+    const IssuerDidDoc = Document.fromJSON(JSON.parse(issuer.didDoc));
 
-        // Prepare a credential subject
-        const credentialSubject = {
-            id: IssuerDidDoc.id.toString(),
-            ...data,
-        };
+    // Prepare a credential subject
+    const credentialSubject = {
+        id: IssuerDidDoc.id.toString(),
+        ...data,
+    };
 
-        // Issue an unsigned credential
-        const unsignedVc = VerifiableCredential.extend({
-            id: 'http://example.com/credentials/3732',
-            type: schemaName,
-            issuer: IssuerDidDoc.id.toString(),
-            credentialSubject,
-        });
-
-        // Sign the credential with User's Merkle Key Collection method
-        const signedVc = issuer.doc.signCredential(unsignedVc, {
-            method: issuer.method.id.toString(),
-            public: issuer.keys.public(0),
-            secret: issuer.keys.secret(0),
-            proof: issuer.keys.merkleProof(Digest.Sha256, 0),
-        });
-
-        // Ensure the credential signature is valid
-        console.log("Verifiable Credential JSON", signedVc.toJSON())
-        console.log("Verified (credential)", issuer.doc.verify(signedVc))
-
-        // Check the validation status of the Verifiable Credential
-        console.log("Credential Validation", await IotaIdentity.checkCredential(signedVc.toString(), CLIENT_CONFIG))
-
-        resolve(signedVc.toJSON());
+    // Issue an unsigned credential
+    const unsignedVc = VerifiableCredential.extend({
+        id: 'http://example.com/credentials/3732',
+        type: schemaName,
+        issuer: IssuerDidDoc.id.toString(),
+        credentialSubject,
     });
+
+    const IssuerKeys = KeyCollection.fromJSON(issuer.keys);
+    const IssuerDoc = Document.fromJSON(issuer.doc);
+    const IssuerMethod = VerificationMethod.fromJSON(issuer.method);
+
+    // Sign the credential with User's Merkle Key Collection method
+    const signedVc = IssuerDoc.signCredential(unsignedVc, {
+        method: IssuerMethod.id.toString(),
+        public: IssuerKeys.public(0),
+        secret: IssuerKeys.secret(0),
+        proof: IssuerKeys.merkleProof(Digest.Sha256, 0),
+    });
+
+    // Ensure the credential signature is valid
+    console.log("Verifiable Credential JSON", signedVc.toJSON())
+    console.log("Verified (credential)", IssuerDoc.verifyData(signedVc))
+
+    // Check the validation status of the Verifiable Credential
+    const validation = await IotaIdentity.checkCredential(signedVc.toString(), CLIENT_CONFIG);
+    console.log("Credential Validation", validation.verified);
+
+    if (validation.verified && IssuerDoc.verifyData(signedVc)) {
+        return signedVc.toJSON();
+    } else {
+        return null;
+    }
 };
 
 /**
