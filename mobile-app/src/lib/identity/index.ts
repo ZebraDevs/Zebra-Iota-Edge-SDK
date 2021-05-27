@@ -12,9 +12,10 @@ import * as IotaIdentity from '@iota/identity-wasm/web';
     didDoc: string;
     publicAuthKey: string;
     privateAuthKey: string;
-    doc: any;
-    keys: any;
-    method: any;
+    doc: typeof IotaIdentity.Document;
+    key: typeof IotaIdentity.KeyPair;
+    keys: typeof IotaIdentity.KeyCollection;
+    method: typeof IotaIdentity.VerificationMethod;
 };
 
 const CLIENT_CONFIG = {
@@ -39,35 +40,34 @@ const {
  *
  * @returns {Promise}
  */
-export function createIdentity(): Promise<Identity> {
-    return new Promise(async (resolve, reject) => {
-        // Initialize the Library - Is cached after first initialization
-        await IotaIdentity.init();
+export async function createIdentity(): Promise<Identity> {
+    // Initialize the Library - Is cached after first initialization
+    await IotaIdentity.init();
 
-        // Generate a new keypair
-        const { key, doc }: any = new Document(KeyType.Ed25519);
+    // Generate a new keypair
+    const { key, doc }: any = new Document(KeyType.Ed25519);
 
-        // Add a Merkle Key Collection method for Bob, so compromised keys can be revoked.
-        const keys = new KeyCollection(KeyType.Ed25519, 8);
-        const method = VerificationMethod.createMerkleKey(Digest.Sha256, doc.id, keys, 'key-collection');
+    // Add a Merkle Key Collection method for Bob, so compromised keys can be revoked.
+    const keys = new KeyCollection(KeyType.Ed25519, 8);
+    const method = VerificationMethod.createMerkleKey(Digest.Sha256, doc.id, keys, 'key-collection');
 
-        // Add to the DID Document as a general-purpose verification method
-        doc.insertMethod(method, 'VerificationMethod');
+    // Add to the DID Document as a general-purpose verification method
+    doc.insertMethod(method, 'VerificationMethod');
 
-        // Signing
-        doc.sign(key);
+    // Signing
+    doc.sign(key);
 
-        // Publish
-        await IotaIdentity.publish(doc.toJSON(), CLIENT_CONFIG);
-        resolve({
-            didDoc: JSON.stringify(doc.toJSON()),
-            publicAuthKey: key.public,
-            privateAuthKey: key.private,
-            doc,
-            keys,
-            method,
-        });
-    });
+    // Publish
+    await IotaIdentity.publish(doc.toJSON(), CLIENT_CONFIG);
+    return {
+        didDoc: JSON.stringify(doc.toJSON()),
+        publicAuthKey: key.public,
+        privateAuthKey: key.secret,
+        doc,
+        key,
+        keys,
+        method,
+    };
 };
 
 /**
