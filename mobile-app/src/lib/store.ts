@@ -1,6 +1,8 @@
 import { writable } from 'svelte/store';
 import { persistent } from './helpers';
 import { enrichCredential, storeCredential, removeCredential, VerifiableCredentialEnrichment } from './identity';
+import init from './init';
+init();
 
 /**
  * Determines if use has completed onboarding
