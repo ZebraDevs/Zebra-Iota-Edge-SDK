@@ -1,45 +1,41 @@
 <script>
-  	import { onMount } from 'svelte';
+  import { onMount } from 'svelte';
 	import { Router, Route } from 'svelte-routing';
 	import { getRandomUserData, goto, delay, generateRandomId } from './lib/helpers';
-	import { 
-		createIdentity, 
-		storeIdentity, 
-		retrieveIdentity, 
-		retrieveCredential, 
-		createSelfSignedCredential,
-		createVerifiablePresentation,
-		verifyVerifiablePresentation
-	 } from './lib/identity';
-  	import { SchemaNames } from './lib/identity/schemas';
+	import { ServiceFactory } from './factories/serviceFactory';
+	import { IdentityService } from './services/identityService';
+  import { SchemaNames } from './schemas';
 	import { error, hasSetupAccount, storedCredentials, account } from './lib/store';
 
 	let identityJSON = 'none';
 	let isCreatingCredentials = false;
 
+
 	onMount(() => {
 		setTimeout(async () => {
+			const identityService = ServiceFactory.get('identity');
+
 			error.set(null);
 			// account.set({ name: 'empty' });
 
 			try {
 				isCreatingCredentials = true;
-				const identity = await createIdentity();
+				const identity = await identityService.createIdentity();
 				identityJSON = JSON.stringify(identity, null, 2);
 
-				console.log(444, identity)
+				console.log(333, identity)
 
-				await storeIdentity('did', identity);
+				await identityService.storeIdentity('did', identity);
 
-				const storedIdentity = await retrieveIdentity();
+				const storedIdentity = await identityService.retrieveIdentity();
 
-				const credential = await createSelfSignedCredential(storedIdentity, SchemaNames.CONTACT_DETAILS, {
+				const credential = await identityService.createSelfSignedCredential(storedIdentity, SchemaNames.CONTACT_DETAILS, {
 					UserContacts: {
 						Email: 'email@company.com',
 						Phone: '111-222-3333',
 					},
 				});
-				console.log(456, credential)
+				console.log(444, credential)
 
 				console.log(555, storedIdentity)
 
@@ -52,13 +48,13 @@
 					}))
 				);
 
-				const storedCredential = await retrieveCredential(credentialId);
+				const storedCredential = await identityService.retrieveCredential(credentialId);
 
 				console.log(777, credentialId, storedCredential)
 
-				const verifiablePresentation = await createVerifiablePresentation(storedIdentity, credential);
+				const verifiablePresentation = await identityService.createVerifiablePresentation(storedIdentity, credential);
 				console.log(888, verifiablePresentation)
-				const verificationResult = await verifyVerifiablePresentation(verifiablePresentation);
+				const verificationResult = await identityService.verifyVerifiablePresentation(verifiablePresentation);
 				console.log(999, verificationResult)
 				
 				isCreatingCredentials = false;
