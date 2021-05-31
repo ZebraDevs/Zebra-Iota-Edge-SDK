@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { writable, Writable } from 'svelte/store';
-import { RANDOM_USER_DATA_API_URL } from './config';
+import { RANDOM_USER_DATA_API_URL } from '../config';
 
 
 interface ExtendedProofDocument {
