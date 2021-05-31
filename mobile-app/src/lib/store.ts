@@ -1,8 +1,12 @@
 import { writable } from 'svelte/store';
 import { persistent } from './helpers';
-import { enrichCredential, storeCredential, removeCredential, VerifiableCredentialEnrichment } from './identity';
 import init from './init';
+import { ServiceFactory } from '../factories/serviceFactory';
+import type { VerifiableCredentialEnrichment } from '../models/types/identity';
+import type { IdentityService } from '../services/identityService';
+
 init();
+const identityService = ServiceFactory.get<IdentityService>('identity');
 
 /**
  * Determines if use has completed onboarding
@@ -49,14 +53,14 @@ storedCredentials.subscribe((value) => {
     listOfCredentials.update((prev) => {
         if (prev.init) {
             const idsToDelete = prev.values.filter((id) => !value.find((credential) => credential.id === id));
-            idsToDelete.map((id) => removeCredential(id));
+            idsToDelete.map((id) => identityService.removeCredential(id));
             return { ...prev, values: value.map((credential) => credential.id) };
         }
         return { ...prev, init: true };
     });
     value.map((credential) => {
         if (!credential.enrichment) {
-            const enrichment = enrichCredential(credential.credentialDocument)
+            const enrichment = identityService.enrichCredential(credential.credentialDocument)
             storedCredentials.update((prev) =>
                 prev.map((prevCredential) =>
                     prevCredential.id === credential.id
@@ -65,7 +69,7 @@ storedCredentials.subscribe((value) => {
                 )
             );
         }
-        return storeCredential(credential.id, credential);
+        return identityService.storeCredential(credential.id, credential);
     });
 });
 
@@ -77,7 +81,7 @@ export const currentPresentation = writable<{
 currentPresentation.subscribe((presentation) => {
     if (presentation && !presentation.enrichment) {
         // TODO: which document to use for enrichment
-        const enrichment = enrichCredential(presentation.presentationDocument.verifiableCredential[0])
+        const enrichment = identityService.enrichCredential(presentation.presentationDocument.verifiableCredential[0])
         currentPresentation.update((prev) => ({ ...prev, enrichment }));
     }
 });
@@ -86,7 +90,7 @@ export const currentCredentialToAccept = writable<InternalCredentialDataModel>(n
 
 currentCredentialToAccept.subscribe((credential) => {
     if (credential && !credential.enrichment) {
-        const enrichment = enrichCredential(credential.credentialDocument)
+        const enrichment = identityService.enrichCredential(credential.credentialDocument)
         currentCredentialToAccept.update((prev) => ({ ...prev, enrichment }));
     }
 });
