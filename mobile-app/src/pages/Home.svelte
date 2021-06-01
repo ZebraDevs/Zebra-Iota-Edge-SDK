@@ -4,12 +4,13 @@
 
 <main>
 	<h1>Home</h1>
+	<div class="controls">
 		<button><Link to="createIdentity">CreateIdentity</Link></button>
 		<button><Link to="createCredential">CreateCredential</Link></button>
 		<button><Link to="createPresentation">CreatePresentation</Link></button>
 		<button><Link to="verifyPresentation">VerifyPresentation</Link></button>
+	</div>
 </main>
-
 
 <style>
 	main {
@@ -22,7 +23,7 @@
 	h1 {
 		color: #ff3e00;
 		text-transform: uppercase;
-		font-size: 4em;
+		font-size: 2.5em;
 		font-weight: 100;
 	}
 
