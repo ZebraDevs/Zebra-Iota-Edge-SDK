@@ -1354,6 +1354,11 @@ builtin-modules@^3.1.0:
   resolved "https://registry.yarnpkg.com/builtin-modules/-/builtin-modules-3.2.0.tgz#45d5db99e7ee5e6bc4f362e008bf917ab5049887"
   integrity sha512-lGzLKcioL90C7wMczpkY0n/oART3MbBa8R9OFGE1rJxoVI86u4WAGfEk8Wjv10eKSyTHVGkSo3bvBylCEtk7LA==
 
+bwip-js@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/bwip-js/-/bwip-js-3.0.0.tgz#bc375e9e405ef1de84a3a638b4b55b51ce319d59"
+  integrity sha512-EqLAhHAf2HrgKVg+at8kXWjXyNEaU9F3eS0BPUy5r8hGNLj63f+cSO/C/ElHhnGWGuu604wF+RBPFGQyyp9Kvg==
+
 call-bind@^1.0.0, call-bind@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/call-bind/-/call-bind-1.0.2.tgz#b1d4e89e688119c3c9a903ad30abb2f6a919be3c"
