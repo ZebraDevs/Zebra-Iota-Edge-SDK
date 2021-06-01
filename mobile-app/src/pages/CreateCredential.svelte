@@ -3,10 +3,12 @@
   import { onMount } from 'svelte';
 	import { ServiceFactory } from '../factories/serviceFactory';
 	import { IdentityService } from '../services/identityService';
-	import { error, account, storedCredentials } from '../lib/store';
+	import { error, storedCredentials } from '../lib/store';
+  import { SchemaNames } from '../schemas';
+	import Spinner from '../components/Spinner.svelte';
 
 	let credentialJSON = '';
-	let loading = false;
+	let loading = true;
 
 
 	onMount(() => {
@@ -14,10 +16,8 @@
 			const identityService = ServiceFactory.get('identity');
 
 			error.set(null);
-			// account.set({ name: 'empty' });
 
 			try {
-				loading = true;
 				const storedIdentity = await identityService.retrieveIdentity();
 
 				const credential = await identityService.createSelfSignedCredential(storedIdentity, SchemaNames.CONTACT_DETAILS, {
@@ -40,6 +40,8 @@
 					}))
 				);
 
+				credentialJSON = JSON.stringify(credential, null, 2);
+
 				loading = false;
 			} catch (err) {
 				error.set('Error creating identity. Please try again.');
@@ -47,16 +49,17 @@
 			}
 
 		}, 500);
-  	});
-
-	let url = window.location.pathname;
+  });
 </script>
 
 <main>
 	<Link to="/">Back</Link>
-	<p>{url}</p>
-	<h1>Create Credential</h1>
-	<h3>{credentialJSON}</h3>
+	<h1>Credential</h1>
+	{#if loading}
+		<Spinner />
+	{:else}
+		<h3>{credentialJSON}</h3>
+	{/if}
 </main>
 
 <style>
@@ -70,7 +73,7 @@
 	h1 {
 		color: #ff3e00;
 		text-transform: uppercase;
-		font-size: 4em;
+		font-size: 2.5em;
 		font-weight: 100;
 	}
 
