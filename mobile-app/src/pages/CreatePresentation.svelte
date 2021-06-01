@@ -1,31 +1,46 @@
 <script>
 	import { Link } from "svelte-routing";
   import { onMount } from 'svelte';
+	import bwipjs from 'bwip-js';
 	import { ServiceFactory } from '../factories/serviceFactory';
 	import { IdentityService } from '../services/identityService';
-	import { error, account } from '../lib/store';
+	import { error } from '../lib/store';
+	import Spinner from '../components/Spinner.svelte';
 
 	let presentationJSON = '';
-	let loading = false;
+	let loading = true;
 
+	async function createMatrix(content) {
+		try {
+			// The return value is the canvas element
+			bwipjs.toCanvas('presentation', {
+					bcid: 'datamatrix',
+					text: content,
+					scale: 3
+			});
+		} catch (e) {
+				console.error(e)
+		}
+	}
 
 	onMount(() => {
 		setTimeout(async () => {
 			const identityService = ServiceFactory.get('identity');
 
 			error.set(null);
-			// account.set({ name: 'empty' });
 
 			try {
-				loading = true;
-
 				const storedIdentity = await identityService.retrieveIdentity();
 				const storedCredential = await identityService.retrieveCredential('credentialId');
 
 				console.log(777, storedIdentity, storedCredential)
 
-				const verifiablePresentation = await identityService.createVerifiablePresentation(storedIdentity, storedCredential);
+				const verifiablePresentation = await identityService.createVerifiablePresentation(storedIdentity, storedCredential.credentialDocument);
 				console.log(888, verifiablePresentation)
+
+				presentationJSON = JSON.stringify(verifiablePresentation, null, 2);
+
+				await createMatrix(presentationJSON);
 
 				loading = false;
 			} catch (err) {
@@ -34,16 +49,19 @@
 			}
 
 		}, 500);
-  	});
-
-	let url = window.location.pathname;
+  });
 </script>
 
 <main>
 	<Link to="/">Back</Link>
-	<p>{url}</p>
-	<h1>Create Presentation</h1>
-	<h3>{presentationJSON}</h3>
+	<h1>Presentation</h1>
+	{#if loading}
+		<Spinner />
+	<!-- {:else}
+		<h3>{presentationJSON}</h3> -->
+	{/if}
+	<canvas id="presentation"></canvas>
+
 </main>
 
 <style>
@@ -57,7 +75,7 @@
 	h1 {
 		color: #ff3e00;
 		text-transform: uppercase;
-		font-size: 4em;
+		font-size: 2.5em;
 		font-weight: 100;
 	}
 
