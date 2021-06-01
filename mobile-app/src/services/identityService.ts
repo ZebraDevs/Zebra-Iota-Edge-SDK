@@ -256,7 +256,7 @@ export class IdentityService {
     enrichCredential(credential: any): VerifiableCredentialEnrichment {
         const override = DIDMapping[credential.issuer];
         const enrichment = {
-            issuerLabel: override?.issuerLabel ?? 'selv', // credential.issuer
+            issuerLabel: override?.issuerLabel ?? 'iota', // credential.issuer
             logo: override?.logo ?? 'personal',
             credentialLabel: credential?.type[1],
             theme: override?.theme ?? '#550000',
