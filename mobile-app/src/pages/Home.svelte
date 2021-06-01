@@ -5,10 +5,10 @@
 <main>
 	<h1>Home</h1>
 	<div class="controls">
-		<button><Link to="createIdentity">CreateIdentity</Link></button>
-		<button><Link to="createCredential">CreateCredential</Link></button>
-		<button><Link to="createPresentation">CreatePresentation</Link></button>
-		<button><Link to="verifyPresentation">VerifyPresentation</Link></button>
+		<button><Link to="createIdentity">Create Identity</Link></button>
+		<button><Link to="createCredential">Create Credential</Link></button>
+		<button><Link to="createPresentation">Create Presentation</Link></button>
+		<button><Link to="verifyPresentation">Verify Presentation</Link></button>
 	</div>
 </main>
 
