@@ -7,6 +7,7 @@ import { terser } from 'rollup-plugin-terser';
 import sveltePreprocess from 'svelte-preprocess';
 import { wasm } from '@rollup/plugin-wasm';
 import copy from 'rollup-plugin-copy';
+import typescript from '@rollup/plugin-typescript';
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -32,7 +33,7 @@ function serve() {
 }
 
 export default {
-	input: 'src/main.js',
+	input: 'src/main.ts',
 	output: {
 		sourcemap: true,
 		format: 'iife',
@@ -40,25 +41,34 @@ export default {
 		file: 'public/build/bundle.js'
 	},
 	plugins: [
-    svelte({
-      compilerOptions: {
-        // enable run-time checks when not in production
-        dev: !production,
-      },
-    }),
+		svelte({
+			// enable run-time checks when not in production
+			dev: !production,
+			// we'll extract any component CSS out into
+			// a separate file - better for performance
+			css: css => {
+				css.write('bundle.css');
+			},
+			compilerOptions: {
+				// enable run-time checks when not in production
+				dev: !production,
+			},
+			preprocess: sveltePreprocess(),
+		}),
 		copy({
 			targets: [{
-				src: './src/lib/identity.rs/web/identity_wasm_bg.wasm',
+				src: 'node_modules/@iota/identity-wasm/web/identity_wasm_bg.wasm',
 				dest: 'public',
 				rename: 'identity_wasm_bg.wasm'
 			}]
 		}),
 		wasm({
-		  sync: ['./src/lib/identity.rs/web/identity_wasm_bg.wasm', 'identity_wasm_bg.wasm'],
+		  	sync: ['node_modules/@iota/identity-wasm/web/identity_wasm_bg.wasm', 'identity_wasm_bg.wasm'],
 		}),
-    // we'll extract any component CSS out into
-    // a separate file - better for performance
-    css({ output: "bundle.css" }),
+    	// we'll extract any component CSS out into
+    	// a separate file - better for performance
+    	// css({ output: "bundle.css" }),
+		css({output:'public/build/extra.css'}),
 
 		// If you have external dependencies installed from
 		// npm, you'll most likely need these plugins. In
@@ -70,7 +80,10 @@ export default {
 			dedupe: ['svelte']
 		}),
 		commonjs(),
-
+		typescript({
+			sourceMap: !production,
+			inlineSources: !production
+		}),
 		// In dev mode, call `npm run start` once
 		// the bundle has been generated
 		!production && serve(),

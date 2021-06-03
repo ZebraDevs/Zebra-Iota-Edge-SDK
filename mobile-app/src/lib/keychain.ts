@@ -7,16 +7,16 @@ const { SecureStoragePlugin } = Plugins;
  * Keychain adapter
  */
 export default {
-    get(key) {
+    get(key: string): Promise<{ value: string }> {
         return SecureStoragePlugin.get({ key });
     },
-    set(key, value) {
+    set(key: string, value: string): Promise<{ value: boolean }> {
         return SecureStoragePlugin.set({ key, value });
     },
-    remove(key) {
+    remove(key: string): Promise<{ value: boolean }> {
         return SecureStoragePlugin.remove({ key });
     },
-    clear() {
+    clear(): Promise<{ value: boolean }> {
         return SecureStoragePlugin.clear();
     },
 };
