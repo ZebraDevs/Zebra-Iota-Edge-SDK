@@ -2,3 +2,4 @@
 /public/*.wasm
 .gradle
 android/.idea/
+capacitor.config.json

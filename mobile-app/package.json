@@ -7,7 +7,8 @@
     "start:dev": "sirv public --single --dev",
     "serve:capacitor": "sirv public --single --dev --host --port 5001",
     "android:sync": "cap sync android && cap open android",
-    "android:dev": "run-p serve:capacitor android:sync"
+    "android:dev": "cp capacitor.config-dev.json capacitor.config.json && run-p serve:capacitor android:sync",
+    "android": "cp capacitor.config-prod.json capacitor.config.json && run-p android-sync"
   },
   "devDependencies": {
     "@babel/core": "^7.14.3",
