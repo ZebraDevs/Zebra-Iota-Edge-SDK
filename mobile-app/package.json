@@ -2,14 +2,13 @@
   "name": "zebra-iota-edge-sdk",
   "version": "0.1.0",
   "scripts": {
-    "build": "run-p build cap-run:android",
-    "autobuild": "rollup -c -w",
-    "local": "run-p start:dev autobuild",
+    "build": "rollup -c",
     "start": "sirv public --single",
     "start:dev": "sirv public --single --dev",
     "serve:capacitor": "sirv public --single --dev --host --port 5001",
-    "cap-run:android": "cap sync android && cap open android",
-    "dev:android": "run-p serve:capacitor autobuild cap-run:android"
+    "android:sync": "cap sync android && cap open android",
+    "android:dev": "cp capacitor.config-dev.json capacitor.config.json && run-p serve:capacitor android:sync",
+    "android": "cp capacitor.config-prod.json capacitor.config.json && run-s build android:sync"
   },
   "devDependencies": {
     "@babel/core": "^7.14.3",
