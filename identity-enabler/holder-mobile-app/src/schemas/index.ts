@@ -1,57 +1,10 @@
 // TODO: check rule
 // eslint-disable-next-line no-shadow
 export enum SchemaNames {
-    ADDRESS = 'Address',
-    PERSONAL_DATA = 'PersonalData',
-    TEST_RESULT = 'TestResult',
-    VISA_APPLICATION = 'VisaApplication',
-    BANK_ACCOUNT = 'BankAccount',
-    COMPANY = 'Company',
-    CONTACT_DETAILS = 'ContactDetails',
-    INSURANCE = 'Insurance',
+    PERSONAL_DATA = 'Personal Data',
+    HEALTH_TEST = 'Health Test Result',
+    BLOOD_TEST = 'Blood Test Result',
 }
-
-export const AddressSchema = {
-    type: 'object',
-    required: ['DID'],
-    properties: {
-        DID: {
-            type: 'string',
-        },
-        Language: {
-            type: 'string',
-        },
-        Locale: {
-            type: 'string',
-        },
-        UserAddress: {
-            type: 'object',
-            properties: {
-                City: {
-                    type: 'string',
-                },
-                State: {
-                    type: 'string',
-                },
-                Country: {
-                    type: 'string',
-                },
-                Postcode: {
-                    type: 'string',
-                },
-                Street: {
-                    type: 'string',
-                },
-                AdditionalAddress: {
-                    type: 'string',
-                },
-                House: {
-                    type: 'string',
-                },
-            },
-        },
-    },
-};
 
 export const PersonalDataSchema = {
     type: 'object',
@@ -89,7 +42,7 @@ export const PersonalDataSchema = {
                 UserDOB: {
                     type: 'object',
                     properties: {
-                        Date: {
+                        "Date of Birth": {
                             type: 'string',
                         },
                         Age: {
@@ -106,10 +59,10 @@ export const PersonalDataSchema = {
                 Gender: {
                     type: 'string',
                 },
-                IdentityCardNumber: {
+                "Identity Card Number": {
                     type: 'string',
                 },
-                PassportNumber: {
+                "Passport Number": {
                     type: 'string',
                 },
             },
@@ -117,223 +70,84 @@ export const PersonalDataSchema = {
     },
 };
 
-export const TestResultSchema = {
+export const HealthTestSchema = {
     type: 'object',
     required: [],
     properties: {
-        TestID: {
+        "Test ID": {
             type: 'string',
         },
-        TestBy: {
+        "Test By": {
             type: 'string',
         },
-        TestTimestamp: {
+        "Test Timestamp": {
             type: 'string',
         },
-        TestKit: {
+        "Test Kit": {
             type: 'string',
         },
-        TestResult: {
+        "Test Result": {
+            type: 'string',
+        },
+        "Covid-19 Antibodies": {
+            type: 'number',
+        },
+        "% supressor cell (T8)": {
+            type: 'string',
+        },
+        "% B-cell": {
+            type: 'string',
+        },
+        "NK cell activity": {
+            type: 'number',
+        },
+        "Concanavalin A": {
             type: 'string',
         },
     },
 };
 
-export const VisaApplicationSchema = {
+export const BloodTestSchema = {
     type: 'object',
     required: [],
     properties: {
-        VisaApplicationNumber: {
+        "Test ID": {
             type: 'string',
         },
-        VisaCountry: {
+        "Test By": {
+            type: 'string',
+        },
+        "Test Timestamp": {
+            type: 'string',
+        },
+        "TSH (sensitive)": {
+            type: 'string',
+        },
+        "LDL Cholesterol": {
+            type: 'string',
+        },
+        "Non-HDL Cholesterol": {
+            type: 'string',
+        },
+        "Triglyceride": {
+            type: 'string',
+        },
+        "HbA 1c": {
+            type: 'string',
+        },
+        "MCH (HbE)": {
+            type: 'string',
+        },
+        "Gamma-GT (G-GT)": {
             type: 'string',
         },
     },
 };
-
-export const BankAccountSchema = {
-    type: 'object',
-    required: ['DID'],
-    properties: {
-        DID: {
-            type: 'string',
-        },
-        Language: {
-            type: 'string',
-        },
-        Locale: {
-            type: 'string',
-        },
-        Bank: {
-            type: 'object',
-            properties: {
-                AccountType: {
-                    type: 'string',
-                },
-                AccountNumber: {
-                    type: 'string',
-                },
-                AccountIBAN: {
-                    type: 'string',
-                },
-                BankName: {
-                    type: 'string',
-                },
-            },
-        },
-    },
-};
-
-export const CompanySchema = {
-    type: 'object',
-    required: ['DID'],
-    properties: {
-        DID: {
-            type: 'string',
-        },
-        Language: {
-            type: 'string',
-        },
-        Locale: {
-            type: 'string',
-        },
-        Company: {
-            type: 'object',
-            properties: {
-                CompanyName: {
-                    type: 'string',
-                },
-                CompanyAddress: {
-                    type: 'string',
-                },
-                CompanyType: {
-                    type: 'string',
-                },
-                CompanyOwner: {
-                    type: 'string',
-                },
-                CompanyCapital: {
-                    type: 'number',
-                },
-                CompanyBusiness: {
-                    type: 'string',
-                },
-                CompanyCreationDate: {
-                    type: 'string',
-                },
-                CompanyStatus: {
-                    type: 'string',
-                },
-                CompanyNumber: {
-                    type: 'number',
-                },
-                CompanyOwners: {
-                    type: 'array',
-                    CompanyOwner: {
-                        type: 'string',
-                    },
-                },
-            },
-        },
-    },
-};
-
-export const ContactDetailsSchema = {
-    type: 'object',
-    required: ['DID'],
-    properties: {
-        DID: {
-            type: 'string',
-        },
-        Language: {
-            type: 'string',
-        },
-        Locale: {
-            type: 'string',
-        },
-        TimezoneOffset: {
-            type: 'string',
-        },
-        UserContacts: {
-            type: 'object',
-            properties: {
-                Email: {
-                    type: 'string',
-                },
-                Phone: {
-                    type: 'string',
-                },
-                Cell: {
-                    type: 'string',
-                },
-            },
-        },
-    },
-};
-
-export const InsuranceSchema = {
-    type: 'object',
-    required: ['DID'],
-    properties: {
-        DID: {
-            type: 'string',
-        },
-        Language: {
-            type: 'string',
-        },
-        Locale: {
-            type: 'string',
-        },
-        TimezoneOffset: {
-            type: 'string',
-        },
-        Insurance: {
-            type: 'object',
-            properties: {
-                Name: {
-                    type: 'string',
-                },
-                Address: {
-                    type: 'string',
-                },
-                AccountNumber: {
-                    type: 'string',
-                },
-                InsuranceType: {
-                    type: 'string',
-                },
-                StartDate: {
-                    type: 'string',
-                },
-                EndDate: {
-                    type: 'string',
-                },
-            },
-        },
-    },
-};
-
-// export const SchemaNames = {
-//     ADDRESS : 'Address',
-//     PERSONAL_DATA : 'PersonalData',
-//     TEST_RESULT : 'TestResult',
-//     VISA_APPLICATION : 'VisaApplication',
-//     BANK_ACCOUNT : 'BankAccount',
-//     COMPANY : 'Company',
-//     CONTACT_DETAILS : 'ContactDetails',
-//     INSURANCE : 'Insurance',
-// }
 
 export const Schemas = {
-    [SchemaNames.ADDRESS]: AddressSchema,
     [SchemaNames.PERSONAL_DATA]: PersonalDataSchema,
-    [SchemaNames.TEST_RESULT]: TestResultSchema,
-    [SchemaNames.VISA_APPLICATION]: VisaApplicationSchema,
-    [SchemaNames.BANK_ACCOUNT]: BankAccountSchema,
-    [SchemaNames.COMPANY]: CompanySchema,
-    [SchemaNames.CONTACT_DETAILS]: ContactDetailsSchema,
-    [SchemaNames.INSURANCE]: InsuranceSchema,
+    [SchemaNames.HEALTH_TEST]: HealthTestSchema,
+    [SchemaNames.BLOOD_TEST]: BloodTestSchema,
 };
 
 export const DIDMapping: { [DID: string]: { logo: string; issuerLabel: string; theme: string } } = {
