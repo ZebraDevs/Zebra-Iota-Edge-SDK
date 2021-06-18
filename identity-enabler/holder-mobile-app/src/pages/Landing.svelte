@@ -33,8 +33,7 @@
 
     function onNext() {
         if ($landingIndex === info.length - 1) {
-            console.log('Go to onboarding / name')
-            navigate('onboarding/name');
+            navigate('name');
         } else {
             back = false;
             landingIndex.update((x) => x + 1);
