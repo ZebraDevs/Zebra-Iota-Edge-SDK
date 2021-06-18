@@ -9,15 +9,8 @@
     import { ServiceFactory } from '../factories/serviceFactory';
 	import { IdentityService } from '../services/identityService';
 
-    // const idFromUrl = window.history.state.id;
-
     const credential = window.history.state.credential;
-    // $storedCredentials.find((credential) => credential.id === idFromUrl);
-
-    console.log('credential page', credential);
-
 	const identityService = ServiceFactory.get('identity');
-
     const preparedCredentialDocument = identityService.prepareCredentialForDisplay(credential.credentialDocument);
 
     function share() {

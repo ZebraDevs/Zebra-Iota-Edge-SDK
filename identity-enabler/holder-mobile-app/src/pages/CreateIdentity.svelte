@@ -19,8 +19,6 @@
 				const identity = await identityService.createIdentity();
 				identityJSON = JSON.stringify(identity, null, 2);
 
-				console.log(333, identity)
-
 				await identityService.storeIdentity('did', identity);
 
 				loading = false;

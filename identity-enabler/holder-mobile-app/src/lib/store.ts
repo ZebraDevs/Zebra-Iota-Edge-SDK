@@ -88,51 +88,25 @@ export interface InternalCredentialDataModel {
 export const storedCredentials = writable<InternalCredentialDataModel[]>([]);
 
 storedCredentials.subscribe((value) => {
-    console.log('storedCredentials 1', value);
     listOfCredentials.update((prev) => {
-        console.log('storedCredentials 2', prev);
-
         if (prev.init) {
-            console.log('storedCredentials 3', prev.values);
-
             const idsToDelete = prev.values.filter((id) => !value.find((credential) => credential.id === id));
-            console.log('storedCredentials 4', idsToDelete);
-            
             idsToDelete.map((id) => identityService.removeCredential(id));
-            console.log('storedCredentials 44', idsToDelete);
-            console.log('storedCredentials 45', prev);
-            console.log('storedCredentials 46', value.map((credential) => credential.id));
-
             return { ...prev, values: value.map((credential) => credential.id) };
         }
-        console.log('storedCredentials 5', prev);
-
         return { ...prev, init: true };
     });
-    console.log('storedCredentials 6');
-
     value.map((credential) => {
-        console.log('storedCredentials 7', credential);
-
         if (!credential.enrichment) {
-            console.log('storedCredentials 8', credential.credentialDocument);
-            
-            const enrichment = identityService.enrichCredential(credential.credentialDocument);
-            console.log('storedCredentials 9', enrichment);
-            console.log('storedCredentials 99', storedCredentials);
-
+            const enrichment = identityService.enrichCredential(credential.credentialDocument)
             storedCredentials.update((prev) =>
-                prev.map((prevCredential) => {
-                    console.log('storedCredentials 10', prevCredential, credential);
-
-                    return prevCredential.id === credential.id
+                prev.map((prevCredential) =>
+                    prevCredential.id === credential.id
                         ? { ...prevCredential, enrichment }
                         : prevCredential
-                })
+                )
             );
         }
-        console.log('storedCredentials 11', credential);
-
         return identityService.storeCredential(credential.id, credential);
     });
 });

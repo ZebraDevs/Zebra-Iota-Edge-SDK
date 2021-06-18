@@ -26,11 +26,6 @@
 						Phone: '111-222-3333',
 					},
 				});
-				console.log(444, credential)
-
-				console.log(555, storedIdentity)
-
-				// const credentialId = generateRandomId();
 				
 				storedCredentials.update((prev) =>
 					[...prev, credential].map((cred) => ({

@@ -38,12 +38,8 @@
 				const storedIdentity = await identityService.retrieveIdentity();
 
 				const credentials = await getFromStorage('credentials');
-				console.log('credentials', credentials);
 				const nonEmpty = Object.values(credentials)?.filter(data => data);
-				console.log('credentialKey a', Object.values(credentials).length, nonEmpty);
-
 				const credentialKey = Object.keys(credentials)?.[nonEmpty.length];
-				console.log('credentialKey b', credentialKey);
 
 				let schema;
 				let payload = {};
@@ -102,12 +98,8 @@
 						}
 				}
 				
-				console.log('Prepare schema 0', schema, payload);
-
 				const newCredential = await identityService.createSelfSignedCredential(storedIdentity, schema, payload);
 				const credentialId = generateRandomId();
-				console.log('newCredential 1', newCredential, credentialId)
-
 				const enrichment = identityService.enrichCredential({ ...newCredential });
 
 				const credential = {
@@ -117,7 +109,7 @@
 					enrichment
 				};
 
-				console.log('newCredential 2', credential)
+				console.log('new credential', credential)
 
 				await updateStorage('credentials', { [credentialKey]: credential })
 				localCredentials.push(credential);

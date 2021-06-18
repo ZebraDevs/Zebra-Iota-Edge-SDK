@@ -40,7 +40,7 @@
 
 				const presentationJSON = JSON.stringify(verifiablePresentation, null, 2);
 				await createMatrix(presentationJSON);
-				console.log(999, verificationResult)
+				console.log('verificationResult', verificationResult)
 
 				loading = false;
 			} catch (err) {

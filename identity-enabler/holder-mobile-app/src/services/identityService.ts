@@ -258,7 +258,7 @@ export class IdentityService {
         const enrichment = {
             issuerLabel: override?.issuerLabel ?? 'iota', // credential.issuer
             logo: override?.logo ?? 'personal',
-            credentialLabel: credential?.type[1],
+            credentialLabel: credential?.type?.[1],
             theme: override?.theme ?? '#550000',
         };
         return enrichment;

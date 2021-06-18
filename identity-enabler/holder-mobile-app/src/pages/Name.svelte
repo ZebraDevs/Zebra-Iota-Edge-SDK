@@ -56,19 +56,11 @@
 
         try {
             const identityService = ServiceFactory.get('identity');
-            console.log('Creating Identity 2');
-
             const identity = await identityService.createIdentity();
-            console.log('Creating Identity 3', identity);
-
             await identityService.storeIdentity('did', identity);
 
             loading = false;
-            console.log('Creating Identity 4');
-
-
             hasSetupAccount.set(true);
-            console.log('Creating Identity 5');
 
             navigate('home');
         } catch (err) {

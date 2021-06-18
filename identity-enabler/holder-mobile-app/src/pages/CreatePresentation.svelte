@@ -34,10 +34,10 @@
 				// const storedCredential = await identityService.retrieveCredential('credentialId');
 
 				const storedCredential = window.history.state.credential;
-				console.log(777, storedIdentity, storedCredential)
+				console.log(storedIdentity, storedCredential)
 
 				const verifiablePresentation = await identityService.createVerifiablePresentation(storedIdentity, storedCredential.credentialDocument);
-				console.log(888, verifiablePresentation)
+				console.log('verifiablePresentation', verifiablePresentation)
 
 				presentationJSON = JSON.stringify(verifiablePresentation, null, 2);
 
