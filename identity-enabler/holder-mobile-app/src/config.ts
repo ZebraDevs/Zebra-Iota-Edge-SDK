@@ -8,4 +8,6 @@ export const DEFAULT_LANGUAGE = 'English';
 
 export const DEFAULT_LOCALE = 'en';
 
-export const RANDOM_USER_DATA_API_URL = 'https://randomuser.me/api/';
+export const RANDOM_USER_DATA_API_URL = 'https://randomuser.me/api/?nat=us,au,ca,ie,gb';
+
+export const SPLASH_SCREEN_TIMEOUT = 2000;
