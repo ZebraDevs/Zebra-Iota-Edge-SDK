@@ -4,42 +4,24 @@
 
 	import Button from '../components/Button.svelte';
 	import ListItem from '../components/ListItem.svelte';
+	import FullScreenLoader from '../components/FullScreenLoader.svelte';
 
 	import { ServiceFactory } from '../factories/serviceFactory';
 	import { IdentityService } from '../services/identityService';
   import { SchemaNames } from '../schemas';
-	import { updateStorage, getFromStorage, storedCredentials, error, account, credentialIDs } from '../lib/store';
+	import { updateStorage, getFromStorage, storedCredentials, error, account } from '../lib/store';
 	import { getRandomUserData, generateRandomId } from '../lib/helpers';
 
 	let loading = false;
-	const credentials = [];
+	let localCredentials = {};
 
 	onMount(async () => {
 		setTimeout(async () => {
-			console.log('credentialIDs 1', $credentialIDs, $storedCredentials);
 			const identityService = ServiceFactory.get('identity');
 			try {
-				if ($credentialIDs?.total > 0) {
-					console.log('credentialIDs 2', Object.values($credentialIDs?.credentials));
-					for await (const id of Object.values($credentialIDs?.credentials)) {
-						if (id) {
-							const stored = await identityService.retrieveCredential(id);
-							console.log('Stored', id, stored)
-							credentials.push(stored);
-							// stored && storedCredentials.update((prev) => [...prev, stored]);
-
-							// storedCredentials.update((prev) => {
-							// 	console.log('Home mount storedCredentials 1', prev)
-							// 	console.log('Home mount storedCredentials 2', stored);
-
-							// 	const result = [...prev, stored];
-							// 	console.log('Home mount storedCredentials 4', result)
-							// 	return result;
-							// });
-						}
-					};
-				}
-				console.log('credentialIDs 3', credentials);
+				localCredentials = await getFromStorage('credentials');
+				localCredentials = Object.values(localCredentials)?.filter(data => data);
+				console.log('onMount', localCredentials);
 			} catch (err) {
 				console.log(err)
 			}
@@ -55,8 +37,13 @@
 				const identityService = ServiceFactory.get('identity');
 				const storedIdentity = await identityService.retrieveIdentity();
 
-				const credentialKey = Object.keys($credentialIDs?.credentials)[$credentialIDs?.total];
-				console.log('credentialKey', credentialKey);
+				const credentials = await getFromStorage('credentials');
+				console.log('credentials', credentials);
+				const nonEmpty = Object.values(credentials)?.filter(data => data);
+				console.log('credentialKey a', Object.values(credentials).length, nonEmpty);
+
+				const credentialKey = Object.keys(credentials)?.[nonEmpty.length];
+				console.log('credentialKey b', credentialKey);
 
 				let schema;
 				let payload = {};
@@ -105,12 +92,12 @@
 									LastName: userData.name.last,
 								},
 								UserDOB: {
-									Date: new Date(userData.dob.date).toDateString(),
+									"Date of Birth": new Date(userData.dob.date).toDateString(),
 								},
 								Birthplace: userData.location.city,
 								Nationality: userData.location.country,
-								IdentityCardNumber: userData.id.value,
-								PassportNumber: Math.random().toString(36).substring(7).toUpperCase(),
+								"Identity Card Number": userData.id.value,
+								"Passport Number": Math.random().toString(36).substring(7).toUpperCase(),
 							}
 						}
 				}
@@ -119,12 +106,7 @@
 
 				const newCredential = await identityService.createSelfSignedCredential(storedIdentity, schema, payload);
 				const credentialId = generateRandomId();
-				console.log('newCredential', newCredential, credentialId)
-
-				console.log('Prepare schema 1', $credentialIDs?.total)
-				console.log('Prepare schema 2', $credentialIDs?.credentials)
-				console.log('Prepare schema 3', Object.keys($credentialIDs?.credentials))
-				console.log('Prepare schema 4', Object.keys($credentialIDs?.credentials)[$credentialIDs?.total])
+				console.log('newCredential 1', newCredential, credentialId)
 
 				const enrichment = identityService.enrichCredential({ ...newCredential });
 
@@ -135,23 +117,10 @@
 					enrichment
 				};
 
+				console.log('newCredential 2', credential)
 
-				storedCredentials.update((prev) => {
-					console.log('Home storedCredentials 1', prev)
-					console.log('Home storedCredentials 2', obj);
-
-					const result = [...prev, obj];
-					console.log('Home storedCredentials 4', result)
-					return result;
-				});
-
-				credentialIDs.set({ 
-					total: $credentialIDs.total + 1,
-					credentials: {
-						...$credentialIDs?.credentials,
-						[credentialKey]: credentialId 
-					}
-				});
+				await updateStorage('credentials', { [credentialKey]: credential })
+				localCredentials.push(credential);
 				
 				loading = false;
     }
@@ -211,26 +180,30 @@
 </style>
 
 <main>
-	<div class="logo"><img src="../assets/person.png" alt="" /></div>
+	{#if loading}
+		<FullScreenLoader label="Loading Credential..." />
+	{:else}
+		<div class="logo"><img src="../assets/person.png" alt="" /></div>
 
-	<header>
-			<p>Hi {$account.name}!</p>
-	</header>
-	<section>
-		 ZZ {credentials.length}
-			{#each credentials as credential}
-			<div class="list">
-					<ListItem
-							onClick="{() => navigate('credential', { state: { credential }})}"
-							heading="{credential.enrichment ? credential.enrichment.issuerLabel : ''}"
-							subheading="{credential.enrichment ? credential.enrichment.credentialLabel : ''}"
+		<header>
+				<p>Hi {$account.name}!</p>
+		</header>
+		<section>
+				{#each Object.values(localCredentials) as credential}
+				<div class="list">
+						<ListItem
+								onClick="{() => navigate('credential', { state: { credential }})}"
+								heading="{credential.enrichment ? credential.enrichment.issuerLabel : ''}"
+								subheading="{credential.enrichment ? credential.enrichment.credentialLabel : ''}"
+						/>
+				</div>
+				{/each}
+				{#if Object.values(localCredentials).length < 3}
+					<Button
+						label="Add new credential"
+						onClick="{generateCredential}"
 					/>
-			</div>
-			{/each}
-			<Button
-				disabled="{$storedCredentials.length > 2}"
-				label="Add new credential"
-				onClick="{generateCredential}"
-			/>
-	</section>
+				{/if}
+		</section>
+	{/if}
 </main>
