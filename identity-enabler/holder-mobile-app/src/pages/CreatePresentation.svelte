@@ -5,7 +5,7 @@
 	import { ServiceFactory } from '../factories/serviceFactory';
 	import { IdentityService } from '../services/identityService';
 	import { error } from '../lib/store';
-	import Spinner from '../components/Spinner.svelte';
+	import FullScreenLoader from '../components/FullScreenLoader.svelte';
 
 	let presentationJSON = '';
 	let loading = true;
@@ -31,8 +31,9 @@
 
 			try {
 				const storedIdentity = await identityService.retrieveIdentity();
-				const storedCredential = await identityService.retrieveCredential('credentialId');
+				// const storedCredential = await identityService.retrieveCredential('credentialId');
 
+				const storedCredential = window.history.state.credential;
 				console.log(777, storedIdentity, storedCredential)
 
 				const verifiablePresentation = await identityService.createVerifiablePresentation(storedIdentity, storedCredential.credentialDocument);
@@ -50,18 +51,23 @@
 
 		}, 500);
   });
+
+	function goBack() {
+    navigate('home');
+  }
+
 </script>
 
 <main>
-	<Link to="/">Back</Link>
+	<div role="button" on:click="{goBack}">
+		<img src="../assets/chevron-left.svg" alt="">
+		Back
+	</div>
 	<h1>Presentation</h1>
 	{#if loading}
-		<Spinner />
-	<!-- {:else}
-		<h3>{presentationJSON}</h3> -->
+		<FullScreenLoader />
 	{/if}
 	<canvas id="presentation"></canvas>
-
 </main>
 
 <style>
