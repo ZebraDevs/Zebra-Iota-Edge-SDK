@@ -131,11 +131,10 @@
 
             <p class="info">Selv will generate you an identity using randomised personal information.</p>
 
-            <TextField disabled="{isCreatingCredentials}" bind:value="{firstName}" placeholder="First name" />
+            <TextField bind:value="{firstName}" placeholder="First name" />
 
             <footer>
                 <Button
-                    loading="{isCreatingCredentials}"
                     loadingText="{'Generating identity'}"
                     disabled="{firstName.length === 0}"
                     label="Save Name"
