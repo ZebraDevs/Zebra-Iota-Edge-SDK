@@ -1,9 +1,9 @@
 // TODO: check rule
 // eslint-disable-next-line no-shadow
 export enum SchemaNames {
-    PERSONAL_DATA = 'Personal Data',
-    HEALTH_TEST = 'Health Test Result',
-    BLOOD_TEST = 'Blood Test Result',
+    PERSONAL_DATA = 'Personal Information',
+    HEALTH_TEST = 'Health Test',
+    BLOOD_TEST = 'Blood Test',
 }
 
 export const PersonalDataSchema = {
