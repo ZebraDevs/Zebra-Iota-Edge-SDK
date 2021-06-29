@@ -116,6 +116,10 @@
 				
 				loading = false;
     }
+
+	function onClickDev() {
+        navigate('devinfo1');
+    }
 </script>
 
 <style>
@@ -188,7 +192,7 @@
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
-		margin: 2.87vh 2.87vh 0 2.87vh;
+		margin: 3.5vh 3.5vh 0 3.5vh;
     }
 
 	.add {
@@ -209,8 +213,8 @@
 
 	<header-wrapper>
 		<div class="options-wrapper">
-			<img src="../assets/settings.svg" alt="settings" />
-			<img src="../assets/code.svg" alt="code" />
+			<img src="../assets/settings.svg" on:click="{onClickDev}" alt="settings" /> 
+			<img src="../assets/code.svg" on:click="{onClickDev}" alt="code" />
 		</div>
 		<div class="logo"><img src="../assets/person.png" alt="logo" /></div>
 	</header-wrapper>

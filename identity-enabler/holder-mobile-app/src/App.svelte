@@ -12,6 +12,8 @@
 	import Menu from './pages/Menu.svelte';
 	import DataMatrix from './pages/DataMatrix.svelte';
 	import Credential from './pages/Credential.svelte';
+	import DevInfo1 from './pages/DevInfo1.svelte';
+	import DevInfo2 from './pages/DevInfo2.svelte';
 
 
 	import { SPLASH_SCREEN_TIMEOUT } from './config';
@@ -66,6 +68,9 @@
 			<Route path="/name" component="{Name}" />
 			<Route path="/credential" component="{Credential}" />
 			<Route path="/datamatrix" component="{DataMatrix}" />
+
+			<Route path="/devinfo1" component="{DevInfo1}" />
+			<Route path="/devinfo2" component="{DevInfo2}" />
 			
 			<Route path="/createIdentity" component="{CreateIdentity}" />
 			<Route path="/createCredential" component="{CreateCredential}" />
