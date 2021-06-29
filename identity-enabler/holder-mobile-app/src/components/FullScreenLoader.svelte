@@ -17,7 +17,6 @@
   }
   .loader-label {
     font-family: 'Proxima Nova', sans-serif;
-    font-family: 'Inter', sans-serif;
     font-style: normal;
     font-weight: 600;
     font-size: 14px;

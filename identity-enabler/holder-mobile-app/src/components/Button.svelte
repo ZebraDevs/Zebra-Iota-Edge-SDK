@@ -16,14 +16,9 @@
         height: 8vh;
         font-size: 4vw;
         font-weight: 700;
-        /* border-radius: 27vw; */
         cursor: pointer;
         margin: 0;
         color: white;
-    }
-
-    button:active { 
-        background-color: #59c5ff;
     }
 
     button.disabled {
