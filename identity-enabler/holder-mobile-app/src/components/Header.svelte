@@ -11,14 +11,20 @@
 
     .logo {
         text-align: center;
-        padding: 1vh 8vw 4vh;
+        margin: 40px auto;
+        filter: invert(100%);
+        width: 56.26px;
+        height: 63px;
     }
 
-    header > p {
-        font-family: 'Metropolis', sans-serif;
-        font-weight: bold;
+    header > pre {
+        font-family: 'Proxima Nova', sans-serif;
+        font-weight: 700;
         font-size: 3.5vh;
-        line-height: 4.5vh;
+        line-height: 4.4vh;
+        margin: 0 !important;
+        padding-top: 2.5vh;
+        white-space: pre-wrap; 
         text-align: center;
         color: #131f37;
     }
@@ -26,10 +32,10 @@
 
 <div class="container">
     <div class="logo">
-        <img src="../assets/zebra.png" alt="" />
+        <img src="../assets/logo.svg" alt="" />
     </div>
 
     <header>
-        <p>{text}</p>
+        <pre>{text}</pre>
     </header>
 </div>

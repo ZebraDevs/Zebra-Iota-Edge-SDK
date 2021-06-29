@@ -42,6 +42,7 @@
         text-align: center;
         padding-top: 2vh;
         min-height: 36vh;
+        background: linear-gradient(90deg, #00FFFF 0%, #0099FF 100%);
     }
 
     .header {
@@ -55,8 +56,8 @@
 
     header > p {
         margin-top: 2vh;
-        font-family: 'Inter', sans-serif;
-        font-weight: 1000;
+        font-family: 'Proxima Nova', sans-serif;
+        font-weight: 600;
         font-size: 3vw;
         line-height: 4vw;
         color: #fff;
@@ -66,7 +67,7 @@
     }
 
     header > p:nth-child(2) {
-        font-family: 'Metropolis', sans-serif;
+        font-family: 'Proxima Nova', sans-serif;
         font-style: normal;
         font-weight: bold;
         font-size: 6vw;
@@ -74,24 +75,13 @@
     }
 
     section {
-        margin: 0 7vw;
+        margin: 0 7vw 17vw 7vw;
     }
 
     footer {
         position: fixed;
-        left: 0;
-        right: 0;
-        bottom: 28vh;
-        padding: 0 20vw;
-        margin-left: auto;
-        margin-right: auto;
-        max-width: var(--max-width);
-    }
-
-    @media (max-width: 139vw) {
-        footer {
-            bottom: 5vh;
-        }
+        width: 100%;
+        bottom: 0;
     }
 
     .chevron {
@@ -103,6 +93,7 @@
 
     .credential-logo {
         width: 15%;
+        margin-top: 6vh;
     }
 
     .share-wrapper {
@@ -129,7 +120,9 @@
         </div>
 
         <footer>
-            <Button label="Share" onClick="{share}"><img src="../assets/share.png" alt="" /></Button>
+            <Button style="background: #0099FF; color: white;" label="Share" onClick="{share}">
+                <img src="../assets/share.png" alt="" />
+            </Button>
         </footer>
     </div>
     <div class="share-wrapper">

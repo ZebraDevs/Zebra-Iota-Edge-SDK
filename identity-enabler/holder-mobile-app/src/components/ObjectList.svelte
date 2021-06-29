@@ -9,17 +9,17 @@
     ul {
         background: #fff;
         margin: 3vh 0;
+        padding: 0;
         box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
-        border-radius: 1vh;
         list-style-type: none;
         text-align: left;
-        overflow: auto;
+        /* overflow: auto; */
 
         -webkit-overflow-scrolling: touch;
     }
 
     li {
-        padding: 1.5vh 5vw;
+        padding: 2.3vh 3.5vw;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -30,21 +30,40 @@
     }
 
     li > p {
-        font-family: 'Inter', sans-serif;
-        font-weight: 1000;
-        font-size: 3vw;
+        font-family: 'Proxima Nova', sans-serif;
+        font-weight: 400;
+        font-size: 2.8vw;
         line-height: 4vw;
         letter-spacing: 0.03em;
         text-transform: uppercase;
         color: #8593ac;
+        margin: 0.43vh 0;
     }
+
+    li > span {
+        font-family: 'Proxima Nova', sans-serif;
+        font-weight: 600;
+        font-size: 2vh;
+        line-height: 3.4vh;
+        color: #051923;
+    }
+
+    .cut-text {
+        text-overflow: clip;
+        overflow: scroll;
+        width: 100%;
+        white-space: nowrap;
+        display: inline-block;
+        justify-content: center;
+}
+
 </style>
 
 <ul>
     {#each Object.entries(flattenObj(object)) as entry}
         <li>
             <p>{entry[0].split('.').pop()}</p>
-            <span>{entry[1]}</span>
+            <span class="cut-text">{entry[1]}</span>
         </li>
     {/each}
 </ul>
