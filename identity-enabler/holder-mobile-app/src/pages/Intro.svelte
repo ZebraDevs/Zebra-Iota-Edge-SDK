@@ -8,7 +8,6 @@
 		<button><Link to="createIdentity">Create Identity</Link></button>
 		<button><Link to="createCredential">Create Credential</Link></button>
 		<button><Link to="createPresentation">Create Presentation</Link></button>
-		<button><Link to="verifyPresentation">Verify Presentation</Link></button>
 	</div>
 </main>
 

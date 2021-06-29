@@ -6,7 +6,6 @@
 	import CreateIdentity from './pages/CreateIdentity.svelte';
 	import CreateCredential from './pages/CreateCredential.svelte';
 	import CreatePresentation from './pages/CreatePresentation.svelte';
-	import VerifyPresentation from './pages/VerifyPresentation.svelte';
 	import Splash from './pages/Splash.svelte';
 	import Landing from './pages/Landing.svelte';
 	import Name from './pages/Name.svelte';
@@ -71,7 +70,6 @@
 			<Route path="/createIdentity" component="{CreateIdentity}" />
 			<Route path="/createCredential" component="{CreateCredential}" />
 			<Route path="/createPresentation" component="{CreatePresentation}" />
-			<Route path="/verifyPresentation" component="{VerifyPresentation}" />
 		</div>
 	</Router>
 </main>
