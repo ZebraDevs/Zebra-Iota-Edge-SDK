@@ -16,7 +16,7 @@
     background: linear-gradient(90deg, #00FFFF 0%, #0099FF 100%);
   }
   .loader-label {
-    /* font-family: Proxima Nova; */
+    font-family: 'Proxima Nova', sans-serif;
     font-family: 'Inter', sans-serif;
     font-style: normal;
     font-weight: 600;
