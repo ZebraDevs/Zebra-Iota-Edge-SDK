@@ -1,5 +1,5 @@
 <script>
-	import { Link } from "svelte-routing";
+	import { navigate } from "svelte-routing";
     import { onMount } from 'svelte';
 	import bwipjs from 'bwip-js';
 	import { ServiceFactory } from '../factories/serviceFactory';
@@ -70,69 +70,64 @@
         navigate('home');
     }
 
+	function onClickDev() {
+        navigate('devinfo1');
+    }
 </script>
 
 <style>
 	main {
-        height: 100%;
-        background: black;
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
+        display: flex;
+        flex-direction: column;
+        min-height: 100%;
+        background-color: black;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        position: relative;
     }
 
 	canvas {
+		position: relative;
 		width: 100%;
-		height: 411px;
+		height: 408px;
 		z-index: 5;
+		top: 0.3vh;
 	}
 
-    .wrapper {
-        text-align: center;
-    }
-
-	.header {
-        position: absolute;
-        top: 2vh;
-        left: 0;
-        right: 0;
-		margin-top: 6vh;
-		/* padding-bottom: 6vh; */
-    }
-
     header > p {
-        margin-top: 1.5vh;
+        margin: 1.5vh 0 6.8vh 0;
         font-family: 'Proxima Nova', sans-serif;
         font-weight: 700;
         font-size: 5vw;
         line-height: 5vw;
         color: #fff;
+		padding: 0;
     }
 
 	header > span {
         font-family: 'Proxima Nova', sans-serif;
-        font-weight: 400;
-        font-size: 4vw;
-        line-height: 4vw;
+        font-weight: 600;
+        font-size: 1.7vh;
+        line-height: 2.3vh;
         color: #fff;
     }
 
-	.credential-logo {
-		margin-bottom: 1.6vh;
-	}
+	.wrapper {
+        text-align: center;
+        min-height: 36vh;
+    }
 
-	.chevron {
-        z-index: 1;
-        position: fixed;
-        left: 7vw;
-        top: 7vh;
+	.credential-logo {
+        width: 15%;
+		margin-bottom: 1.5vh;
+		height: 39px;
+		width: 33px;
     }
 
 	.presentation-wrapper {
 		height: fit-content;
 		width: fit-content;
 		position: relative;
-		top: 4.3vh;
 		background: white;
 	}
 
@@ -152,12 +147,19 @@
 		line-height: 3.5vh;
 	}
 
+	.options-wrapper {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		margin: 3.5vh 3.5vh 0 3.5vh;
+		position: relative;
+		z-index: 2;
+    }
+
 	.footerContainer {
 		position: fixed;
 		text-align: center;
 		width: 100%;
-		background: black;
-		bottom: 6.3vh;
 	}
 </style>
 
@@ -167,7 +169,10 @@
 	{/if}
 
 	<div class="wrapper">
-        <img class="chevron" on:click="{goBack}" src="../assets/chevron-left.svg" alt="chevron-left" />
+        <div class="options-wrapper">
+			<img src="../assets/chevron-left.svg" on:click="{goBack}" alt="chevron-left" />
+            <img src="../assets/code.svg" on:click="{onClickDev}" alt="code" />
+		</div>
         <div class="header">
             <img class="credential-logo" src="../assets/credentialLarge.svg" alt="credential-logo" />
             <header>
@@ -175,8 +180,6 @@
                 <p>{credential.enrichment.credentialLabel}</p>
             </header>
         </div>
-	</div>
-
 	<div class="presentation-wrapper">
 		<canvas id="presentation"></canvas>
 	</div>

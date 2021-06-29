@@ -21,6 +21,10 @@
     function goBack() {
         navigate('home');
     }
+
+    function onClickDev() {
+        navigate('devinfo2');
+    }
 </script>
 
 <style>
@@ -84,13 +88,6 @@
         bottom: 0;
     }
 
-    .chevron {
-        z-index: 1;
-        position: fixed;
-        left: 7vw;
-        top: 7vh;
-    }
-
     .credential-logo {
         width: 15%;
         margin-top: 6vh;
@@ -101,11 +98,22 @@
         bottom: 0;
         height: 0;
     }
+
+    .options-wrapper {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		margin: 1.5vh 3.5vh 0 3.5vh;
+        z-index: 2;
+    }
 </style>
 
 <main>
     <div style="background-color: {credential.enrichment.theme}" class="wrapper">
-        <img class="chevron" on:click="{goBack}" src="../assets/chevron-left.svg" alt="chevron-left" />
+        <div class="options-wrapper">
+			<img src="../assets/chevron-left.svg" on:click="{goBack}" alt="chevron-left" />
+            <img src="../assets/code.svg" on:click="{onClickDev}" alt="code" />
+		</div>
         <div class="header">
             <img class="credential-logo" src="../assets/credentialLarge.svg" alt="credential-logo" />
             <header>
