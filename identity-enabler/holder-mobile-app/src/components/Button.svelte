@@ -19,6 +19,11 @@
         /* border-radius: 27vw; */
         cursor: pointer;
         margin: 0;
+        color: white;
+    }
+
+    button:active { 
+        background-color: #59c5ff;
     }
 
     button.disabled {
@@ -33,7 +38,7 @@
     }
 </style>
 
-<button class:disabled on:click="{onClick}">
+<button style={$$props.style} class:disabled on:click="{onClick}">
     {#if loading}
         <Spinner />
     {:else}
