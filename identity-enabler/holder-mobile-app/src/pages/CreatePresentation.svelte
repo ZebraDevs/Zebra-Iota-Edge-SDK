@@ -75,16 +75,13 @@
 <style>
 	main {
         height: 100%;
-		width: 100%;
         background: black;
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
-		align-items: space-between;
     }
 
 	canvas {
-		/* position: fixed; */
 		width: 100%;
 		height: 411px;
 		z-index: 5;
@@ -92,7 +89,6 @@
 
     .wrapper {
         text-align: center;
-        background: white;
     }
 
 	.header {
@@ -101,7 +97,7 @@
         left: 0;
         right: 0;
 		margin-top: 6vh;
-		margin-bottom: 5vh;
+		/* padding-bottom: 6vh; */
     }
 
     header > p {
@@ -133,8 +129,11 @@
     }
 
 	.presentation-wrapper {
+		height: fit-content;
+		width: fit-content;
 		position: relative;
-		top: 0.2vh;
+		top: 4.3vh;
+		background: white;
 	}
 
 	@media (min-width: 640px) {
@@ -147,13 +146,18 @@
 		color: #fff;
 		padding: 4.6vh 0 1vh 0;
 		margin: 0;
+		font-family: 'Proxima Nova', sans-serif;
+		font-weight: 500;
+		font-size: 2.9vh;
+		line-height: 3.5vh;
 	}
 
 	.footerContainer {
 		position: fixed;
+		text-align: center;
 		width: 100%;
 		background: black;
-		bottom: 30;
+		bottom: 6.3vh;
 	}
 </style>
 
@@ -171,6 +175,7 @@
                 <p>{credential.enrichment.credentialLabel}</p>
             </header>
         </div>
+	</div>
 
 	<div class="presentation-wrapper">
 		<canvas id="presentation"></canvas>
@@ -178,6 +183,6 @@
 
     <footer class="footerContainer">
 		<p>Valid until {addDaysToDate(preparedCredentialDocument.issuanceDate, 30)}</p>
-		<Button style="background: transparent; color: white; font-weight: 400; font-size: 1.3vh; border: none; height:fit-content;" label="VIEW IN JSON FORMAT" onClick="{''}" />
+		<Button style="background: transparent; color: white; font-weight: 500; font-size: 1.7vh; line-height: 2.3vh; border: none; height:fit-content;" label="VIEW IN JSON FORMAT" onClick="{''}" />
     </footer>
 </main>
