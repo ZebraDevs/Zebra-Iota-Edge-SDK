@@ -27,6 +27,6 @@
 </style>
 
 <div>
-    <img class="zebra-logo" src="../assets/logo.svg" alt="" />
-    <img class="iota-logo" src="../assets/IOTA-logo.svg" alt="" />
+    <img class="zebra-logo" src="../assets/logo.svg" alt="zebra-logo" />
+    <img class="iota-logo" src="../assets/IOTA-logo.svg" alt="iota-logo" />
 </div>

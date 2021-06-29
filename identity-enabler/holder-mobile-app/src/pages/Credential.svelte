@@ -105,9 +105,9 @@
 
 <main>
     <div style="background-color: {credential.enrichment.theme}" class="wrapper">
-        <img class="chevron" on:click="{goBack}" src="../assets/chevron-left.svg" alt="" />
+        <img class="chevron" on:click="{goBack}" src="../assets/chevron-left.svg" alt="chevron-left" />
         <div class="header">
-            <img class="credential-logo" src="../assets/credentialLarge.svg" alt="" />
+            <img class="credential-logo" src="../assets/credentialLarge.svg" alt="credential-logo" />
             <header>
                 <p>{credential.enrichment.issuerLabel}</p>
                 <p>{credential.enrichment.credentialLabel}</p>
@@ -121,7 +121,7 @@
 
         <footer>
             <Button style="background: #0099FF; color: white;" label="Share" onClick="{share}">
-                <img src="../assets/share.png" alt="" />
+                <img src="../assets/share.png" alt="share" />
             </Button>
         </footer>
     </div>

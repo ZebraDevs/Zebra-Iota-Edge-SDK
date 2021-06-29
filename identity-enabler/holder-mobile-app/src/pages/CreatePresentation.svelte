@@ -49,7 +49,8 @@
 				const storedCredential = window.history.state.credential;
 				console.log(storedIdentity, storedCredential)
 
-				const verifiablePresentation = await identityService.createVerifiablePresentation(storedIdentity, storedCredential.credentialDocument);
+				const verifiablePresentation = 
+					await identityService.createVerifiablePresentation(storedIdentity, storedCredential.credentialDocument);
 				console.log('verifiablePresentation', verifiablePresentation)
 
 				presentationJSON = JSON.stringify(verifiablePresentation, null, 2);
@@ -162,9 +163,9 @@
 	{/if}
 
 	<div class="wrapper">
-        <img class="chevron" on:click="{goBack}" src="../assets/chevron-left.svg" alt="" />
+        <img class="chevron" on:click="{goBack}" src="../assets/chevron-left.svg" alt="chevron-left" />
         <div class="header">
-            <img class="credential-logo" src="../assets/credentialLarge.svg" alt="" />
+            <img class="credential-logo" src="../assets/credentialLarge.svg" alt="credential-logo" />
             <header>
                 <span>{credential.enrichment.issuerLabel.toUpperCase()}</span>
                 <p>{credential.enrichment.credentialLabel}</p>

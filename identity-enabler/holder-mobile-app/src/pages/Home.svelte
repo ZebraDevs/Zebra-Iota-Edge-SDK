@@ -209,10 +209,10 @@
 
 	<header-wrapper>
 		<div class="options-wrapper">
-			<img src="../assets/settings.svg" alt="" />
-			<img src="../assets/code.svg" alt="" />
+			<img src="../assets/settings.svg" alt="settings" />
+			<img src="../assets/code.svg" alt="code" />
 		</div>
-		<div class="logo"><img src="../assets/person.png" alt="" /></div>
+		<div class="logo"><img src="../assets/person.png" alt="logo" /></div>
 	</header-wrapper>
 
 	<name-wrapper>
@@ -235,7 +235,7 @@
 							label="Add new credential" 
 							onClick="{generateCredential}"
 					>
-						<img class="add" src="../assets/add.png" alt="" />
+						<img class="add" src="../assets/add.png" alt="add" />
 					</Button>
 				</div>
 				{/if}

@@ -130,7 +130,7 @@
         {:else}
             <Header text="Set your name" />
 
-            <div class="content"><img src="../assets/set-name.png" alt="" /></div>
+            <div class="content"><img src="../assets/set-name.png" alt="set-name" /></div>
 
             <TextField bind:value="{name}" placeholder="Your Name" />
 

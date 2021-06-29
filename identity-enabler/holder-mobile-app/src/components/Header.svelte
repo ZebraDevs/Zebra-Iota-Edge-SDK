@@ -32,7 +32,7 @@
 
 <div class="container">
     <div class="logo">
-        <img src="../assets/logo.svg" alt="" />
+        <img src="../assets/logo.svg" alt="logo" />
     </div>
 
     <header>

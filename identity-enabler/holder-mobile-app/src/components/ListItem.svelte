@@ -66,11 +66,11 @@
 
 <li on:click="{onClick}">
   <span class="icon">
-    <img class="arrow" src="../assets/landing-3.png" alt="" />
+    <img class="arrow" src="../assets/landing-3.png" alt="landing-3" />
   </span>
   <div>
       <h5>{heading}</h5>
       <h6>{subheading}</h6>
   </div>
-  <img class="arrow" src="../assets/chevron-right.svg" alt="" />
+  <img class="arrow" src="../assets/chevron-right.svg" alt="chevron-right" />
 </li>
