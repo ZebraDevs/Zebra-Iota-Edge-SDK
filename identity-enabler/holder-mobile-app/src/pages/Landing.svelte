@@ -13,20 +13,20 @@
 
     const info = [
         {
-            header: 'Identity Enabler App stores your personal credentials',
+            header: 'AppX stores your health records and tests',
             content:
-                'A safe space for your personal information, only accessible by you. Identity Enabler App is powered by the neutral, free and decentralized network: IOTA.',
+                'A safe space for your personal information, only accessible by you. AppX is powered by the neutral, free and decentralized network: IOTA.',
             footer: 'Next'
         },
         {
-            header: 'Your data, your ownership',
+            header: 'Your data,\nyour ownership',
             content: 'Your data is controlled only on your phone. Currently, no backup options are available.',
             footer: 'Next'
         },
         {
-            header: 'You control access to your data',
+            header: 'You control access to your immunity status',
             content:
-                'Identity Enabler App is all about controlling your information, not locking it up. You decide who you share your data with by providing consent.',
+                'AppX is all about controlling your information, not locking it up. You can decide who you share your data with by providing consent.',
             footer: 'Next'
         }
     ];
@@ -82,23 +82,24 @@
     }
 
     .content {
-        position: fixed;
         text-align: center;
-        justify-content: flex-start;
         align-items: center;
         width: 100%;
+        padding: 0 3.4vh;
     }
 
     .content > img {
         mix-blend-mode: multiply;
-        width: 30vh;
-        height: 30vh;
+        width: 25.8vh;
+        height: 25.8vh;
+        margin: 7.6vh 0 5.6vh 0;
     }
 
     .dots {
         text-align: center;
         justify-content: center;
-        padding: 2.5vh 0;
+        margin-bottom: 3.3vh;
+        /* padding: 2.5vh 0; */
     }
 
     span {
@@ -113,11 +114,11 @@
     span.active {
         height: 1.4vh;
         width: 1.4vh;
-        background: #8593ac;
+        background: #00A7FF;
     }
 
     .info {
-        font-family: 'Inter', sans-serif;
+        font-family: 'Proxima Nova', sans-serif;
         font-style: normal;
         font-weight: normal;
         font-size: 2.08vh;
@@ -125,14 +126,6 @@
         color: #6f7a8d;
         text-align: center;
         padding: 0px 3vw;
-    }
-
-    footer {
-        /* padding: 0px 8vw; */
-    }
-
-    .next-btn {
-        border-radius: unset;
     }
 
     .headerContainer {
@@ -149,6 +142,7 @@
         display: flex;
         align-self: flex-end;
         width: 100%;
+        margin-top: 7.5vh;
     }
 </style>
 
@@ -176,6 +170,6 @@
         {/each}
     </div>
     <footer class="footerContainer">
-        <Button class="next-btn" label="{info[$landingIndex].footer}" onClick="{onNext}" />
+        <Button style="background: #00A7FF; color: white;" label="{info[$landingIndex].footer}" onClick="{onNext}" />
     </footer>
 </main>
