@@ -14,6 +14,8 @@
 	import Credential from './pages/Credential.svelte';
 	import DevInfo1 from './pages/DevInfo1.svelte';
 	import DevInfo2 from './pages/DevInfo2.svelte';
+	import Content from './components/modal/Content.svelte';
+	import Modal from './components/modal/Index.svelte';
 
 
 	import { SPLASH_SCREEN_TIMEOUT } from './config';
@@ -51,6 +53,7 @@
 
 <main>
 	<Router url="{url}">
+		
 		<div>
 			{#if splash}
 				<Route path="/" component="{Splash}" />
@@ -77,6 +80,9 @@
 			<Route path="/createPresentation" component="{CreatePresentation}" />
 		</div>
 	</Router>
+	<Modal>
+		<Content />
+	</Modal>
 </main>
 
 <style>

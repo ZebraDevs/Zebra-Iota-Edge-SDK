@@ -14,8 +14,7 @@
     const preparedCredentialDocument = identityService.prepareCredentialForDisplay(credential.credentialDocument);
 
     function share() {
-        modalStatus.set({ active: true, type: 'accept', props: { credential } });
-        navigate('createPresentation', { state: { credential }});
+        modalStatus.set({ active: true, type: 'share', props: { credential } });
     }
 
     function goBack() {
@@ -44,7 +43,7 @@
 
     .wrapper {
         text-align: center;
-        padding-top: 2vh;
+        padding-bottom: 16vh;
         min-height: 36vh;
         background: linear-gradient(90deg, #00FFFF 0%, #0099FF 100%);
     }
@@ -93,17 +92,11 @@
         margin-top: 6vh;
     }
 
-    .share-wrapper {
-        position: fixed;
-        bottom: 0;
-        height: 0;
-    }
-
     .options-wrapper {
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
-		margin: 1.5vh 3.5vh 0 3.5vh;
+		margin: 3.5vh 3.5vh 0 3.5vh;
         z-index: 2;
     }
 </style>
@@ -132,8 +125,5 @@
                 <img src="../assets/share.png" alt="share" />
             </Button>
         </footer>
-    </div>
-    <div class="share-wrapper">
-        Share me
     </div>
 </main>
