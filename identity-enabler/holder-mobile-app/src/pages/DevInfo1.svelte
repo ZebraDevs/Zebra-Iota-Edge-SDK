@@ -21,6 +21,7 @@
 		align-items: center;
 		background: black;
 		padding: 4vh 17.7vh;
+		position: relative;
     }
 
 	.header-wrapper > span {
@@ -33,8 +34,8 @@
     }
 
 	.close {
-        position: fixed;
-        right: 3.4vh;
+		position: absolute;
+		right: 3.4vh;
     }
 
 	section {
