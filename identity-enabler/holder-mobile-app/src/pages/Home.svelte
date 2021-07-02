@@ -129,7 +129,7 @@
 			height: 100%;
 	}
 
-	header-wrapper {
+	header {
 			display: flex;
 			flex-direction: column;
 			height: 141px;
@@ -211,38 +211,36 @@
 		<FullScreenLoader label="Loading Credential..." />
 	{:else}
 
-	<header-wrapper>
+	<header>
 		<div class="options-wrapper">
 			<img src="../assets/settings.svg" on:click="{onClickDev}" alt="settings" /> 
 			<img src="../assets/code.svg" on:click="{onClickDev}" alt="code" />
 		</div>
 		<div class="logo"><img src="../assets/person.png" alt="logo" /></div>
-	</header-wrapper>
-
+	</header>
 	<name-wrapper>
 		<p>{$account.name}</p>
 	</name-wrapper>
-
-		<section>
-				{#each Object.values(localCredentials) as credential}
-				<div class="list">
-						<ListItem
-								onClick="{() => navigate('credential', { state: { credential }})}"
-								heading="{credential.enrichment ? credential.enrichment.issuerLabel : ''}"
-								subheading="{credential.enrichment ? credential.enrichment.credentialLabel : ''}"
-						/>
-				</div>
-				{/each}
-				{#if Object.values(localCredentials).length < 3}
-				<div class="btn-wrapper">
-					<Button style="background: white; color: #051923; display: flex; justify-content: flex-start; padding-left: 20px;" 
-							label="Add new credential" 
-							onClick="{generateCredential}"
-					>
-						<img class="add" src="../assets/add.png" alt="add" />
-					</Button>
-				</div>
-				{/if}
-		</section>
-	{/if}
+	<section>
+			{#each Object.values(localCredentials) as credential}
+			<div class="list">
+					<ListItem
+							onClick="{() => navigate('credential', { state: { credential }})}"
+							heading="{credential.enrichment ? credential.enrichment.issuerLabel : ''}"
+							subheading="{credential.enrichment ? credential.enrichment.credentialLabel : ''}"
+					/>
+			</div>
+			{/each}
+			{#if Object.values(localCredentials).length < 3}
+			<div class="btn-wrapper">
+				<Button style="background: white; color: #051923; display: flex; justify-content: flex-start; padding-left: 20px;" 
+						label="Add new credential" 
+						onClick="{generateCredential}"
+				>
+					<img class="add" src="../assets/add.png" alt="add" />
+				</Button>
+			</div>
+			{/if}
+	</section>
+    {/if}
 </main>

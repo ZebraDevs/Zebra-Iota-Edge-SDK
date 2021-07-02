@@ -1,8 +1,15 @@
 <script>
 	import { navigate } from "svelte-routing";
 
+	import { ServiceFactory } from '../factories/serviceFactory';
+	import { IdentityService } from '../services/identityService';
+
+    const credential = window.history.state.credential;
+	const identityService = ServiceFactory.get('identity');
+    const preparedCredentialDocument = identityService.prepareCredentialForDisplay(credential.credentialDocument);
+
 	function goBack() {
-        navigate('home');
+        navigate('createPresentation', { state: { credential: credential }});
     }
 </script>
 

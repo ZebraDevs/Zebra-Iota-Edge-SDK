@@ -62,7 +62,7 @@
                             font-weight: 600;
                             font-size: 2.3vh;
                             line-height: 3.4vh;" 
-                    label="Share as a link"
+                    label="Share as JSON"
                     onClick="{share}"
             >
                 <img class="modal-icon" src="../assets/link.svg" alt="link" />

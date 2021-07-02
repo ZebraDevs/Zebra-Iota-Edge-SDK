@@ -14,7 +14,10 @@
         list-style-type: none;
         text-align: left;
         /* overflow: auto; */
-
+        top: 23vh;
+        position: relative;
+        z-index: 5;
+        margin-bottom: 8.5vh;
         -webkit-overflow-scrolling: touch;
     }
 

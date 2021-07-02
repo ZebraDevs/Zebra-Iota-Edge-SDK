@@ -1,6 +1,6 @@
 <script>
 	import { navigate } from "svelte-routing";
-    import { onMount } from 'svelte';
+	import { onMount } from 'svelte';
 	import bwipjs from 'bwip-js';
 	import { ServiceFactory } from '../factories/serviceFactory';
 	import { IdentityService } from '../services/identityService';
@@ -13,7 +13,7 @@
 
 	const credential = window.history.state.credential;
 	const identityService = ServiceFactory.get('identity');
-    const preparedCredentialDocument = identityService.prepareCredentialForDisplay(credential.credentialDocument);
+	const preparedCredentialDocument = identityService.prepareCredentialForDisplay(credential.credentialDocument);
 
 	async function createMatrix(content) {
 		try {
@@ -29,62 +29,53 @@
 	}
 
 	const addDaysToDate = (date, days) => {
-	let dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
-    let res = new Date(date);
-    res.setDate(res.getDate() + days);
-
-    return res.toLocaleDateString('en-US', dateOptions);
-}
+		let dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+		let res = new Date(date);
+    	res.setDate(res.getDate() + days);
+    	return res.toLocaleDateString('en-US', dateOptions);
+	}
 
 	onMount(() => {
 		setTimeout(async () => {
 			const identityService = ServiceFactory.get('identity');
-
 			error.set(null);
-
 			try {
 				const storedIdentity = await identityService.retrieveIdentity();
 				// const storedCredential = await identityService.retrieveCredential('credentialId');
-
 				const storedCredential = window.history.state.credential;
 				console.log(storedIdentity, storedCredential)
-
 				const verifiablePresentation = 
 					await identityService.createVerifiablePresentation(storedIdentity, storedCredential.credentialDocument);
 				console.log('verifiablePresentation', verifiablePresentation)
-
 				presentationJSON = JSON.stringify(verifiablePresentation, null, 2);
-
 				await createMatrix(presentationJSON);
-
 				loading = false;
 			} catch (err) {
 				error.set('Error creating identity. Please try again.');
 				loading = false;
 			}
-
 		}, 500);
     });
 
 	function goBack() {
-        navigate('home');
+        navigate('credential', { state: { credential: credential }});
     }
 
 	function onClickDev() {
-        navigate('devinfo1');
+        navigate('devinfo1', { state: { credential: credential }});
     }
 </script>
 
 <style>
 	main {
-        display: flex;
-        flex-direction: column;
-        min-height: 100%;
-        background-color: black;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
-        position: relative;
-    }
+		display: flex;
+		flex-direction: column;
+		background-color: black;
+		overflow-y: auto;
+		-webkit-overflow-scrolling: touch;
+		position: relative;
+		height: 100%;
+	}
 
 	canvas {
 		position: relative;
@@ -94,47 +85,56 @@
 		top: 0.3vh;
 	}
 
-    header > p {
-        margin: 1.5vh 0 6.8vh 0;
-        font-family: 'Proxima Nova', sans-serif;
-        font-weight: 700;
-        font-size: 5vw;
-        line-height: 5vw;
-        color: #fff;
+	.mini {
+		width: 0px;
+		height: 0px;
+	}
+
+	header > p {
+		margin: 1.5vh 0 6.8vh 0;
+		font-family: 'Proxima Nova', sans-serif;
+		font-weight: 700;
+		font-size: 5vw;
+		line-height: 5vw;
+		color: #fff;
 		padding: 0;
-    }
+	}
 
 	header > span {
-        font-family: 'Proxima Nova', sans-serif;
-        font-weight: 600;
-        font-size: 1.7vh;
-        line-height: 2.3vh;
-        color: #fff;
-    }
+		font-family: 'Proxima Nova', sans-serif;
+		font-weight: 600;
+		font-size: 1.7vh;
+		line-height: 2.3vh;
+		color: #fff;
+	}
 
 	.wrapper {
         text-align: center;
-        min-height: 36vh;
-    }
+	}
 
 	.credential-logo {
         width: 15%;
 		margin-bottom: 1.5vh;
 		height: 39px;
 		width: 33px;
-    }
+	}
 
 	.presentation-wrapper {
 		height: fit-content;
-		width: fit-content;
 		position: relative;
 		background: white;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		width: 100%;
 	}
 
 	@media (min-width: 640px) {
 		main {
 			max-width: none;
 		}
+	
 	}
 
 	footer > p {
@@ -165,27 +165,31 @@
 
 <main>
 	{#if loading}
-		<FullScreenLoader />
+		<FullScreenLoader label="Creating Data Matrix..." />
 	{/if}
+		<div class="{loading ? 'wrapper mini' : 'wrapper'}">
+			{#if !loading}
+				<div class="options-wrapper">
+					<img src="../assets/chevron-left.svg" on:click="{goBack}" alt="chevron-left" />
+					<img src="../assets/code.svg" on:click="{onClickDev}" alt="code" />
+				</div>
+				<div class="header">
+					<img class="credential-logo" src="../assets/credentialLarge.svg" alt="credential-logo" />
+					<header>
+							<span>{credential.enrichment.issuerLabel.toUpperCase()}</span>
+							<p>{credential.enrichment.credentialLabel}</p>
+					</header>
+				</div>
+			{/if}
+			<div class="presentation-wrapper">
+				<canvas id="presentation"></canvas>
+			</div>
 
-	<div class="wrapper">
-        <div class="options-wrapper">
-			<img src="../assets/chevron-left.svg" on:click="{goBack}" alt="chevron-left" />
-            <img src="../assets/code.svg" on:click="{onClickDev}" alt="code" />
-		</div>
-        <div class="header">
-            <img class="credential-logo" src="../assets/credentialLarge.svg" alt="credential-logo" />
-            <header>
-                <span>{credential.enrichment.issuerLabel.toUpperCase()}</span>
-                <p>{credential.enrichment.credentialLabel}</p>
-            </header>
-        </div>
-	<div class="presentation-wrapper">
-		<canvas id="presentation"></canvas>
+			{#if !loading}
+				<footer class="footerContainer">
+					<p>Valid until {addDaysToDate(preparedCredentialDocument.issuanceDate, 30)}</p>
+					<Button style="background: transparent; color: white; font-weight: 500; font-size: 1.7vh; line-height: 2.3vh; border: none; height:fit-content;" label="VIEW IN JSON FORMAT" onClick="{''}" />
+				</footer>
+			{/if}
 	</div>
-
-    <footer class="footerContainer">
-		<p>Valid until {addDaysToDate(preparedCredentialDocument.issuanceDate, 30)}</p>
-		<Button style="background: transparent; color: white; font-weight: 500; font-size: 1.7vh; line-height: 2.3vh; border: none; height:fit-content;" label="VIEW IN JSON FORMAT" onClick="{''}" />
-    </footer>
 </main>
