@@ -6,6 +6,8 @@
 	import ListItem from '../components/ListItem.svelte';
 	import FullScreenLoader from '../components/FullScreenLoader.svelte';
 
+	import { credentialPayload } from '../assets/credentialPayload';
+
 	import { ServiceFactory } from '../factories/serviceFactory';
 	import { IdentityService } from '../services/identityService';
 	import { SchemaNames } from '../schemas';
@@ -47,34 +49,12 @@
 				switch (credentialKey) {
 					case "health":
 						schema = SchemaNames.HEALTH_TEST;
-						payload = {
-							"Test ID": "01745562",
-							"Test By": "Lab services Ltd",
-							"Test Timestamp": new Date(1583407920000).toDateString(),
-							"Test Kit": "PowerChek MERS-CoV",
-							"Test Result": "Negative",
-							"Covid-19 Antibodies": 0,
-							"% supressor cell (T8)": "20 %",
-							"% B-cell": "12 %",
-							"NK cell activity": 45,
-							"Concanavalin A": "93 %",
-						}
+						payload = credentialPayload.health;
 						break;
 
 					case "blood":
 						schema = SchemaNames.BLOOD_TEST;
-						payload = {
-							"Test ID": "91736458",
-							"Test By": "Labor 28 GmbH",
-							"Test Timestamp": new Date(1621507920000).toDateString(),
-							"TSH (sensitive)": "3.36 mU/l",
-							"LDL Cholesterol": "168 mg/dl",
-							"Non-HDL Cholesterol": "175.8 mg/dl",
-							"Triglyceride": "120 mg/dl",
-							"HbA 1c": "5.1 %",
-							"MCH (HbE)": "31.5 pg",
-							"Gamma-GT (G-GT)": "11 U/l",
-						}
+						payload = credentialPayload.blood;
 						break;
 					
 					case "personal":
