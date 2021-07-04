@@ -80,9 +80,7 @@
 	canvas {
 		position: relative;
 		width: 100%;
-		height: 408px;
 		z-index: 5;
-		top: 0.3vh;
 	}
 
 	.mini {
@@ -91,7 +89,7 @@
 	}
 
 	header > p {
-		margin: 1.5vh 0 6.8vh 0;
+		margin: 1.5vh 0 6.2vh 0;
 		font-family: 'Proxima Nova', sans-serif;
 		font-weight: 700;
 		font-size: 5vw;
@@ -115,8 +113,6 @@
 	.credential-logo {
         width: 15%;
 		margin-bottom: 1.5vh;
-		height: 39px;
-		width: 33px;
 	}
 
 	.presentation-wrapper {
@@ -134,7 +130,6 @@
 		main {
 			max-width: none;
 		}
-	
 	}
 
 	footer > p {
