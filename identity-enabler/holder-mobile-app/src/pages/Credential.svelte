@@ -1,20 +1,24 @@
 <script>
     import { navigate } from "svelte-routing";
-    
+
     import Button from '../components/Button.svelte';
     import ObjectList from '../components/ObjectList.svelte';
-
-    import { modalStatus, storedCredentials } from '../lib/store';
+    
+    import { modalStatus } from '../lib/store';
 
     import { ServiceFactory } from '../factories/serviceFactory';
-	import { IdentityService } from '../services/identityService';
 
     const credential = window.history.state.credential;
+    const presentationJSON = window.history.state.presentationJSON;
 	const identityService = ServiceFactory.get('identity');
     const preparedCredentialDocument = identityService.prepareCredentialForDisplay(credential.credentialDocument);
 
     function share() {
-        modalStatus.set({ active: true, type: 'share', props: { credential } });
+        modalStatus.set({ 
+            active: true, 
+            type: 'share', 
+            props: { credential, presentationJSON }
+        });
     }
 
     function goBack() {
@@ -29,12 +33,11 @@
 <style>
     main {
         display: flex;
-        flex-direction: column;
-        min-height: 100%;
-        background-color: var(--bg);
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
-        position: relative;
+		flex-direction: column;
+		overflow-y: auto;
+		-webkit-overflow-scrolling: touch;
+		position: relative;
+		height: 100%;
     }
 
     header {

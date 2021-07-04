@@ -16,6 +16,7 @@
 
 	let loading = false;
 	let localCredentials = {};
+	let presentationJSON = '';
 
 	onMount(async () => {
 		setTimeout(async () => {
@@ -89,9 +90,13 @@
 					enrichment
 				};
 
-				console.log('new credential', credential)
+				const verifiablePresentation = 
+					await identityService.createVerifiablePresentation(storedIdentity, credential.credentialDocument);
+				presentationJSON = JSON.stringify(verifiablePresentation, null, 2);
 
-				await updateStorage('credentials', { [credentialKey]: credential })
+				console.log('new credential', credential);
+
+				await updateStorage('credentials', { [credentialKey]: credential });
 				localCredentials.push(credential);
 				
 				loading = false;
@@ -205,7 +210,7 @@
 			{#each Object.values(localCredentials) as credential}
 			<div class="list">
 					<ListItem
-							onClick="{() => navigate('credential', { state: { credential }})}"
+							onClick="{() => navigate('credential', { state: { credential, presentationJSON }})}"
 							heading="{credential.enrichment ? credential.enrichment.issuerLabel : ''}"
 							subheading="{credential.enrichment ? credential.enrichment.credentialLabel : ''}"
 					/>

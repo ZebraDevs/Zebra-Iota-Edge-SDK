@@ -3,7 +3,6 @@
 	import { onMount } from 'svelte';
 	import bwipjs from 'bwip-js';
 	import { ServiceFactory } from '../factories/serviceFactory';
-	import { IdentityService } from '../services/identityService';
 	import { error } from '../lib/store';
 	import FullScreenLoader from '../components/FullScreenLoader.svelte';
 	import Button from '../components/Button.svelte';
@@ -43,7 +42,7 @@
 				const storedIdentity = await identityService.retrieveIdentity();
 				// const storedCredential = await identityService.retrieveCredential('credentialId');
 				const storedCredential = window.history.state.credential;
-				console.log(storedIdentity, storedCredential)
+				console.log(storedIdentity, storedCredential);
 				const verifiablePresentation = 
 					await identityService.createVerifiablePresentation(storedIdentity, storedCredential.credentialDocument);
 				console.log('verifiablePresentation', verifiablePresentation)
