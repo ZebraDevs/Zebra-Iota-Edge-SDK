@@ -2,22 +2,30 @@
     import { getContext } from 'svelte';
     import { navigate } from "svelte-routing";
 
-    import { modalStatus } from '../../lib/store';
     import Button from '../Button.svelte';
-
-    import { ServiceFactory } from '../../factories/serviceFactory';
-	import { IdentityService } from '../../services/identityService';
 
     const { close } = getContext('simple-modal');
 
     const credential = window.history.state.credential;
-	const identityService = ServiceFactory.get('identity');
-    const preparedCredentialDocument = identityService.prepareCredentialForDisplay(credential.credentialDocument);
+    const presentationJSON = window.history.state.presentationJSON;
 
     function share() {
         navigate('createPresentation', { state: { credential }});
         close();
     }
+
+
+    // async function shareJSON(){
+    //     if (typeof navigator.share === 'undefined' || !navigator.share) {
+    //         alert('Your browser does not support Android Native Share');
+    //     } 
+    //     try {
+    //         await navigator.share(presentationJSON);
+    //     } catch (error) {
+    //     console.log('Error sharing: ' + error);
+    //     return;
+    //     } 
+    // }
 </script>
 
 <style>
