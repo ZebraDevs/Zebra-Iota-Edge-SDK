@@ -14,18 +14,17 @@
         close();
     }
 
-
-    // async function shareJSON(){
-    //     if (typeof navigator.share === 'undefined' || !navigator.share) {
-    //         alert('Your browser does not support Android Native Share');
-    //     } 
-    //     try {
-    //         await navigator.share(presentationJSON);
-    //     } catch (error) {
-    //     console.log('Error sharing: ' + error);
-    //     return;
-    //     } 
-    // }
+    async function shareJSON() {
+        if (typeof navigator.share === 'undefined' || !navigator.share) {
+            alert('Your browser does not support Android Native Share');
+        } 
+        try {
+            await navigator.share(presentationJSON);
+        } catch (error) {
+        console.log('Error sharing: ' + error);
+        return;
+        }
+    }
 </script>
 
 <style>
@@ -71,7 +70,7 @@
                             font-size: 2.3vh;
                             line-height: 3.4vh;" 
                     label="Share as JSON"
-                    onClick="{share}"
+                    onClick="{shareJSON}"
             >
                 <img class="modal-icon" src="../assets/link.svg" alt="link" />
             </Button>
