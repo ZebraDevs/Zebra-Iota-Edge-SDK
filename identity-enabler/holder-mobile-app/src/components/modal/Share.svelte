@@ -1,10 +1,12 @@
 <script>
     import { getContext } from 'svelte';
     import { navigate } from "svelte-routing";
+    import { Plugins } from '@capacitor/core';
 
     import Button from '../Button.svelte';
 
     const { close } = getContext('simple-modal');
+    const { Share } = Plugins;
 
     const credential = window.history.state.credential;
     const presentationJSON = window.history.state.presentationJSON;
@@ -15,11 +17,12 @@
     }
 
     async function shareJSON() {
-        if (typeof navigator.share === 'undefined' || !navigator.share) {
-            alert('Your browser does not support Android Native Share');
-        } 
         try {
-            await navigator.share(presentationJSON);
+            await Share.share({
+                title: 'Verifiable Presentation',
+                text: presentationJSON,
+                // url: 'https://explorer.iota.org/testnet',
+            });
         } catch (error) {
         console.log('Error sharing: ' + error);
         return;
@@ -37,8 +40,8 @@
     }
 
     .border {
-       margin: 2.9vh 0;
-       border: 1px solid #DFDFDF;
+        margin: 2.9vh 0;
+        border: 1px solid #DFDFDF;
     }
 
     .modal-icon {
