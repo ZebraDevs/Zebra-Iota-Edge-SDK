@@ -1,6 +1,5 @@
 <script>
     import { Plugins } from '@capacitor/core';
-    import { onDestroy, onMount } from 'svelte';
     import { flip } from 'svelte/animate';
     import { navigate } from "svelte-routing";
 
@@ -10,7 +9,6 @@
 	import FullScreenLoader from '../components/FullScreenLoader.svelte';
 
     import { ServiceFactory } from '../factories/serviceFactory';
-	import { IdentityService } from '../services/identityService';
 	import { account, error, hasSetupAccount } from '../lib/store';
     
     const { Keyboard } = Plugins;
@@ -102,18 +100,6 @@
         width: 27vh;
         height: 27vh;
         margin-top: 12.5vh;
-    }
-
-    .info {
-        font-family: 'Proxima Nova', sans-serif;
-        font-style: normal;
-        font-weight: normal;
-        font-size: 2.08vh;
-        line-height: 3.3vh;
-        color: #6f7a8d;
-        text-align: center;
-        padding: 0px 3vw;
-        width: 100%;
     }
 </style>
 

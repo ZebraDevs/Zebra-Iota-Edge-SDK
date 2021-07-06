@@ -52,14 +52,8 @@
     }
 
     .cut-text {
-        text-overflow: clip;
-        overflow: scroll;
-        width: 100%;
-        white-space: nowrap;
-        display: inline-block;
-        justify-content: center;
-}
-
+        word-wrap: break-word;
+    }
 </style>
 
 <ul>
