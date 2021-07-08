@@ -9,6 +9,7 @@
 
 	let presentationJSON = '';
 	let loading = true;
+	let viewAsJSON = false;
 
 	const credential = window.history.state.credential;
 	const identityService = ServiceFactory.get('identity');
@@ -36,15 +37,11 @@
 
 	onMount(() => {
 		setTimeout(async () => {
-			const identityService = ServiceFactory.get('identity');
 			error.set(null);
 			try {
 				const storedIdentity = await identityService.retrieveIdentity();
-				// const storedCredential = await identityService.retrieveCredential('credentialId');
-				const storedCredential = window.history.state.credential;
-				console.log(storedIdentity, storedCredential);
-				const verifiablePresentation = 
-					await identityService.createVerifiablePresentation(storedIdentity, storedCredential.credentialDocument);
+				console.log(storedIdentity, credential);
+				const verifiablePresentation = await identityService.createVerifiablePresentation(storedIdentity, credential?.credentialDocument);
 				console.log('verifiablePresentation', verifiablePresentation)
 				presentationJSON = JSON.stringify(verifiablePresentation, null, 2);
 				await createMatrix(presentationJSON);
