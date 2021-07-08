@@ -98,8 +98,8 @@
     }
 
 	function onClickDev() {
-        navigate('devinfo1');
-    }
+		navigate('devinfo', { state: { page: 'Identity' }});
+  }
 </script>
 
 <style>

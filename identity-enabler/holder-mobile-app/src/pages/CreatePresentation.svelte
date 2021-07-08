@@ -58,7 +58,7 @@
   }
 
 	function onClickDev() {
-    navigate('devinfo1');
+    navigate('devinfo', { state: { page: 'Presentation' }});
   }
 
 	function onClickPresentationJSON() {
