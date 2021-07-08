@@ -9,7 +9,6 @@
     import { ServiceFactory } from '../factories/serviceFactory';
 
     const credential = window.history.state.credential;
-    const presentationJSON = window.history.state.presentationJSON;
 	const identityService = ServiceFactory.get('identity');
     const preparedCredentialDocument = identityService.prepareCredentialForDisplay(credential.credentialDocument);
 
@@ -17,7 +16,7 @@
         modalStatus.set({ 
             active: true, 
             type: 'share', 
-            props: { credential, presentationJSON }
+            props: { credential }
         });
     }
 
