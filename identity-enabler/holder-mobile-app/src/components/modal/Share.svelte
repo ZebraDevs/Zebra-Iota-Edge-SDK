@@ -4,12 +4,13 @@
     import { Plugins } from '@capacitor/core';
 
     import Button from '../Button.svelte';
+	import { ServiceFactory } from '../../factories/serviceFactory';
 
     const { close } = getContext('simple-modal');
     const { Share } = Plugins;
 
     const credential = window.history.state.credential;
-    const presentationJSON = window.history.state.presentationJSON;
+    const identityService = ServiceFactory.get('identity');
 
     function share() {
         navigate('createPresentation', { state: { credential }});
@@ -18,6 +19,10 @@
 
     async function shareJSON() {
         try {
+			const storedIdentity = await identityService.retrieveIdentity();
+			const verifiablePresentation = await identityService.createVerifiablePresentation(storedIdentity, credential?.credentialDocument);
+			const presentationJSON = JSON.stringify(verifiablePresentation, null, 2);
+
             await Share.share({
                 title: 'Verifiable Presentation',
                 text: presentationJSON,
