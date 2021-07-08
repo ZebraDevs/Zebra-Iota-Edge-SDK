@@ -17,5 +17,5 @@
 </style>
 
 <div>
-    <img src="../assets/logo.svg" alt="" />
+    <img src="../assets/logo.svg" alt="logo" />
 </div>

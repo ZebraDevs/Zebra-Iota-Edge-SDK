@@ -67,7 +67,7 @@ export const account = persistent<{ name: string } | null>('account', null);
  */
  export type ModalStatus = {
     active: boolean;
-    type: 'share' | 'accept' | 'generate' | null;
+    type: 'share' | null;
     props?: any;
 };
 

@@ -11,19 +11,22 @@
       align-items: center;
       background: #ffffff;
       box-shadow: 0px 4px 12px rgba(217, 225, 238, 0.3);
-      border-radius: 11vw;
       padding: 2vh 6vw;
   }
 
   .icon {
       height: 14vw;
       width: 14vw;
-      border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       text-align: center;
-      background-color: #8593ac;
+      background-color: #F8F8F8;
+  }
+
+  .icon > img {
+    max-width: 100%;
+    max-height: 100%;
   }
 
   div {
@@ -36,8 +39,8 @@
   }
 
   h5 {
-      font-family: 'Inter', sans-serif;
-      font-weight: 1000;
+      font-family: 'Proxima Nova', sans-serif;
+      font-weight: 600;
       font-size: 2.7vw;
       line-height: 4vw;
       letter-spacing: 0.06em;
@@ -47,24 +50,27 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      margin: 0 0 0.9vh 0;
   }
 
   h6 {
-      font-family: 'Metropolis', sans-serif;
+      font-family: 'Proxima Nova', sans-serif;
       font-weight: 600;
       font-size: 4vw;
-      line-height: 7vw;
-      color: #131f37;
+      line-height: 3.4vw;
+      margin: 0;
+      color: #051923;
   }
+
 </style>
 
 <li on:click="{onClick}">
   <span class="icon">
-      <slot />
+    <img class="arrow" src="../assets/landing-3.png" alt="landing-3" />
   </span>
   <div>
-      <!-- <h5>{heading}</h5> -->
+      <h5>{heading}</h5>
       <h6>{subheading}</h6>
   </div>
-  <img src="../assets/chevron-right.svg" alt="" />
+  <img class="arrow" src="../assets/chevron-right.svg" alt="chevron-right" />
 </li>

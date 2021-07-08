@@ -6,13 +6,16 @@
 	import CreateIdentity from './pages/CreateIdentity.svelte';
 	import CreateCredential from './pages/CreateCredential.svelte';
 	import CreatePresentation from './pages/CreatePresentation.svelte';
-	import VerifyPresentation from './pages/VerifyPresentation.svelte';
 	import Splash from './pages/Splash.svelte';
 	import Landing from './pages/Landing.svelte';
 	import Name from './pages/Name.svelte';
 	import Menu from './pages/Menu.svelte';
+	import PresentationJSON from './pages/PresentationJSON.svelte';
 	import DataMatrix from './pages/DataMatrix.svelte';
 	import Credential from './pages/Credential.svelte';
+	import DevInfo1 from './pages/DevInfo1.svelte';
+	import Content from './components/modal/Content.svelte';
+	import Modal from './components/modal/Index.svelte';
 
 
 	import { SPLASH_SCREEN_TIMEOUT } from './config';
@@ -50,6 +53,7 @@
 
 <main>
 	<Router url="{url}">
+		
 		<div>
 			{#if splash}
 				<Route path="/" component="{Splash}" />
@@ -67,13 +71,18 @@
 			<Route path="/name" component="{Name}" />
 			<Route path="/credential" component="{Credential}" />
 			<Route path="/datamatrix" component="{DataMatrix}" />
+
+			<Route path="/devinfo1" component="{DevInfo1}" />
+			<Route path="/presentationjson" component="{PresentationJSON}" />
 			
 			<Route path="/createIdentity" component="{CreateIdentity}" />
 			<Route path="/createCredential" component="{CreateCredential}" />
 			<Route path="/createPresentation" component="{CreatePresentation}" />
-			<Route path="/verifyPresentation" component="{VerifyPresentation}" />
 		</div>
 	</Router>
+	<Modal>
+		<Content />
+	</Modal>
 </main>
 
 <style>

@@ -1,6 +1,5 @@
 <script>
     import { Plugins } from '@capacitor/core';
-    import { onDestroy, onMount } from 'svelte';
     import { flip } from 'svelte/animate';
     import { navigate } from "svelte-routing";
 
@@ -10,12 +9,11 @@
 	import FullScreenLoader from '../components/FullScreenLoader.svelte';
 
     import { ServiceFactory } from '../factories/serviceFactory';
-	import { IdentityService } from '../services/identityService';
 	import { account, error, hasSetupAccount } from '../lib/store';
     
     const { Keyboard } = Plugins;
 
-    let firstName = '';
+    let name = '';
     let isKeyboardActive = false;
 	let loading = false;
 
@@ -50,7 +48,7 @@
 
         error.set(null);
 
-        account.set({ name: firstName });
+        account.set({ name: name });
 
         loading = true;
 
@@ -77,6 +75,7 @@
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+        align-items: center;
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
         position: absolute;
@@ -94,23 +93,13 @@
 
     footer {
         padding: 0px 7vw;
+        width: 100vh;
     }
 
     img {
         width: 27vh;
         height: 27vh;
-    }
-
-    .info {
-        font-family: 'Inter', sans-serif;
-        font-style: normal;
-        font-weight: normal;
-        font-size: 2.08vh;
-        line-height: 3.3vh;
-        color: #6f7a8d;
-        text-align: center;
-        padding: 0px 3vw;
-        width: 100%;
+        margin-top: 12.5vh;
     }
 </style>
 
@@ -123,22 +112,20 @@
         animate:flip="{{ duration: 350 }}"
     >
         {#if loading}
-            <FullScreenLoader label="Creating Identity" />
+            <FullScreenLoader label="Creating Identity..." />
         {:else}
-            <Header text="Set your first name" />
+            <Header text="Set your name" />
 
-            <div class="content"><img src="../assets/set-name.png" alt="" /></div>
+            <div class="content"><img src="../assets/set-name.png" alt="set-name" /></div>
 
-            <p class="info">Selv will generate you an identity using randomised personal information.</p>
-
-            <TextField disabled="{isCreatingCredentials}" bind:value="{firstName}" placeholder="First name" />
+            <TextField bind:value="{name}" placeholder="Your Name" />
 
             <footer>
                 <Button
-                    loading="{isCreatingCredentials}"
+                    style="background: #00A7FF; color: white;" 
                     loadingText="{'Generating identity'}"
-                    disabled="{firstName.length === 0}"
-                    label="Save Name"
+                    disabled="{name.length === 0}"
+                    label="Next"
                     onClick="{save}"
                 />
             </footer>

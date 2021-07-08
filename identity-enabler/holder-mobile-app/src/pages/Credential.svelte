@@ -1,37 +1,42 @@
 <script>
     import { navigate } from "svelte-routing";
-    
+
     import Button from '../components/Button.svelte';
     import ObjectList from '../components/ObjectList.svelte';
-
-    import { modalStatus, storedCredentials } from '../lib/store';
+    
+    import { modalStatus } from '../lib/store';
 
     import { ServiceFactory } from '../factories/serviceFactory';
-	import { IdentityService } from '../services/identityService';
 
     const credential = window.history.state.credential;
 	const identityService = ServiceFactory.get('identity');
     const preparedCredentialDocument = identityService.prepareCredentialForDisplay(credential.credentialDocument);
 
     function share() {
-        modalStatus.set({ active: true, type: 'accept', props: { credential } });
-        navigate('createPresentation', { state: { credential }});
+        modalStatus.set({ 
+            active: true, 
+            type: 'share', 
+            props: { credential }
+        });
     }
 
     function goBack() {
         navigate('home');
+    }
+
+    function onClickDev() {
+        navigate('devinfo1');
     }
 </script>
 
 <style>
     main {
         display: flex;
-        flex-direction: column;
-        min-height: 100%;
-        background-color: var(--bg);
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
-        position: relative;
+		flex-direction: column;
+		overflow-y: auto;
+		-webkit-overflow-scrolling: touch;
+		position: relative;
+		height: 100%;
     }
 
     header {
@@ -40,99 +45,90 @@
 
     .wrapper {
         text-align: center;
-        padding-top: 2vh;
-        min-height: 36vh;
+        padding-bottom: 15vh;
+        max-height: 36vh;
+        background: linear-gradient(90deg, #00FFFF 0%, #0099FF 100%);
     }
 
-    .header {
+    header {
         position: absolute;
-        top: 2vh;
         left: 0;
         right: 0;
         margin-left: auto;
         margin-right: auto;
+        z-index: 1;
+        height: fit-content;
+        margin-bottom: 0;
     }
 
     header > p {
-        margin-top: 2vh;
-        font-family: 'Inter', sans-serif;
-        font-weight: 1000;
-        font-size: 3vw;
-        line-height: 4vw;
+        font-family: 'Proxima Nova', sans-serif;
+        font-weight: 700;
+        font-size: 3.4vh;
+        line-height: 3.4vh;
         color: #fff;
-    }
-    header > p:nth-child(1) {
-        text-transform: uppercase;
     }
 
     header > p:nth-child(2) {
-        font-family: 'Metropolis', sans-serif;
-        font-style: normal;
-        font-weight: bold;
-        font-size: 6vw;
-        line-height: 7vw;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 1.7vh;
+        line-height: 2.3vh;
+    }
+
+    header > p:nth-child(3) {
+        margin: 1.6vh 0 0 0;
+    }
+
+    header > p:nth-child(4) {
+        margin-bottom: 0;
+        font-size: 1.7vh;
     }
 
     section {
         margin: 0 7vw;
+        z-index: 2;
     }
 
     footer {
         position: fixed;
-        left: 0;
-        right: 0;
-        bottom: 28vh;
-        padding: 0 20vw;
-        margin-left: auto;
-        margin-right: auto;
-        max-width: var(--max-width);
-    }
-
-    @media (max-width: 139vw) {
-        footer {
-            bottom: 5vh;
-        }
-    }
-
-    .chevron {
-        z-index: 1;
-        position: fixed;
-        left: 7vw;
-        top: 7vh;
+        width: 100%;
+        bottom: 0;
+        z-index: 6;
     }
 
     .credential-logo {
         width: 15%;
     }
 
-    .share-wrapper {
-        position: fixed;
-        bottom: 0;
-        height: 0;
+    .options-wrapper {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		margin: 3.5vh 3.5vh 0 3.5vh;
+        z-index: 3;
     }
 </style>
 
 <main>
-    <div style="background-color: {credential.enrichment.theme}" class="wrapper">
-        <img class="chevron" on:click="{goBack}" src="../assets/chevron-left.svg" alt="" />
-        <div class="header">
-            <img class="credential-logo" src="../assets/credentialLarge.svg" alt="" />
-            <header>
+    <div class="wrapper">
+        <div class="options-wrapper">
+			<img src="../assets/chevron-left.svg" on:click="{goBack}" alt="chevron-left" />
+            <img src="../assets/code.svg" on:click="{onClickDev}" alt="code" />
+		</div>
+        <header>
+            <img class="credential-logo" src="../assets/credentialLarge.svg" alt="credential-logo" />
                 <p>{credential.enrichment.issuerLabel}</p>
                 <p>{credential.enrichment.credentialLabel}</p>
                 <p>{new Date(preparedCredentialDocument.issuanceDate).toLocaleString()}</p>
-            </header>
-
-            <section>
-                <ObjectList object="{preparedCredentialDocument.credentialSubject}" />
-            </section>
-        </div>
-
-        <footer>
-            <Button label="Share" onClick="{share}"><img src="../assets/share.png" alt="" /></Button>
-        </footer>
+        </header>
+        <section>
+            <ObjectList object="{preparedCredentialDocument.credentialSubject}" />
+        </section>
     </div>
-    <div class="share-wrapper">
-        Share me
-    </div>
+    <footer>
+        <Button style="background: #0099FF; color: white;" label="Share" onClick="{share}">
+            <img src="../assets/share.png" alt="share" />
+        </Button>
+    </footer>
 </main>
