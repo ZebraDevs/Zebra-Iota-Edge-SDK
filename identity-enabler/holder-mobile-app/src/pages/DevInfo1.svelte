@@ -27,66 +27,66 @@
 
 <style>
 	main {
-        height: 100%;
-		width: 100%;
-        background: white;
-		display: flex;
-		flex-direction: column;
-    }
+			height: 100%;
+			width: 100%;
+			background: white;
+			display: flex;
+			flex-direction: column;
+  }
 
-    .header-wrapper {
-        text-align: center;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		background: black;
-		padding: 4vh 17.7vh;
-		position: relative;
-    }
+  .header-wrapper {
+			text-align: center;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			background: black;
+			padding: 4vh 17.7vh;
+			position: relative;
+  }
 
 	.header-wrapper > span {
-        font-family: 'Proxima Nova', sans-serif;
-        font-weight: 500;
-        font-size: 2vh;
-        line-height: 2.3vh;
-        color: #fff;
-		white-space: nowrap;
-    }
+			font-family: 'Proxima Nova', sans-serif;
+			font-weight: 500;
+			font-size: 2vh;
+			line-height: 2.3vh;
+			color: #fff;
+			white-space: nowrap;
+  }
 
 	.close {
-		position: absolute;
-		right: 3.4vh;
-    }
+			position: absolute;
+			right: 3.4vh;
+  }
 
 	section {
-		margin: 0 2.3vh;
+			margin: 0 2.3vh;
 	}
 
 	section > p {
-		font-size: 2vh;
+			font-size: 2vh;
 	}
 
 	.box-wrapper {
-		background: #EEEEEE;
-		border-radius: 4px;
-		padding: 2.15vh 1.15vh;
-		margin: 2.3vh 0;
-		font-size: 2vh;
-        line-height: 2.3vh;
+			background: #EEEEEE;
+			border-radius: 4px;
+			padding: 2.15vh 1.15vh;
+			margin: 2.3vh 0;
+			font-size: 2vh;
+      line-height: 2.3vh;
 	}
 
 	.box-wrapper > span {
-		overflow-wrap: break-word;
-		word-wrap: break-word;
-		hyphens: auto;
-		font-size: 2vh;
-        line-height: 2.3vh;
+			overflow-wrap: break-word;
+			word-wrap: break-word;
+			hyphens: auto;
+			font-size: 2vh;
+      line-height: 2.3vh;
 	}
 
 	.highlightjs-component {
-		overflow-wrap: break-word;
-		word-wrap: break-word;
-		overflow-x: auto;
+			overflow-wrap: break-word;
+			word-wrap: break-word;
+			overflow-x: auto;
 	}
 </style>
 
@@ -95,7 +95,7 @@
 		<FullScreenLoader label="Loading..." />
 	{/if}
 	<div class="header-wrapper">
-        <span>ADD NEW CREDENTIAL</span>
+    <span>ADD NEW CREDENTIAL</span>
 		<img class="close" on:click="{goBack}" src="../assets/close.svg" alt="close" />
 	</div>
 	<section>
@@ -106,7 +106,7 @@
 			In the IOTA Identity framework, we have implemented the DID standard according to the iota DID Method Specification, 
 			which can be viewed here. 
 			<br><br>
-			An example of DID conforming to the iota method specification:
+			An example of DID conforming to the IOTA method specification:
 		</p>
 		<div class="highlightjs-component">
 			<Highlight language={markdown} {code} />

@@ -1,6 +1,6 @@
 <script>
 	import { Link } from "svelte-routing";
-    import { onMount } from 'svelte';
+  import { onMount } from 'svelte';
 	import { ServiceFactory } from '../factories/serviceFactory';
 	import { IdentityService } from '../services/identityService';
 	import { error } from '../lib/store';
