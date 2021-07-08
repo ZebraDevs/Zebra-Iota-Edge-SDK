@@ -57,12 +57,16 @@
     });
 
 	function goBack() {
-        navigate('credential', { state: { credential: credential }});
-    }
+    navigate('credential', { state: { credential: credential }});
+  }
 
 	function onClickDev() {
-        navigate('devinfo1');
-    }
+    navigate('devinfo1');
+  }
+
+	function onClickPresentationJSON() {
+    navigate('presentationjson', { state: { presentationJSON }});
+	}
 </script>
 
 <style>
@@ -182,7 +186,7 @@
 			{#if !loading}
 				<footer class="footerContainer">
 					<p>Valid until {addDaysToDate(preparedCredentialDocument.issuanceDate, 30)}</p>
-					<Button style="background: transparent; color: white; font-weight: 500; font-size: 1.7vh; line-height: 2.3vh; border: none; height:fit-content;" label="VIEW IN JSON FORMAT" onClick="{''}" />
+					<Button style="background: transparent; color: white; font-weight: 500; font-size: 1.7vh; line-height: 2.3vh; border: none; height:fit-content;" label="VIEW IN JSON FORMAT" onClick="{onClickPresentationJSON}" />
 				</footer>
 			{/if}
 	</div>
