@@ -10,6 +10,7 @@
 	import Landing from './pages/Landing.svelte';
 	import Name from './pages/Name.svelte';
 	import Menu from './pages/Menu.svelte';
+	import PresentationJSON from './pages/PresentationJSON.svelte';
 	import DataMatrix from './pages/DataMatrix.svelte';
 	import Credential from './pages/Credential.svelte';
 	import DevInfo1 from './pages/DevInfo1.svelte';
@@ -72,6 +73,7 @@
 			<Route path="/datamatrix" component="{DataMatrix}" />
 
 			<Route path="/devinfo1" component="{DevInfo1}" />
+			<Route path="/presentationjson" component="{PresentationJSON}" />
 			
 			<Route path="/createIdentity" component="{CreateIdentity}" />
 			<Route path="/createCredential" component="{CreateCredential}" />
