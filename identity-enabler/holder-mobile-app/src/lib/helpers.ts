@@ -219,3 +219,8 @@ export function flattenObj(ob) {
     }
     return result;
 };
+
+export async function getMarkdownContent(fileName): Promise<any> {
+    const url = fileName || `https://raw.githubusercontent.com/highlightjs/highlight.js/main/SUPPORTED_LANGUAGES.md`;
+    return fetch(url).then(res => res.text());
+};

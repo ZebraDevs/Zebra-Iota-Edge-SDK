@@ -61,7 +61,7 @@
     }
 
 	function onClickDev() {
-        navigate('devinfo1', { state: { credential: credential }});
+        navigate('devinfo1');
     }
 </script>
 

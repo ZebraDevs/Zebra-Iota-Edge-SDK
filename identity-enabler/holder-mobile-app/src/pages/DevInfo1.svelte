@@ -1,21 +1,34 @@
 <script>
-	import { navigate } from "svelte-routing";
+	import { onMount } from 'svelte';
 
-	import { ServiceFactory } from '../factories/serviceFactory';
-	import { IdentityService } from '../services/identityService';
+	import Highlight from "svelte-highlight";
+	import markdown from "svelte-highlight/src/languages/markdown";
 
-    const credential = window.history.state.credential;
-	const identityService = ServiceFactory.get('identity');
-    const preparedCredentialDocument = identityService.prepareCredentialForDisplay(credential.credentialDocument);
+	import FullScreenLoader from '../components/FullScreenLoader.svelte';
+	import { getMarkdownContent } from '../lib/helpers';
+
+	let loading = true;
+	let code = '';
+
+	onMount(async () => {
+		try {
+			code = await getMarkdownContent();
+			loading = false;
+			} catch (err) {
+				error.set('Error getting markdown file. Please try again.');
+				loading = false;
+			}
+	});
 
 	function goBack() {
-        navigate('createPresentation', { state: { credential: credential }});
+		history.back();
     }
 </script>
 
 <style>
 	main {
         height: 100%;
+		width: 100%;
         background: white;
 		display: flex;
 		flex-direction: column;
@@ -62,16 +75,25 @@
         line-height: 2.3vh;
 	}
 
-	.box-wrapper > span, code {
+	.box-wrapper > span {
 		overflow-wrap: break-word;
-  	    word-wrap: break-word;
-  		hyphens: auto;
+		word-wrap: break-word;
+		hyphens: auto;
 		font-size: 2vh;
         line-height: 2.3vh;
+	}
+
+	.highlightjs-component {
+		overflow-wrap: break-word;
+		word-wrap: break-word;
+		overflow-x: auto;
 	}
 </style>
 
 <main>
+	{#if loading}
+		<FullScreenLoader label="Loading..." />
+	{/if}
 	<div class="header-wrapper">
         <span>ADD NEW CREDENTIAL</span>
 		<img class="close" on:click="{goBack}" src="../assets/close.svg" alt="close" />
@@ -86,30 +108,8 @@
 			<br><br>
 			An example of DID conforming to the iota method specification:
 		</p>
-		<div class="box-wrapper">
-			<code>did:iota:8dQAzVbbf6FLW9ckwyCBnKmcMGcUV9LYJoXtgQkHcNQy</code>	
-		</div>
-		<p>Example of Publishing a DID Document to the Tangle:</p>
-		<div class="box-wrapper">
-			<code>
-				use identity::iota::Client;
-				<br>
-				use identity::iota::IotaDocument;
-				<br><br>
-				//Setting up the IOTA Network
-				<br>
-				let client: Client = Client::new()?;
-				<br><br>
-				let network: &str = client.network().as_str(); 
-				<br><br>
-				//Generating a DID Document 
-				<br>
-				let (mut document, keypair): (IotaDocument, KeyPair) = IotaDocument::builder().did_network(network).build()?;
-				<br><br>
-				//Signing and publish to the Tangle
-				<br>
-				document.sign(keypair.secret())?; document.publish_with_client(&client).await?;
-			</code>
+		<div class="highlightjs-component">
+			<Highlight language={markdown} {code} />
 		</div>
 	</section>
 </main>

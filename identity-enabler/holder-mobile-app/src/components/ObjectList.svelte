@@ -1,5 +1,4 @@
 <script>
-    // import ObjectList from './ObjectList.svelte';
 	import { flattenObj } from '../lib/helpers';
 
     export let object;
