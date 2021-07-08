@@ -13,7 +13,7 @@
 	import PresentationJSON from './pages/PresentationJSON.svelte';
 	import DataMatrix from './pages/DataMatrix.svelte';
 	import Credential from './pages/Credential.svelte';
-	import DevInfo1 from './pages/DevInfo1.svelte';
+	import DevInfo from './pages/DevInfo.svelte';
 	import Content from './components/modal/Content.svelte';
 	import Modal from './components/modal/Index.svelte';
 
@@ -43,11 +43,6 @@
 				console.log('Found identity', storedIdentity)
 				displayHome = true;
 			}
-
-			// retrieveCredentials($listOfCredentials.values).then((credentials) => {
-			// 		displayHome = true;
-			// 		storedCredentials.set(credentials);
-			// });
 	});
 </script>
 
@@ -72,7 +67,7 @@
 			<Route path="/credential" component="{Credential}" />
 			<Route path="/datamatrix" component="{DataMatrix}" />
 
-			<Route path="/devinfo1" component="{DevInfo1}" />
+			<Route path="/devinfo" component="{DevInfo}" />
 			<Route path="/presentationjson" component="{PresentationJSON}" />
 			
 			<Route path="/createIdentity" component="{CreateIdentity}" />

@@ -3,16 +3,20 @@
 
 	import Highlight from "svelte-highlight";
 	import markdown from "svelte-highlight/src/languages/markdown";
+	import github from "svelte-highlight/src/styles/github";
 
 	import FullScreenLoader from '../components/FullScreenLoader.svelte';
 	import { getMarkdownContent } from '../lib/helpers';
+	import { TUTORIAL_BASE_URL } from '../config';
+
+	const page = window.history.state.page;
 
 	let loading = true;
 	let code = '';
 
 	onMount(async () => {
 		try {
-			code = await getMarkdownContent();
+			code = await getMarkdownContent(`${TUTORIAL_BASE_URL}/${page}.md`);
 			loading = false;
 			} catch (err) {
 				error.set('Error getting markdown file. Please try again.');
@@ -22,7 +26,7 @@
 
 	function goBack() {
 		history.back();
-    }
+  }
 </script>
 
 <style>
@@ -90,6 +94,10 @@
 	}
 </style>
 
+<svelte:head>
+  {@html github}
+</svelte:head>
+
 <main>
 	{#if loading}
 		<FullScreenLoader label="Loading..." />
@@ -109,7 +117,7 @@
 			An example of DID conforming to the IOTA method specification:
 		</p>
 		<div class="highlightjs-component">
-			<Highlight language={markdown} {code} />
+			<Highlight language="{markdown}" {code} />
 		</div>
 	</section>
 </main>
