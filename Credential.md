@@ -1,5 +1,4 @@
-
-1. Retrieve stored **Identity** by invoking the **`retrieveIdentity()`** function from the **`identityService`**. 
+1. Retrieve stored **Identity** by invoking the **`retrieveIdentity()`** function from the **`identityService`**.
 
 ```js
 import { ServiceFactory } from '../factories/serviceFactory';  
@@ -9,8 +8,8 @@ import { ServiceFactory } from '../factories/serviceFactory';
 const identityService = ServiceFactory.get('identity');
 const storedIdentity = await identityService.retrieveIdentity();
 ```
-  
-2. Prepare **credential payload** as JSON object. 
+
+2. Prepare **credential payload** as JSON object.
 
 ```js
 const credentialPayload = {
@@ -20,14 +19,14 @@ const credentialPayload = {
       }
 };
 ```
-  
-3. Generate a new self signed credential by invoking the **`createSelfSignedCredential(identiy, schema, credentialPayload)`** function from the **`identityService`**.  
 
-You can use pre-defined schemas from the `src/schemas` folder or create a custom schema.
+3. Generate a new self signed credential by invoking the **createSelfSignedCredential(identiy, schema, credentialPayload)** function from the **`identityService`** 
+
+You can use pre-defined schemas from the `src/schemas` folder or create a custom schema
 
 If you decide to use a pre-defined schema, please import `SchemaNames` from the `src/schemas` folder.
 
-Please use the `storedIdentity` from the **Step 1**
+Please use the `storedIdentity` from the **Step 1** 
 
 ```js
 import { SchemaNames } from '../schemas';

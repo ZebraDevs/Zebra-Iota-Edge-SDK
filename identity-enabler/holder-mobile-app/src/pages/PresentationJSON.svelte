@@ -1,12 +1,11 @@
 <script>
-	import Highlight from "svelte-highlight";
-	import json from "svelte-highlight/src/languages/json";
+	import Markdown from '../components/Markdown.svelte'
 
 	const code = window.history.state.presentationJSON;
 
 	function goBack() {
 		history.back();
-  }
+	}
 </script>
 
 <style>
@@ -50,6 +49,9 @@
 			overflow-wrap: break-word;
 			word-wrap: break-word;
 			overflow-x: auto;
+			background: #EEEEEE;
+			border-radius: 4px;
+			padding: 0 1.15vh;
 	}
 </style>
 
@@ -60,7 +62,7 @@
 	</div>
 	<section>
 		<div class="highlightjs-component">
-			<Highlight language={json} {code} />
+			<Markdown markdown={code} language="json" />
 		</div>
 	</section>
 </main>

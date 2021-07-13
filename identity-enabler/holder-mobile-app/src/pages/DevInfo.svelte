@@ -1,11 +1,8 @@
 <script>
 	import { onMount } from 'svelte';
 
-	import Highlight from "svelte-highlight";
-	import markdown from "svelte-highlight/src/languages/markdown";
-	import github from "svelte-highlight/src/styles/github";
-
 	import FullScreenLoader from '../components/FullScreenLoader.svelte';
+	import Markdown from '../components/Markdown.svelte'
 	import { getMarkdownContent } from '../lib/helpers';
 	import { TUTORIAL_BASE_URL } from '../config';
 
@@ -13,6 +10,7 @@
 
 	let loading = true;
 	let code = '';
+
 
 	onMount(async () => {
 		try {
@@ -36,9 +34,9 @@
 			background: white;
 			display: flex;
 			flex-direction: column;
-  }
+	}
 
-  .header-wrapper {
+	.header-wrapper {
 			text-align: center;
 			display: flex;
 			justify-content: center;
@@ -46,7 +44,7 @@
 			background: black;
 			padding: 4vh 17.7vh;
 			position: relative;
-  }
+	}
 
 	.header-wrapper > span {
 			font-family: 'Proxima Nova', sans-serif;
@@ -55,12 +53,12 @@
 			line-height: 2.3vh;
 			color: #fff;
 			white-space: nowrap;
-  }
+	}
 
 	.close {
 			position: absolute;
 			right: 3.4vh;
-  }
+	}
 
 	section {
 			margin: 0 2.3vh;
@@ -76,7 +74,7 @@
 			padding: 2.15vh 1.15vh;
 			margin: 2.3vh 0;
 			font-size: 2vh;
-      line-height: 2.3vh;
+			line-height: 2.3vh;
 	}
 
 	.box-wrapper > span {
@@ -84,24 +82,25 @@
 			word-wrap: break-word;
 			hyphens: auto;
 			font-size: 2vh;
-      line-height: 2.3vh;
+			line-height: 2.3vh;
 	}
 
 	.highlightjs-component {
 			overflow-wrap: break-word;
 			word-wrap: break-word;
 			overflow-x: auto;
+			background: #EEEEEE;
+			border-radius: 4px;
+			padding: 0 1.15vh;
 	}
 </style>
-
-<svelte:head>
-  {@html github}
-</svelte:head>
 
 <main>
 	{#if loading}
 		<FullScreenLoader label="Loading..." />
 	{/if}
+
+	{#if !loading}
 	<div class="header-wrapper">
     <span>ADD NEW CREDENTIAL</span>
 		<img class="close" on:click="{goBack}" src="../assets/close.svg" alt="close" />
@@ -117,7 +116,8 @@
 			An example of DID conforming to the IOTA method specification:
 		</p>
 		<div class="highlightjs-component">
-			<Highlight language="{markdown}" {code} />
+			<Markdown markdown={code} language="javascript" />
 		</div>
 	</section>
+	{/if}
 </main>
