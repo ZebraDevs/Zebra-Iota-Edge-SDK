@@ -26,7 +26,7 @@
 
 	function goBack() {
 		history.back();
-  }
+    }
 </script>
 
 <style>
