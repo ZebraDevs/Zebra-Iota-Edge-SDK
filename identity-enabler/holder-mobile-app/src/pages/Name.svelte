@@ -108,7 +108,6 @@
         class="name-container"
         bind:this="{background}"
         on:click="{handleOuterClick}"
-        style="top: {isKeyboardActive ? `-${keyboardHeight}px` : '0'}"
         animate:flip="{{ duration: 350 }}"
     >
         {#if loading}
@@ -122,7 +121,7 @@
 
             <footer>
                 <Button
-                    style="background: #00A7FF; color: white;" 
+                    style="background: #00A7FF; color: white; height: 64px;" 
                     loadingText="{'Generating identity'}"
                     disabled="{name.length === 0}"
                     label="Next"
