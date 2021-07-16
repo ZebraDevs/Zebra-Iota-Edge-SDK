@@ -1,6 +1,7 @@
 <script>
 	import { Router, Route } from 'svelte-routing';
 	import { onMount } from 'svelte';
+	import { Plugins } from '@capacitor/core';
 	import Home from './pages/Home.svelte';
 	import { ServiceFactory } from './factories/serviceFactory';
 	import CreateIdentity from './pages/CreateIdentity.svelte';
@@ -19,6 +20,8 @@
 	import { hasSetupAccount } from './lib/store';
 	import Keychain from './lib/keychain';
 
+	const { App } = Plugins;
+
 	let url = window.location.pathname;
 	let displayHome = false;
 
@@ -26,6 +29,8 @@
 			if (!$hasSetupAccount) {
 					return Keychain.clear();
 			}
+
+			App.addListener("backButton", function(){}, false);
 
 			const identityService = ServiceFactory.get('identity');
 			const storedIdentity = await identityService.retrieveIdentity();
