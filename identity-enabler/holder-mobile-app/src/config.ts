@@ -10,6 +10,4 @@ export const DEFAULT_LOCALE = 'en';
 
 export const RANDOM_USER_DATA_API_URL = 'https://randomuser.me/api/?nat=us,au,ca,ie,gb';
 
-export const SPLASH_SCREEN_TIMEOUT = 2000;
-
 export const TUTORIAL_BASE_URL = 'https://jmcanterafonseca-iota.github.io/zebra-iota-edge-sdk';
