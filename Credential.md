@@ -2,9 +2,7 @@
 
 ```js
 import { ServiceFactory } from '../factories/serviceFactory';  
-```
 
-```js
 const identityService = ServiceFactory.get('identity');
 const storedIdentity = await identityService.retrieveIdentity();
 ```
@@ -30,9 +28,7 @@ Please use the `storedIdentity` from the **Step 1**
 
 ```js
 import { SchemaNames } from '../schemas';
-```
 
-```js
 const credential = await identityService.createSelfSignedCredential(storedIdentity, SchemaNames.CONTACT_DETAILS, credentialPayload);
 ```
 
@@ -46,17 +42,13 @@ const enrichment = identityService.enrichCredential({ ...credential });
 
 ```js
 import { updateStorage } from '../lib/store';
-```  
 
-```js
 const credentialObject = {
       credentialDocument: { ...credential },
       metaInformation: { issuer: 'iota' },
       id: credentialId,
       enrichment
 };
-```
 
-```js
 await updateStorage('credentials', { [credentialType]: credentialObject });
 ```
