@@ -2,7 +2,7 @@ export const DEVNET = true;
 
 export const API_URL = 'http://localhost:4000';
 
-export const IOTA_NODE_URL = 'https://api.lb-0.testnet.chrysalis2.com';
+export const IOTA_NODE_URL = 'https://chrysalis-nodes.iota.org:443';
 
 export const DEFAULT_LANGUAGE = 'English';
 
