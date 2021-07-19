@@ -8,6 +8,8 @@ import sveltePreprocess from 'svelte-preprocess';
 import { wasm } from '@rollup/plugin-wasm';
 import copy from 'rollup-plugin-copy';
 import typescript from '@rollup/plugin-typescript';
+import { string } from 'rollup-plugin-string';
+import json from '@rollup/plugin-json';
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -68,6 +70,10 @@ export default {
 		wasm({
 		  	sync: ['node_modules/@iota/identity-wasm/web/identity_wasm_bg.wasm', 'identity_wasm_bg.wasm'],
 		}),
+		json(),
+		string({
+            include: ['**/*.md'],
+        }),
     	// we'll extract any component CSS out into
     	// a separate file - better for performance
     	// css({ output: "bundle.css" }),
@@ -81,7 +87,8 @@ export default {
 		// https://github.com/rollup/plugins/tree/master/packages/commonjs
 		resolve({
 			browser: true,
-			dedupe: ['svelte']
+			dedupe: ['svelte'],
+			preferBuiltins: false
 		}),
 		commonjs(),
 		typescript({

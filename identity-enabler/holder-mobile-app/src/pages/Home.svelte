@@ -1,25 +1,30 @@
 <script>
-	import { onDestroy, onMount } from 'svelte';
+	import { Plugins } from '@capacitor/core';
+	import { onMount } from 'svelte';
 	import { navigate } from "svelte-routing";
 
 	import Button from '../components/Button.svelte';
 	import ListItem from '../components/ListItem.svelte';
 	import FullScreenLoader from '../components/FullScreenLoader.svelte';
+	import DevInfo from './DevInfo.svelte';
 
 	import { credentialPayload } from '../assets/credentialPayload';
 
 	import { ServiceFactory } from '../factories/serviceFactory';
-	import { IdentityService } from '../services/identityService';
 	import { SchemaNames } from '../schemas';
 	import { updateStorage, getFromStorage, storedCredentials, error, account } from '../lib/store';
 	import { getRandomUserData, generateRandomId } from '../lib/helpers';
+
+    let showTutorial = false;
+
+	const { App, Modals } = Plugins;
 
 	let loading = false;
 	let localCredentials = {};
 
 	onMount(async () => {
+		App.addListener("backButton", function(){}, false);
 		setTimeout(async () => {
-			const identityService = ServiceFactory.get('identity');
 			try {
 				localCredentials = await getFromStorage('credentials');
 				localCredentials = Object.values(localCredentials)?.filter(data => data);
@@ -35,71 +40,87 @@
             return;
         }
         loading = true;
-
-				const identityService = ServiceFactory.get('identity');
-				const storedIdentity = await identityService.retrieveIdentity();
-
-				const credentials = await getFromStorage('credentials');
-				const nonEmpty = Object.values(credentials)?.filter(data => data);
-				const credentialKey = Object.keys(credentials)?.[nonEmpty.length];
-
-				let schema;
-				let payload = {};
-
-				switch (credentialKey) {
-					case "health":
-						schema = SchemaNames.HEALTH_TEST;
-						payload = credentialPayload.health;
-						break;
-
-					case "blood":
-						schema = SchemaNames.BLOOD_TEST;
-						payload = credentialPayload.blood;
-						break;
-					
-					case "personal":
-					default:
-						const userData = await getRandomUserData();
-						schema = SchemaNames.PERSONAL_DATA;
-						payload = {
-							UserPersonalData: {
-								UserName: {
-									FirstName: $account.name,
-									LastName: userData.name.last,
-								},
-								UserDOB: {
-									"Date of Birth": new Date(userData.dob.date).toDateString(),
-								},
-								Birthplace: userData.location.city,
-								Nationality: userData.location.country,
-								"Identity Card Number": userData.id.value,
-								"Passport Number": Math.random().toString(36).substring(7).toUpperCase(),
-							}
+		try {
+			const identityService = ServiceFactory.get('identity');
+			const storedIdentity = await identityService.retrieveIdentity();
+			const credentials = await getFromStorage('credentials');
+			const nonEmpty = Object.values(credentials)?.filter(data => data);
+			const credentialKey = Object.keys(credentials)?.[nonEmpty.length];
+			let schema;
+			let payload = {};
+			switch (credentialKey) {
+				case "health":
+					schema = SchemaNames.HEALTH_TEST;
+					payload = credentialPayload.health;
+					break;
+				case "blood":
+					schema = SchemaNames.BLOOD_TEST;
+					payload = credentialPayload.blood;
+					break;
+				
+				case "personal":
+				default:
+					const userData = await getRandomUserData();
+					schema = SchemaNames.PERSONAL_DATA;
+					payload = {
+						UserPersonalData: {
+							UserName: {
+								FirstName: $account.name,
+								LastName: userData.name.last,
+							},
+							UserDOB: {
+								"Date of Birth": new Date(userData.dob.date).toDateString(),
+							},
+							Birthplace: userData.location.city,
+							Nationality: userData.location.country,
+							"Identity Card Number": userData.id.value,
+							"Passport Number": Math.random().toString(36).substring(7).toUpperCase(),
 						}
-				}
-				
-				const newCredential = await identityService.createSelfSignedCredential(storedIdentity, schema, payload);
-				const credentialId = generateRandomId();
-				const enrichment = identityService.enrichCredential({ ...newCredential });
-
-				const credential = {
-					credentialDocument: { ...newCredential },
-					metaInformation: { issuer: 'iota' },
-					id: credentialId,
-					enrichment
-				};
-
-				console.log('new credential', credential);
-
-				await updateStorage('credentials', { [credentialKey]: credential });
-				localCredentials.push(credential);
-				
+					}
+			}
+			
+			const newCredential = await identityService.createSelfSignedCredential(storedIdentity, schema, payload);
+			const credentialId = generateRandomId();
+			const enrichment = identityService.enrichCredential({ ...newCredential });
+			const credential = {
+				credentialDocument: { ...newCredential },
+				metaInformation: { issuer: 'iota' },
+				id: credentialId,
+				enrichment
+			};
+			console.log('new credential', credential);
+			await updateStorage('credentials', { [credentialKey]: credential });
+			localCredentials.push(credential);
+			
+			loading = false;
+			} catch (err) {
 				loading = false;
+				console.log(err);
+				showAlert();
+			}
     }
 
 	function onClickDev() {
-		navigate('devinfo', { state: { page: 'Identity' }});
-  }
+		showTutorial = true;
+	}
+
+	async function showAlert() {
+		await Modals.alert({
+			title: 'Unable to generate the credential',
+			message: 'Please check your internet connection'
+		});
+	}
+
+	async function onClickReset() {
+		let confirmRet = await Modals.confirm({
+			title: 'Reset the app',
+			message: 'Are you sure you want to reset the app and delete all credentials?'
+		});
+		if (confirmRet.value) {
+			localStorage.clear();
+			navigate('landing');
+		}
+	}
 </script>
 
 <style>
@@ -180,6 +201,10 @@
 		height: 40px;
 	}
 
+	.code {
+		margin-left: auto;
+	}
+
 	.btn-wrapper {
 		height: 72px;
 		padding: 0 20px;
@@ -187,14 +212,19 @@
 </style>
 
 <main>
+	{#if showTutorial}
+		<DevInfo page="Identity" bind:showTutorial={showTutorial} />
+	{/if}
+
 	{#if loading}
 		<FullScreenLoader label="Loading Credential..." />
-	{:else}
+	{/if}
 
+	{#if !loading}
 	<header>
 		<div class="options-wrapper">
-			<img src="../assets/settings.svg" on:click="{onClickDev}" alt="settings" /> 
-			<img src="../assets/code.svg" on:click="{onClickDev}" alt="code" />
+			<img src="../assets/reset.svg" on:click="{onClickReset}" alt="reset" /> 
+			<img class="code" src="../assets/code.svg" on:click="{onClickDev}" alt="code" />
 		</div>
 		<div class="logo"><img src="../assets/person.png" alt="logo" /></div>
 	</header>
@@ -212,15 +242,15 @@
 			</div>
 			{/each}
 			{#if Object.values(localCredentials).length < 3}
-			<div class="btn-wrapper">
-				<Button style="background: white; color: #051923; display: flex; justify-content: flex-start; padding-left: 20px;" 
-						label="Add new credential" 
-						onClick="{generateCredential}"
-				>
-					<img class="add" src="../assets/add.png" alt="add" />
-				</Button>
-			</div>
+				<div class="btn-wrapper">
+					<Button style="background: white; color: #051923; display: flex; justify-content: flex-start; padding-left: 20px;" 
+							label="Add new credential" 
+							onClick="{generateCredential}"
+					>
+						<img class="add" src="../assets/add.png" alt="add" />
+					</Button>
+				</div>
 			{/if}
 	</section>
-    {/if}
+	{/if}
 </main>

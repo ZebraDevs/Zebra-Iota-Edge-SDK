@@ -1,12 +1,18 @@
 <script>
     import { navigate } from "svelte-routing";
-
+    import { beforeUpdate } from 'svelte';
+    import { Plugins } from '@capacitor/core';
     import Button from '../components/Button.svelte';
     import ObjectList from '../components/ObjectList.svelte';
+    import DevInfo from './DevInfo.svelte';
     
     import { modalStatus } from '../lib/store';
 
     import { ServiceFactory } from '../factories/serviceFactory';
+
+    const { App } = Plugins;
+
+    let showTutorial = false;
 
     const credential = window.history.state.credential;
 	const identityService = ServiceFactory.get('identity');
@@ -25,8 +31,12 @@
     }
 
     function onClickDev() {
-        navigate('devinfo', { state: { page: 'Credential' }});
+        showTutorial = true;
     }
+
+	beforeUpdate(() => {
+        !showTutorial && App.removeAllListeners();
+	});
 </script>
 
 <style>
@@ -111,6 +121,11 @@
 </style>
 
 <main>
+    {#if showTutorial}
+		<DevInfo page="Credential" bind:showTutorial={showTutorial} />
+	{/if}
+
+    {#if !showTutorial}
     <div class="wrapper">
         <div class="options-wrapper">
 			<img src="../assets/chevron-left.svg" on:click="{goBack}" alt="chevron-left" />
@@ -131,4 +146,5 @@
             <img src="../assets/share.png" alt="share" />
         </Button>
     </footer>
+    {/if}
 </main>

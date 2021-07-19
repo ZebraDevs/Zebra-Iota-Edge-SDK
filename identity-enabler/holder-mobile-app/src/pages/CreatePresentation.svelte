@@ -1,15 +1,21 @@
 <script>
 	import { navigate } from "svelte-routing";
-	import { onMount } from 'svelte';
+	import { onMount, beforeUpdate } from 'svelte';
+	import { Plugins } from '@capacitor/core';
 	import bwipjs from 'bwip-js';
 	import { ServiceFactory } from '../factories/serviceFactory';
 	import { error } from '../lib/store';
 	import FullScreenLoader from '../components/FullScreenLoader.svelte';
 	import Button from '../components/Button.svelte';
+	import DevInfo from './DevInfo.svelte';
+	import PresentationJson from "./PresentationJSON.svelte";
+
+	const { App } = Plugins;
 
 	let presentationJSON = '';
 	let loading = true;
-	let viewAsJSON = false;
+	let showJSON = false;
+	let showTutorial = false;
 
 	const credential = window.history.state.credential;
 	const identityService = ServiceFactory.get('identity');
@@ -53,16 +59,20 @@
 		}, 500);
     });
 
+	beforeUpdate(() => {
+        !showTutorial && App.removeAllListeners();
+	});
+
 	function goBack() {
-    navigate('credential', { state: { credential: credential }});
-  }
+		navigate('credential', { state: { credential: credential }});
+	}
 
 	function onClickDev() {
-    navigate('devinfo', { state: { page: 'Presentation' }});
-  }
+		showTutorial = true;
+	}
 
-	function onClickPresentationJSON() {
-    navigate('presentationjson', { state: { presentationJSON }});
+	function onClickJSON() {
+		showJSON = true;
 	}
 </script>
 
@@ -70,11 +80,11 @@
 	main {
 		display: flex;
 		flex-direction: column;
-		background-color: black;
 		overflow-y: auto;
 		-webkit-overflow-scrolling: touch;
 		position: relative;
 		height: 100%;
+		background: black;
 	}
 
 	canvas {
@@ -108,6 +118,7 @@
 
 	.wrapper {
         text-align: center;
+
 	}
 
 	.credential-logo {
@@ -159,6 +170,12 @@
 </style>
 
 <main>
+	{#if showTutorial}
+		<DevInfo page="Presentation" bind:showTutorial={showTutorial} />
+	{:else if showJSON}
+		<PresentationJson code={presentationJSON} bind:showJSON={showJSON} />
+	{/if}
+
 	{#if loading}
 		<FullScreenLoader label="Creating Data Matrix..." />
 	{/if}
@@ -179,12 +196,13 @@
 			<div class="presentation-wrapper">
 				<canvas id="presentation"></canvas>
 			</div>
-
 			{#if !loading}
 				<footer class="footerContainer">
 					<p>Valid until {addDaysToDate(preparedCredentialDocument.issuanceDate, 30)}</p>
-					<Button style="background: transparent; color: white; font-weight: 500; font-size: 1.7vh; line-height: 2.3vh; border: none; height:fit-content;" label="VIEW IN JSON FORMAT" onClick="{onClickPresentationJSON}" />
+					<Button style="background: transparent; color: white; font-weight: 500; font-size: 1.7vh; line-height: 2.3vh; border: none; height:fit-content;" 
+							label="VIEW IN JSON FORMAT" 
+							onClick="{onClickJSON}" />
 				</footer>
 			{/if}
-	</div>
+		</div>
 </main>

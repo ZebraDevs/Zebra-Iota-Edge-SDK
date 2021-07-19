@@ -6,8 +6,8 @@ export type Identity = {
   privateAuthKey: string;
   doc: typeof IotaIdentity.Document;
   key: typeof IotaIdentity.KeyPair;
-  keys: typeof IotaIdentity.KeyCollection;
-  method: typeof IotaIdentity.VerificationMethod;
+  keys: typeof IotaIdentity.KeyCollection | any;
+  method: typeof IotaIdentity.VerificationMethod | any;
 };
 
 export type IdentityConfig = {

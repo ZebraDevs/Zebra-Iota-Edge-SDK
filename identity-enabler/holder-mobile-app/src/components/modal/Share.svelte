@@ -26,7 +26,6 @@
             await Share.share({
                 title: 'Verifiable Presentation',
                 text: presentationJSON,
-                // url: 'https://explorer.iota.org/testnet',
             });
         } catch (error) {
         console.log('Error sharing: ' + error);
