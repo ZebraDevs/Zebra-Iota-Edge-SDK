@@ -1,0 +1,4 @@
+/public/build/
+/public/*.wasm
+.gradle
+/android/.idea
