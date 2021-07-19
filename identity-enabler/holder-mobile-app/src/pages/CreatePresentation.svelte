@@ -6,10 +6,12 @@
 	import { error } from '../lib/store';
 	import FullScreenLoader from '../components/FullScreenLoader.svelte';
 	import Button from '../components/Button.svelte';
+	import DevInfo from './DevInfo.svelte';
 
 	let presentationJSON = '';
 	let loading = true;
 	let viewAsJSON = false;
+	let showTutorial = false;
 
 	const credential = window.history.state.credential;
 	const identityService = ServiceFactory.get('identity');
@@ -54,15 +56,15 @@
     });
 
 	function goBack() {
-    navigate('credential', { state: { credential: credential }});
-  }
+    	navigate('credential', { state: { credential: credential }});
+	}
 
 	function onClickDev() {
-    navigate('devinfo', { state: { page: 'Presentation' }});
-  }
+		showTutorial = true;
+	}
 
 	function onClickPresentationJSON() {
-    navigate('presentationjson', { state: { presentationJSON }});
+    	navigate('presentationjson', { state: { presentationJSON }});
 	}
 </script>
 
@@ -70,11 +72,11 @@
 	main {
 		display: flex;
 		flex-direction: column;
-		background-color: black;
 		overflow-y: auto;
 		-webkit-overflow-scrolling: touch;
 		position: relative;
 		height: 100%;
+		background: black;
 	}
 
 	canvas {
@@ -108,6 +110,7 @@
 
 	.wrapper {
         text-align: center;
+
 	}
 
 	.credential-logo {
@@ -159,6 +162,9 @@
 </style>
 
 <main>
+	{#if showTutorial}
+		<DevInfo page="Presentation" bind:showTutorial={showTutorial} />
+	{/if}
 	{#if loading}
 		<FullScreenLoader label="Creating Data Matrix..." />
 	{/if}
@@ -179,12 +185,11 @@
 			<div class="presentation-wrapper">
 				<canvas id="presentation"></canvas>
 			</div>
-
 			{#if !loading}
 				<footer class="footerContainer">
 					<p>Valid until {addDaysToDate(preparedCredentialDocument.issuanceDate, 30)}</p>
 					<Button style="background: transparent; color: white; font-weight: 500; font-size: 1.7vh; line-height: 2.3vh; border: none; height:fit-content;" label="VIEW IN JSON FORMAT" onClick="{onClickPresentationJSON}" />
 				</footer>
 			{/if}
-	</div>
+		</div>
 </main>

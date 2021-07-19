@@ -6,6 +6,7 @@
 	import Button from '../components/Button.svelte';
 	import ListItem from '../components/ListItem.svelte';
 	import FullScreenLoader from '../components/FullScreenLoader.svelte';
+	import DevInfo from './DevInfo.svelte';
 
 	import { credentialPayload } from '../assets/credentialPayload';
 
@@ -13,6 +14,8 @@
 	import { SchemaNames } from '../schemas';
 	import { updateStorage, getFromStorage, storedCredentials, error, account } from '../lib/store';
 	import { getRandomUserData, generateRandomId } from '../lib/helpers';
+
+    let showTutorial = false;
 
 	const { Modals } = Plugins;
 
@@ -94,12 +97,11 @@
 				loading = false;
 				console.log(err);
 				showAlert();
-				// alert("Unable to generate the credential");
 			}
     }
 
 	function onClickDev() {
-		navigate('devinfo', { state: { page: 'Identity' }});
+		showTutorial = true;
 	}
 
 	async function showAlert() {
@@ -210,10 +212,15 @@
 </style>
 
 <main>
+	{#if showTutorial}
+		<DevInfo page="Identity" bind:showTutorial={showTutorial} />
+	{/if}
+
 	{#if loading}
 		<FullScreenLoader label="Loading Credential..." />
-	{:else}
+	{/if}
 
+	{#if !showTutorial}
 	<header>
 		<div class="options-wrapper">
 			{#if Object.values(localCredentials).length}
@@ -247,5 +254,5 @@
 				</div>
 			{/if}
 	</section>
-    {/if}
+	{/if}
 </main>

@@ -6,7 +6,8 @@
 	import { getMarkdownContent } from '../lib/helpers';
 	import { TUTORIAL_BASE_URL } from '../config';
 
-	const page = window.history.state.page;
+	export let page = '';
+	export let showTutorial = Boolean;
 
 	let loading = true;
 	let code = '';
@@ -21,10 +22,6 @@
 				loading = false;
 			}
 	});
-
-	function goBack() {
-		history.back();
-    }
 </script>
 
 <style>
@@ -34,6 +31,8 @@
 			background: white;
 			display: flex;
 			flex-direction: column;
+			position: absolute;
+			z-index: 10;
 	}
 
 	.header-wrapper {
@@ -61,18 +60,19 @@
 	}
 
 	section {
-			margin: 0 2.3vh;
+			background: white;
 	}
 
 	section > p {
 			font-size: 2vh;
+			margin: 0 2.3vh;
 	}
 
 	.box-wrapper {
 			background: #EEEEEE;
 			border-radius: 4px;
 			padding: 2.15vh 1.15vh;
-			margin: 2.3vh 0;
+			margin: 2.4vh 2.3vh;
 			font-size: 2vh;
 			line-height: 2.3vh;
 	}
@@ -92,6 +92,7 @@
 			background: #EEEEEE;
 			border-radius: 4px;
 			padding: 0 1.15vh;
+			margin: 2.4vh 2.3vh;
 	}
 </style>
 
@@ -103,7 +104,7 @@
 	{#if !loading}
 	<div class="header-wrapper">
     <span>ADD NEW CREDENTIAL</span>
-		<img class="close" on:click="{goBack}" src="../assets/close.svg" alt="close" />
+		<img class="close" on:click={ () => showTutorial = false } src="../assets/close.svg" alt="close" />
 	</div>
 	<section>
 		<div class="box-wrapper">
