@@ -55,7 +55,7 @@
 					break;
 				case "blood":
 					schema = SchemaNames.BLOOD_TEST;
-					payload = credentialPayload.blood2;
+					payload = credentialPayload.blood;
 					break;
 				
 				case "personal":
