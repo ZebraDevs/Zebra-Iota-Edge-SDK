@@ -29,7 +29,7 @@
 			}
 	});
 
-	function onClickDev() {
+	function onClose() {
 		showTutorial = false;
 		App.removeAllListeners();
     }
@@ -114,8 +114,8 @@
 
 	{#if !loading}
 	<div class="header-wrapper">
-    <span>ADD NEW CREDENTIAL</span>
-		<img class="close" on:click={onClickDev} src="../assets/close.svg" alt="close" />
+		<span>{page.toUpperCase()}</span>
+		<img class="close" on:click={onClose} src="../assets/close.svg" alt="close" />
 	</div>
 	<section>
 		<div class="box-wrapper">
