@@ -8,12 +8,13 @@
 	import FullScreenLoader from '../components/FullScreenLoader.svelte';
 	import Button from '../components/Button.svelte';
 	import DevInfo from './DevInfo.svelte';
+	import PresentationJson from "./PresentationJSON.svelte";
 
 	const { App } = Plugins;
 
 	let presentationJSON = '';
 	let loading = true;
-	let viewAsJSON = false;
+	let showJSON = false;
 	let showTutorial = false;
 
 	const credential = window.history.state.credential;
@@ -63,15 +64,15 @@
 	});
 
 	function goBack() {
-    	navigate('credential', { state: { credential: credential }});
+		navigate('credential', { state: { credential: credential }});
 	}
 
 	function onClickDev() {
 		showTutorial = true;
 	}
 
-	function onClickPresentationJSON() {
-    	navigate('presentationjson', { state: { presentationJSON }});
+	function onClickJSON() {
+		showJSON = true;
 	}
 </script>
 
@@ -171,7 +172,10 @@
 <main>
 	{#if showTutorial}
 		<DevInfo page="Presentation" bind:showTutorial={showTutorial} />
+	{:else if showJSON}
+		<PresentationJson code={presentationJSON} bind:showJSON={showJSON} />
 	{/if}
+
 	{#if loading}
 		<FullScreenLoader label="Creating Data Matrix..." />
 	{/if}
@@ -195,7 +199,9 @@
 			{#if !loading}
 				<footer class="footerContainer">
 					<p>Valid until {addDaysToDate(preparedCredentialDocument.issuanceDate, 30)}</p>
-					<Button style="background: transparent; color: white; font-weight: 500; font-size: 1.7vh; line-height: 2.3vh; border: none; height:fit-content;" label="VIEW IN JSON FORMAT" onClick="{onClickPresentationJSON}" />
+					<Button style="background: transparent; color: white; font-weight: 500; font-size: 1.7vh; line-height: 2.3vh; border: none; height:fit-content;" 
+							label="VIEW IN JSON FORMAT" 
+							onClick="{onClickJSON}" />
 				</footer>
 			{/if}
 		</div>

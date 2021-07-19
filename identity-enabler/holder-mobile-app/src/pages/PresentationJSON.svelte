@@ -1,11 +1,24 @@
 <script>
+	import { onMount } from 'svelte';
+	import { Plugins } from '@capacitor/core';
+
 	import Markdown from '../components/Markdown.svelte'
 
-	const code = window.history.state.presentationJSON;
+	const { App } = Plugins;
 
-	function goBack() {
-		history.back();
-	}
+	export let showJSON = Boolean;
+	export let code = '';
+
+	onMount(async () => {
+		App.addListener("backButton", function() {
+			showJSON = false;
+		});
+	});
+
+	function onClose() {
+		showJSON = false;
+		App.removeAllListeners();
+    }
 </script>
 
 <style>
@@ -15,9 +28,11 @@
 			background: white;
 			display: flex;
 			flex-direction: column;
-  }
+			position: absolute;
+			z-index: 10;
+	}
 
-  .header-wrapper {
+	.header-wrapper {
 			text-align: center;
 			display: flex;
 			justify-content: center;
@@ -25,7 +40,7 @@
 			background: black;
 			padding: 4vh 17.7vh;
 			position: relative;
-  }
+	}
 
 	.header-wrapper > span {
 			font-family: 'Proxima Nova', sans-serif;
@@ -34,15 +49,15 @@
 			line-height: 2.3vh;
 			color: #fff;
 			white-space: nowrap;
-  }
+	}
 
 	.close {
 			position: absolute;
 			right: 3.4vh;
-  }
+	}
 
 	section {
-			margin: 0 2.3vh;
+			background: white;
 	}
 
 	.highlightjs-component {
@@ -52,13 +67,14 @@
 			background: #EEEEEE;
 			border-radius: 4px;
 			padding: 0 1.15vh;
+			margin: 2.4vh 2.3vh;
 	}
 </style>
 
 <main>
 	<div class="header-wrapper">
     <span>VERIFIABLE PRESENTATION</span>
-		<img class="close" on:click="{goBack}" src="../assets/close.svg" alt="close" />
+		<img class="close" on:click="{onClose}" src="../assets/close.svg" alt="close" />
 	</div>
 	<section>
 		<div class="highlightjs-component">
