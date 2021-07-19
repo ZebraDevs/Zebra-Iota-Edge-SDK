@@ -3,9 +3,7 @@
 
 ```js
 import { ServiceFactory } from '../factories/serviceFactory';  
-```
 
-```js
 const identityService = ServiceFactory.get('identity');
 const storedIdentity = await identityService.retrieveIdentity();
 ```
