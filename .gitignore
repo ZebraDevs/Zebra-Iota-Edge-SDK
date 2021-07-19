@@ -2,10 +2,3 @@ node_modules
 
 .DS_Store
 *.log*
-
-cypress/screenshots
-cypress/videos
-
-demo-frontend
-android-app
-react-native
