@@ -6,6 +6,7 @@ node_modules
 cypress/screenshots
 cypress/videos
 
-demo-frontend
-android-app
-react-native
+backup*
+
+
+
