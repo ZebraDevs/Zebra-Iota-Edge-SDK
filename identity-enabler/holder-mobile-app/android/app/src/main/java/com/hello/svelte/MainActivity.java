@@ -1,4 +1,4 @@
-package com.hello.svelte;
+package org.iota.zebra;
 
 import android.os.Bundle;
 
