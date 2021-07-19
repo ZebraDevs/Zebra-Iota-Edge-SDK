@@ -56,7 +56,7 @@
             const identityService = ServiceFactory.get('identity');
             const identity = await identityService.createIdentity();
             await identityService.storeIdentity('did', identity);
-
+            console.log('Identity', identity)
             loading = false;
             hasSetupAccount.set(true);
 
