@@ -1,6 +1,7 @@
 <script>
     import { navigate } from "svelte-routing";
-
+    import { beforeUpdate } from 'svelte';
+    import { Plugins } from '@capacitor/core';
     import Button from '../components/Button.svelte';
     import ObjectList from '../components/ObjectList.svelte';
     import DevInfo from './DevInfo.svelte';
@@ -8,6 +9,8 @@
     import { modalStatus } from '../lib/store';
 
     import { ServiceFactory } from '../factories/serviceFactory';
+
+    const { App } = Plugins;
 
     let showTutorial = false;
 
@@ -30,6 +33,10 @@
     function onClickDev() {
         showTutorial = true;
     }
+
+	beforeUpdate(() => {
+        !showTutorial && App.removeAllListeners();
+	});
 </script>
 
 <style>

@@ -1,12 +1,15 @@
 <script>
 	import { navigate } from "svelte-routing";
-	import { onMount } from 'svelte';
+	import { onMount, beforeUpdate } from 'svelte';
+	import { Plugins } from '@capacitor/core';
 	import bwipjs from 'bwip-js';
 	import { ServiceFactory } from '../factories/serviceFactory';
 	import { error } from '../lib/store';
 	import FullScreenLoader from '../components/FullScreenLoader.svelte';
 	import Button from '../components/Button.svelte';
 	import DevInfo from './DevInfo.svelte';
+
+	const { App } = Plugins;
 
 	let presentationJSON = '';
 	let loading = true;
@@ -54,6 +57,10 @@
 			}
 		}, 500);
     });
+
+	beforeUpdate(() => {
+        !showTutorial && App.removeAllListeners();
+	});
 
 	function goBack() {
     	navigate('credential', { state: { credential: credential }});

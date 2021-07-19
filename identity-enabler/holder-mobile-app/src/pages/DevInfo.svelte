@@ -1,10 +1,12 @@
 <script>
 	import { onMount } from 'svelte';
-
+	import { Plugins } from '@capacitor/core';
 	import FullScreenLoader from '../components/FullScreenLoader.svelte';
 	import Markdown from '../components/Markdown.svelte'
 	import { getMarkdownContent } from '../lib/helpers';
 	import { TUTORIAL_BASE_URL } from '../config';
+
+	const { App } = Plugins;
 
 	export let page = '';
 	export let showTutorial = Boolean;
@@ -14,6 +16,10 @@
 
 
 	onMount(async () => {
+		App.addListener("backButton", function() {
+			showTutorial = false;
+		});
+
 		try {
 			code = await getMarkdownContent(`${TUTORIAL_BASE_URL}/${page}.md`);
 			loading = false;
@@ -22,6 +28,11 @@
 				loading = false;
 			}
 	});
+
+	function onClickDev() {
+		showTutorial = false;
+		App.removeAllListeners();
+    }
 </script>
 
 <style>
@@ -104,7 +115,7 @@
 	{#if !loading}
 	<div class="header-wrapper">
     <span>ADD NEW CREDENTIAL</span>
-		<img class="close" on:click={ () => showTutorial = false } src="../assets/close.svg" alt="close" />
+		<img class="close" on:click={onClickDev} src="../assets/close.svg" alt="close" />
 	</div>
 	<section>
 		<div class="box-wrapper">
