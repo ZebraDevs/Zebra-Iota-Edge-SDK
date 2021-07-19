@@ -223,9 +223,7 @@
 	{#if !loading}
 	<header>
 		<div class="options-wrapper">
-			{#if Object.values(localCredentials).length}
-				<img src="../assets/reset.svg" on:click="{onClickReset}" alt="reset" /> 
-			{/if}
+			<img src="../assets/reset.svg" on:click="{onClickReset}" alt="reset" /> 
 			<img class="code" src="../assets/code.svg" on:click="{onClickDev}" alt="code" />
 		</div>
 		<div class="logo"><img src="../assets/person.png" alt="logo" /></div>
