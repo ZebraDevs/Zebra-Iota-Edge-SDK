@@ -2,11 +2,5 @@ node_modules
 
 .DS_Store
 *.log*
-
-cypress/screenshots
-cypress/videos
-
 backup*
-
-
 
