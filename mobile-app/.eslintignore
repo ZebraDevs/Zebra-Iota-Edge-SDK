@@ -1,7 +1,0 @@
-android/*
-node_modules/*
-*.min.js
-dist/
-build/
-gradle/
-*.wasm
