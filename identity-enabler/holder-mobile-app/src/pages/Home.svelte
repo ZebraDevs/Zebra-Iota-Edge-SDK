@@ -1,6 +1,6 @@
 <script>
 	import { Plugins } from '@capacitor/core';
-	import { onDestroy, onMount } from 'svelte';
+	import { onMount } from 'svelte';
 	import { navigate } from "svelte-routing";
 
 	import Button from '../components/Button.svelte';
@@ -17,14 +17,14 @@
 
     let showTutorial = false;
 
-	const { Modals } = Plugins;
+	const { App, Modals } = Plugins;
 
 	let loading = false;
 	let localCredentials = {};
 
 	onMount(async () => {
+		App.addListener("backButton", function(){}, false);
 		setTimeout(async () => {
-			const identityService = ServiceFactory.get('identity');
 			try {
 				localCredentials = await getFromStorage('credentials');
 				localCredentials = Object.values(localCredentials)?.filter(data => data);
@@ -220,7 +220,7 @@
 		<FullScreenLoader label="Loading Credential..." />
 	{/if}
 
-	{#if !showTutorial}
+	{#if !loading}
 	<header>
 		<div class="options-wrapper">
 			{#if Object.values(localCredentials).length}
