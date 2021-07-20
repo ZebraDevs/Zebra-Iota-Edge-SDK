@@ -63,5 +63,8 @@
     "svelte-routing": "^1.6.0",
     "svelte-simple-modal": "^0.10.4",
     "uuid": "^8.3.2"
+  },
+  "resolutions": {
+    "ws": "^7.5.3"
   }
 }
