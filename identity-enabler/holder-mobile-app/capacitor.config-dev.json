@@ -1,13 +1,17 @@
 {
   "appId": "org.iota.zebra",
-  "appName": "IOTA Identity: Holder",
+  "appName": "Zebra",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "public",
   "plugins": {
     "SplashScreen": {
-      "launchAutoHide": true
+      "launchShowDuration": 0
     }
   },
-  "cordova": {}
+  "cordova": {},
+  "server": {
+    "url": "http://10.0.2.2:5001",
+    "cleartext": true
+  }
 }
