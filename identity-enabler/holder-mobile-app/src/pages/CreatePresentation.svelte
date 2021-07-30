@@ -28,7 +28,7 @@
 					bcid: 'datamatrix',
 					text: content,
 					scale: 3,
-					padding: 5
+					padding: 20
 			});
 		} catch (e) {
 				console.error(e)
