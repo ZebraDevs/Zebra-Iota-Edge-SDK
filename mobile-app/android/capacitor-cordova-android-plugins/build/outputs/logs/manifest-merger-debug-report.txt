@@ -1,0 +1,31 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /Users/kimoemad/Downloads/zebra-iota-edge-sdk/mobile-app/android/capacitor-cordova-android-plugins/src/main/AndroidManifest.xml:2:1-9:12
+INJECTED from /Users/kimoemad/Downloads/zebra-iota-edge-sdk/mobile-app/android/capacitor-cordova-android-plugins/src/main/AndroidManifest.xml:2:1-9:12
+INJECTED from /Users/kimoemad/Downloads/zebra-iota-edge-sdk/mobile-app/android/capacitor-cordova-android-plugins/src/main/AndroidManifest.xml:2:1-9:12
+	xmlns:amazon
+		ADDED from /Users/kimoemad/Downloads/zebra-iota-edge-sdk/mobile-app/android/capacitor-cordova-android-plugins/src/main/AndroidManifest.xml:4:1-57
+	package
+		ADDED from /Users/kimoemad/Downloads/zebra-iota-edge-sdk/mobile-app/android/capacitor-cordova-android-plugins/src/main/AndroidManifest.xml:2:11-46
+		INJECTED from /Users/kimoemad/Downloads/zebra-iota-edge-sdk/mobile-app/android/capacitor-cordova-android-plugins/src/main/AndroidManifest.xml
+		INJECTED from /Users/kimoemad/Downloads/zebra-iota-edge-sdk/mobile-app/android/capacitor-cordova-android-plugins/src/main/AndroidManifest.xml
+	xmlns:android
+		ADDED from /Users/kimoemad/Downloads/zebra-iota-edge-sdk/mobile-app/android/capacitor-cordova-android-plugins/src/main/AndroidManifest.xml:3:1-59
+application
+ADDED from /Users/kimoemad/Downloads/zebra-iota-edge-sdk/mobile-app/android/capacitor-cordova-android-plugins/src/main/AndroidManifest.xml:5:1-7:15
+	android:usesCleartextTraffic
+		ADDED from /Users/kimoemad/Downloads/zebra-iota-edge-sdk/mobile-app/android/capacitor-cordova-android-plugins/src/main/AndroidManifest.xml:5:15-50
+uses-sdk
+INJECTED from /Users/kimoemad/Downloads/zebra-iota-edge-sdk/mobile-app/android/capacitor-cordova-android-plugins/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /Users/kimoemad/Downloads/zebra-iota-edge-sdk/mobile-app/android/capacitor-cordova-android-plugins/src/main/AndroidManifest.xml
+INJECTED from /Users/kimoemad/Downloads/zebra-iota-edge-sdk/mobile-app/android/capacitor-cordova-android-plugins/src/main/AndroidManifest.xml
+INJECTED from /Users/kimoemad/Downloads/zebra-iota-edge-sdk/mobile-app/android/capacitor-cordova-android-plugins/src/main/AndroidManifest.xml
+INJECTED from /Users/kimoemad/Downloads/zebra-iota-edge-sdk/mobile-app/android/capacitor-cordova-android-plugins/src/main/AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from /Users/kimoemad/Downloads/zebra-iota-edge-sdk/mobile-app/android/capacitor-cordova-android-plugins/src/main/AndroidManifest.xml
+		ADDED from /Users/kimoemad/Downloads/zebra-iota-edge-sdk/mobile-app/android/capacitor-cordova-android-plugins/src/main/AndroidManifest.xml
+		INJECTED from /Users/kimoemad/Downloads/zebra-iota-edge-sdk/mobile-app/android/capacitor-cordova-android-plugins/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /Users/kimoemad/Downloads/zebra-iota-edge-sdk/mobile-app/android/capacitor-cordova-android-plugins/src/main/AndroidManifest.xml
+		ADDED from /Users/kimoemad/Downloads/zebra-iota-edge-sdk/mobile-app/android/capacitor-cordova-android-plugins/src/main/AndroidManifest.xml
+		INJECTED from /Users/kimoemad/Downloads/zebra-iota-edge-sdk/mobile-app/android/capacitor-cordova-android-plugins/src/main/AndroidManifest.xml
