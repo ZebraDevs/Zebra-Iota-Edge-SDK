@@ -1,8 +1,7 @@
 <script>
 	import { Plugins } from '@capacitor/core';
-	import { onMount } from 'svelte';
+	import { onMount, tick } from 'svelte';
 	import { navigate } from "svelte-routing";
-
 	import Button from '../components/Button.svelte';
 	import ListItem from '../components/ListItem.svelte';
 	import FullScreenLoader from '../components/FullScreenLoader.svelte';
@@ -15,23 +14,26 @@
 	const { App, Modals } = Plugins;
 
 	let loading = false;
-	let localCredentials = {};
+	$: localCredentials = {};
 	let isEmpty = false;
 
 	onMount(async () => {
 		App.addListener("backButton", function(){}, false);
+		setTimeout(async () => {
 			try {
 				localCredentials = await getFromStorage('credentials');
-				console.log('onMount', localCredentials);
 				localCredentials = Object.values(localCredentials)?.filter(data => data);
+				console.log('onMount', localCredentials);
 				isEmpty = Object.values(localCredentials).every(x => x === null || x === '');
 			} catch (err) {
 				console.log(err)
 			}
-	}, 0);
+		}, 0);
+    });
 
 	function scan() {
         navigate('scan');
+		tick();
     }
 
 	function onClickDev() {
@@ -45,7 +47,8 @@
 		});
 		if (confirmRet.value) {
 			localStorage.clear();
-			navigate('home');
+			localCredentials = localCredentials;
+			await tick();
 		}
 	}
 </script>
@@ -163,11 +166,11 @@
 			{:else}
 				{#each Object.values(localCredentials) as credential}
 					<div class="list">
-							<ListItem
-								onClick="{() => navigate('credential', { state: { credential }})}"
-								heading="{"IOTA"}"
-								subheading="{credential.type[1]}"
-							/>
+						<ListItem
+							onClick="{() => navigate('credential', { state: { credential }})}"
+							heading="{"IOTA"}"
+							subheading="{credential.type[1]}"
+						/>
 					</div>
 				{/each}
 			{/if}	

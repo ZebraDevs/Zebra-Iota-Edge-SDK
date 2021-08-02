@@ -14,7 +14,6 @@
 
     let loading = false;
     let VP = '';
-    let stopCam = false;
 
     async function handleScannerData(event) {
         try {
@@ -60,7 +59,6 @@
 
     function goBack() {
         navigate('home');
-        stopCam = false;
     }
 </script>
 
@@ -112,6 +110,6 @@
             <img on:click="{goBack}" src="../assets/chevron-left.svg" alt="back" />
             <p>Scanner</p>
         </header>
-    <Scanner on:message="{handleScannerData}" />
+        <Scanner on:message="{handleScannerData}" />
     {/if}
 </main>

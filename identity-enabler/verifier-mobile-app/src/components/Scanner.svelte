@@ -1,6 +1,6 @@
 <script>
     import { Plugins } from '@capacitor/core';
-    import { createEventDispatcher, onMount, onDestroy, beforeUpdate, afterUpdate } from 'svelte';
+    import { createEventDispatcher, onMount } from 'svelte';
     import { navigate } from "svelte-routing";
     import { BrowserMultiFormatReader } from '@zxing/library';
 
@@ -8,17 +8,17 @@
 
     const dispatch = createEventDispatcher();
 
+    const { CameraPreview } = Plugins;
+
     let video;
     let scanner;
     let camera;
     let cameraError = false;
 
     const startScan = async () => {
-        const { CameraPreview } = Plugins;
         camera = CameraPreview;
-
         try {
-            await camera.start({ position: 'rear', toBack: true });
+            await camera.start({ position: 'rear', toBack: true, quality: 100 });
             setTimeout(async () => {
                 try {
                     await capture();
@@ -28,19 +28,21 @@
             }, 500);
         } catch (err) {
             cameraError = true;
+            console.log(err);
         };
 
         const capture = async () => {
             if (camera) {
                 const camCapture = await camera.capture();
                 const img = new Image();
-                img.src = `data:image/jpeg;base64,${camCapture.value}`;
+                // img.src = `data:image/jpeg;base64,${camCapture.value}`;
+                img.src = '../assets/DataMatrix.png'; // For testing
                 const reader = new BrowserMultiFormatReader();
                 const result = await reader.decodeFromImage(img);
 
                 if (result) {
                     dispatch('message', result.text);
-                    camera.stop();
+                    await camera.stop();
                     camera = null;
                     navigate('home');
                 } else {
@@ -53,9 +55,9 @@
     onMount(() => {
         startScan();
 
-        return () => {
+        return async () => {
             if (camera) {
-                camera.stop();
+                await camera.stop();
                 camera = null;
             }
             if (scanner) {
