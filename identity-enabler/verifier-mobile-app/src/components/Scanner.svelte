@@ -35,8 +35,8 @@
             if (camera) {
                 const camCapture = await camera.capture();
                 const img = new Image();
-                // img.src = `data:image/jpeg;base64,${camCapture.value}`;
-                img.src = '../assets/DataMatrix.png'; // For testing
+                img.src = `data:image/jpeg;base64,${camCapture.value}`; // comment For testing
+                // img.src = '../assets/DataMatrix.png'; // uncomment to test example data matrix img
                 const reader = new BrowserMultiFormatReader();
                 const result = await reader.decodeFromImage(img);
 
