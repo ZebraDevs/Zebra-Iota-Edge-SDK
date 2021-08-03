@@ -2,6 +2,7 @@
 	import { Plugins } from '@capacitor/core';
 	import { onMount } from 'svelte';
 	import { navigate } from "svelte-routing";
+	import { slide } from 'svelte/transition';
 	import { getFromStorage } from '../lib/store';
 
 	import Button from '../components/Button.svelte';
@@ -164,11 +165,12 @@
 			</div>
 		{:else}
 			{#each Object.values(localCredentials) as credential}
-				<div class="list">
+				<div transition:slide class="list">
 					<ListItem
 						onClick="{() => navigate('credential', { state: { credential }})}"
 						heading="{"IOTA"}"
 						subheading="{credential.type[1]}"
+						
 					/>
 				</div>
 			{/each}
