@@ -170,7 +170,6 @@
 						onClick="{() => navigate('credential', { state: { credential }})}"
 						heading="{"IOTA"}"
 						subheading="{credential.type[1]}"
-						
 					/>
 				</div>
 			{/each}
