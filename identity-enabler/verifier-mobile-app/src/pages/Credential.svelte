@@ -140,7 +140,7 @@
 		</div>
         <header>
             {#if !expired}
-            <img class="credential-logo" src="../assets/tick-large.svg" alt="valid" />
+                <img class="credential-logo" src="../assets/tick-large.svg" alt="valid" />
                 <p>VALID CREDENTIAL</p>
             {:else}
                 <img class="credential-logo" src="../assets/expire.svg" alt="expired" />

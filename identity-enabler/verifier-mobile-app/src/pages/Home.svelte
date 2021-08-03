@@ -2,7 +2,7 @@
 	import { Plugins } from '@capacitor/core';
 	import { onMount } from 'svelte';
 	import { navigate } from "svelte-routing";
-	import { getFromStorage, credentials } from '../lib/store';
+	import { getFromStorage } from '../lib/store';
 
 	import Button from '../components/Button.svelte';
 	import ListItem from '../components/ListItem.svelte';
@@ -42,8 +42,16 @@
 			message: 'Are you sure you want to reset the app and delete all credentials?'
 		});
 		if (confirmRet.value) {
-			localStorage.setItem('credentials', JSON.stringify($credentials));
-			localCredentials = $credentials;
+			localStorage.setItem('credentials', JSON.stringify({
+				personal: '',
+				health: '',
+				blood: ''
+			}));
+			localCredentials = {
+				personal: '',
+				health: '',
+				blood: ''
+			};
 			isEmpty = Object.values(localCredentials).every(x => x === null || x === '');
 		}
 	}
