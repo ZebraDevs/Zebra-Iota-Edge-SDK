@@ -1,5 +1,6 @@
 <script>
     import { navigate } from 'svelte-routing';
+    import { fly } from 'svelte/transition';
     import { Plugins } from '@capacitor/core';
 
     import { ServiceFactory } from '../factories/serviceFactory';
@@ -102,7 +103,7 @@
     }
 </style>
 
-<main>
+<main transition:fly="{{ y: 200, duration: 500 }}">
     {#if loading}
         <FullScreenLoader label="Loading Credential..." />
     {:else}
