@@ -1,7 +1,4 @@
-import { v4 as uuidv4 } from 'uuid';
 import { writable, Writable } from 'svelte/store';
-import { RANDOM_USER_DATA_API_URL } from '../config';
-
 
 interface ExtendedProofDocument {
     created : string,
@@ -34,42 +31,6 @@ type VerifiableCredentialDataModel = CredentialDataModel & ProofDataModel;
 type VerifiablePresentationDataModel = PresentationDataModel & ProofDataModel;
 
 /**
- * Random user data
- */
- export type RandomUserData = {
-    location: {
-        street: {
-            number: number;
-            name: string;
-        };
-        city: string;
-        state: string;
-        country: string;
-        postcode: number;
-    };
-    name: {
-        first: string;
-        last: string;
-    };
-    phone: string;
-    dob: {
-        date: string;
-        age: string;
-    };
-    email: string;
-    id: {
-        value: string;
-    };
-};
-
-/**
- * Random user data response
- */
- export type RandomUserDataResponse = {
-    results: RandomUserData[];
-};
-
-/**
  * Parses serialised data
  *
  * @method parse
@@ -85,46 +46,6 @@ export function parse(data: string): any {
     }
 };
 
-/**
- * Gets random user data
- *
- * @method getRandomUserData
- *
- * @returns {Promise}
- */
-export function getRandomUserData(): Promise<RandomUserData> {
-    return fetch(RANDOM_USER_DATA_API_URL)
-        .then((response) => response.json())
-        .then((result: RandomUserDataResponse) => {
-            const randomData = result.results[0];
-
-            return randomData;
-        });
-};
-
-/**
- * Converts byte array to hex
- *
- * @method convertByteArrayToHex
- *
- * @param {Uint8Array} bytes
- *
- * @return {string}
- */
-export function convertByteArrayToHex(bytes: Uint8Array): string {
-    const hex = [];
-
-    /* eslint-disable no-plusplus,no-bitwise */
-    for (let i = 0; i < bytes.length; i++) {
-        const current = bytes[i] < 0 ? bytes[i] + 256 : bytes[i];
-        hex.push((current >>> 4).toString(16));
-        hex.push((current & 0xf).toString(16));
-    }
-
-    /* eslint-enable no-plusplus,no-bitwise */
-    return hex.join('');
-};
-
 export function isVerifiablePresentation(
     payload: VerifiablePresentationDataModel | unknown
 ): payload is VerifiablePresentationDataModel {
@@ -135,19 +56,6 @@ export function isVerifiableCredential(
     payload: VerifiableCredentialDataModel | unknown
 ): payload is VerifiableCredentialDataModel {
     return !!(payload as VerifiableCredentialDataModel).credentialSubject;
-};
-
-/**
- * Updates application path
- *
- * @method goto
- *
- * @param {string} path
- *
- * @returns {void}
- */
-export function goto(path: string, params?: { [key: string]: string }): void {
-    window.location.hash = `${path}${params ? `?${new URLSearchParams(params).toString()}` : ''}`;
 };
 
 /**
@@ -164,11 +72,10 @@ export function delay(ms: number): void {
     while (new Date().getTime() - startPoint <= ms);
 };
 
-
 /**
  * Persist a writable Svelte store to local storage
  */
-export function persistent<T>(key: string, initialValue: T, saveTransformation?: (value: T) => T): Writable<T> {
+ export function persistent<T>(key: string, initialValue: T, saveTransformation?: (value: T) => T): Writable<T> {
     let value = initialValue;
 
     try {
@@ -188,8 +95,6 @@ export function persistent<T>(key: string, initialValue: T, saveTransformation?:
 
     return state;
 };
-
-export function generateRandomId(): string { return uuidv4(); }
 
 export function flattenObj(ob) {
   
