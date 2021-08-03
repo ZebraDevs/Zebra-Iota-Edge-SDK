@@ -15,7 +15,7 @@
     const credential = window.history.state.credential;
 
     let showTutorial = false;
-    let expired = false ;
+    let expired = false;
 
     onMount(() => {
         expired = isExpired();
@@ -44,7 +44,7 @@
 		});
 		if (confirmRet.value) {
 			await updateStorage('credentials', { [credential.type[1].split(/\b/)[0].toLowerCase()]: '' });
-			navigate('home');
+            navigate('home');
 		}
 	}
 
@@ -135,7 +135,7 @@
     {#if !showTutorial}
     <div class="wrapper" style={expired ? 'background: #000000;' : null}>
         <div class="options-wrapper">
-			<img src="../assets/trash.svg" on:click="{onDelete}" alt="chevron-left" />
+			<img src="../assets/delete.svg" on:click="{onDelete}" alt="delete" />
             <img src="../assets/code.svg" on:click="{onClickDev}" alt="code" />
 		</div>
         <header>
