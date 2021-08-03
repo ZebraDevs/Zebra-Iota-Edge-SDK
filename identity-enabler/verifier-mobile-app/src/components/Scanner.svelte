@@ -39,7 +39,6 @@
                 // img.src = '../assets/DataMatrix.png'; // uncomment to test example data matrix img
                 const reader = new BrowserMultiFormatReader();
                 const result = await reader.decodeFromImage(img);
-
                 if (result) {
                     dispatch('message', result.text);
                     await camera.stop();
@@ -153,5 +152,4 @@
             </svg>
         </scanner>
     {/if}
-
 </main>
