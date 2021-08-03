@@ -1,20 +1,17 @@
 <script>
 	import { Plugins } from '@capacitor/core';
-	import { onMount, tick } from 'svelte';
+	import { onMount } from 'svelte';
 	import { navigate } from "svelte-routing";
+	import { getFromStorage, credentials } from '../lib/store';
+
 	import Button from '../components/Button.svelte';
 	import ListItem from '../components/ListItem.svelte';
-	import FullScreenLoader from '../components/FullScreenLoader.svelte';
 	import DevInfo from './DevInfo.svelte';
-
-	import { getFromStorage } from '../lib/store';
-
-    let showTutorial = false;
 
 	const { App, Modals } = Plugins;
 
-	let loading = false;
-	$: localCredentials = {};
+	let showTutorial = false;
+	let localCredentials = {};
 	let isEmpty = false;
 
 	onMount(async () => {
@@ -28,12 +25,11 @@
 			} catch (err) {
 				console.log(err)
 			}
-		}, 0);
+		}, 3000);
     });
 
 	function scan() {
         navigate('scan');
-		tick();
     }
 
 	function onClickDev() {
@@ -46,9 +42,9 @@
 			message: 'Are you sure you want to reset the app and delete all credentials?'
 		});
 		if (confirmRet.value) {
-			localStorage.clear();
-			localCredentials = localCredentials;
-			await tick();
+			localStorage.setItem('credentials', JSON.stringify($credentials));
+			localCredentials = $credentials;
+			isEmpty = Object.values(localCredentials).every(x => x === null || x === '');
 		}
 	}
 </script>
@@ -143,40 +139,34 @@
 
 <main>
 	{#if showTutorial}
-		<DevInfo page="Identity" bind:showTutorial={showTutorial} />
+		<DevInfo page="Presentation" bind:showTutorial={showTutorial} />
 	{/if}
 
-	{#if loading}
-		<FullScreenLoader label="Loading Credential..." />
-	{/if}
-
-	{#if !loading}
-		<header>
-			<div class="options-wrapper">
-				<img src="../assets/reset.svg" on:click="{onClickReset}" alt="reset" />
-				<p>SCANNED CREDENTIALS</p>
-				<img class="code" src="../assets/code.svg" on:click="{onClickDev}" alt="code" />
+	<header>
+		<div class="options-wrapper">
+			<img src="../assets/reset.svg" on:click="{onClickReset}" alt="reset" />
+			<p>SCANNED CREDENTIALS</p>
+			<img class="code" src="../assets/code.svg" on:click="{onClickDev}" alt="code" />
+		</div>
+	</header>
+	<section>
+		{#if isEmpty}
+			<div class="empty-wrapper">
+				<p>No credentials scanned</p>
 			</div>
-		</header>
-		<section>
-			{#if isEmpty}
-				<div class="empty-wrapper">
-					<p>No credentials scanned</p>
+		{:else}
+			{#each Object.values(localCredentials) as credential}
+				<div class="list">
+					<ListItem
+						onClick="{() => navigate('credential', { state: { credential }})}"
+						heading="{"IOTA"}"
+						subheading="{credential.type[1]}"
+					/>
 				</div>
-			{:else}
-				{#each Object.values(localCredentials) as credential}
-					<div class="list">
-						<ListItem
-							onClick="{() => navigate('credential', { state: { credential }})}"
-							heading="{"IOTA"}"
-							subheading="{credential.type[1]}"
-						/>
-					</div>
-				{/each}
-			{/if}	
-		</section>
-		<footer>
-			<Button style="background: #00A7FF; color: white; height: 64px; width: 64px; border-radius: 50%;" onClick="{scan}"><img src="../assets/scan.png" alt="scan" /></Button>
-		</footer>
-	{/if}
+			{/each}
+		{/if}	
+	</section>
+	<footer>
+		<Button style="background: #00A7FF; color: white; height: 64px; width: 64px; border-radius: 50%;" onClick="{scan}"><img src="../assets/scan.png" alt="scan" /></Button>
+	</footer>
 </main>

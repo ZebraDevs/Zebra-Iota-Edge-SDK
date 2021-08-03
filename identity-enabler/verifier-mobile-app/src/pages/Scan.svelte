@@ -29,8 +29,8 @@
             
             if (verificationResult) {
                 await updateStorage('credentials', { [VP.verifiableCredential.type[1].split(/\b/)[0].toLowerCase()]: VP.verifiableCredential });
-                loading = false;
                 showToast();
+                loading = false;
                 goBack();
             } else {
                 loading = false;
