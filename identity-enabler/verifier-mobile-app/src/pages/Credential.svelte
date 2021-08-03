@@ -1,7 +1,6 @@
 <script>
-    import { onMount } from 'svelte';
-    import { navigate } from "svelte-routing";
-    import { beforeUpdate } from 'svelte';
+    import { onMount, beforeUpdate } from 'svelte';
+    import { fly } from 'svelte/transition';
     import { Plugins } from '@capacitor/core';
 
     import { updateStorage } from '../lib/store';
@@ -12,10 +11,10 @@
 
     const { App, Modals } = Plugins;
 
-    const credential = window.history.state.credential;
-
-    let showTutorial = false;
     let expired = false;
+    let showTutorial = false;
+    export let showCredential = Boolean;
+    export let credential = {};
 
     onMount(() => {
         expired = isExpired();
@@ -44,12 +43,12 @@
 		});
 		if (confirmRet.value) {
 			await updateStorage('credentials', { [credential.type[1].split(/\b/)[0].toLowerCase()]: '' });
-            navigate('home');
+            showCredential = false;
 		}
 	}
 
     function goBack() {
-        navigate('home');
+        showCredential = false;
     }
 
     function onClickDev() {
@@ -67,8 +66,10 @@
 		flex-direction: column;
 		overflow-y: auto;
 		-webkit-overflow-scrolling: touch;
-		position: relative;
 		height: 100%;
+		width: 100%;
+        position: absolute;
+        z-index: 7;
     }
 
     header {
@@ -80,6 +81,7 @@
         padding-bottom: 5vh;
         max-height: 36vh;
         background: linear-gradient(90deg, #00FFFF 0%, #0099FF 100%);
+        z-index: 2;
     }
 
     header {
@@ -105,6 +107,7 @@
     section {
         margin: 0 7vw;
         z-index: 2;
+        position: relative;
     }
 
     footer {
@@ -123,11 +126,11 @@
 		flex-direction: row;
 		justify-content: space-between;
 		margin: 3.5vh 3.5vh 0 3.5vh;
-        z-index: 3;
+        z-index: 2;
     }
 </style>
 
-<main>
+<main transition:fly="{{ x: 500, duration: 500 }}">
     {#if showTutorial}
 		<DevInfo page="Credential" bind:showTutorial={showTutorial} />
 	{/if}
