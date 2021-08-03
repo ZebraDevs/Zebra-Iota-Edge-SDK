@@ -8,12 +8,15 @@
 	import Button from '../components/Button.svelte';
 	import ListItem from '../components/ListItem.svelte';
 	import DevInfo from './DevInfo.svelte';
+	import Credential from './Credential.svelte';
 
 	const { App, Modals } = Plugins;
 
-	let showTutorial = false;
-	let localCredentials = {};
 	let isEmpty = false;
+	let showTutorial = false;
+	let showCredential = false;
+	let localCredentials = {};
+	let credentialItem = {};
 
 	onMount(async () => {
 		App.addListener("backButton", function(){}, false);
@@ -26,7 +29,7 @@
 			} catch (err) {
 				console.log(err)
 			}
-		}, 3000);
+		}, 3000); // wait for updateStorage to save
     });
 
 	function scan() {
@@ -35,6 +38,11 @@
 
 	function onClickDev() {
 		showTutorial = true;
+	}
+
+	function onClickCredential(credential) {
+		showCredential = true;
+		credentialItem = credential;
 	}
 
 	async function onClickReset() {
@@ -63,6 +71,8 @@
 			display: flex;
 			flex-direction: column;
 			height: 100%;
+			width: 100%;
+			z-index: 1;
 	}
 
 	header {
@@ -103,6 +113,7 @@
 		line-height: 16px;
 		color: #F8F8F8;
 		margin: 0;
+		z-index: 1;
 	}
 
 	.options-wrapper {
@@ -142,7 +153,7 @@
 		width: 100%;
 		bottom: 0;
 		margin-bottom: 4.1vh;
-		position: fixed;
+		z-index: 1;
 	}
 </style>
 
@@ -150,32 +161,38 @@
 	{#if showTutorial}
 		<DevInfo page="Presentation" bind:showTutorial={showTutorial} />
 	{/if}
+	
+	{#if showCredential}
+		<Credential credential={credentialItem} bind:showCredential={showCredential} />
+	{/if}
 
-	<header>
-		<div class="options-wrapper">
-			<img src="../assets/reset.svg" on:click="{onClickReset}" alt="reset" />
-			<p>SCANNED CREDENTIALS</p>
-			<img class="code" src="../assets/code.svg" on:click="{onClickDev}" alt="code" />
-		</div>
-	</header>
-	<section>
-		{#if isEmpty}
-			<div class="empty-wrapper">
-				<p>No credentials scanned</p>
+	{#if !showCredential && !showTutorial}
+		<header>
+			<div class="options-wrapper">
+				<img src="../assets/reset.svg" on:click="{onClickReset}" alt="reset" />
+				<p>SCANNED CREDENTIALS</p>
+				<img class="code" src="../assets/code.svg" on:click="{onClickDev}" alt="code" />
 			</div>
-		{:else}
-			{#each Object.values(localCredentials) as credential}
-				<div transition:slide class="list">
-					<ListItem
-						onClick="{() => navigate('credential', { state: { credential }})}"
-						heading="{"IOTA"}"
-						subheading="{credential.type[1]}"
-					/>
+		</header>
+		<section>
+			{#if isEmpty}
+				<div class="empty-wrapper">
+					<p>No credentials scanned</p>
 				</div>
-			{/each}
-		{/if}	
-	</section>
-	<footer>
-		<Button style="background: #00A7FF; color: white; height: 64px; width: 64px; border-radius: 50%;" onClick="{scan}"><img src="../assets/scan.png" alt="scan" /></Button>
-	</footer>
+			{:else}
+				{#each Object.values(localCredentials) as credential}
+					<div transition:slide class="list">
+						<ListItem
+							onClick="{() => onClickCredential(credential)}"
+							heading="{"IOTA"}"
+							subheading="{credential.type[1]}"
+						/>
+					</div>
+				{/each}
+			{/if}
+		</section>
+		<footer>
+			<Button style="background: #00A7FF; color: white; height: 64px; width: 64px; border-radius: 50%;" onClick="{scan}"><img src="../assets/scan.png" alt="scan" /></Button>
+		</footer>
+	{/if}
 </main>
