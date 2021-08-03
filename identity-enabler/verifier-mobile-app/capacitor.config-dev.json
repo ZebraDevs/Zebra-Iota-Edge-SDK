@@ -1,6 +1,6 @@
 {
   "appId": "org.iota.zebra",
-  "appName": "Zebra",
+  "appName": "IOTA Identity: Verifier",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "public",
@@ -11,7 +11,7 @@
   },
   "cordova": {},
   "server": {
-    "url": "http://10.0.2.2:5000",
+    "url": "http://10.0.2.2:5001",
     "cleartext": true
   }
 }
