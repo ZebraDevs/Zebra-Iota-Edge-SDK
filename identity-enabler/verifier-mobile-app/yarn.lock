@@ -875,11 +875,6 @@
     "@babel/helper-validator-identifier" "^7.14.8"
     to-fast-properties "^2.0.0"
 
-"@capacitor-community/barcode-scanner@1.2.1":
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/@capacitor-community/barcode-scanner/-/barcode-scanner-1.2.1.tgz#4afb330a5cf58c11d4c430a1ae86662866fd981d"
-  integrity sha512-6NZf4O2ZUmlhqgQvTihc96/AMOGtKSsuru790+f7TCceSTYRrl3SCepUY02WBsUHR+G8HSqrTNvkgTxDA+hGsg==
-
 "@capacitor-community/camera-preview@^1.2.1":
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/@capacitor-community/camera-preview/-/camera-preview-1.2.1.tgz#9c357562ff387b407dba569f998e3e4ca2ebe0d4"

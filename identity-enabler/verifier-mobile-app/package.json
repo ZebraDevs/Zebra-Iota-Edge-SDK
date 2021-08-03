@@ -48,7 +48,6 @@
     "typescript": "^4.2.4"
   },
   "dependencies": {
-    "@capacitor-community/barcode-scanner": "1.2.1",
     "@capacitor-community/camera-preview": "^1.2.1",
     "@capacitor/android": "^2.4.7",
     "@capacitor/cli": "^2.4.7",
