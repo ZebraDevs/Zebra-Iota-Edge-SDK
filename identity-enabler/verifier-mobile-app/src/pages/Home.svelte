@@ -163,7 +163,10 @@
 	{/if}
 	
 	{#if showCredential}
-		<Credential credential={credentialItem} bind:showCredential={showCredential} />
+		<Credential localCredential={credentialItem} 
+					bind:showCredential={showCredential} 
+					bind:localCredentials={localCredentials} 
+					bind:isEmpty={isEmpty} />
 	{/if}
 
 	{#if !showCredential && !showTutorial}

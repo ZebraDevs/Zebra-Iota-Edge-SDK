@@ -14,14 +14,16 @@
     let expired = false;
     let showTutorial = false;
     export let showCredential = Boolean;
-    export let credential = {};
+    export let localCredential = {};
+    export let localCredentials = {};
+    export let isEmpty = Boolean;
 
     onMount(() => {
         expired = isExpired();
     });
 
     function isExpired() {
-        const expiryDate = addDaysToDate(credential.issuanceDate, 30);
+        const expiryDate = addDaysToDate(localCredential.issuanceDate, 30);
         const today = new Date();
         if (today.getTime() > expiryDate.getTime()) {
             return true;
@@ -42,7 +44,11 @@
 			message: 'Are you sure you want to delete the credential?'
 		});
 		if (confirmRet.value) {
-			await updateStorage('credentials', { [credential.type[1].split(/\b/)[0].toLowerCase()]: '' });
+			await updateStorage('credentials', { [localCredential.type[1].split(/\b/)[0].toLowerCase()]: '' });
+            localCredentials = localCredentials.filter((credential) => {
+                return credential.type[1] !== localCredential.type[1];
+            });
+            isEmpty = Object.values(localCredentials).every(x => x === null || x === '');
             showCredential = false;
 		}
 	}
@@ -151,7 +157,7 @@
             {/if}
         </header>
         <section>
-            <ObjectList object="{credential.credentialSubject}" />
+            <ObjectList object="{localCredential.credentialSubject}" />
         </section>
     </div>
     <footer>
