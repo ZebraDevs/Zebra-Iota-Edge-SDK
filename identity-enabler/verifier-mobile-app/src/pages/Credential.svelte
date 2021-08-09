@@ -142,26 +142,26 @@
 	{/if}
 
     {#if !showTutorial}
-    <div class="wrapper" style={expired ? 'background: #000000;' : null}>
-        <div class="options-wrapper">
-			<img src="../assets/delete.svg" on:click="{onDelete}" alt="delete" />
-            <img src="../assets/code.svg" on:click="{onClickDev}" alt="code" />
-		</div>
-        <header>
-            {#if !expired}
-                <img class="credential-logo" src="../assets/tick-large.svg" alt="valid" />
-                <p>VALID CREDENTIAL</p>
-            {:else}
-                <img class="credential-logo" src="../assets/expire.svg" alt="expired" />
-                <p>EXPIRED CREDENTIAL</p>
-            {/if}
-        </header>
-        <section>
-            <ObjectList object="{localCredential.credentialSubject}" />
-        </section>
-    </div>
-    <footer>
-        <Button style="background: #0099FF; color: white;" label="Done" onClick="{goBack}" />
-    </footer>
+        <div class="wrapper" style={expired ? 'background: #000000;' : null}>
+            <div class="options-wrapper">
+                <img src="../assets/delete.svg" on:click="{onDelete}" alt="delete" />
+                <img src="../assets/code.svg" on:click="{onClickDev}" alt="code" />
+            </div>
+            <header>
+                {#if !expired}
+                    <img class="credential-logo" src="../assets/tick-large.svg" alt="valid" />
+                    <p>VALID CREDENTIAL</p>
+                {:else}
+                    <img class="credential-logo" src="../assets/expire.svg" alt="expired" />
+                    <p>EXPIRED CREDENTIAL</p>
+                {/if}
+            </header>
+            <section>
+                <ObjectList object="{localCredential.credentialSubject}" />
+            </section>
+        </div>
+        <footer>
+            <Button style="background: #0099FF; color: white;" label="Done" onClick="{goBack}" />
+        </footer>
     {/if}
 </main>
