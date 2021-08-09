@@ -152,8 +152,9 @@
 		align-items: center;
 		width: 100%;
 		bottom: 0;
-		margin-bottom: 4.1vh;
+		padding-bottom: 4.1vh;
 		z-index: 1;
+		background: #F8F8F8;
 	}
 </style>
 
