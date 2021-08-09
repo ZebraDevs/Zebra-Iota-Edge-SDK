@@ -19,8 +19,8 @@
     async function handleScannerData(event) {
         try {
             loading = true;
-            let parsedData = parse(event.detail);
-            VP = parsedData;
+            // let parsedData = parse(event.detail);
+            VP = event.detail;
             console.log("VP", VP);
 
             if (!VP) return goBack();

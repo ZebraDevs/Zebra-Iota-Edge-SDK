@@ -2,13 +2,13 @@
     import { Plugins } from '@capacitor/core';
     import { createEventDispatcher, onMount } from 'svelte';
     import { navigate } from "svelte-routing";
-    import { BrowserMultiFormatReader } from '@zxing/library';
+    import { BrowserMultiFormatReader, BarcodeFormat, MultiFormatReader, RGBLuminanceSource, BinaryBitmap, HybridBinarizer, DecodeHintType } from '@zxing/library';
 
     import { __ANDROID__, __WEB__ } from '../lib/platforms';
 
     const dispatch = createEventDispatcher();
 
-    const { CameraPreview } = Plugins;
+    const { BarcodeScanner } = Plugins;
 
     let video;
     let scanner;
@@ -16,53 +16,116 @@
     let cameraError = false;
 
     const startScan = async () => {
-        camera = CameraPreview;
-        try {
-            await camera.start({ position: 'rear', toBack: true, quality: 100 });
-            setTimeout(async () => {
-                try {
-                    await capture();
-                } catch (err) {
-                    requestAnimationFrame(startScan);
-                }
-            }, 500);
-        } catch (err) {
-            cameraError = true;
-            console.log(err);
-        };
+        BarcodeScanner.hideBackground(); // make background of WebView transparent
+        if (await checkPermission()) {
+            result = await BarcodeScanner.startScan({ targetedFormats: ['DATA_MATRIX'] });
+        }
 
-        const capture = async () => {
+        if (result.hasContent) {
+                console.log('result', result.content);	
+                dispatch('message', result.content);
+                navigate('home');
+        }
+    }
+
+    const checkPermission = async () => {
+        // check or request permission
+        const status = await BarcodeScanner.checkPermission({ force: true });
+        if (status.granted) {
+            // the user granted permission
+            return true;
+        }
+        return false;
+    };
+
+    const startScan2 = async () => {
+        // const hints = new Map();
+        // const formats = [BarcodeFormat.DATA_MATRIX];
+        // hints.set(DecodeHintType.POSSIBLE_FORMATS, formats);
+
+        // const codeReader = new MultiFormatReader();
+        // codeReader.setHints(hints);
+
+        const codeReader = new BrowserMultiFormatReader();
+        console.log('ZXing code reader initialized');
+
+        // "undefined" param to choose main enviroment cam (back camera)
+        codeReader?.decodeFromVideoDevice(undefined, 'video', (result, err) => {
+                if (result) {
+                    console.log(result);
+                    dispatch('message', result.text);
+                    codeReader.reset()
+                    navigate('home');
+                }
+                if (err && !(err instanceof NotFoundException)) {
+                    console.error(err);
+                }
+        });
+    }
+
+
+    const startScan3 = async (init) => {
+        const _capture = async () => {
             if (camera) {
                 const camCapture = await camera.capture();
                 const img = new Image();
                 img.src = `data:image/jpeg;base64,${camCapture.value}`; // comment For testing
                 // img.src = '../assets/DataMatrix.png'; // uncomment to test example data matrix img
+                console.log("IMG", img);
+
                 const reader = new BrowserMultiFormatReader();
                 const result = await reader.decodeFromImage(img);
                 if (result) {
+                    console.log("result", result);
                     dispatch('message', result.text);
-                    await camera.stop();
+
+                    camera.stop();
                     camera = null;
                     navigate('home');
                 } else {
-                    requestAnimationFrame(startScan);
+                    requestAnimationFrame(startScan3);
                 }
             }
         };
+
+        if (typeof init === 'boolean') {
+        try {
+            const { CameraPreview } = Plugins;
+            camera = CameraPreview;
+            await camera.start({ position: 'rear', toBack: true, quality: 100 });
+
+            setTimeout(async () => {
+                try {
+                    await _capture();
+                } catch (err) {
+                    requestAnimationFrame(startScan3);
+                }
+            }, 500);
+        } catch (err) {
+            cameraError = true;
+            console.log(err);
+        }} else {
+            try {
+                await _capture();
+            } catch (err) {
+                requestAnimationFrame(startScan3);
+            }
+        }
     }
 
     onMount(() => {
-        startScan();
+        startScan3(true);
 
-        return async () => {
+        return () => {
             if (camera) {
-                await camera.stop();
+                camera.stop();
                 camera = null;
             }
             if (scanner) {
                 scanner.destroy();
                 scanner = null;
             }
+            // BarcodeScanner.stopScan();
         };
     });
 </script>
@@ -103,6 +166,7 @@
         fill: white;
     }
 
+    
     .video-container {
         position: relative;
         top: 0px;
@@ -110,11 +174,13 @@
         width: auto;
     }
 
+    /* comment if startScan2() chosen onMount */
     .video-container-web {
         left: 50%;
         transform: translate(-50%, 0);
     }
 
+    /* comment if startScan2() chosen onMount */
     .video-container-android {
         left: 100%;
     }
@@ -141,7 +207,8 @@
         <scanner class:enabled="{scanner}">
             <div class="video-container" class:video-container-web="{__WEB__}" class:video-container-android="{__ANDROID__}">
                 <!-- svelte-ignore a11y-media-has-caption -->
-                <video bind:this="{video}" autoplay playsinline></video>
+                <video id="video" bind:this="{video}" autoplay playsinline></video> <!-- comment if startScan2() chosen onMount -->
+                <!-- <video id="video"></video> --> <!-- uncomment if startScan2() chosen onMount -->
             </div>
             <svg width="204" height="204" xmlns="http://www.w3.org/2000/svg">
                 <path
