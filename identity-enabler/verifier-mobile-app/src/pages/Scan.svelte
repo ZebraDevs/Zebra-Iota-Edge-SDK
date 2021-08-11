@@ -9,29 +9,27 @@
     import { __ANDROID__ } from '../lib/platforms';
 
     import Scanner from '../components/Scanner.svelte';
-    import FullScreenLoader from '../components/FullScreenLoader.svelte';
 
     const { Modals, Toast } = Plugins;
 
-    let loading = false;
     let VP = '';
+    let loading = false;
 
     async function handleScannerData(event) {
         try {
-            loading = true;
-            // let parsedData = parse(event.detail);
-            VP = event.detail;
+            let parsedData = parse(event.detail);
+            VP = parsedData;
             console.log("VP", VP);
 
             if (!VP) return goBack();
 
             const identityService = ServiceFactory.get('identity');
             const verificationResult = await identityService.verifyVerifiablePresentation(VP);
-            
+    
             if (verificationResult) {
                 await updateStorage('credentials', { [VP.verifiableCredential.type[1].split(/\b/)[0].toLowerCase()]: VP.verifiableCredential });
+                loading = true;
                 showToast();
-                loading = false;
                 goBack();
             } else {
                 loading = false;
@@ -59,7 +57,7 @@
 	}
 
     function goBack() {
-        navigate('home');
+        navigate('home', { state: { loading: loading }});
     }
 </script>
 
@@ -104,13 +102,9 @@
 </style>
 
 <main transition:fly="{{ y: 200, duration: 500 }}">
-    {#if loading}
-        <FullScreenLoader label="Loading Credential..." />
-    {:else}
-        <header class:ios="{__ANDROID__}">
-            <img on:click="{goBack}" src="../assets/chevron-left.svg" alt="back" />
-            <p>Scanner</p>
-        </header>
-        <Scanner on:message="{handleScannerData}" />
-    {/if}
+    <header class:ios="{__ANDROID__}">
+        <img on:click="{goBack}" src="../assets/chevron-left.svg" alt="back" />
+        <p>Scanner</p>
+    </header>
+    <Scanner on:message="{handleScannerData}" />
 </main>

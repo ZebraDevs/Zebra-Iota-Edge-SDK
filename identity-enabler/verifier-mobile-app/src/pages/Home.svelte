@@ -5,6 +5,7 @@
 	import { slide } from 'svelte/transition';
 	import { getFromStorage } from '../lib/store';
 
+	import FullScreenLoader from '../components/FullScreenLoader.svelte';
 	import Button from '../components/Button.svelte';
 	import ListItem from '../components/ListItem.svelte';
 	import DevInfo from './DevInfo.svelte';
@@ -17,19 +18,23 @@
 	let showCredential = false;
 	let localCredentials = {};
 	let credentialItem = {};
+	let loading = window?.history?.state?.loading;
 
 	onMount(async () => {
 		App.addListener("backButton", function(){}, false);
+		!loading ? loading = false : loading = true;
 		setTimeout(async () => {
 			try {
 				localCredentials = await getFromStorage('credentials');
 				localCredentials = Object.values(localCredentials)?.filter(data => data);
 				console.log('onMount', localCredentials);
 				isEmpty = Object.values(localCredentials).every(x => x === null || x === '');
+				loading = false;
 			} catch (err) {
-				console.log(err)
+				console.log(err);
+				loading = false;
 			}
-		}, 3000); // wait for updateStorage to save
+		}, 5000); // wait for updateStorage to save
     });
 
 	function scan() {
@@ -159,6 +164,10 @@
 </style>
 
 <main>
+	{#if loading}
+		<FullScreenLoader label="Verifying Credential..." />
+	{/if}
+
 	{#if showTutorial}
 		<DevInfo page="Presentation" bind:showTutorial={showTutorial} />
 	{/if}
@@ -170,7 +179,7 @@
 					bind:isEmpty={isEmpty} />
 	{/if}
 
-	{#if !showCredential && !showTutorial}
+	{#if !showCredential && !showTutorial && !loading}
 		<header>
 			<div class="options-wrapper">
 				<img src="../assets/reset.svg" on:click="{onClickReset}" alt="reset" />
@@ -196,7 +205,9 @@
 			{/if}
 		</section>
 		<footer>
-			<Button style="background: #00A7FF; color: white; height: 64px; width: 64px; border-radius: 50%;" onClick="{scan}"><img src="../assets/scan.png" alt="scan" /></Button>
+			<Button style="background: #00A7FF; color: white; height: 64px; width: 64px; border-radius: 50%;" onClick="{scan}">
+				<img src="../assets/scan.png" alt="scan" />
+			</Button>
 		</footer>
 	{/if}
 </main>
