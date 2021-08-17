@@ -9,33 +9,36 @@
     import { __ANDROID__ } from '../lib/platforms';
 
     import Scanner from '../components/Scanner.svelte';
+    import InvalidCredential from '../components/InvalidCredential.svelte';
+    import FullScreenLoader from '../components/FullScreenLoader.svelte';
 
-    const { Modals, Toast } = Plugins;
+    const { Toast } = Plugins;
 
     let VP = '';
+    let invalid = false;
     let loading = false;
 
     async function handleScannerData(event) {
         try {
+            loading = true;
             let parsedData = parse(event.detail);
             VP = parsedData;
             console.log("VP", VP);
 
-            if (!VP) return goBack();
+            if (!VP) return showAlert();
 
             const identityService = ServiceFactory.get('identity');
             const verificationResult = await identityService.verifyVerifiablePresentation(VP);
     
             if (verificationResult) {
                 await updateStorage('credentials', { [VP.verifiableCredential.type[1].split(/\b/)[0].toLowerCase()]: VP.verifiableCredential });
-                loading = true;
                 showToast();
+                loading = false;
                 goBack();
             } else {
                 loading = false;
-                await showAlert();
+                showAlert();
                 error.set('Invalid Data Matrix');
-                goBack();
             }
         } catch (err) {
             console.error(err);
@@ -49,15 +52,13 @@
         });
     }
 
-    async function showAlert() {
-		await Modals.alert({
-			title: 'Unable to fetch the credential',
-			message: 'Invalid Data Matrix'
-		});
+    function showAlert() {
+        invalid = true;
+        loading = false;
 	}
 
     function goBack() {
-        navigate('home', { state: { loading: loading }});
+        navigate('home');
     }
 </script>
 
@@ -102,9 +103,19 @@
 </style>
 
 <main transition:fly="{{ y: 200, duration: 500 }}">
+    {#if loading}
+		<FullScreenLoader label="Verifying Credential..." />
+	{/if}
+
+    {#if invalid && !loading}
+		<InvalidCredential />
+	{/if}
+
+    {#if !invalid && !loading}
     <header class:ios="{__ANDROID__}">
         <img on:click="{goBack}" src="../assets/chevron-left.svg" alt="back" />
         <p>Scanner</p>
     </header>
     <Scanner on:message="{handleScannerData}" />
+    {/if}
 </main>

@@ -1,7 +1,6 @@
 <script>
     import { Plugins } from '@capacitor/core';
     import { createEventDispatcher, onMount } from 'svelte';
-    import { navigate } from "svelte-routing";
     import { BrowserMultiFormatReader, BarcodeFormat, MultiFormatReader, RGBLuminanceSource, BinaryBitmap, HybridBinarizer, DecodeHintType } from '@zxing/library';
 
     import { __ANDROID__, __WEB__ } from '../lib/platforms';
@@ -24,7 +23,6 @@
         if (result.hasContent) {
                 console.log('result', result.content);	
                 dispatch('message', result.content);
-                navigate('home');
         }
     }
 
@@ -55,14 +53,12 @@
                     console.log(result);
                     dispatch('message', result.text);
                     codeReader.reset()
-                    navigate('home');
                 }
                 if (err && !(err instanceof NotFoundException)) {
                     console.error(err);
                 }
         });
-    }
-
+    };
 
     const startScan3 = async (init) => {
         const _capture = async () => {
@@ -75,13 +71,12 @@
 
                 const reader = new BrowserMultiFormatReader();
                 const result = await reader.decodeFromImage(img);
-                if (result) {
+                if (result) {                    
                     console.log("result", result);
                     dispatch('message', result.text);
 
                     camera.stop();
                     camera = null;
-                    navigate('home');
                 } else {
                     requestAnimationFrame(startScan3);
                 }
