@@ -2,6 +2,7 @@
   export let onClick;
   export let heading;
   export let subheading;
+  export let expired;
 </script>
 
 <style>
@@ -65,9 +66,15 @@
 </style>
 
 <li on:click="{onClick}">
-  <span class="icon">
-    <img class="arrow" src="../assets/tick.svg" alt="valid" />
-  </span>
+  {#if !expired}
+    <span class="icon">
+      <img class="arrow" src="../assets/tick.svg" alt="valid" />
+    </span>
+  {:else}
+    <span class="icon">
+      <img class="arrow" src="../assets/expire-small.svg" alt="expired" />
+    </span>
+  {/if}
   <div>
       <h5>{heading}</h5>
       <h6>{subheading}</h6>

@@ -4,6 +4,7 @@
 	import { navigate } from "svelte-routing";
 	import { slide } from 'svelte/transition';
 	import { getFromStorage } from '../lib/store';
+	import { isExpired } from '../lib/helpers';
 
 	import FullScreenLoader from '../components/FullScreenLoader.svelte';
 	import Button from '../components/Button.svelte';
@@ -14,17 +15,18 @@
 	const { App, Modals } = Plugins;
 
 	let isEmpty = false;
+	let expired = false;
 	let showTutorial = false;
 	let showCredential = false;
 	let localCredentials = {};
 	let credentialItem = {};
-	let loading = window?.history?.state?.loading;
+	let loading = false;
 
 	onMount(async () => {
 		App.addListener("backButton", function(){}, false);
-		!loading ? loading = false : loading = true;
 		setTimeout(async () => {
 			try {
+				loading = true;
 				localCredentials = await getFromStorage('credentials');
 				localCredentials = Object.values(localCredentials)?.filter(data => data);
 				console.log('onMount', localCredentials);
@@ -34,7 +36,7 @@
 				console.log(err);
 				loading = false;
 			}
-		}, 5000); // wait for updateStorage to save
+		}, 0);
     });
 
 	function scan() {
@@ -46,8 +48,9 @@
 	}
 
 	function onClickCredential(credential) {
-		showCredential = true;
+		expired = isExpired(credential.issuanceDate);
 		credentialItem = credential;
+		showCredential = true;
 	}
 
 	async function onClickReset() {
@@ -165,7 +168,7 @@
 
 <main>
 	{#if loading}
-		<FullScreenLoader label="Verifying Credential..." />
+		<FullScreenLoader label="loading Credentials..." />
 	{/if}
 
 	{#if showTutorial}
@@ -173,7 +176,8 @@
 	{/if}
 	
 	{#if showCredential}
-		<Credential localCredential={credentialItem} 
+		<Credential expired={expired}
+					localCredential={credentialItem}
 					bind:showCredential={showCredential} 
 					bind:localCredentials={localCredentials} 
 					bind:isEmpty={isEmpty} />
@@ -199,6 +203,7 @@
 							onClick="{() => onClickCredential(credential)}"
 							heading="{"IOTA"}"
 							subheading="{credential.type[1]}"
+							expired={isExpired(credential.issuanceDate)}
 						/>
 					</div>
 				{/each}

@@ -125,6 +125,32 @@ export function flattenObj(ob) {
     return result;
 };
 
+/**
+ * fetch markdown text
+ */
 export async function getMarkdownContent(url): Promise<any> {
     return fetch(url).then(res => res.text());
 };
+
+/**
+ * check if Credential is expired
+ */
+export function isExpired(date: Date): Boolean  {
+    const expiryDate = addDaysToDate(date, 30);
+    const today = new Date();
+    
+    if (today.getTime() > expiryDate.getTime()) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+/**
+ * add number of days to a date
+ */
+export function addDaysToDate(date: Date, days: number): Date {
+    let res = new Date(date);
+    res.setDate(res.getDate() + days);
+    return res;
+}

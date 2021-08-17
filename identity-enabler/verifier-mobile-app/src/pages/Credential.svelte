@@ -1,5 +1,5 @@
 <script>
-    import { onMount, beforeUpdate } from 'svelte';
+    import { beforeUpdate } from 'svelte';
     import { fly } from 'svelte/transition';
     import { Plugins } from '@capacitor/core';
 
@@ -11,32 +11,12 @@
 
     const { App, Modals } = Plugins;
 
-    let expired = false;
     let showTutorial = false;
-    export let showCredential = Boolean;
+    export let showCredential;
     export let localCredential = {};
     export let localCredentials = {};
-    export let isEmpty = Boolean;
-
-    onMount(() => {
-        expired = isExpired();
-    });
-
-    function isExpired() {
-        const expiryDate = addDaysToDate(localCredential.issuanceDate, 30);
-        const today = new Date();
-        if (today.getTime() > expiryDate.getTime()) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    function addDaysToDate(date, days) {
-		let res = new Date(date);
-        res.setDate(res.getDate() + days);
-        return res;
-	}
+    export let isEmpty;
+    export let expired;
 
     async function onDelete() {
 		let confirmRet = await Modals.confirm({
