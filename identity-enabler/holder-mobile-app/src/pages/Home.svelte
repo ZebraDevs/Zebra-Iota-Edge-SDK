@@ -1,6 +1,7 @@
 <script>
 	import { Plugins } from '@capacitor/core';
 	import { onMount } from 'svelte';
+	import { slide } from 'svelte/transition';
 	import { navigate } from "svelte-routing";
 
 	import Button from '../components/Button.svelte';
@@ -12,7 +13,7 @@
 
 	import { ServiceFactory } from '../factories/serviceFactory';
 	import { SchemaNames } from '../schemas';
-	import { updateStorage, getFromStorage, storedCredentials, error, account } from '../lib/store';
+	import { updateStorage, getFromStorage, account } from '../lib/store';
 	import { getRandomUserData, generateRandomId } from '../lib/helpers';
 
     let showTutorial = false;
@@ -56,8 +57,7 @@
 				case "blood":
 					schema = SchemaNames.BLOOD_TEST;
 					payload = credentialPayload.blood;
-					break;
-				
+					break;	
 				case "personal":
 				default:
 					const userData = await getRandomUserData();
@@ -121,6 +121,10 @@
 			navigate('landing');
 		}
 	}
+
+	function scan() {
+        navigate('scan');
+    }
 </script>
 
 <style>
@@ -148,6 +152,7 @@
 			overflow-y: auto;
 			-webkit-overflow-scrolling: touch;
 			background: #F8F8F8;
+			z-index: 2;
 	}
 
 	.logo {
@@ -205,10 +210,25 @@
 		margin-left: auto;
 	}
 
+	.scan {
+		margin: 0 !important;
+	}
+
 	.btn-wrapper {
 		height: 72px;
 		padding: 0 20px;
     }
+
+	footer {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 100%;
+		bottom: 0;
+		padding: 2.1vh 0 4.1vh 0;
+		z-index: 3;
+		background: #F8F8F8;
+	}
 </style>
 
 <main>
@@ -221,36 +241,40 @@
 	{/if}
 
 	{#if !loading}
-	<header>
-		<div class="options-wrapper">
-			<img src="../assets/reset.svg" on:click="{onClickReset}" alt="reset" /> 
-			<img class="code" src="../assets/code.svg" on:click="{onClickDev}" alt="code" />
-		</div>
-		<div class="logo"><img src="../assets/person.png" alt="logo" /></div>
-	</header>
-	<name-wrapper>
-		<p>{$account.name}</p>
-	</name-wrapper>
-	<section>
-			{#each Object.values(localCredentials) as credential}
-			<div class="list">
-					<ListItem
-							onClick="{() => navigate('credential', { state: { credential }})}"
-							heading="{credential.enrichment ? credential.enrichment.issuerLabel : ''}"
-							subheading="{credential.enrichment ? credential.enrichment.credentialLabel : ''}"
-					/>
+		<header>
+			<div class="options-wrapper">
+				<img src="../assets/reset.svg" on:click="{onClickReset}" alt="reset" /> 
+				<img class="code" src="../assets/code.svg" on:click="{onClickDev}" alt="code" />
 			</div>
-			{/each}
-			{#if Object.values(localCredentials).length < 3}
-				<div class="btn-wrapper">
-					<Button style="background: white; color: #051923; display: flex; justify-content: flex-start; padding-left: 20px;" 
-							label="Add new credential" 
-							onClick="{generateCredential}"
-					>
-						<img class="add" src="../assets/add.png" alt="add" />
-					</Button>
-				</div>
-			{/if}
-	</section>
+			<div class="logo"><img src="../assets/person.png" alt="logo" /></div>
+		</header>
+		<name-wrapper>
+			<p>{$account.name}</p>
+		</name-wrapper>
+		<section>
+				{#each Object.values(localCredentials) as credential}
+					<div transition:slide class="list">
+							<ListItem
+								onClick="{() => navigate('credential', { state: { credential }})}"
+								heading="{credential.enrichment ? credential.enrichment.issuerLabel : ''}"
+								subheading="{credential.enrichment ? credential.enrichment.credentialLabel : ''}"
+							/>
+					</div>
+				{/each}
+				{#if Object.values(localCredentials).length < 3}
+					<div class="btn-wrapper">
+						<Button style="background: white; color: #051923; display: flex; justify-content: flex-start; padding-left: 20px;" 
+								label="Add new credential" 
+								onClick="{generateCredential}">
+							<img class="add" src="../assets/add.png" alt="add" />
+						</Button>
+					</div>
+				{/if}
+		</section>
+		<footer>
+			<Button style="background: #00A7FF; color: white; height: 64px; width: 64px; border-radius: 50%;" onClick="{scan}">
+				<img class="scan" src="../assets/scan.png" alt="scan" />
+			</Button>
+		</footer>
 	{/if}
 </main>

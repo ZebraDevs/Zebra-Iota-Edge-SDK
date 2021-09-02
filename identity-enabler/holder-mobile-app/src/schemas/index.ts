@@ -4,7 +4,59 @@ export enum SchemaNames {
     PERSONAL_DATA = 'Personal Information',
     HEALTH_TEST = 'Health Test',
     BLOOD_TEST = 'Blood Test',
+    Organisation_ID = 'Organisation ID',
 }
+
+export const OrganisationDataSchema = {
+    type: 'object',
+    required: ['DID'],
+    properties: {
+        'Organisation name': {
+            type: 'string',
+        },
+        'Organisation number': {
+            type: 'number',
+        },
+        'Organization type': {
+            type: 'string',
+        },
+        Industry: {
+            type: 'string',
+        },
+        'Incorporated on': {
+            type: 'string',
+        },
+        'Registered office address': {
+            type: 'string',
+        },
+        DeviceData: {
+            type: 'object',
+            properties: {
+                id: {
+                    type: 'string',
+                },
+                'Device Name': {
+                    type: 'string',
+                },
+                Manufacturer: {
+                    type: 'string',
+                },
+                'Serial Number': {
+                    type: 'string',
+                },
+                'Operating System': {
+                    type: 'string',
+                },
+                Model: {
+                    type: 'string',
+                },
+                'OS Version': {
+                    type: 'string',
+                },
+            },
+        },
+    },
+};
 
 export const PersonalDataSchema = {
     type: 'object',
@@ -148,6 +200,7 @@ export const Schemas = {
     [SchemaNames.PERSONAL_DATA]: PersonalDataSchema,
     [SchemaNames.HEALTH_TEST]: HealthTestSchema,
     [SchemaNames.BLOOD_TEST]: BloodTestSchema,
+    [SchemaNames.Organisation_ID]: OrganisationDataSchema,
 };
 
 export const DIDMapping: { [DID: string]: { logo: string; issuerLabel: string; theme: string } } = {

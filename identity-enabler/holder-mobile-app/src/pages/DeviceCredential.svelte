@@ -1,30 +1,59 @@
 <script>
     import { navigate } from "svelte-routing";
     import { beforeUpdate } from 'svelte';
-    import { fly } from 'svelte/transition';
     import { Plugins } from '@capacitor/core';
+
+    import { updateStorage, error } from '../lib/store';
+    import { SchemaNames } from '../schemas';
+    import { ServiceFactory } from '../factories/serviceFactory';
+    import { generateRandomId } from '../lib/helpers';
+
+    import FullScreenLoader from '../components/FullScreenLoader.svelte';
     import Button from '../components/Button.svelte';
     import ObjectList from '../components/ObjectList.svelte';
     import DevInfo from './DevInfo.svelte';
-    
-    import { modalStatus } from '../lib/store';
-
-    import { ServiceFactory } from '../factories/serviceFactory';
 
     const { App } = Plugins;
 
     let showTutorial = false;
+    let loading = false;
 
-    const credential = window.history.state.credential;
-	const identityService = ServiceFactory.get('identity');
-    const preparedCredentialDocument = identityService.prepareCredentialForDisplay(credential.credentialDocument);
+    const claims = window.history.state.claims;
 
-    function share() {
-        modalStatus.set({ 
-            active: true, 
-            type: 'share', 
-            props: { credential }
-        });
+    async function createCredential() {
+        loading = true;
+		const identityService = ServiceFactory.get('identity');
+		error.set(null);
+		try {
+			const storedIdentity = await identityService.retrieveIdentity();
+            const payload = {
+                DeviceData: {
+                    'Device ID': claims.id,
+                    'Device Name': claims.deviceName,
+                    Manufacturer: claims.manufacturer,
+                    'Serial Number': claims.uuid,
+                    'Operating System': claims.operatingSystem,
+                    Model: claims.model,
+                    'OS Version': claims.osVersion,
+                }
+            };
+			const newCredential = await identityService.createSelfSignedCredential(storedIdentity, SchemaNames.Organisation_ID, payload);
+			const credentialId = generateRandomId();
+            const enrichment = identityService.enrichCredential({ ...newCredential });
+			const credential = {
+				credentialDocument: { ...newCredential },
+				metaInformation: { issuer: 'Zebra Technologies' },
+				id: credentialId,
+				enrichment
+			};
+			console.log('new credential', credential);
+			await updateStorage('credentials', { ['organization']: credential });
+            loading = false;
+            navigate('createPresentation', { state: { credential }});
+		} catch (err) {
+			error.set('Error creating credential. Please try again.');
+			loading = false;
+		}
     }
 
     function goBack() {
@@ -105,10 +134,6 @@
         z-index: 6;
     }
 
-    .credential-logo {
-        width: 10%;
-    }
-
     .options-wrapper {
 		display: flex;
 		flex-direction: row;
@@ -118,7 +143,11 @@
     }
 </style>
 
-<main transition:fly="{{ x: 500, duration: 500 }}">
+<main>
+    {#if loading}
+		<FullScreenLoader label="Loading Credential..." />
+	{/if}
+
     {#if showTutorial}
 		<DevInfo page="Credential" bind:showTutorial={showTutorial} />
 	{/if}
@@ -129,25 +158,15 @@
 			<img src="../assets/chevron-left.svg" on:click="{goBack}" alt="chevron-left" />
             <img src="../assets/code.svg" on:click="{onClickDev}" alt="code" />
 		</div>
-			<header>
-                {#if credential.enrichment.credentialLabel === 'Organisation ID'}
-                    <img class="credential-logo" src="../assets/zebra.svg" alt="credential-logo" />
-                    <p>{credential.metaInformation.issuer.toUpperCase()}</p>
-                {:else}
-                    <img class="credential-logo" src="../assets/credentialLarge.svg" alt="credential-logo" />
-                    <p>{credential.enrichment.issuerLabel}</p>
-                {/if}
-				<p>{credential.enrichment.credentialLabel}</p>
-                <p>{new Date(preparedCredentialDocument.issuanceDate).toLocaleString()}</p>           
-			</header>
+        <header>
+            <p>Device {claims.deviceName} claims</p>
+        </header>
         <section>
-            <ObjectList object="{preparedCredentialDocument.credentialSubject}" />
+            <ObjectList object="{claims}" />
         </section>
     </div>
     <footer>
-        <Button style="background: #0099FF; color: white;" label="Share" onClick="{share}">
-            <img src="../assets/share.png" alt="share" />
-        </Button>
+        <Button style="background: #0099FF; color: white;" label="Issue Device ID credential" onClick="{createCredential}" />
     </footer>
     {/if}
 </main>

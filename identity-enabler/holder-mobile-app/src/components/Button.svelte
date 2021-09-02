@@ -38,6 +38,8 @@
         <Spinner />
     {:else}
         <slot></slot>
-        {label}
+        {#if label}
+            {label}
+        {/if}
     {/if}
 </button>
