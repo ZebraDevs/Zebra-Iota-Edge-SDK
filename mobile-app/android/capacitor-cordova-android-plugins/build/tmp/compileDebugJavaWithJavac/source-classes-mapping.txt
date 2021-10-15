@@ -1,2 +1,0 @@
-capacitor/android/plugins/BuildConfig.java
- capacitor.android.plugins.BuildConfig
