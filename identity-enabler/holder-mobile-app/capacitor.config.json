@@ -6,12 +6,12 @@
   "webDir": "public",
   "plugins": {
     "SplashScreen": {
-      "launchAutoHide": true
+      "launchShowDuration": 0
     }
   },
   "cordova": {},
   "server": {
-    "url": "http://10.0.2.2:5000",
+    "url": "http://10.0.2.2:5001",
     "cleartext": true
   }
 }

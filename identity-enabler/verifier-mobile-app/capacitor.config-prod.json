@@ -1,0 +1,13 @@
+{
+  "appId": "org.iota.zebra",
+  "appName": "IOTA Identity: Verifier",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "public",
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 0
+    }
+  },
+  "cordova": {}
+}

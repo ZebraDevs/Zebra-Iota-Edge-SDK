@@ -1,0 +1,5 @@
+com/hello/svelte/MainActivity.java
+ com.hello.svelte.MainActivity
+ com.hello.svelte.MainActivity$1
+com/hello/svelte/BuildConfig.java
+ com.hello.svelte.BuildConfig

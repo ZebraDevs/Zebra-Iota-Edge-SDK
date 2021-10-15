@@ -1,0 +1,17 @@
+<component name="libraryTable">
+  <library name="Gradle: androidx.print:print:1.0.0@aar">
+    <ANNOTATIONS>
+      <root url="jar://$PROJECT_DIR$/../../../gradle-6.5-all/gradle-6.5/caches/transforms-2/files-2.1/babe6b40a2881827f7f2f42c877c6e4b/print-1.0.0/annotations.zip!/" />
+    </ANNOTATIONS>
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../../../gradle-6.5-all/gradle-6.5/caches/transforms-2/files-2.1/6dd4de7fc3225e55d58846adf9ecb0a7/print-1.0.0/res" />
+      <root url="file://$PROJECT_DIR$/../../../gradle-6.5-all/gradle-6.5/caches/transforms-2/files-2.1/babe6b40a2881827f7f2f42c877c6e4b/print-1.0.0/res" />
+      <root url="file://$PROJECT_DIR$/../../../gradle-6.5-all/gradle-6.5/caches/transforms-2/files-2.1/babe6b40a2881827f7f2f42c877c6e4b/print-1.0.0/AndroidManifest.xml" />
+      <root url="jar://$PROJECT_DIR$/../../../gradle-6.5-all/gradle-6.5/caches/transforms-2/files-2.1/babe6b40a2881827f7f2f42c877c6e4b/print-1.0.0/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../../../gradle-6.5-all/gradle-6.5/caches/modules-2/files-2.1/androidx.print/print/1.0.0/71fc2d9acf7cce6b96230c5af263268b1664914a/print-1.0.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

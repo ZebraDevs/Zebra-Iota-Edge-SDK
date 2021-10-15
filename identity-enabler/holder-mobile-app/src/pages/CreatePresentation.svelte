@@ -27,7 +27,8 @@
 			bwipjs.toCanvas('presentation', {
 					bcid: 'datamatrix',
 					text: content,
-					scale: 3
+					scale: 3,
+					padding: 20
 			});
 		} catch (e) {
 				console.error(e)

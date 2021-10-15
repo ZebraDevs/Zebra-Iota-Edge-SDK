@@ -1,0 +1,17 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:amazon="http://schemas.amazon.com/apk/res/android"
+3    xmlns:android="http://schemas.android.com/apk/res/android"
+4    package="capacitor.android.plugins" >
+5
+6    <uses-sdk
+7        android:minSdkVersion="21"
+7-->/Users/kimoemad/Downloads/zebra-iota-edge-sdk/mobile-app/android/capacitor-cordova-android-plugins/src/main/AndroidManifest.xml
+8        android:targetSdkVersion="29" />
+8-->/Users/kimoemad/Downloads/zebra-iota-edge-sdk/mobile-app/android/capacitor-cordova-android-plugins/src/main/AndroidManifest.xml
+9
+10    <application android:usesCleartextTraffic="true" >
+10-->/Users/kimoemad/Downloads/zebra-iota-edge-sdk/mobile-app/android/capacitor-cordova-android-plugins/src/main/AndroidManifest.xml:5:1-7:15
+10-->/Users/kimoemad/Downloads/zebra-iota-edge-sdk/mobile-app/android/capacitor-cordova-android-plugins/src/main/AndroidManifest.xml:5:15-50
+11    </application>
+12
+13</manifest>
