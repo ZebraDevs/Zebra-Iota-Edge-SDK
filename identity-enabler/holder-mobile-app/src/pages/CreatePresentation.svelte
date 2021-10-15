@@ -99,12 +99,21 @@
 		height: 0px;
 	}
 
+	header {
+        z-index: 1;
+        height: fit-content;
+        margin-bottom: 0;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+    }
+
 	header > p {
 		margin: 1.5vh 0 6.2vh 0;
 		font-family: 'Proxima Nova', sans-serif;
 		font-weight: 700;
-		font-size: 5vw;
-		line-height: 5vw;
+		font-size: 2.4vh;
+		line-height: 2.4vh;
 		color: #fff;
 		padding: 0;
 	}
@@ -112,8 +121,8 @@
 	header > span {
 		font-family: 'Proxima Nova', sans-serif;
 		font-weight: 600;
-		font-size: 1.7vh;
-		line-height: 2.3vh;
+		font-size: 1.4vh;
+		line-height: 1.8vh;
 		color: #fff;
 	}
 
@@ -123,7 +132,7 @@
 	}
 
 	.credential-logo {
-        width: 15%;
+        width: 10%;
 		margin-bottom: 1.5vh;
 	}
 
@@ -136,6 +145,7 @@
 		align-items: center;
 		justify-content: center;
 		width: 100%;
+		bottom: 1.5vh;
 	}
 
 	@media (min-width: 640px) {
@@ -152,6 +162,14 @@
 		font-weight: 500;
 		font-size: 2.9vh;
 		line-height: 3.5vh;
+	}
+
+	footer > span {
+		color: #fff;
+		margin-top: 5.4vh;
+		font-family: 'Proxima Nova', sans-serif;
+		font-weight: 500;
+		font-size: 1.7vh;
 	}
 
 	.options-wrapper {
@@ -186,20 +204,28 @@
 					<img src="../assets/chevron-left.svg" on:click="{goBack}" alt="chevron-left" />
 					<img src="../assets/code.svg" on:click="{onClickDev}" alt="code" />
 				</div>
-				<div class="header">
-					<img class="credential-logo" src="../assets/credentialLarge.svg" alt="credential-logo" />
-					<header>
-							<span>{credential.enrichment.issuerLabel.toUpperCase()}</span>
-							<p>{credential.enrichment.credentialLabel}</p>
-					</header>
-				</div>
+				<header>
+					{#if credential.enrichment.credentialLabel === 'Organisation ID'}
+						<img class="credential-logo" src="../assets/zebra.svg" alt="credential-logo" />
+						<span>{credential.metaInformation.issuer.toUpperCase()}</span>
+					{:else}
+						<img class="credential-logo" src="../assets/credentialLarge.svg" alt="credential-logo" />
+						<span>{credential.enrichment.issuerLabel.toUpperCase()}</span>
+					{/if}
+					<p>{credential.enrichment.credentialLabel}</p>
+				</header>
 			{/if}
 			<div class="presentation-wrapper">
 				<canvas id="presentation"></canvas>
 			</div>
 			{#if !loading}
 				<footer class="footerContainer">
-					<p>Valid until {addDaysToDate(preparedCredentialDocument.issuanceDate, 30)}</p>
+					{#if credential.enrichment.credentialLabel === 'Organisation ID'}
+						<span>Scan this Barcode with the Device ID app</span>
+						<p>Valid until {addDaysToDate(preparedCredentialDocument.issuanceDate, 30)}</p>
+					{:else}
+						<p>Valid until {addDaysToDate(preparedCredentialDocument.issuanceDate, 30)}</p>
+					{/if}
 					<Button style="background: transparent; color: white; font-weight: 500; font-size: 1.7vh; line-height: 2.3vh; border: none; height:fit-content;" 
 							label="VIEW IN JSON FORMAT" 
 							onClick="{onClickJSON}" />

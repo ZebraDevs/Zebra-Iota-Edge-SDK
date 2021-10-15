@@ -1,6 +1,7 @@
 <script>
     import { navigate } from "svelte-routing";
     import { beforeUpdate } from 'svelte';
+    import { fly } from 'svelte/transition';
     import { Plugins } from '@capacitor/core';
     import Button from '../components/Button.svelte';
     import ObjectList from '../components/ObjectList.svelte';
@@ -61,9 +62,6 @@
     }
 
     header {
-        position: absolute;
-        left: 0;
-        right: 0;
         margin-left: auto;
         margin-right: auto;
         z-index: 1;
@@ -108,7 +106,7 @@
     }
 
     .credential-logo {
-        width: 15%;
+        width: 10%;
     }
 
     .options-wrapper {
@@ -120,7 +118,7 @@
     }
 </style>
 
-<main>
+<main transition:fly="{{ x: 500, duration: 500 }}">
     {#if showTutorial}
 		<DevInfo page="Credential" bind:showTutorial={showTutorial} />
 	{/if}
@@ -131,12 +129,17 @@
 			<img src="../assets/chevron-left.svg" on:click="{goBack}" alt="chevron-left" />
             <img src="../assets/code.svg" on:click="{onClickDev}" alt="code" />
 		</div>
-        <header>
-            <img class="credential-logo" src="../assets/credentialLarge.svg" alt="credential-logo" />
-                <p>{credential.enrichment.issuerLabel}</p>
-                <p>{credential.enrichment.credentialLabel}</p>
-                <p>{new Date(preparedCredentialDocument.issuanceDate).toLocaleString()}</p>
-        </header>
+			<header>
+                {#if credential.enrichment.credentialLabel === 'Organisation ID'}
+                    <img class="credential-logo" src="../assets/zebra.svg" alt="credential-logo" />
+                    <p>{credential.metaInformation.issuer.toUpperCase()}</p>
+                {:else}
+                    <img class="credential-logo" src="../assets/credentialLarge.svg" alt="credential-logo" />
+                    <p>{credential.enrichment.issuerLabel}</p>
+                {/if}
+				<p>{credential.enrichment.credentialLabel}</p>
+                <p>{new Date(preparedCredentialDocument.issuanceDate).toLocaleString()}</p>           
+			</header>
         <section>
             <ObjectList object="{preparedCredentialDocument.credentialSubject}" />
         </section>

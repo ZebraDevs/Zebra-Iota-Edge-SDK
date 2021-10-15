@@ -13,7 +13,9 @@
 	import PresentationJSON from './pages/PresentationJSON.svelte';
 	import DataMatrix from './pages/DataMatrix.svelte';
 	import Credential from './pages/Credential.svelte';
+	import DeviceCredential from './pages/DeviceCredential.svelte';
 	import DevInfo from './pages/DevInfo.svelte';
+	import Scan from './pages/Scan.svelte';
 	import Content from './components/modal/Content.svelte';
 	import Modal from './components/modal/Index.svelte';
 
@@ -52,7 +54,10 @@
 			<Route path="/landing" component="{Landing}" />
 			<Route path="/name" component="{Name}" />
 			<Route path="/credential" component="{Credential}" />
+			<Route path="/devicecredential" component="{DeviceCredential}" />
 			<Route path="/datamatrix" component="{DataMatrix}" />
+
+			<Route route="/scan" component="{Scan}" />
 
 			<Route path="/devinfo" component="{DevInfo}" />
 			<Route path="/presentationjson" component="{PresentationJSON}" />

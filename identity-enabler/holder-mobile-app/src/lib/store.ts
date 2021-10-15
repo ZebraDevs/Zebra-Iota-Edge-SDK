@@ -51,12 +51,13 @@ export const listOfCredentials = persistent<{ init: boolean; values: string[] }>
     (value) => ({ ...value, init: false })
 );
 
-export const credentials = persistent<{ personal: string, health: string, blood: string }>(
+export const credentials = persistent<{ personal: string, health: string, blood: string, organization: string }>(
     'credentials',
     {
         personal: '',
         health: '',
-        blood: ''
+        blood: '',
+        organization: ''
     },
 );
 
