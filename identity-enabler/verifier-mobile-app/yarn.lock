@@ -960,10 +960,10 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz#b520529ec21d8e5945a1851dfd1c32e94e39ff45"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
 
-"@iota/identity-wasm@0.3.1":
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/@iota/identity-wasm/-/identity-wasm-0.3.1.tgz#9dd06c8cfc92fcf7f64716169a50addb74b54ffc"
-  integrity sha512-aM1iaUjy/6gBFwam+Mvun51vPMT2KyzMwH8z0GUK1B4WydISHnFYYiGV+KVsygIRXAId/FfnQ5dmpNTpIw/B2g==
+"@iota/identity-wasm@~0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@iota/identity-wasm/-/identity-wasm-0.4.0.tgz#6a1f48fc47e8d8f0096e68fb594a85c7d236186e"
+  integrity sha512-XARUBfAXgiBPnDxsq3loDcToK7fo6QcyaOgKIpV+HIjiuTZvUoJQqDSx6kkqWA+LiaEVnxQbgkUt8IxTbsG7lg==
   dependencies:
     node-fetch "^2.6.0"
 

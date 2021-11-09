@@ -52,7 +52,7 @@
     "@capacitor-community/camera-preview": "1.2.1",
     "@capacitor/android": "^2.4.7",
     "@capacitor/core": "^2.4.7",
-    "@iota/identity-wasm": "0.3.1",
+    "@iota/identity-wasm": "~0.4.0",
     "@rollup/plugin-json": "^4.1.0",
     "@zxing/library": "^0.18.6",
     "bwip-js": "^3.0.0",

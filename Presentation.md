@@ -8,13 +8,13 @@ const identityService = ServiceFactory.get('identity');
 const storedIdentity = await identityService.retrieveIdentity();
 ```
 
-1. Retrieve stored **Credential** from the Keychain. 
+2. Retrieve stored **Credential** from the Keychain.
 
 ```js
 const storedCredential = await identityService.retrieveCredential('credentialId');
 ```
 
-3. Generate a new verifiable presentation by invoking the **`createVerifiablePresentation(identiy, credentialDocument)`** function from the **`identityService`**.  
+3. A new verifiable presentation by invoking the **`createVerifiablePresentation(identity, credentialDocument)`** function from the **`identityService`**.  
 
 Please use the `storedIdentity` from the **Step 1**
 

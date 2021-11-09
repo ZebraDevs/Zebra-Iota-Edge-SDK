@@ -21,7 +21,7 @@
 	const identityService = ServiceFactory.get('identity');
 	const preparedCredentialDocument = identityService.prepareCredentialForDisplay(credential.credentialDocument);
 
-	async function createMatrix(content) {
+	function createMatrix(content) {
 		try {
 			// The return value is the canvas element
 			bwipjs.toCanvas('presentation', {
@@ -51,7 +51,7 @@
 				const verifiablePresentation = await identityService.createVerifiablePresentation(storedIdentity, credential?.credentialDocument);
 				console.log('verifiablePresentation', verifiablePresentation)
 				presentationJSON = JSON.stringify(verifiablePresentation, null, 2);
-				await createMatrix(presentationJSON);
+				createMatrix(JSON.stringify(verifiablePresentation));
 				loading = false;
 			} catch (err) {
 				error.set('Error creating identity. Please try again.');
