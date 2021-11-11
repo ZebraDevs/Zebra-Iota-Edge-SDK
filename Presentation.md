@@ -14,7 +14,7 @@ const storedIdentity = await identityService.retrieveIdentity();
 const storedCredential = await identityService.retrieveCredential('credentialId');
 ```
 
-3. A new verifiable presentation by invoking the **`createVerifiablePresentation(identity, credentialDocument)`** function from the **`identityService`**.  
+3. Generate a new verifiable presentation by invoking the **`createVerifiablePresentation(identity, credentialDocument)`** function from the **`identityService`**.  
 
 Please use the `storedIdentity` from the **Step 1**
 
