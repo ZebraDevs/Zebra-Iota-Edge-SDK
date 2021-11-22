@@ -1,6 +1,9 @@
 {
   "name": "zebra-iota-edge-sdk",
   "version": "0.1.0",
+  "exports": {
+		"./package.json": "./package.json"
+	},
   "scripts": {
     "build": "rollup -c",
     "build:dev": "rollup -c -w",
