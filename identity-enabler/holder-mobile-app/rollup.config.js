@@ -44,13 +44,6 @@ export default {
 	},
 	plugins: [
 		svelte({
-			// enable run-time checks when not in production
-			dev: !production,
-			// we'll extract any component CSS out into
-			// a separate file - better for performance
-			css: css => {
-				css.write('bundle.css');
-			},
 			compilerOptions: {
 				// enable run-time checks when not in production
 				dev: !production,
@@ -68,7 +61,7 @@ export default {
 			}]
 		}),
 		wasm({
-		  	sync: ['node_modules/@iota/identity-wasm/web/identity_wasm_bg.wasm', 'identity_wasm_bg.wasm'],
+			sync: ['node_modules/@iota/identity-wasm/web/identity_wasm_bg.wasm', 'identity_wasm_bg.wasm'],
 		}),
 		json(),
 		string({
