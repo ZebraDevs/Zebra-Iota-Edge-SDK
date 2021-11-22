@@ -117,7 +117,11 @@
 			message: 'Are you sure you want to reset the app and delete all credentials?'
 		});
 		if (confirmRet.value) {
-			localStorage.clear();
+			localStorage.setItem('credentials', JSON.stringify({
+				personal: '',
+				health: '',
+				blood: ''
+			}));
 			navigate('landing');
 		}
 	}
