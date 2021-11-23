@@ -6,22 +6,44 @@ import type { Identity, IdentityConfig, VerifiableCredentialEnrichment } from '.
 import * as IotaIdentity from '@iota/identity-wasm/web';
 
 const {
+    Client,
+    Config,
     Digest,
     Document,
     KeyCollection,
     KeyType,
     KeyPair,
+    Network,
     VerificationMethod,
     VerifiableCredential,
     VerifiablePresentation,
 } = IotaIdentity;
 
 export class IdentityService {
-	private readonly config: IdentityConfig;
+    private client?: IotaIdentity.Client;
+    private readonly config: IdentityConfig;
 
-	constructor(config: IdentityConfig) {
-		this.config = config;
-	}
+    constructor(config: IdentityConfig) {
+        this.config = config;
+    }
+
+    /**
+     * Get or create the IOTA Identity client
+     *
+     * @method getClient
+     *
+     * @returns {IotaIdentity.Client}
+     */
+    getClient(): IotaIdentity.Client {
+        // Client singleton
+        if (!this.client) {
+            const cfg = Config.fromNetwork(Network.try_from_name(this.config.network));
+            cfg.setNode(this.config.node);
+            this.client = Client.fromConfig(cfg);
+        }
+    
+        return this.client;
+    }
 
     /**
      * Creates new identity
@@ -33,13 +55,20 @@ export class IdentityService {
     async createIdentity(): Promise<Identity> {
         // Initialize the Library - Is cached after first initialization
         await IotaIdentity.init();
+        const client = this.getClient();
 
-        // Generate a new keypair
-        const { key, doc }: any = new Document(KeyType.Ed25519);
+        // Generate a new keypair and DID document
+        const key = new KeyPair(KeyType.Ed25519);
+        const doc = new Document(key, client.network().toString());
 
         // Add a Merkle Key Collection method for Bob, so compromised keys can be revoked.
         const keys = new KeyCollection(KeyType.Ed25519, 8);
-        const method = VerificationMethod.createMerkleKey(Digest.Sha256, doc.id, keys, 'key-collection');
+        const method = VerificationMethod.createMerkleKey(
+            Digest.Sha256,
+            doc.id,
+            keys,
+            'key-collection'
+        );
 
         // Add to the DID Document as a general-purpose verification method
         doc.insertMethod(method, 'VerificationMethod');
@@ -48,11 +77,11 @@ export class IdentityService {
         doc.sign(key);
 
         // Publish
-        await IotaIdentity.publish(doc.toJSON(), this.config);
+        await client.publishDocument(doc);
         return {
             didDoc: JSON.stringify(doc.toJSON()),
             publicAuthKey: key.public,
-            privateAuthKey: key.secret,
+            privateAuthKey: key.private,
             doc,
             key,
             keys,
@@ -141,16 +170,17 @@ export class IdentityService {
         const signedVc = IssuerDoc.signCredential(unsignedVc, {
             method: IssuerMethod.id.toString(),
             public: IssuerKeys.public(0),
-            secret: IssuerKeys.secret(0),
+            private: IssuerKeys.private(0),
             proof: IssuerKeys.merkleProof(Digest.Sha256, 0),
         });
 
         // Ensure the credential signature is valid
-        console.log("Verifiable Credential JSON", signedVc.toJSON())
+        const svcJson = signedVc.toJSON();
+        console.log("Verifiable Credential JSON", svcJson)
         console.log("Verified (credential)", IssuerDoc.verifyData(signedVc))
 
         // Check the validation status of the Verifiable Credential
-        const validation = await IotaIdentity.checkCredential(signedVc.toString(), this.config);
+        const validation = await this.getClient().checkCredential(JSON.stringify(svcJson));
         console.log("Credential Validation", validation.verified);
 
         if (validation.verified && IssuerDoc.verifyData(signedVc)) {
@@ -223,16 +253,19 @@ export class IdentityService {
         await IotaIdentity.init();
 
         // Prepare presentation Data
-        const IssuerKey = KeyPair.fromJSON(issuer.key);
+        const IssuerKeys = KeyCollection.fromJSON(issuer.keys);
         const IssuerDoc = Document.fromJSON(issuer.doc);
+        const IssuerMethod = VerificationMethod.fromJSON(issuer.method);
 
         // Create a Verifiable Presentation from the Credential - signed by user's key
-        const unsignedVp = new VerifiablePresentation(IssuerDoc, signedVc)
+        const unsignedVp = new VerifiablePresentation(IssuerDoc, signedVc);
 
         const signedVp = IssuerDoc.signPresentation(unsignedVp, {
-            method: "#key",
-            secret: IssuerKey.secret,
-        })
+            method: IssuerMethod.id.toString(),
+            public: IssuerKeys.public(0),
+            private: IssuerKeys.private(0),
+            proof: IssuerKeys.merkleProof(Digest.Sha256, 0),
+        });
 
         return signedVp.toJSON();
     };
@@ -245,7 +278,9 @@ export class IdentityService {
         try {
             //Create from VP
             const verifiablePresentation = VerifiablePresentation.fromJSON(presentation);
-            const result = await IotaIdentity.checkPresentation(verifiablePresentation.toString(), this.config);
+            const result = await this.getClient().checkPresentation(
+                JSON.stringify(verifiablePresentation.toJSON())
+            );
             return result?.verified;
         } catch (err) {
             console.error("Error during VP Check: " + err);

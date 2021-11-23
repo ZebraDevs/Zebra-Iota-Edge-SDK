@@ -1,13 +1,13 @@
-import type * as IotaIdentity from '@iota/identity-wasm/web';
+import type { Document, KeyPair, KeyCollection, VerificationMethod } from '@iota/identity-wasm/web';
 
 export type Identity = {
   didDoc: string;
   publicAuthKey: string;
   privateAuthKey: string;
-  doc: typeof IotaIdentity.Document;
-  key: typeof IotaIdentity.KeyPair;
-  keys: typeof IotaIdentity.KeyCollection | any;
-  method: typeof IotaIdentity.VerificationMethod | any;
+  doc: Document;
+  key: KeyPair;
+  keys: KeyCollection | any;
+  method: VerificationMethod | any;
 };
 
 export type IdentityConfig = {

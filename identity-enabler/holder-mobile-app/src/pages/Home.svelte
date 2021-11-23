@@ -21,14 +21,14 @@
 	const { App, Modals } = Plugins;
 
 	let loading = false;
-	let localCredentials = {};
+	let localCredentials = [];
 
 	onMount(async () => {
 		App.addListener("backButton", function(){}, false);
 		setTimeout(async () => {
 			try {
-				localCredentials = await getFromStorage('credentials');
-				localCredentials = Object.values(localCredentials)?.filter(data => data);
+				const creds = await getFromStorage('credentials');
+				localCredentials = Object.values(creds)?.filter(data => data) ?? [];
 				console.log('onMount', localCredentials);
 			} catch (err) {
 				console.log(err)
@@ -252,7 +252,7 @@
 			<p>{$account.name}</p>
 		</name-wrapper>
 		<section>
-				{#each Object.values(localCredentials) as credential}
+				{#each localCredentials as credential}
 					<div transition:slide class="list">
 							<ListItem
 								onClick="{() => navigate('credential', { state: { credential }})}"
@@ -261,7 +261,7 @@
 							/>
 					</div>
 				{/each}
-				{#if Object.values(localCredentials).length < 3}
+				{#if localCredentials.length < 3}
 					<div class="btn-wrapper">
 						<Button style="background: white; color: #051923; display: flex; justify-content: flex-start; padding-left: 20px;" 
 								label="Add new credential" 
