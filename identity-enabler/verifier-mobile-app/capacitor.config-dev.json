@@ -14,5 +14,6 @@
     "hostname": "localhost:5000",
     "androidScheme": "https",
     "cleartext": true
-  }
+  },
+  "linuxAndroidStudioPath": "/opt/android-studio/bin/studio.sh"
 }

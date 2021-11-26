@@ -154,3 +154,16 @@ export function addDaysToDate(date: Date, days: number): Date {
     res.setDate(res.getDate() + days);
     return res;
 }
+
+/**
+ * Waits for a certain number of milliseconds
+ *
+ * @method delay
+ *
+ * @param {number} milliseconds
+ *
+ * @returns {void}
+ */
+ export function wait(milliseconds: number) {
+    return new Promise(resolve => setTimeout(resolve, milliseconds));
+}

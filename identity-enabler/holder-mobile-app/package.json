@@ -55,6 +55,7 @@
     "@iota/identity-wasm": "~0.4.0",
     "@rollup/plugin-json": "^4.1.0",
     "@zxing/library": "^0.18.6",
+    "@zxing/browser": "^0.0.10",
     "bwip-js": "^3.0.0",
     "capacitor-secure-storage-plugin": "^0.5.0",
     "hammerjs": "^2.0.8",

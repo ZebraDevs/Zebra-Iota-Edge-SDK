@@ -223,3 +223,16 @@ export function flattenObj(ob) {
 export async function getMarkdownContent(url): Promise<any> {
     return fetch(url).then(res => res.text());
 };
+
+/**
+ * Waits for a certain number of milliseconds
+ *
+ * @method delay
+ *
+ * @param {number} milliseconds
+ *
+ * @returns {void}
+ */
+ export function wait(milliseconds: number) {
+    return new Promise(resolve => setTimeout(resolve, milliseconds));
+}

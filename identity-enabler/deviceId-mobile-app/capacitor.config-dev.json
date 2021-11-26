@@ -13,5 +13,6 @@
   "server": {
     "url": "http://10.0.2.2:5000",
     "cleartext": true
-  }
+  },
+  "linuxAndroidStudioPath": "/opt/android-studio/bin/studio.sh"
 }
