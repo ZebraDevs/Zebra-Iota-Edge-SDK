@@ -87,9 +87,5 @@ public class MainActivity extends BridgeActivity {
     bindService(new Intent(MainActivity.this, DataWedgeService.class),
             sc, Context.BIND_AUTO_CREATE);
   }
-
-  public void execute() {
-    Log.i("IOTA", "execute!!!!");
-    View view = findViewById(R.id.webview);
-  }
+  
 }
