@@ -5,7 +5,7 @@
     "build": "rollup -c",
     "build:dev": "rollup -c -w",
     "start": "sirv public --single",
-    "start:dev": "sirv public --single --dev --host --port 5001",
+    "start:dev": "sirv public --single --dev --host --port 5002",
     "serve:capacitor": "run-p build:dev start:dev",
     "android:sync": "cap sync android && cap open android",
     "android:dev": "cp capacitor.config-dev.json capacitor.config.json && run-p serve:capacitor android:sync",
