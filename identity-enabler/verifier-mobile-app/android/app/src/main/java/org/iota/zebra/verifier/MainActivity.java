@@ -1,4 +1,4 @@
-package org.iota.zebra;
+package org.iota.zebra.verifier;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -7,10 +7,8 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
-import android.view.View;
 import android.webkit.WebView;
 
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 
 import com.getcapacitor.BridgeActivity;
@@ -18,21 +16,23 @@ import com.getcapacitor.Plugin;
 import com.ahm.capacitor.camera.preview.CameraPreview;
 import com.dutchconcepts.capacitor.barcodescanner.BarcodeScanner;
 
+import org.iota.zebra.R;
 import org.iota.zebra.datawedge.DataWedgeService;
 
 import java.util.ArrayList;
 
 
 public class MainActivity extends BridgeActivity {
+  private static String TAG = "Zebra-IOTA Verifier";
+
   private DataWedgeService boundService;
   private WebView webView;
+  private ServiceConnection serviceConn;
+  private boolean isBound = false;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-
-    Log.i("IOTA", "onCreate: ");
-
     // Initializes the Bridge
     this.init(savedInstanceState, new ArrayList<Class<? extends Plugin>>() {{
       // Additional plugins you've installed go here
@@ -43,6 +43,7 @@ public class MainActivity extends BridgeActivity {
 
     webView = findViewById(R.id.webview);
 
+    // Initializes the code related to DataWedge
     zebraScanInit();
   }
 
@@ -51,8 +52,9 @@ public class MainActivity extends BridgeActivity {
     Intent intent = new Intent(MainActivity.this, DataWedgeService.class);
     startService(intent);
 
-    ServiceConnection sc = new ServiceConnection() {
+    serviceConn = new ServiceConnection() {
         public void onServiceConnected(ComponentName className, IBinder service) {
+          isBound = true;
           // This is called when the connection with the service has
           // been established, giving us the service object we can use
           // to interact with the service.  Because we have bound to a
@@ -61,11 +63,9 @@ public class MainActivity extends BridgeActivity {
           // directly access it.
           boundService = ((DataWedgeService.LocalBinder)service).getService();
 
-          final Observer observer = new Observer<String>() {
-            public void onChanged(String str) {
-              Log.i("IOTA", "Activity received the value: " + str);
-              webView.loadUrl("javascript:alert('hello');");
-            }
+          final Observer observer = (Observer<String>) str -> {
+            Log.i(TAG, "Activity received scan value ...");
+            webView.loadUrl("javascript:window.onScan(" + "'" + str + "'" + ")");
           };
           boundService.getScan().observe(MainActivity.this, observer);
         }
@@ -75,6 +75,7 @@ public class MainActivity extends BridgeActivity {
           // been unexpectedly disconnected -- that is, its process
           // crashed. Because it is running in our same process, we
           // should never see this happen.
+          Log.e(TAG, "DataWedge Service has been disconnected!!!");
           boundService = null;
       };
     };
@@ -85,7 +86,21 @@ public class MainActivity extends BridgeActivity {
     // won't be supporting component replacement by other
     // applications).
     bindService(new Intent(MainActivity.this, DataWedgeService.class),
-            sc, Context.BIND_AUTO_CREATE);
+            serviceConn, Context.BIND_AUTO_CREATE);
   }
-  
+
+  void doUnbindService() {
+    if (isBound) {
+      // Detach our existing connection.
+      unbindService(serviceConn);
+      isBound = false;
+      boundService = null;
+    }
+  }
+
+  @Override
+  public void onDestroy() {
+    super.onDestroy();
+    doUnbindService();
+  }
 }
