@@ -13,6 +13,7 @@ export type Identity = {
 export type IdentityConfig = {
   node: string;
   network: string;
+  permanode?: string;
 };
 
 export type VerifiableCredentialEnrichment = {

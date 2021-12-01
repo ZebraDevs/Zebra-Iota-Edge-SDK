@@ -39,6 +39,9 @@ export class IdentityService {
         if (!this.client) {
             const cfg = Config.fromNetwork(Network.try_from_name(this.config.network));
             cfg.setNode(this.config.node);
+            if (this.config.permanode) {
+                cfg.setPermanode(this.config.permanode);
+            }
             this.client = Client.fromConfig(cfg);
         }
     
