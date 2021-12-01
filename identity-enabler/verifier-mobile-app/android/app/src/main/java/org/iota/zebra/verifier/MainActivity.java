@@ -4,6 +4,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
@@ -23,7 +24,7 @@ import java.util.ArrayList;
 
 
 public class MainActivity extends BridgeActivity {
-  private static String TAG = "Zebra-IOTA Verifier";
+  private static String TAG = "Verifier - IOTA SDK";
 
   private DataWedgeService boundService;
   private WebView webView;
@@ -33,6 +34,7 @@ public class MainActivity extends BridgeActivity {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     // Initializes the Bridge
     this.init(savedInstanceState, new ArrayList<Class<? extends Plugin>>() {{
       // Additional plugins you've installed go here

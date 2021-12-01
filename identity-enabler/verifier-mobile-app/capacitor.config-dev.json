@@ -1,6 +1,6 @@
 {
-  "appId": "org.iota.zebra",
-  "appName": "IOTA Identity: Verifier",
+  "appId": "org.iota.zebra.verifier",
+  "appName": "Verifier - IOTA SDK",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "public",

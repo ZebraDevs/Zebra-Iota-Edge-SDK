@@ -1,4 +1,4 @@
-package org.iota.zebra;
+package org.iota.zebra.device_id;
 
 import android.os.Bundle;
 

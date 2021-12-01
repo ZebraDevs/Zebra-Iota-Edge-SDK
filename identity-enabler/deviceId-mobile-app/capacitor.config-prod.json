@@ -1,6 +1,6 @@
 {
-  "appId": "org.iota.zebra",
-  "appName": "IOTA Identity: Device ID",
+  "appId": "org.iota.zebra.device_id",
+  "appName": "Device ID - IOTA SDK",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "public",

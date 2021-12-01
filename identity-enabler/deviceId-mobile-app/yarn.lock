@@ -3631,9 +3631,9 @@ svelte@^3.38.0:
   integrity sha512-jrZhZtmH3ZMweXg1Q15onb8QlWD+a5T5Oca4C1jYvSURp2oD35h4A5TV6t6MEa93K4LlX6BkafZPdQoFjw/ylA==
 
 table@^6.0.9:
-  version "6.7.3"
-  resolved "https://registry.yarnpkg.com/table/-/table-6.7.3.tgz#255388439715a738391bd2ee4cbca89a4d05a9b7"
-  integrity sha512-5DkIxeA7XERBqMwJq0aHZOdMadBx4e6eDoFRuyT5VR82J0Ycg2DwM6GfA/EQAhJ+toRTaS1lIdSQCqgrmhPnlw==
+  version "6.7.4"
+  resolved "https://registry.yarnpkg.com/table/-/table-6.7.4.tgz#95be16324dff8ca6c57c8aa3f61f96821f5d75ef"
+  integrity sha512-3veWX5gu4cpqDJF9e3x8a9dpir70Dvn9BwOZLOjhPetDF4jukhJJjhGZK1WJeeOzkIolgNr+kOwzhijJ5asjww==
   dependencies:
     ajv "^8.0.1"
     lodash.truncate "^4.4.2"

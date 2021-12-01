@@ -1,4 +1,4 @@
-package org.iota.zebra;
+package org.iota.zebra.holder;
 
 import android.os.Bundle;
 

@@ -1,5 +1,5 @@
 {
-  "name": "zebra-iota-edge-sdk",
+  "name": "@zebra-iota-edge-sdk/device-id",
   "version": "0.1.0",
   "license": "MIT",
   "exports": {

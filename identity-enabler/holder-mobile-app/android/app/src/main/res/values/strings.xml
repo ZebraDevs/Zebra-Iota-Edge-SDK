@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">Zebra-IOTA Identity</string>
-    <string name="title_activity_main">Zebra-IOTA Identity</string>
-    <string name="package_name">org.iota.zebra</string>
-    <string name="custom_url_scheme">org.iota.zebra</string>
+    <string name="app_name">Holder - IOTA SDK</string>
+    <string name="title_activity_main">Holder - IOTA SDK</string>
+    <string name="package_name">org.iota.zebra.holder</string>
+    <string name="custom_url_scheme">org.iota.zebra.holder</string>
 </resources>
