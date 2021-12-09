@@ -59,15 +59,21 @@
     }
 
     onMount(() => {
-        initialise()
+        if (window['cameraStatus'] === 'on') {
+            initialise()
             .then(capture)
             .catch((e:Error) => {
                 console.error(e);
                 error = e;
             });
+        }
 
+        // Unmount function
         return () => {
-            (videoEl.srcObject as MediaStream).getTracks().forEach(track => track.stop());
+            if (window['cameraStatus'] === 'on' && videoEl.srcObject) {
+                (videoEl.srcObject as MediaStream).getTracks().forEach(track => track.stop());
+            }
+            delete window['cameraStatus'];
         };
     });
 </script>
