@@ -43,7 +43,7 @@ export const credentials = persistent<{ personal: string, health: string, blood:
     },
 );
 
-export const landingIndex = writable<number>(0);
+export const loadingScreen = writable<string | void>();
 
 export interface InternalCredentialDataModel {
     id : string;

@@ -1,19 +1,23 @@
 <script>
   import Spinner from './Spinner.svelte';
 
-  export let label;
+  export let label = "Loading...";
 </script>
 
 <style>
-  .loader-wrapper {
+  main {
+    position: absolute;
+    background: linear-gradient(90deg, #00FFFF 0%, #0099FF 100%);
     height: 100%;
     width: 100%;
+    z-index: 10;
+  }
+  .loader-wrapper {
+    height: inherit;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    row-gap: 40px;
-    background: linear-gradient(90deg, #00FFFF 0%, #0099FF 100%);
   }
   .loader-label {
     font-family: 'Proxima Nova', sans-serif;
@@ -29,7 +33,9 @@
   }
 </style>
 
-<div class="loader-wrapper">
-    <Spinner />
-    <div class="loader-label">{label}</div>
-</div>
+<main>
+  <div class="loader-wrapper">
+      <Spinner />
+      <div class="loader-label">{label}</div>
+  </div>
+</main>

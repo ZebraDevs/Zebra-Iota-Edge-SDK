@@ -1,22 +1,20 @@
 <script>
-    import { navigate } from 'svelte-routing';
     import { fly } from 'svelte/transition';
-
     import Button from '../components/Button.svelte';
 
     function goBack() {
-        navigate('home');
+        history.back();
     }
 </script>
 
 <style>
     main {
         display: flex;
-		flex-direction: column;
-		overflow-y: auto;
-		-webkit-overflow-scrolling: touch;
-		height: 100%;
-		width: 100%;
+        flex-direction: column;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        height: 100%;
+        width: 100%;
         background: black;
 
     }
@@ -24,7 +22,7 @@
     section {
         z-index: 2;
         height: 100%;
-		width: 100%;
+        width: 100%;
         display: flex;
         flex-direction: column;
         justify-content: center;
