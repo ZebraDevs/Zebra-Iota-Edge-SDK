@@ -121,6 +121,20 @@ export class IdentityService {
             .catch(() => null);
     };
 
+    /**
+     * Clears identity and credentials stored in keychain
+     *
+     * @method clearIdentityAndCredentials
+     *
+     * @returns {Promise}
+     */
+    async clearIdentityAndCredentials(): Promise<void> {
+        const { value: success } = await Keychain.clear();
+        if (!success) {
+            throw new Error("Failed to clear secure storage");
+        }
+    };
+
     retrieveCredentials(ids: string[]): Promise<InternalCredentialDataModel[]> {
         return Promise.all(ids.map((id) => Keychain.get(id) ))
             .then((data) => data.map((entry) => parse(entry.value) ))

@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import { Plugins } from '@capacitor/core';
 	import { onMount } from 'svelte';
 	import { slide } from 'svelte/transition';
@@ -15,6 +15,7 @@
 	import { SchemaNames } from '../schemas';
 	import { updateStorage, getFromStorage, account } from '../lib/store';
 	import { getRandomUserData, generateRandomId } from '../lib/helpers';
+	import type { IdentityService } from '../services/identityService';
 
     let showTutorial = false;
 
@@ -24,7 +25,7 @@
 	let localCredentials = [];
 
 	onMount(async () => {
-		App.addListener("backButton", function(){}, false);
+		App.addListener("backButton", function(){});
 		setTimeout(async () => {
 			try {
 				const creds = await getFromStorage('credentials');
@@ -42,7 +43,7 @@
         }
         loading = true;
 		try {
-			const identityService = ServiceFactory.get('identity');
+			const identityService = ServiceFactory.get<IdentityService>('identity');
 			const storedIdentity = await identityService.retrieveIdentity();
 			const credentials = await getFromStorage('credentials');
 			const nonEmpty = Object.values(credentials)?.filter(data => data);
@@ -117,11 +118,19 @@
 			message: 'Are you sure you want to reset the app and delete all credentials?'
 		});
 		if (confirmRet.value) {
-			localStorage.setItem('credentials', JSON.stringify({
-				personal: '',
-				health: '',
-				blood: ''
-			}));
+			const identityService = ServiceFactory.get<IdentityService>('identity');
+			try {
+				await identityService.clearIdentityAndCredentials();
+				// Also need to clear LocalStorage directly, because credentials are
+				// currently being saved to LocalStorage directly.
+				localStorage.clear();
+			} catch (e) {
+				await Modals.alert({
+					title: 'Could not reset',
+					message: e.message
+				});
+				return;
+			}
 			navigate('landing');
 		}
 	}

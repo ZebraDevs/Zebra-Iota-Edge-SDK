@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import { Plugins } from '@capacitor/core';
 	import { onMount } from 'svelte';
 	import { navigate } from "svelte-routing";
@@ -9,16 +9,18 @@
 	import DevInfo from './DevInfo.svelte';
 
 	import { getFromStorage, account } from '../lib/store';
+	import { ServiceFactory } from '../factories/serviceFactory';
+	import type { IdentityService } from '../services/identityService';
 
     let showTutorial = false;
 
 	const { App, Modals } = Plugins;
 
 	let loading = false;
-	let localCredentials = {};
+	let localCredentials = [];
 
 	onMount(async () => {
-		App.addListener("backButton", function(){}, false);
+		App.addListener("backButton", function(){});
 		setTimeout(async () => {
 			try {
 				localCredentials = await getFromStorage('credentials');
@@ -44,7 +46,19 @@
 			message: 'Are you sure you want to reset the app and delete all credentials?'
 		});
 		if (confirmRet.value) {
-			localStorage.clear();
+			const identityService = ServiceFactory.get<IdentityService>('identity');
+			try {
+				await identityService.clearIdentityAndCredentials();
+				// Also need to clear LocalStorage directly, because credentials are
+				// currently being saved to LocalStorage directly.
+				localStorage.clear();
+			} catch (e) {
+				await Modals.alert({
+					title: 'Could not reset',
+					message: e.message
+				});
+				return;
+			}
 			navigate('landing');
 		}
 	}
@@ -159,7 +173,7 @@
 		<p>Device {$account.name}</p>
 	</name-wrapper>
 	<section>
-		{#each Object.values(localCredentials) as credential}
+		{#each localCredentials as credential}
 			<div class="list">
 				<ListItem
 					onClick="{() => navigate('credential', { state: { credential: credential }})}"
@@ -169,7 +183,7 @@
 				/>
 			</div>
 		{/each}
-		{#if Object.values(localCredentials).length < 1}
+		{#if localCredentials.length < 1}
 			<div class="btn-wrapper">
 				<Button style="background: white; color: #051923; display: flex; justify-content: flex-start; padding-left: 20px;" 
 						label="Request Device ID credential" 
