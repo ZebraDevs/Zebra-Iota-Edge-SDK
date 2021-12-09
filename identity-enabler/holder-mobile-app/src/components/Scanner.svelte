@@ -11,6 +11,7 @@
     const reader = new BrowserMultiFormatReader(formats);
     let error: Error | undefined;
     let videoEl: HTMLVideoElement;
+    let svgVisibility = "hidden";
 
     async function showAlert(title: string, message: string) {
         const { Modals } = Plugins;
@@ -54,6 +55,7 @@
                 facingMode: { ideal: "environment" }
             }
         });
+        svgVisibility = "visible";
     }
 
     onMount(() => {
@@ -90,6 +92,7 @@
         bottom: 0;
         right: 0;
         margin: auto;
+        visibility: var(--svg-visibility);
     }
 
     svg path {
@@ -120,7 +123,7 @@
     {#if error}
         <p>{ error.message || error }</p>
     {:else}
-        <div class="video-container" class:video-container-web="{__WEB__}" class:video-container-android="{__ANDROID__}">
+        <div class="video-container" class:video-container-web="{__WEB__}" class:video-container-android="{__ANDROID__}" style="--svg-visibility: {svgVisibility}">
             <!-- svelte-ignore a11y-media-has-caption -->
             <video id="video" bind:this={videoEl} playsinline></video>
             <svg width="204" height="204" xmlns="http://www.w3.org/2000/svg">
