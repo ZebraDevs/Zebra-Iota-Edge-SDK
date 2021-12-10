@@ -63,7 +63,11 @@ public class MainActivity extends BridgeActivity {
 
           final Observer observer = (Observer<String>) str -> {
             Log.i(TAG, "Activity received scan value ...");
-            webView.evaluateJavascript("window.onScan(" + "'" + str + "'" + ")", null);
+            String sanitizedString = str
+                    .replace("\n", "")
+                    .replace("\r", "")
+                    .replace("'", "\\'");
+            webView.evaluateJavascript("window.onScan(" + "'" + sanitizedString + "'" + ")", null);
           };
           boundService.getScan().observe(MainActivity.this, observer);
         }
