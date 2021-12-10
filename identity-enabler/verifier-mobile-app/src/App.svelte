@@ -9,10 +9,18 @@
     import FullScreenLoader from './components/FullScreenLoader.svelte';
     import { loadingScreen } from './lib/store';
     import { handleScannerData } from './lib/scan';
+    import { showAlert } from './lib/ui/helpers';
 
     let url = window.location.pathname;
 
     async function onScan(decodedText: string) {
+        if (navigator.onLine === false) {
+            await showAlert(
+                'Error', 
+                'You need Internet connectivity to verify a credential' 
+            );
+            return;
+        }
         await handleScannerData(decodedText);
     }
 

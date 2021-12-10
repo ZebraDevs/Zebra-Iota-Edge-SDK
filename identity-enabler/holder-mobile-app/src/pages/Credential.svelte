@@ -9,13 +9,23 @@
     import { modalStatus } from '../lib/store';
     import { ServiceFactory } from '../factories/serviceFactory';
 
+    import { showAlert } from "../lib/ui/helpers";
+
     const { App } = Plugins;
     let showTutorial = false;
     const credential = window.history.state.credential;
     const identityService = ServiceFactory.get('identity');
     const preparedCredentialDocument = identityService.prepareCredentialForDisplay(credential.credentialDocument);
 
-    function share() {
+    async function share() {
+        if (navigator.onLine === false) {
+            await showAlert(
+                'Error', 
+                'You need Internet connectivity to share a Credential' 
+            );
+           return;
+        }
+
         modalStatus.set({ 
             active: true, 
             type: 'share', 

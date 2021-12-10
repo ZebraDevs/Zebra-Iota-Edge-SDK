@@ -12,6 +12,8 @@
 	import DevInfo from './DevInfo.svelte';
 	import Credential from './Credential.svelte';
 
+	import { showAlert } from '../lib/ui/helpers';
+
 	const { App, Modals } = Plugins;
 
 	let isEmpty = false;
@@ -40,6 +42,10 @@
     });
 
 	function scan() {
+		if (navigator.onLine === false) {
+            showAlert('Error', 'You need Internet connectivity for verifying credentials');
+            return;
+        }
 		// We ensure that only the Camera is switched on when we want
 	    window['cameraStatus'] = 'on';
         navigate('scan');

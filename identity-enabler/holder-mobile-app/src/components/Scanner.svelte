@@ -1,9 +1,9 @@
 <script lang="ts">
-    import { Plugins } from '@capacitor/core';
     import { createEventDispatcher, onMount } from 'svelte';
     import { BrowserMultiFormatReader, BarcodeFormat, ChecksumException, DecodeHintType, FormatException, NotFoundException, Result } from '@zxing/library';
     import { __ANDROID__, __WEB__ } from '../lib/platforms';
     import { wait } from '../lib/helpers';
+    import { showAlert } from '../lib/ui/helpers';
 
     const dispatch = createEventDispatcher();
     const SAMPLING_FREQUENCY = 350;
@@ -12,11 +12,6 @@
     let error: Error | undefined;
     let videoEl: HTMLVideoElement;
     let svgVisibility = "hidden";
-
-    async function showAlert(title: string, message: string) {
-        const { Modals } = Plugins;
-        await Modals.alert({ title, message });
-    }
 
     const capture = async (): Promise<void> => {
         let result: Result;

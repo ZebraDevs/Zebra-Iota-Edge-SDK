@@ -10,6 +10,8 @@
 
     import { ServiceFactory } from '../factories/serviceFactory';
 	import { account, error, hasSetupAccount } from '../lib/store';
+
+    import { showAlert } from '../lib/ui/helpers';
     
     const { Keyboard } = Plugins;
 
@@ -40,9 +42,17 @@
     }
 
     async function save() {
-        if (loading) {
+       if (navigator.onLine === false) {
+            await showAlert(
+                'Error', 
+                'You need Internet connectivity to create a new IOTA Identity' 
+            );
+           return;
+       }
+
+       if (loading) {
             return;
-        }
+       }
 
         Keyboard.hide();
 

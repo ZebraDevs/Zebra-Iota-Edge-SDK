@@ -5,9 +5,18 @@
 	import Button from '../components/Button.svelte';
 	import DevInfo from './DevInfo.svelte';
 
+	import { showAlert } from '../lib/ui/helpers';
+
 	let showTutorial = false;
 
-	function scan() {
+	async function scan() {
+		if (navigator.onLine === false) {
+            await showAlert(
+                'Error', 
+                'You need Internet connectivity to verify a Device Credential' 
+            );
+            return;
+        }
 	    // We ensure that only the Camera is switched on when we want
 	    window['cameraStatus'] = 'on';
         navigate('scan');

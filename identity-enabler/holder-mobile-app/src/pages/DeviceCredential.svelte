@@ -7,6 +7,7 @@
     import { SchemaNames } from '../schemas';
     import { ServiceFactory } from '../factories/serviceFactory';
     import { generateRandomId } from '../lib/helpers';
+    import { showAlert } from "../lib/ui/helpers";
 
     import FullScreenLoader from '../components/FullScreenLoader.svelte';
     import Button from '../components/Button.svelte';
@@ -21,6 +22,14 @@
     const claims = window.history.state.claims;
 
     async function createCredential() {
+        if (navigator.onLine === false) {
+            await showAlert(
+                'Error', 
+                'You need Internet connectivity to create a Device Credential' 
+            );
+            return;
+        }
+
         loading = true;
 		const identityService = ServiceFactory.get('identity');
 		error.set(null);

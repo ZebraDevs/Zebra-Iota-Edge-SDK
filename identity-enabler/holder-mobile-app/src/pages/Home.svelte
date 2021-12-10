@@ -17,6 +17,8 @@
 	import { getRandomUserData, generateRandomId } from '../lib/helpers';
 	import type { IdentityService } from '../services/identityService';
 
+	import { showAlert } from "../lib/ui/helpers";
+
     let showTutorial = false;
 
 	const { App, Modals } = Plugins;
@@ -38,6 +40,14 @@
     });
 
 	async function generateCredential() {
+		if (navigator.onLine === false) {
+            await showAlert(
+                'Error', 
+                'You need Internet connectivity to generate a new Credential' 
+            );
+           return;
+        }
+
         if (loading) {
             return;
         }
@@ -97,19 +107,12 @@
 			} catch (err) {
 				loading = false;
 				console.log(err);
-				showAlert();
+				await showAlert('Error', err.name);
 			}
     }
 
 	function onClickDev() {
 		showTutorial = true;
-	}
-
-	async function showAlert() {
-		await Modals.alert({
-			title: 'Unable to generate the credential',
-			message: 'Please check your internet connection'
-		});
 	}
 
 	async function onClickReset() {
