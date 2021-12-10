@@ -37,31 +37,32 @@ export const getFromStorage = async (key) => {
     }
 }
 
+const hasSetupAccountInitialState = false;
 /**
- * Determines if use has completed onboarding
+ * Determines if user has completed onboarding
  */
-export const hasSetupAccount = persistent<boolean>('hasSetupAccount', false);
+export const hasSetupAccount = persistent<boolean>('hasSetupAccount', hasSetupAccountInitialState);
 
+const listOfCredentialsInitialState = {
+    init: false,
+    values: [],
+};
 export const listOfCredentials = persistent<{ init: boolean; values: string[] }>(
     'listOfCredentials',
-    {
-        init: false,
-        values: [],
-    },
+    listOfCredentialsInitialState,
     (value) => ({ ...value, init: false })
 );
 
-export const credentials = persistent<{ personal: string, health: string, blood: string, organization: string }>(
-    'credentials',
-    {
-        personal: '',
-        health: '',
-        blood: '',
-        organization: ''
-    },
-);
+const credentialsInitialState = {
+    personal: '',
+    health: '',
+    blood: '',
+    organization: ''
+};
+export const credentials = persistent<{ personal: string, health: string, blood: string, organization: string }>('credentials', credentialsInitialState);
 
-export const account = persistent<{ name: string } | null>('account', null);
+const accountInitialState = null;
+export const account = persistent<{ name: string } | null>('account', accountInitialState);
 
 /**
  * Modal status
@@ -72,9 +73,11 @@ export const account = persistent<{ name: string } | null>('account', null);
     props?: any;
 };
 
-export const modalStatus = writable<ModalStatus>({ active: false, type: null, props: null });
+const modalStatusInitialState = { active: false, type: null, props: null };
+export const modalStatus = writable<ModalStatus>(modalStatusInitialState);
 
-export const landingIndex = writable<number>(0);
+const landingIndexInitialState = 0;
+export const landingIndex = writable<number>(landingIndexInitialState);
 
 export interface InternalCredentialDataModel {
     id : string;
@@ -86,7 +89,8 @@ export interface InternalCredentialDataModel {
     credentialDocument: any;
 }
 
-export const storedCredentials = writable<InternalCredentialDataModel[]>([]);
+const storedCredentialsInitialState = []
+export const storedCredentials = writable<InternalCredentialDataModel[]>(storedCredentialsInitialState);
 
 storedCredentials.subscribe((value) => {
     listOfCredentials.update((prev) => {
@@ -112,36 +116,11 @@ storedCredentials.subscribe((value) => {
     });
 });
 
-export const currentPresentation = writable<{
-    enrichment: VerifiableCredentialEnrichment | null;
-    presentationDocument: any;
-}>(null);
-
-currentPresentation.subscribe((presentation) => {
-    if (presentation && !presentation.enrichment) {
-        // TODO: which document to use for enrichment
-        const enrichment = identityService.enrichCredential(presentation.presentationDocument.verifiableCredential[0])
-        currentPresentation.update((prev) => ({ ...prev, enrichment }));
-    }
-});
-
-export const currentCredentialToAccept = writable<InternalCredentialDataModel>(null);
-
-currentCredentialToAccept.subscribe((credential) => {
-    if (credential && !credential.enrichment) {
-        const enrichment = identityService.enrichCredential(credential.credentialDocument)
-        currentCredentialToAccept.update((prev) => ({ ...prev, enrichment }));
-    }
-});
-
-export const unconfirmedCredentials = writable<InternalCredentialDataModel[]>([]);
-
-export const unconfirmedRequests = writable<InternalCredentialDataModel[]>([]);
-
+const errorInitialState = null;
 /**
  * Error string
  */
-export const error = writable<string>(null);
+export const error = writable<string>(errorInitialState);
 
 let errorTimeout: any;
 
@@ -153,3 +132,14 @@ error.subscribe((item) => {
         }, 3500);
     }
 });
+
+export function resetAllStores() {
+    hasSetupAccount.set(hasSetupAccountInitialState);
+    listOfCredentials.set(listOfCredentialsInitialState);
+    credentials.set(credentialsInitialState);
+    account.set(accountInitialState);
+    modalStatus.set(modalStatusInitialState);
+    landingIndex.set(landingIndexInitialState);
+    storedCredentials.set(storedCredentialsInitialState);
+    error.set(errorInitialState);
+}

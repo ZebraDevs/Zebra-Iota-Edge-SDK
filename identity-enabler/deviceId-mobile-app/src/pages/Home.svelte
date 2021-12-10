@@ -8,7 +8,7 @@
 	import FullScreenLoader from '../components/FullScreenLoader.svelte';
 	import DevInfo from './DevInfo.svelte';
 
-	import { getFromStorage, account } from '../lib/store';
+	import { getFromStorage, account, resetAllStores } from '../lib/store';
 	import { ServiceFactory } from '../factories/serviceFactory';
 	import type { IdentityService } from '../services/identityService';
 
@@ -49,9 +49,8 @@
 			const identityService = ServiceFactory.get<IdentityService>('identity');
 			try {
 				await identityService.clearIdentityAndCredentials();
-				// Also need to clear LocalStorage directly, because credentials are
-				// currently being saved to LocalStorage directly.
-				localStorage.clear();
+				// Also need to reset persisted Svelte stores
+				resetAllStores();
 			} catch (e) {
 				await Modals.alert({
 					title: 'Could not reset',
@@ -161,7 +160,7 @@
 		<FullScreenLoader label="Loading Credential..." />
 	{/if}
 
-	{#if !loading}
+	{#if !loading && $account}
 	<header>
 		<div class="options-wrapper">
 			<img src="../assets/reset.svg" on:click="{onClickReset}" alt="reset" /> 
