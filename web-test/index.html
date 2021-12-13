@@ -11,6 +11,17 @@
     <meta name="theme-color" content="#fafafa" />
     
     <script defer src="index.js"></script>
+    
+    <script>
+      function play() {
+        const audio = new Audio();
+        audio.src = 'scanned.wav';
+        audio.onload = () => audio.play();
+        audio.onerror = (e) {
+          console.log('Error: ', e);
+        };
+      }
+    </script>
 
     <style>
       #video-container {
@@ -51,6 +62,6 @@
         ></path>
       </svg>
     </div>
-    
+    <button type=button onclick="play();">Click</button>
   </body>
 </html>
