@@ -17,7 +17,7 @@
         const audio = new Audio();
         audio.src = 'scanned.wav';
         audio.onload = () => audio.play();
-        audio.onerror = (e) {
+        audio.onerror = (e) => {
           console.log('Error: ', e);
         };
       }
