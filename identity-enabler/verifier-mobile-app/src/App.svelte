@@ -1,6 +1,5 @@
 <script lang="ts">
     import { Router, Route } from 'svelte-routing';
-    
     import Home from './pages/Home.svelte';
     import DevInfo from './pages/DevInfo.svelte';
     import Scan from './pages/Scan.svelte';
@@ -10,6 +9,7 @@
     import { loadingScreen } from './lib/store';
     import { handleScannerData } from './lib/scan';
     import { showAlert } from './lib/ui/helpers';
+    import Credential from './pages/Credential.svelte';
 
     let url = window.location.pathname;
 
@@ -39,7 +39,8 @@
             <Route path="/home" component="{Home}" />
             <Route path="/devinfo" component="{DevInfo}" />
             <Route path="/invalid" component="{InvalidCredential}" />
-            <Route route="/scan" component="{Scan}" />
+            <Route path="/scan" component="{Scan}" />
+            <Route path="/credential" component="{Credential}" />
         </div>
     </Router>
 </main>

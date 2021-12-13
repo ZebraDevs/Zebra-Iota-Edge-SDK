@@ -5,23 +5,17 @@
 	import { slide } from 'svelte/transition';
 	import { getFromStorage } from '../lib/store';
 	import { isExpired } from '../lib/helpers';
-
 	import FullScreenLoader from '../components/FullScreenLoader.svelte';
 	import Button from '../components/Button.svelte';
 	import ListItem from '../components/ListItem.svelte';
 	import DevInfo from './DevInfo.svelte';
-	import Credential from './Credential.svelte';
-
 	import { showAlert } from '../lib/ui/helpers';
 
 	const { App, Modals } = Plugins;
 
 	let isEmpty = false;
-	let expired = false;
 	let showTutorial = false;
-	let showCredential = false;
 	let localCredentials = {};
-	let credentialItem = {};
 	let loading = false;
 
 	onMount(async () => {
@@ -48,7 +42,7 @@
         }
 		// We ensure that only the Camera is switched on when we want
 	    window['cameraStatus'] = 'on';
-        navigate('scan');
+        navigate('/scan');
     }
 
 	function onClickDev() {
@@ -56,9 +50,7 @@
 	}
 
 	function onClickCredential(credential) {
-		expired = isExpired(credential.issuanceDate);
-		credentialItem = credential;
-		showCredential = true;
+		navigate("/credential", { state: { credential } });
 	}
 
 	async function onClickReset() {
@@ -182,16 +174,8 @@
 	{#if showTutorial}
 		<DevInfo page="Presentation" bind:showTutorial={showTutorial} />
 	{/if}
-	
-	{#if showCredential}
-		<Credential expired={expired}
-					localCredential={credentialItem}
-					bind:showCredential={showCredential} 
-					bind:localCredentials={localCredentials} 
-					bind:isEmpty={isEmpty} />
-	{/if}
 
-	{#if !showCredential && !showTutorial && !loading}
+	{#if !showTutorial && !loading}
 		<header>
 			<div class="options-wrapper">
 				<img src="../assets/reset.svg" on:click="{onClickReset}" alt="reset" />

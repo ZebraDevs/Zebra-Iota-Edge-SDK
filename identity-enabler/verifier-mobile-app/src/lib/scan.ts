@@ -33,14 +33,15 @@ export async function handleScannerData(decodedText: string): Promise<void> {
     const verificationResult = await identityService.verifyVerifiablePresentation(parsedData);
 
     if (verificationResult) {
-        await updateStorage('credentials', { [parsedData.verifiableCredential.type[1].split(/\b/)[0].toLowerCase()]: parsedData.verifiableCredential });
+        const credential = parsedData.verifiableCredential;
+        await updateStorage('credentials', { [credential.type[1].split(/\b/)[0].toLowerCase()]: credential });
         loadingScreen.set();
         const { Toast } = Plugins;
         await Toast.show({
             text: 'Credential verified!',
             position: 'center'
         });
-        navigate('/home');
+        navigate('/credential', { state: { credential } });
     } else {
         loadingScreen.set();
         navigate('/invalid');

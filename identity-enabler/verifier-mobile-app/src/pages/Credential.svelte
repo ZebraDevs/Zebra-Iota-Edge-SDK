@@ -2,21 +2,18 @@
     import { beforeUpdate } from 'svelte';
     import { fly } from 'svelte/transition';
     import { Plugins } from '@capacitor/core';
-
     import { updateStorage } from '../lib/store';
-
     import Button from '../components/Button.svelte';
     import ObjectList from '../components/ObjectList.svelte';
     import DevInfo from './DevInfo.svelte';
+    import { isExpired } from '../lib/helpers';
+    import { navigate } from 'svelte-routing';
 
     const { App, Modals } = Plugins;
 
     let showTutorial = false;
-    export let showCredential;
-    export let localCredential = {};
-    export let localCredentials = {};
-    export let isEmpty;
-    export let expired;
+    let credential = window.history.state.credential;
+    let expired = isExpired(credential.issuanceDate);
 
     async function onDelete() {
 		let confirmRet = await Modals.confirm({
@@ -24,18 +21,10 @@
 			message: 'Are you sure you want to delete the credential?'
 		});
 		if (confirmRet.value) {
-			await updateStorage('credentials', { [localCredential.type[1].split(/\b/)[0].toLowerCase()]: '' });
-            localCredentials = localCredentials.filter((credential) => {
-                return credential.type[1] !== localCredential.type[1];
-            });
-            isEmpty = Object.values(localCredentials).every(x => x === null || x === '');
-            showCredential = false;
+			await updateStorage('credentials', { [credential.type[1].split(/\b/)[0].toLowerCase()]: '' });
+            navigate("/home");
 		}
 	}
-
-    function goBack() {
-        showCredential = false;
-    }
 
     function onClickDev() {
         showTutorial = true;
@@ -134,11 +123,11 @@
                 {/if}
             </header>
             <section>
-                <ObjectList object="{localCredential.credentialSubject}" />
+                <ObjectList object="{credential.credentialSubject}" />
             </section>
         </div>
         <footer>
-            <Button style="background: #0099FF; color: white;" label="Done" onClick="{goBack}" />
+            <Button style="background: #0099FF; color: white;" label="Done" onClick="{() => navigate("/home")}" />
         </footer>
     {/if}
 </main>

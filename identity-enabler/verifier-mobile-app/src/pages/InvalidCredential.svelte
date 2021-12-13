@@ -1,10 +1,7 @@
 <script>
+    import { navigate } from 'svelte-routing';
     import { fly } from 'svelte/transition';
     import Button from '../components/Button.svelte';
-
-    function goBack() {
-        history.back();
-    }
 </script>
 
 <style>
@@ -59,6 +56,6 @@
         <p>INVALID CREDENTIAL</p>
     </section>
     <footer>
-        <Button style="background: #0099FF; color: white;" label="Done" onClick="{goBack}" />
+        <Button style="background: #0099FF; color: white;" label="Done" onClick="{() => navigate("/home")}" />
     </footer>
 </main>
