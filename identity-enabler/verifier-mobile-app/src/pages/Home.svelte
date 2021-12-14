@@ -35,9 +35,9 @@
 		}, 0);
     });
 
-	function scan() {
+	async function scan() {
 		if (navigator.onLine === false) {
-            showAlert('Error', 'You need Internet connectivity for verifying credentials');
+            await showAlert('Error', 'You need Internet connectivity for verifying credentials');
             return;
         }
 		// We ensure that only the Camera is switched on when we want

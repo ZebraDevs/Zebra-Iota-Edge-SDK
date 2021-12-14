@@ -2,22 +2,17 @@
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="org.iota.zebra">
+    package="org.iota.zebra.verifier">
 
     <uses-sdk tools:overrideLibrary="com.google.zxing.client.android" />
     <!-- Permissions -->
     <uses-permission android:name="android.permission.INTERNET" /> <!-- Camera, Photos, input file -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- Geolocation API -->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-
-    <uses-feature android:name="android.hardware.location.gps" /> <!-- Network API -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- Navigator.getUserMedia -->
+    <!-- Navigator.getUserMedia -->
     <!-- Video -->
-    <uses-permission android:name="android.permission.CAMERA" /> <!-- Audio -->
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"
@@ -27,29 +22,28 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <service android:name=".datawedge.DataWedgeService">
             <intent-filter>
-                <action android:name="org.iota.zebra.intent.action.SCAN" />
+                <action android:name="org.iota.zebra.verifier.intent.action.SCAN" />
                 <category android:name="org.iota.zebra.intent.category.DATAWEDGE" />
             </intent-filter>
         </service>
+
         <activity
-            android:name=".verifier.MainActivity"
+            android:name=".MainActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|smallestScreenSize|screenLayout|uiMode"
             android:label="@string/title_activity_main"
             android:launchMode="singleTask"
             android:theme="@style/AppTheme.NoActionBarLaunch">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-
                 <data android:scheme="@string/custom_url_scheme" />
             </intent-filter>
         </activity>

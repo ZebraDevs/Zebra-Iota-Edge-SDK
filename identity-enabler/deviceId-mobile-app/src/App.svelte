@@ -1,5 +1,5 @@
-<script>
-	import { Router, Route } from 'svelte-routing';
+<script lang="ts">
+	import { Router, Route, navigate } from 'svelte-routing';
 	import { onMount } from 'svelte';
 	
 	import Home from './pages/Home.svelte';
@@ -8,7 +8,6 @@
 	import CreatePresentation from './pages/CreatePresentation.svelte';
 	import Landing from './pages/Landing.svelte';
 	import Name from './pages/Name.svelte';
-	import Menu from './pages/Menu.svelte';
 	import PresentationJSON from './pages/PresentationJSON.svelte';
 	import DataMatrix from './pages/DataMatrix.svelte';
 	import Credential from './pages/Credential.svelte';
@@ -20,9 +19,57 @@
 
 	import { hasSetupAccount } from './lib/store';
 	import Keychain from './lib/keychain';
+import { showAlert } from './lib/ui/helpers';
+import { parse } from './lib/helpers';
+import type { IdentityService } from './services/identityService';
+import { Toast } from '@capacitor/core';
 
 	let url = window.location.pathname;
 	let displayHome = false;
+
+	async function handleScannerData(text: string) {
+		let credential = parse(text);
+
+        if (!credential) {
+			await showAlert('Error', 'Invalid Credential Received');
+			return;
+		}
+
+        const identityService = ServiceFactory.get<IdentityService>('identity');
+        const verificationResult = await identityService.verifyVerifiablePresentation(credential);
+    
+        if (verificationResult) {
+            await Toast.show({
+            	text: 'Credential verified!',
+            	position: 'center'
+        	});
+            navigate('credential', { state: { credential, save: true }});
+        } else {      
+				await showAlert('Error', 'Invalid Credential Received');
+        }
+	}
+
+	/**
+     * Function executed when a Zebra DataWedge scanning event happens
+     * 
+     * @param decodedText The content supplied by DataWedge (Zebra Scanner)
+     */
+	async function onScan(decodedText: string) {
+		console.log("on Scan: ", window.location);
+		// If we are not expecting a credential we just ignore the event
+		if (!window.location.href.includes("requestcredential")) {
+			return;
+		}
+
+        if (navigator.onLine === false) {
+            await showAlert(
+                'Error', 
+                'You need Internet connectivity to verify your credential' 
+            );
+            return;
+        }
+        await handleScannerData(decodedText);
+    }
 
 	onMount(async () => {
 			if (!$hasSetupAccount) {
@@ -36,6 +83,8 @@
 				console.log('Found identity', storedIdentity)
 				displayHome = true;
 			}
+
+			(window as any).onScan = onScan;
 	});
 </script>
 
@@ -49,7 +98,6 @@
 				<Route path="/" component="{Home}" />
 			{/if}
 			<Route path="/home" component="{Home}" />
-			<Route path="/menu" component="{Menu}" />
 			<Route path="/landing" component="{Landing}" />
 			<Route path="/name" component="{Name}" />
 			<Route path="/credential" component="{Credential}" />

@@ -1,6 +1,7 @@
-<script>
-	import { Router, Route } from 'svelte-routing';
+<script lang="ts">
+	import { Router, Route, navigate } from 'svelte-routing';
 	import { onMount } from 'svelte';
+	import { showAlert } from './lib/ui/helpers';
 	
 	import Home from './pages/Home.svelte';
 	import { ServiceFactory } from './factories/serviceFactory';
@@ -19,9 +20,41 @@
 
 	import { hasSetupAccount } from './lib/store';
 	import Keychain from './lib/keychain';
+import { parse } from './lib/helpers';
 
 	let url = window.location.pathname;
 	let displayHome = false;
+
+	async function handleScannerData(text: string) {
+		try {
+            const parsedData = parse(text);
+            const claims = parsedData;
+    
+            if (claims) {
+                navigate('devicecredential', { state: { claims: claims }});
+            } else {
+                await showAlert('Error', 'Invalid Claims');
+            }
+        } catch (err) {
+            console.error(err);
+        };
+	}
+
+	/**
+     * Function executed when a Zebra DataWedge scanning event happens
+     * 
+     * @param decodedText The content supplied by DataWedge (Zebra Scanner)
+     */
+	async function onScan(decodedText: string) {
+        if (navigator.onLine === false) {
+            await showAlert(
+                'Error', 
+                'You need Internet connectivity to issue a credential' 
+            );
+            return;
+        }
+        await handleScannerData(decodedText);
+    }
 
 	onMount(async () => {
 			if (!$hasSetupAccount) {
@@ -35,6 +68,8 @@
 				console.log('Found identity', storedIdentity)
 				displayHome = true;
 			}
+
+			(window as any).onScan = onScan;
 	});
 </script>
 

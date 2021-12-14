@@ -1,4 +1,4 @@
-package org.iota.zebra.datawedge;
+package org.iota.zebra.holder.datawedge;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -9,11 +9,9 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
-import android.widget.Toast;
-
 public class DataWedgeService extends Service {
 
-    private static final String TAG = "IOTA-Zebra-DataWedge";
+    private static final String TAG = "Holder - IOTA DataWedge";
     private  MutableLiveData<String> data;
 
     public class LocalBinder extends Binder {

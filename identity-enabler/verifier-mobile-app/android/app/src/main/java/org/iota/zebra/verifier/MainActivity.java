@@ -15,8 +15,8 @@ import androidx.lifecycle.Observer;
 import com.getcapacitor.BridgeActivity;
 import com.getcapacitor.Plugin;
 
-import org.iota.zebra.R;
-import org.iota.zebra.datawedge.DataWedgeService;
+import org.iota.zebra.verifier.R;
+import org.iota.zebra.verifier.datawedge.DataWedgeService;
 
 import java.util.ArrayList;
 
