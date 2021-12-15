@@ -80,6 +80,8 @@
     }
 
     onMount(async () => {
+        (window as any).onScan = onScan;
+
         if (!$hasSetupAccount) {
             return Keychain.clear();
         }
@@ -91,8 +93,6 @@
             console.log("Found identity", storedIdentity);
             displayHome = true;
         }
-
-        (window as any).onScan = onScan;
     });
 </script>
 
