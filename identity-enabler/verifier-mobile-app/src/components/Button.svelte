@@ -13,7 +13,7 @@
         justify-content: center;
         align-items: center;
         width: 100%;
-        height: 8vh;
+        height: 3em;
         font-size: 4vw;
         font-weight: 700;
         cursor: pointer;

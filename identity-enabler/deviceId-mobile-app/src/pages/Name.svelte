@@ -14,20 +14,9 @@
     const { Keyboard } = Plugins;
 
     let name = '';
-    let isKeyboardActive = false;
 	let loading = false;
 
     let background;
-    let keyboardHeight;
-
-    Keyboard.addListener('keyboardWillShow', (info) => {
-        keyboardHeight = info.keyboardHeight;
-        isKeyboardActive = true;
-    });
-
-    Keyboard.addListener('keyboardWillHide', () => {
-        isKeyboardActive = false;
-    });
 
     function handleOuterClick() {
         if (event.target === background) {
@@ -76,51 +65,31 @@
 <style>
     main {
         height: 100%;
-        background-color: #F8F8F8;
+        width: 100%;
+    }
+
+    .content {
         display: flex;
         flex-direction: column;
         align-items: center;
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
-        position: absolute;
-        width: 100%;
+        padding-bottom: 11vh;
     }
 
-    .headerContainer {
-        display: flex;
-        flex: 0.5;
+    .content > * {
+        margin: 3vh 0;
     }
 
-    .contentContainer {
-        display: flex;
-    }
-
-    .contentContainer {
-        text-align: center;
-        align-items: center;
-        display: flex;
-        flex-direction: column;
-        flex: 1;
-        width: 100%;
-        padding: 0 3.4vh;
-    }
-
-    .contentContainer > img {
+    img {
         mix-blend-mode: multiply;
-        width: 25.8vh;
-        height: 25.8vh;
-        margin-top: contentMargin;
-    }
-
-    .active {
-        margin-top: 7.6vh;
+        max-height: 150px;
     }
 
     footer {
-        padding: 0px 7vw;
-        width: 100vh;
-        position: absolute;
+        position: fixed;
         bottom: 0;
+        width: 100%;
     }
 </style>
 
@@ -131,19 +100,19 @@
     {#if loading}
         <FullScreenLoader label="Creating Identity..." />
     {:else}
-        <div class="headerContainer">
-            <Header text="Set the name of
-                            the device" />
+        <div class="content">
+            <div>
+                <Header text="Set the name of the device" />
+            </div>
+            <div>
+                <img src="../assets/landing-2.png" alt="set-name" />
+            </div>
+            <div>
+                <TextField bind:value="{name}" placeholder="Device name" />
+            </div>
         </div>
-
-        <div class="contentContainer">
-            <img class="{isKeyboardActive ? "active" : "inactive"}" src="../assets/landing-2.png" alt="set-name" />
-            <TextField bind:value="{name}" placeholder="Device name" />
-        </div>
-
         <footer>
             <Button
-                style="background: #00A7FF; color: white; height: 64px;" 
                 loadingText="{'Generating identity'}"
                 disabled="{name.length === 0}"
                 label="Next"

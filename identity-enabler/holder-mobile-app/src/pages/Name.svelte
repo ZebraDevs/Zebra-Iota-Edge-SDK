@@ -2,34 +2,19 @@
     import { Plugins } from '@capacitor/core';
     import { flip } from 'svelte/animate';
     import { navigate } from "svelte-routing";
-
     import Button from '../components/Button.svelte';
     import TextField from '../components/TextField.svelte';
     import Header from '../components/Header.svelte';
 	import FullScreenLoader from '../components/FullScreenLoader.svelte';
-
     import { ServiceFactory } from '../factories/serviceFactory';
 	import { account, error, hasSetupAccount } from '../lib/store';
-
     import { showAlert } from '../lib/ui/helpers';
     
     const { Keyboard } = Plugins;
 
     let name = '';
-    let isKeyboardActive = false;
 	let loading = false;
-
     let background;
-    let keyboardHeight;
-
-    Keyboard.addListener('keyboardWillShow', (info) => {
-        keyboardHeight = info.keyboardHeight;
-        isKeyboardActive = true;
-    });
-
-    Keyboard.addListener('keyboardWillHide', () => {
-        isKeyboardActive = false;
-    });
 
     function handleOuterClick() {
         if (event.target === background) {
@@ -79,65 +64,61 @@
 </script>
 
 <style>
-    .name-container {
+    main {
         height: 100%;
-        background-color: #F8F8F8;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        align-items: center;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
-        position: absolute;
         width: 100%;
     }
 
     .content {
-        text-align: center;
-        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 11vh;
     }
 
-    .content > img {
-        mix-blend-mode: multiply;
-    }
-
-    footer {
-        padding: 0px 7vw;
-        width: 100vh;
+    .content > * {
+        margin: 3vh 0;
     }
 
     img {
-        width: 27vh;
-        height: 27vh;
-        margin-top: 12.5vh;
+        mix-blend-mode: multiply;
+        max-height: 150px;
+    }
+
+    footer {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
     }
 </style>
 
-{#each [true] as item, index (item)}
-    <div
-        class="name-container"
-        bind:this="{background}"
-        on:click="{handleOuterClick}"
-        animate:flip="{{ duration: 350 }}"
-    >
-        {#if loading}
-            <FullScreenLoader label="Creating Identity..." />
-        {:else}
-            <Header text="Set your name" />
+<main
+    bind:this="{background}"
+    on:click="{handleOuterClick}">
 
-            <div class="content"><img src="../assets/set-name.png" alt="set-name" /></div>
-
-            <TextField bind:value="{name}" placeholder="Your Name" />
-
-            <footer>
-                <Button
-                    style="background: #00A7FF; color: white; height: 64px;" 
-                    loadingText="{'Generating identity'}"
-                    disabled="{name.length === 0}"
-                    label="Next"
-                    onClick="{save}"
-                />
-            </footer>
-        {/if}
-    </div>
-{/each}
+    {#if loading}
+        <FullScreenLoader label="Creating Identity..." />
+    {:else}
+        <div class="content">
+            <div>
+                <Header text="Set your name" />
+            </div>
+            <div>
+                <img src="../assets/set-name.png" alt="set-name" />
+            </div>
+            <div>
+                <TextField bind:value="{name}" placeholder="Your Name" />
+            </div>
+        </div>
+        <footer>
+            <Button
+                loadingText="{'Generating identity'}"
+                disabled="{name.length === 0}"
+                label="Next"
+                onClick="{save}"
+            />
+        </footer>
+    {/if}
+</main>

@@ -41,22 +41,18 @@
 		flex-direction: column;
 		overflow-y: auto;
 		-webkit-overflow-scrolling: touch;
+		position: relative;
 		height: 100%;
-		width: 100%;
-        position: absolute;
-        z-index: 7;
     }
 
     header {
         margin-bottom: 5vh;
     }
 
-    .wrapper {
+    .header-wrapper {
         text-align: center;
-        padding-bottom: 5vh;
-        max-height: 36vh;
+        padding-bottom: 3vh;
         background: linear-gradient(90deg, #00FFFF 0%, #0099FF 100%);
-        z-index: 2;
     }
 
     header {
@@ -78,15 +74,14 @@
 
     section {
         margin: 0 7vw;
-        z-index: 2;
-        position: relative;
+        z-index: 0;
     }
 
     footer {
         position: fixed;
         width: 100%;
         bottom: 0;
-        z-index: 6;
+        z-index: 1;
     }
 
     .credential-logo {
@@ -108,7 +103,7 @@
 	{/if}
 
     {#if !showTutorial}
-        <div class="wrapper" style={expired ? 'background: #000000;' : null}>
+        <div class="header-wrapper" style={expired ? 'background: #000000;' : null}>
             <div class="options-wrapper">
                 <img src="../assets/delete.svg" on:click="{onDelete}" alt="delete" />
                 <img src="../assets/code.svg" on:click="{onClickDev}" alt="code" />
@@ -122,10 +117,10 @@
                     <p>EXPIRED CREDENTIAL</p>
                 {/if}
             </header>
-            <section>
-                <ObjectList object="{credential.credentialSubject}" />
-            </section>
         </div>
+        <section>
+            <ObjectList object="{credential.credentialSubject}" />
+        </section>
         <footer>
             <Button style="background: #0099FF; color: white;" label="Done" onClick="{() => navigate("/home")}" />
         </footer>

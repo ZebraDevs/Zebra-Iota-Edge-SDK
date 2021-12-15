@@ -12,9 +12,7 @@
     }
 
     input {
-        margin: 1.7vh 0 16.7vh 0;
-        width: 44.4vh;
-        height: 7.48vh;
+        font-size: 1.2em;
         border: 1px solid #E2E2E2;
         box-sizing: border-box;
     }

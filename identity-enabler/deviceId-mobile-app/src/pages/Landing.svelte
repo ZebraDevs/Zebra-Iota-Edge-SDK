@@ -19,65 +19,53 @@
 <style>
     main {
         height: 100%;
-        background: #F8F8F8;
-        flex-direction: column;
-        display: flex;
-        flex: 1;
     }
 
     .content {
-        text-align: center;
+        display: flex;
+        flex-direction: column;
         align-items: center;
-        width: 100%;
-        padding: 0 3.4vh;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 11vh;
     }
 
-    .content > img {
-        mix-blend-mode: multiply;
-        width: 25.8vh;
-        height: 25.8vh;
-        margin: 7.6vh 0 1.3vh 0;
+    .content > * {
+        margin: 3vh 0;
     }
 
     .info {
         font-family: 'Proxima Nova', sans-serif;
         font-style: normal;
         font-weight: 400;
-        font-size: 2.08vh;
-        line-height: 3.3vh;
+        font-size: 0.9em;
+        line-height: 1.5em;
         color: #6f7a8d;
         text-align: center;
+        padding: 0 8vw;
     }
 
-    .headerContainer {
-        display: flex;
-        flex: 0.5;
+    img {
+        mix-blend-mode: multiply;
+        max-height: 150px;
     }
 
-    .contentContainer {
-        display: flex;
-        flex: 1;
-    }
-
-    .footerContainer {
-        display: flex;
-        align-self: flex-end;
+    footer {
+        position: fixed;
+        bottom: 0;
         width: 100%;
-        margin-top: 7.5vh;
     }
 </style>
 
 <main id="wrapper">
-    <div class="headerContainer">
-        <Header text="{info.header}" />
-    </div>
-    <div class="contentContainer">
-        <div class="content">
-            <img src="../assets/landing-1.png" alt="landing-1" />
-            <p class="info">{info.content}</p>
+    <div class="content">
+        <div>
+            <Header text="{info.header}" />
         </div>
+        <img src="../assets/landing-1.png" alt="landing-1" />
+        <p class="info">{info.content}</p>
     </div>
     <footer class="footerContainer">
-        <Button style="background: #00A7FF; color: white;" label="{info.footer}" onClick="{onNext}" />
+        <Button label="{info.footer}" onClick="{onNext}" />
     </footer>
 </main>

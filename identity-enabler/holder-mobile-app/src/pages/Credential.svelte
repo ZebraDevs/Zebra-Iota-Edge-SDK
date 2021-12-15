@@ -62,7 +62,7 @@
 
     .header-wrapper {
         text-align: center;
-        padding-bottom: 15vh;
+        padding-bottom: 3vh;
         background: linear-gradient(90deg, #00FFFF 0%, #0099FF 100%);
     }
 
@@ -99,7 +99,7 @@
     }
 
     section {
-        margin: -15vh 7vw 0 7vw;
+        margin: 0 7vw;
         z-index: 0;
     }
 

@@ -58,10 +58,9 @@
         margin-bottom: 5vh;
     }
 
-    .wrapper {
+    .header-wrapper {
         text-align: center;
-        padding-bottom: 15vh;
-        max-height: 36vh;
+        padding-bottom: 3vh;
         background: linear-gradient(90deg, #00FFFF 0%, #0099FF 100%);
     }
 
@@ -94,14 +93,14 @@
 
     section {
         margin: 0 7vw;
-        z-index: 2;
+        z-index: 0;
     }
 
     footer {
         position: fixed;
         width: 100%;
         bottom: 0;
-        z-index: 6;
+        z-index: 1;
     }
 
     .credential-logo {
@@ -123,7 +122,7 @@
 	{/if}
 
     {#if !showTutorial}
-    <div class="wrapper">
+    <div class="header-wrapper">
         <div class="options-wrapper">
 			<img src="../assets/chevron-left.svg" on:click="{goBack}" alt="chevron-left" />
             <img src="../assets/code.svg" on:click="{onClickDev}" alt="code" />
@@ -133,10 +132,10 @@
                 <p>ZEBRA TECHNOLOGIES</p>
                 <p>Device DID</p>
 			</header>
-        <section>
-            <ObjectList object="{credential.verifiableCredential.credentialSubject}" />
-        </section>
     </div>
+    <section>
+        <ObjectList object="{credential.verifiableCredential.credentialSubject}" />
+    </section>
     <footer>
         {#if save}
             <Button style="background: #0099FF; color: white;" label="Save credential" onClick="{onSaveCredential}" />

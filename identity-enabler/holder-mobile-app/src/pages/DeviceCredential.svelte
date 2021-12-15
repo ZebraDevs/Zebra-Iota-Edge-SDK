@@ -92,17 +92,15 @@
         margin-bottom: 5vh;
     }
 
-    .wrapper {
+    .header-wrapper {
         text-align: center;
-        padding-bottom: 15vh;
-        max-height: 36vh;
+        padding-bottom: 3vh;
         background: linear-gradient(90deg, #00FFFF 0%, #0099FF 100%);
     }
 
     header {
         margin-left: auto;
         margin-right: auto;
-        z-index: 1;
         height: fit-content;
         margin-bottom: 0;
     }
@@ -133,14 +131,14 @@
 
     section {
         margin: 0 7vw;
-        z-index: 2;
+        z-index: 0;
     }
 
     footer {
         position: fixed;
         width: 100%;
         bottom: 0;
-        z-index: 6;
+        z-index: 1;
     }
 
     .options-wrapper {
@@ -148,7 +146,6 @@
 		flex-direction: row;
 		justify-content: space-between;
 		margin: 3.5vh 3.5vh 0 3.5vh;
-        z-index: 3;
     }
 </style>
 
@@ -157,25 +154,25 @@
 		<FullScreenLoader label="Loading Credential..." />
 	{/if}
 
-    {#if showTutorial}
+    {#if !loading && showTutorial}
 		<DevInfo page="Credential" bind:showTutorial={showTutorial} />
 	{/if}
 
-    {#if !showTutorial}
-    <div class="wrapper">
-        <div class="options-wrapper">
-			<img src="../assets/chevron-left.svg" on:click="{goBack}" alt="chevron-left" />
-            <img src="../assets/code.svg" on:click="{onClickDev}" alt="code" />
-		</div>
-        <header>
-            <p>Device {claims.deviceName} claims</p>
-        </header>
+    {#if !loading && !showTutorial}
+        <div class="header-wrapper">
+            <div class="options-wrapper">
+                <img src="../assets/chevron-left.svg" on:click="{goBack}" alt="chevron-left" />
+                <img src="../assets/code.svg" on:click="{onClickDev}" alt="code" />
+            </div>
+            <header>
+                <p>Device {claims.deviceName} claims</p>
+            </header>
+        </div>
         <section>
             <ObjectList object="{claims}" />
         </section>
-    </div>
-    <footer>
-        <Button style="background: #0099FF; color: white;" label="Issue Device ID credential" onClick="{createCredential}" />
-    </footer>
+        <footer>
+            <Button style="background: #0099FF; color: white;" label="Issue Device ID credential" onClick="{createCredential}" />
+        </footer>
     {/if}
 </main>
