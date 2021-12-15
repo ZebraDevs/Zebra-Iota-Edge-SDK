@@ -1,18 +1,18 @@
 {
-  "appId": "org.iota.zebra.holder",
-  "appName": "Holder - IOTA SDK",
-  "bundledWebRuntime": false,
-  "npmClient": "npm",
-  "webDir": "public",
-  "plugins": {
-    "SplashScreen": {
-      "launchShowDuration": 0
-    }
-  },
-  "cordova": {},
-  "server": {
-    "url": "http://10.0.2.2:5001",
-    "cleartext": true
-  },
-  "linuxAndroidStudioPath": "/opt/android-studio/bin/studio.sh"
+    "appId": "org.iota.zebra.holder",
+    "appName": "Holder - IOTA SDK",
+    "bundledWebRuntime": false,
+    "npmClient": "npm",
+    "webDir": "public",
+    "plugins": {
+        "SplashScreen": {
+            "launchShowDuration": 0
+        }
+    },
+    "cordova": {},
+    "server": {
+        "url": "http://10.0.2.2:5001",
+        "cleartext": true
+    },
+    "linuxAndroidStudioPath": "/opt/android-studio/bin/studio.sh"
 }

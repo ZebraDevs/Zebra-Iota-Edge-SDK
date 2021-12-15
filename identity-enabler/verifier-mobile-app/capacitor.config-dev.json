@@ -1,19 +1,19 @@
 {
-  "appId": "org.iota.zebra.verifier",
-  "appName": "Verifier - IOTA SDK",
-  "bundledWebRuntime": false,
-  "npmClient": "npm",
-  "webDir": "public",
-  "plugins": {
-    "SplashScreen": {
-      "launchShowDuration": 0
-    }
-  },
-  "cordova": {},
-  "server": {
-    "hostname": "localhost:5000",
-    "androidScheme": "https",
-    "cleartext": true
-  },
-  "linuxAndroidStudioPath": "/opt/android-studio/bin/studio.sh"
+    "appId": "org.iota.zebra.verifier",
+    "appName": "Verifier - IOTA SDK",
+    "bundledWebRuntime": false,
+    "npmClient": "npm",
+    "webDir": "public",
+    "plugins": {
+        "SplashScreen": {
+            "launchShowDuration": 0
+        }
+    },
+    "cordova": {},
+    "server": {
+        "hostname": "localhost:5000",
+        "androidScheme": "https",
+        "cleartext": true
+    },
+    "linuxAndroidStudioPath": "/opt/android-studio/bin/studio.sh"
 }

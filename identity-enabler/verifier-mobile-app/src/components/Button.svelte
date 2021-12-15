@@ -1,11 +1,22 @@
 <script>
-    import Spinner from './Spinner.svelte';
+    import Spinner from "./Spinner.svelte";
 
     export let label;
     export let onClick;
     export let disabled = false;
     export let loading = false;
 </script>
+
+<button style={$$props.style} class:disabled on:click={onClick}>
+    {#if loading}
+        <Spinner />
+    {:else}
+        <slot />
+        {#if label}
+            {label}
+        {/if}
+    {/if}
+</button>
 
 <style>
     button {
@@ -32,14 +43,3 @@
         height: 3vh;
     }
 </style>
-
-<button style={$$props.style} class:disabled on:click="{onClick}">
-    {#if loading}
-        <Spinner />
-    {:else}
-        <slot></slot>
-        {#if label}
-            {label}
-        {/if}
-    {/if}
-</button>

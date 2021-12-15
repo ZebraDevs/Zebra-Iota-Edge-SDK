@@ -1,20 +1,31 @@
 <script>
-    import Button from '../components/Button.svelte';
-    import Header from '../components/Header.svelte';
+    import Button from "../components/Button.svelte";
+    import Header from "../components/Header.svelte";
     import { navigate } from "svelte-routing";
 
-    const info = 
-        {
-            header: 'Create and store device digital identity',
-            content:
-                'Share device credentials and immunity status safely and privately using IOTA’s Identity solution.',
-            footer: 'Next'
-        };
+    const info = {
+        header: "Create and store device digital identity",
+        content: "Share device credentials and immunity status safely and privately using IOTA’s Identity solution.",
+        footer: "Next"
+    };
 
     function onNext() {
-        navigate('name');
+        navigate("name");
     }
 </script>
+
+<main id="wrapper">
+    <div class="content">
+        <div>
+            <Header text={info.header} />
+        </div>
+        <img src="../assets/landing-1.png" alt="landing-1" />
+        <p class="info">{info.content}</p>
+    </div>
+    <footer class="footerContainer">
+        <Button label={info.footer} onClick={onNext} />
+    </footer>
+</main>
 
 <style>
     main {
@@ -35,7 +46,7 @@
     }
 
     .info {
-        font-family: 'Proxima Nova', sans-serif;
+        font-family: "Proxima Nova", sans-serif;
         font-style: normal;
         font-weight: 400;
         font-size: 0.9em;
@@ -56,16 +67,3 @@
         width: 100%;
     }
 </style>
-
-<main id="wrapper">
-    <div class="content">
-        <div>
-            <Header text="{info.header}" />
-        </div>
-        <img src="../assets/landing-1.png" alt="landing-1" />
-        <p class="info">{info.content}</p>
-    </div>
-    <footer class="footerContainer">
-        <Button label="{info.footer}" onClick="{onNext}" />
-    </footer>
-</main>

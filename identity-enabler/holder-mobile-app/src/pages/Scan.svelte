@@ -1,52 +1,53 @@
 <script lang="ts">
-    import { navigate } from 'svelte-routing';
-    import { fly } from 'svelte/transition';
-    import { parse } from '../lib/helpers';
-    import { __ANDROID__ } from '../lib/platforms';
-    import Scanner from '../components/Scanner.svelte';
-    import FullScreenLoader from '../components/FullScreenLoader.svelte';
-    import { BarcodeFormat, BrowserMultiFormatReader, DecodeHintType } from '@zxing/library';
-import { playAudio } from '../lib/ui/helpers';
+    import { navigate } from "svelte-routing";
+    import { fly } from "svelte/transition";
+    import { parse } from "../lib/helpers";
+    import { __ANDROID__ } from "../lib/platforms";
+    import Scanner from "../components/Scanner.svelte";
+    import FullScreenLoader from "../components/FullScreenLoader.svelte";
+    import { BarcodeFormat, BrowserMultiFormatReader, DecodeHintType } from "@zxing/library";
+    import { playAudio } from "../lib/ui/helpers";
 
     const formats = new Map().set(DecodeHintType.POSSIBLE_FORMATS, [BarcodeFormat.DATA_MATRIX, BarcodeFormat.QR_CODE]);
     const reader = new BrowserMultiFormatReader(formats);
-    let claims = '';
+    let claims = "";
     let invalid = false;
     let loading = false;
 
     // We delay playing the valid or invalid sound in order not to overlap
-	// with the scanning sound
+    // with the scanning sound
     const PLAY_DELAY = 400;
 
     async function handleScannerData(event) {
         try {
-            await playAudio('scanned');
+            await playAudio("scanned");
 
             loading = true;
             let parsedData = parse(event.detail);
             claims = parsedData;
-    
+
             if (claims) {
-                setTimeout(async () => await playAudio('valid'), PLAY_DELAY);
-                navigate('devicecredential', { state: { claims: claims }});
+                setTimeout(async () => await playAudio("valid"), PLAY_DELAY);
+                navigate("devicecredential", { state: { claims: claims } });
             } else {
-                setTimeout(async () => await playAudio('invalid'), PLAY_DELAY);
+                setTimeout(async () => await playAudio("invalid"), PLAY_DELAY);
                 return showAlert();
             }
         } catch (err) {
-            setTimeout(async () => await playAudio('invalid'), PLAY_DELAY);
+            setTimeout(async () => await playAudio("invalid"), PLAY_DELAY);
             console.error(err);
-        };
+        }
     }
 
     // handles input button
-    const imageSelected = (e) => {
+    const imageSelected = e => {
         const image = e.currentTarget.files[0];
-        
+
         const fr = new FileReader();
         fr.onload = (e: ProgressEvent<FileReader>) => {
-            reader.decodeFromImageUrl(e.target.result as string)
-                .then((result) => {
+            reader
+                .decodeFromImageUrl(e.target.result as string)
+                .then(result => {
                     handleScannerData({ detail: result.getText() });
                 })
                 .catch(e => {
@@ -62,9 +63,29 @@ import { playAudio } from '../lib/ui/helpers';
     }
 
     function goBack() {
-        navigate('/home');
+        navigate("/home");
     }
 </script>
+
+<main transition:fly={{ y: 200, duration: 500 }}>
+    {#if loading}
+        <FullScreenLoader label="Verifying Credential..." />
+    {/if}
+
+    {#if !invalid && !loading}
+        <header>
+            <div class="options-wrapper">
+                <img on:click={goBack} src="../assets/chevron-left.svg" alt="back" />
+                <p>Scanner</p>
+                <label class="image-select">
+                    <input type="file" accept="image/*" on:change={e => imageSelected(e)} />
+                    Browse
+                </label>
+            </div>
+        </header>
+        <Scanner on:message={handleScannerData} />
+    {/if}
+</main>
 
 <style>
     main {
@@ -76,15 +97,15 @@ import { playAudio } from '../lib/ui/helpers';
         display: flex;
         flex-direction: column;
         height: 72px;
-        background: linear-gradient(90deg, #00FFFF 0%, #0099FF 100%);
+        background: linear-gradient(90deg, #00ffff 0%, #0099ff 100%);
     }
 
     .options-wrapper > p {
-        font-family: 'Proxima Nova', sans-serif;
+        font-family: "Proxima Nova", sans-serif;
         font-weight: 600;
         font-size: 14px;
         line-height: 16px;
-        color: #F8F8F8;
+        color: #f8f8f8;
         margin: 0;
         z-index: 1;
     }
@@ -102,35 +123,15 @@ import { playAudio } from '../lib/ui/helpers';
     }
 
     .image-select {
-        font-family: 'Proxima Nova', sans-serif;
+        font-family: "Proxima Nova", sans-serif;
         font-weight: 600;
         font-size: 14px;
         line-height: 16px;
-        color: #F8F8F8;
+        color: #f8f8f8;
         border: 1px solid #ccc;
-        background-color: #00A7FF;;
+        background-color: #00a7ff;
         padding: 6px 12px;
         border-radius: 4px;
         cursor: pointer;
     }
 </style>
-
-<main transition:fly="{{ y: 200, duration: 500 }}">
-    {#if loading}
-        <FullScreenLoader label="Verifying Credential..." />
-    {/if}
-
-    {#if !invalid && !loading}
-        <header>
-            <div class="options-wrapper">
-                <img on:click="{goBack}" src="../assets/chevron-left.svg" alt="back" />
-                <p>Scanner</p>
-                <label class="image-select">
-                    <input type="file" accept="image/*" on:change={(e) => imageSelected(e)} />
-                    Browse
-                </label>
-            </div>
-        </header>
-        <Scanner on:message="{handleScannerData}" />
-    {/if}
-</main>

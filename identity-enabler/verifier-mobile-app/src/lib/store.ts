@@ -1,7 +1,7 @@
-import { writable } from 'svelte/store';
-import { persistent } from './helpers';
-import init from './init';
-import type { VerifiableCredentialEnrichment } from '../models/types/identity';
+import { writable } from "svelte/store";
+import { persistent } from "./helpers";
+import init from "./init";
+import type { VerifiableCredentialEnrichment } from "../models/types/identity";
 
 init();
 
@@ -11,7 +11,7 @@ export const updateStorage = async (key, value) => {
         let updated = {};
         if (localStorage.getItem(key)) {
             stored = JSON.parse(await localStorage.getItem(key));
-            updated = {...stored, ...value};
+            updated = { ...stored, ...value };
         } else {
             updated = [value];
         }
@@ -20,9 +20,9 @@ export const updateStorage = async (key, value) => {
     } catch (err) {
         console.error(err);
     }
-}
+};
 
-export const getFromStorage = async (key) => {
+export const getFromStorage = async key => {
     try {
         const json = localStorage.getItem(key);
         if (json) {
@@ -32,21 +32,18 @@ export const getFromStorage = async (key) => {
     } catch (err) {
         console.error(err);
     }
-}
+};
 
-export const credentials = persistent<{ personal: string, health: string, blood: string }>(
-    'credentials',
-    {
-        personal: '',
-        health: '',
-        blood: ''
-    },
-);
+export const credentials = persistent<{ personal: string; health: string; blood: string }>("credentials", {
+    personal: "",
+    health: "",
+    blood: ""
+});
 
 export const loadingScreen = writable<string | void>();
 
 export interface InternalCredentialDataModel {
-    id : string;
+    id: string;
     metaInformation: {
         issuer: string;
         receivedAt: string;
@@ -62,7 +59,7 @@ export const error = writable<string>(null);
 
 let errorTimeout: any;
 
-error.subscribe((item) => {
+error.subscribe(item => {
     clearTimeout(errorTimeout);
     if (item) {
         errorTimeout = setTimeout(() => {

@@ -1,24 +1,24 @@
-import type { Document, KeyPair, KeyCollection, VerificationMethod } from '@iota/identity-wasm/web';
+import type { Document, KeyPair, KeyCollection, VerificationMethod } from "@iota/identity-wasm/web";
 
 export type Identity = {
-  didDoc: string;
-  publicAuthKey: string;
-  privateAuthKey: string;
-  doc: Document;
-  key: KeyPair;
-  keys: KeyCollection | any;
-  method: VerificationMethod | any;
+    didDoc: string;
+    publicAuthKey: string;
+    privateAuthKey: string;
+    doc: Document;
+    key: KeyPair;
+    keys: KeyCollection | any;
+    method: VerificationMethod | any;
 };
 
 export type IdentityConfig = {
-  node: string;
-  network: string;
-  permanode?: string;
+    node: string;
+    network: string;
+    permanode?: string;
 };
 
 export type VerifiableCredentialEnrichment = {
-  issuerLabel: string;
-  logo: string;
-  credentialLabel: string;
-  theme: string;
+    issuerLabel: string;
+    logo: string;
+    credentialLabel: string;
+    theme: string;
 };

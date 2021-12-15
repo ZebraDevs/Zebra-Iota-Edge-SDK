@@ -7,7 +7,7 @@ import { playAudio } from "./ui/helpers";
 
 /**
  * Handles data string captured by Camera, DataWedge or Image selection.
- * 
+ *
  * @param decodedText The decoded string to verify and persist.
  * @returns Promise.
  */
@@ -17,35 +17,35 @@ export async function handleScannerData(decodedText: string): Promise<void> {
 
     try {
         parsedData = JSON.parse(decodedText);
-    } catch(e) {
+    } catch (e) {
         loadingScreen.set();
-        navigate('/invalid');
+        navigate("/invalid");
         return;
     }
 
     if (!parsedData) {
         loadingScreen.set();
-        navigate('/invalid');
+        navigate("/invalid");
         return;
     }
 
     loadingScreen.set("Verifying credential...");
-    const identityService = ServiceFactory.get<IdentityService>('identity');
+    const identityService = ServiceFactory.get<IdentityService>("identity");
     const verificationResult = await identityService.verifyVerifiablePresentation(parsedData);
 
     if (verificationResult) {
         const credential = parsedData.verifiableCredential;
-        await updateStorage('credentials', { [credential.type[1].split(/\b/)[0].toLowerCase()]: credential });
+        await updateStorage("credentials", { [credential.type[1].split(/\b/)[0].toLowerCase()]: credential });
         loadingScreen.set();
         const { Toast } = Plugins;
         await Toast.show({
-            text: 'Credential verified!',
-            position: 'center'
+            text: "Credential verified!",
+            position: "center"
         });
-        playAudio('valid');
-        navigate('/credential', { state: { credential } });
+        playAudio("valid");
+        navigate("/credential", { state: { credential } });
     } else {
         loadingScreen.set();
-        navigate('/invalid');
+        navigate("/invalid");
     }
 }

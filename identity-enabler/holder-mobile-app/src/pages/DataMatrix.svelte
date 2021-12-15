@@ -1,3 +1,7 @@
+<div>
+    <img src="../assets/logo.svg" alt="logo" />
+</div>
+
 <style>
     div {
         background: grey;
@@ -15,7 +19,3 @@
         height: 100vh;
     }
 </style>
-
-<div>
-    <img src="../assets/logo.svg" alt="logo" />
-</div>

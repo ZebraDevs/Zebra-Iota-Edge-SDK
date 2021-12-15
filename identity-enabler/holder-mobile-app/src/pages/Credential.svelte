@@ -1,40 +1,36 @@
 <script>
     import { navigate } from "svelte-routing";
-    import { beforeUpdate } from 'svelte';
-    import { fly } from 'svelte/transition';
-    import { Plugins } from '@capacitor/core';
-    import Button from '../components/Button.svelte';
-    import ObjectList from '../components/ObjectList.svelte';
-    import DevInfo from './DevInfo.svelte';
-    import { modalStatus } from '../lib/store';
-    import { ServiceFactory } from '../factories/serviceFactory';
-
+    import { beforeUpdate } from "svelte";
+    import { fly } from "svelte/transition";
+    import { Plugins } from "@capacitor/core";
+    import Button from "../components/Button.svelte";
+    import ObjectList from "../components/ObjectList.svelte";
+    import DevInfo from "./DevInfo.svelte";
+    import { modalStatus } from "../lib/store";
+    import { ServiceFactory } from "../factories/serviceFactory";
     import { showAlert } from "../lib/ui/helpers";
 
     const { App } = Plugins;
     let showTutorial = false;
     const credential = window.history.state.credential;
-    const identityService = ServiceFactory.get('identity');
+    const identityService = ServiceFactory.get("identity");
     const preparedCredentialDocument = identityService.prepareCredentialForDisplay(credential.credentialDocument);
 
     async function share() {
         if (navigator.onLine === false) {
-            await showAlert(
-                'Error', 
-                'You need Internet connectivity to share a Credential' 
-            );
-           return;
+            await showAlert("Error", "You need Internet connectivity to share a Credential");
+            return;
         }
 
-        modalStatus.set({ 
-            active: true, 
-            type: 'share', 
+        modalStatus.set({
+            active: true,
+            type: "share",
             props: { credential }
         });
     }
 
     function goBack() {
-        navigate('home');
+        navigate("home");
     }
 
     function onClickDev() {
@@ -45,6 +41,40 @@
         !showTutorial && App.removeAllListeners();
     });
 </script>
+
+<main transition:fly={{ x: 500, duration: 500 }}>
+    {#if showTutorial}
+        <DevInfo page="Credential" bind:showTutorial />
+    {/if}
+
+    {#if !showTutorial}
+        <div class="header-wrapper">
+            <div class="options-wrapper">
+                <img src="../assets/chevron-left.svg" on:click={goBack} alt="chevron-left" />
+                <img src="../assets/code.svg" on:click={onClickDev} alt="code" />
+            </div>
+            <header>
+                {#if credential.enrichment.credentialLabel === "Organisation ID"}
+                    <img class="credential-logo" src="../assets/zebra.svg" alt="credential-logo" />
+                    <p>{credential.metaInformation.issuer.toUpperCase()}</p>
+                {:else}
+                    <img class="credential-logo" src="../assets/credentialLarge.svg" alt="credential-logo" />
+                    <p>{credential.enrichment.issuerLabel}</p>
+                {/if}
+                <p>{credential.enrichment.credentialLabel}</p>
+                <p>{new Date(preparedCredentialDocument.issuanceDate).toLocaleString()}</p>
+            </header>
+        </div>
+        <section>
+            <ObjectList object={preparedCredentialDocument.credentialSubject} />
+        </section>
+        <footer>
+            <Button style="background: #0099FF; color: white;" label="Share" onClick={share}>
+                <img src="../assets/share.png" alt="share" />
+            </Button>
+        </footer>
+    {/if}
+</main>
 
 <style>
     main {
@@ -63,7 +93,7 @@
     .header-wrapper {
         text-align: center;
         padding-bottom: 3vh;
-        background: linear-gradient(90deg, #00FFFF 0%, #0099FF 100%);
+        background: linear-gradient(90deg, #00ffff 0%, #0099ff 100%);
     }
 
     header {
@@ -75,7 +105,7 @@
     }
 
     header > p {
-        font-family: 'Proxima Nova', sans-serif;
+        font-family: "Proxima Nova", sans-serif;
         font-weight: 700;
         font-size: 3.4vh;
         line-height: 3.4vh;
@@ -121,37 +151,3 @@
         margin: 3.5vh 3.5vh 0 3.5vh;
     }
 </style>
-
-<main transition:fly="{{ x: 500, duration: 500 }}">
-    {#if showTutorial}
-        <DevInfo page="Credential" bind:showTutorial={showTutorial} />
-    {/if}
-
-    {#if !showTutorial}
-        <div class="header-wrapper">
-            <div class="options-wrapper">
-                <img src="../assets/chevron-left.svg" on:click="{goBack}" alt="chevron-left" />
-                <img src="../assets/code.svg" on:click="{onClickDev}" alt="code" />
-            </div>
-            <header>
-                {#if credential.enrichment.credentialLabel === 'Organisation ID'}
-                    <img class="credential-logo" src="../assets/zebra.svg" alt="credential-logo" />
-                    <p>{credential.metaInformation.issuer.toUpperCase()}</p>
-                {:else}
-                    <img class="credential-logo" src="../assets/credentialLarge.svg" alt="credential-logo" />
-                    <p>{credential.enrichment.issuerLabel}</p>
-                {/if}
-                <p>{credential.enrichment.credentialLabel}</p>
-                <p>{new Date(preparedCredentialDocument.issuanceDate).toLocaleString()}</p>           
-            </header>
-        </div>
-        <section>
-            <ObjectList object="{preparedCredentialDocument.credentialSubject}" />
-        </section>
-        <footer>
-            <Button style="background: #0099FF; color: white;" label="Share" onClick="{share}">
-                <img src="../assets/share.png" alt="share" />
-            </Button>
-        </footer>
-    {/if}
-</main>

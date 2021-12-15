@@ -1,5 +1,5 @@
-import 'capacitor-secure-storage-plugin';
-import { Plugins } from '@capacitor/core';
+import "capacitor-secure-storage-plugin";
+import { Plugins } from "@capacitor/core";
 
 const { SecureStoragePlugin } = Plugins;
 
@@ -18,5 +18,5 @@ export default {
     },
     clear(): Promise<{ value: boolean }> {
         return SecureStoragePlugin.clear();
-    },
+    }
 };

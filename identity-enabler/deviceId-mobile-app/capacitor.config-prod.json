@@ -1,14 +1,14 @@
 {
-  "appId": "org.iota.zebra.device_id",
-  "appName": "Device ID - IOTA SDK",
-  "bundledWebRuntime": false,
-  "npmClient": "npm",
-  "webDir": "public",
-  "plugins": {
-    "SplashScreen": {
-      "launchShowDuration": 0
-    }
-  },
-  "cordova": {},
-  "linuxAndroidStudioPath": "/opt/android-studio/bin/studio.sh"
+    "appId": "org.iota.zebra.device_id",
+    "appName": "Device ID - IOTA SDK",
+    "bundledWebRuntime": false,
+    "npmClient": "npm",
+    "webDir": "public",
+    "plugins": {
+        "SplashScreen": {
+            "launchShowDuration": 0
+        }
+    },
+    "cordova": {},
+    "linuxAndroidStudioPath": "/opt/android-studio/bin/studio.sh"
 }

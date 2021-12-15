@@ -1,33 +1,32 @@
-import { v4 as uuidv4 } from 'uuid';
-import { writable, Writable } from 'svelte/store';
-import { RANDOM_USER_DATA_API_URL } from '../config';
-
+import { v4 as uuidv4 } from "uuid";
+import { writable, Writable } from "svelte/store";
+import { RANDOM_USER_DATA_API_URL } from "../config";
 
 interface ExtendedProofDocument {
-    created : string,
-    creator : string,
-    nonce : string
-    type : string,
-    verificationMethod : string
+    created: string;
+    creator: string;
+    nonce: string;
+    type: string;
+    verificationMethod: string;
 }
 
 interface ProofDataModel {
-    "proof" ?: ExtendedProofDocument
+    proof?: ExtendedProofDocument;
 }
 
 interface CredentialDataModel {
-    "@context" : string[],
-    "type" : string[],
-    "issuer" : string,
-    "issuanceDate" : string,
-    "credentialSubject" : object
+    "@context": string[];
+    type: string[];
+    issuer: string;
+    issuanceDate: string;
+    credentialSubject: object;
 }
 
 interface PresentationDataModel {
-    "@context" : string[],
-    type : string[],
-    holder ?: string,
-    verifiableCredential: VerifiableCredentialDataModel[]
+    "@context": string[];
+    type: string[];
+    holder?: string;
+    verifiableCredential: VerifiableCredentialDataModel[];
 }
 
 type VerifiableCredentialDataModel = CredentialDataModel & ProofDataModel;
@@ -36,7 +35,7 @@ type VerifiablePresentationDataModel = PresentationDataModel & ProofDataModel;
 /**
  * Random user data
  */
- export type RandomUserData = {
+export type RandomUserData = {
     location: {
         street: {
             number: number;
@@ -65,7 +64,7 @@ type VerifiablePresentationDataModel = PresentationDataModel & ProofDataModel;
 /**
  * Random user data response
  */
- export type RandomUserDataResponse = {
+export type RandomUserDataResponse = {
     results: RandomUserData[];
 };
 
@@ -83,7 +82,7 @@ export function parse(data: string): any {
     } catch (e) {
         return null;
     }
-};
+}
 
 /**
  * Gets random user data
@@ -94,13 +93,13 @@ export function parse(data: string): any {
  */
 export function getRandomUserData(): Promise<RandomUserData> {
     return fetch(RANDOM_USER_DATA_API_URL)
-        .then((response) => response.json())
+        .then(response => response.json())
         .then((result: RandomUserDataResponse) => {
             const randomData = result.results[0];
 
             return randomData;
         });
-};
+}
 
 /**
  * Converts byte array to hex
@@ -122,20 +121,20 @@ export function convertByteArrayToHex(bytes: Uint8Array): string {
     }
 
     /* eslint-enable no-plusplus,no-bitwise */
-    return hex.join('');
-};
+    return hex.join("");
+}
 
 export function isVerifiablePresentation(
     payload: VerifiablePresentationDataModel | unknown
 ): payload is VerifiablePresentationDataModel {
     return !!(payload as VerifiablePresentationDataModel).verifiableCredential?.length;
-};
+}
 
 export function isVerifiableCredential(
     payload: VerifiableCredentialDataModel | unknown
 ): payload is VerifiableCredentialDataModel {
     return !!(payload as VerifiableCredentialDataModel).credentialSubject;
-};
+}
 
 /**
  * Updates application path
@@ -147,8 +146,8 @@ export function isVerifiableCredential(
  * @returns {void}
  */
 export function goto(path: string, params?: { [key: string]: string }): void {
-    window.location.hash = `${path}${params ? `?${new URLSearchParams(params).toString()}` : ''}`;
-};
+    window.location.hash = `${path}${params ? `?${new URLSearchParams(params).toString()}` : ""}`;
+}
 
 /**
  * Synchronous timeout
@@ -162,8 +161,7 @@ export function goto(path: string, params?: { [key: string]: string }): void {
 export function delay(ms: number): void {
     const startPoint = new Date().getTime();
     while (new Date().getTime() - startPoint <= ms);
-};
-
+}
 
 /**
  * Persist a writable Svelte store to local storage
@@ -187,42 +185,41 @@ export function persistent<T>(key: string, initialValue: T, saveTransformation?:
     });
 
     return state;
-};
+}
 
-export function generateRandomId(): string { return uuidv4(); }
+export function generateRandomId(): string {
+    return uuidv4();
+}
 
 export function flattenObj(ob) {
-  
     // The object which contains the
     // final result
     let result = {};
-  
+
     // loop through the object "ob"
     for (const i in ob) {
-  
         // We check the type of the i using
         // typeof() function and recursively
         // call the function again
-        if ((typeof ob[i]) === 'object') {
+        if (typeof ob[i] === "object") {
             const temp = flattenObj(ob[i]);
             for (const j in temp) {
-  
                 // Store temp in result
-                result[i + '.' + j] = temp[j];
+                result[i + "." + j] = temp[j];
             }
         }
-  
+
         // Else store ob[i] in result directly
         else {
             result[i] = ob[i];
         }
     }
     return result;
-};
+}
 
 export async function getMarkdownContent(url): Promise<any> {
     return fetch(url).then(res => res.text());
-};
+}
 
 /**
  * Waits for a certain number of milliseconds
@@ -233,6 +230,6 @@ export async function getMarkdownContent(url): Promise<any> {
  *
  * @returns {void}
  */
- export function wait(milliseconds: number) {
+export function wait(milliseconds: number) {
     return new Promise(resolve => setTimeout(resolve, milliseconds));
 }

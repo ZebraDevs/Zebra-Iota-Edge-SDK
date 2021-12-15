@@ -4,6 +4,8 @@
     export let disabled;
 </script>
 
+<input {disabled} type="text" {placeholder} bind:value />
+
 <style>
     input::-webkit-outer-spin-button,
     input::-webkit-inner-spin-button {
@@ -13,14 +15,12 @@
 
     input {
         font-size: 1.2em;
-        border: 1px solid #E2E2E2;
+        border: 1px solid #e2e2e2;
         box-sizing: border-box;
     }
 
     input:focus {
         outline: none !important;
-        border: 1px solid #59c5ff;;
+        border: 1px solid #59c5ff;
     }
 </style>
-
-<input {disabled} type="text" {placeholder} bind:value />

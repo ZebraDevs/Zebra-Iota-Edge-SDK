@@ -1,0 +1,11 @@
+android/**
+node_modules/**
+public/**
+src/assets/**
+.gitignore
+.prettierignore
+.eslintignore
+*.md
+*.html
+package-lock.json
+yarn.lock

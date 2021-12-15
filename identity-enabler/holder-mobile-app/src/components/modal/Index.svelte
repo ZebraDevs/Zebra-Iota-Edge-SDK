@@ -1,10 +1,9 @@
 <script>
-    import { onDestroy, setContext as baseSetContext } from 'svelte';
-    import { fly } from 'svelte/transition';
+    import { onDestroy, setContext as baseSetContext } from "svelte";
+    import { fly } from "svelte/transition";
+    import { modalStatus } from "../../lib/store";
 
-    import { modalStatus } from '../../lib/store';
-
-    export let key = 'simple-modal';
+    export let key = "simple-modal";
     export let closeOnEsc = true;
     export let closeOnOuterClick = true;
     export let styleBg = { top: 0, left: 0 };
@@ -35,9 +34,10 @@
     let background;
     let wrap;
 
-    const camelCaseToDash = (str) => str.replace(/([a-zA-Z])(?=[A-Z])/g, '$1-').toLowerCase();
+    const camelCaseToDash = str => str.replace(/([a-zA-Z])(?=[A-Z])/g, "$1-").toLowerCase();
 
-    const toCssString = (props) => Object.keys(props).reduce((str, key) => `${str}; ${camelCaseToDash(key)}: ${props[key]}`, '');
+    const toCssString = props =>
+        Object.keys(props).reduce((str, key) => `${str}; ${camelCaseToDash(key)}: ${props[key]}`, "");
 
     $: cssBg = toCssString(state.styleBg);
     $: cssWindow = toCssString(state.styleWindow);
@@ -60,13 +60,13 @@
     };
 
     const handleKeyup = ({ key }) => {
-        if (state.closeOnEsc && Component && key === 'Escape') {
+        if (state.closeOnEsc && Component && key === "Escape") {
             event.preventDefault();
             close();
         }
     };
 
-    const handleOuterClick = (event) => {
+    const handleOuterClick = event => {
         if (state.closeOnOuterClick && (event.target === background || event.target === wrap)) {
             event.preventDefault();
             close();
@@ -75,7 +75,7 @@
 
     setContext(key, { open, close });
 
-    const unsubscribe = modalStatus.subscribe((status) => {
+    const unsubscribe = modalStatus.subscribe(status => {
         if (
             !status.active &&
             // Also check if any component instance is active
@@ -87,6 +87,29 @@
 
     onDestroy(unsubscribe);
 </script>
+
+<svelte:window on:keyup={handleKeyup} />
+
+<div>
+    {#if Component}
+        <div
+            class="bg"
+            on:click={handleOuterClick}
+            bind:this={background}
+            transition:currentTransitionBg={state.transitionBgProps}
+            style={cssBg}
+        >
+            <div class="window-wrap" bind:this={wrap}>
+                <div class="window" in:currentTransitionWindow={state.transitionWindowProps} style={cssWindow}>
+                    <div class="content" style={cssContent}>
+                        <svelte:component this={Component} {...props} />
+                    </div>
+                </div>
+            </div>
+        </div>
+    {/if}
+    <slot />
+</div>
 
 <style>
     * {
@@ -128,26 +151,3 @@
         justify-content: center;
     }
 </style>
-
-<svelte:window on:keyup="{handleKeyup}" />
-
-<div>
-    {#if Component}
-        <div
-            class="bg"
-            on:click="{handleOuterClick}"
-            bind:this="{background}"
-            transition:currentTransitionBg="{state.transitionBgProps}"
-            style="{cssBg}"
-        >
-            <div class="window-wrap" bind:this="{wrap}">
-                <div class="window" in:currentTransitionWindow="{state.transitionWindowProps}" style="{cssWindow}">
-                    <div class="content" style="{cssContent}">
-                        <svelte:component this="{Component}" {...props} />
-                    </div>
-                </div>
-            </div>
-        </div>
-    {/if}
-    <slot />
-</div>
