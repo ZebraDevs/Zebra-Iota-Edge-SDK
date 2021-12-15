@@ -1,7 +1,15 @@
 <script>
+import { onMount } from 'svelte';
+
     import { navigate } from 'svelte-routing';
     import { fly } from 'svelte/transition';
     import Button from '../components/Button.svelte';
+import { playAudio } from '../lib/ui/helpers';
+    const PLAY_DELAY = 500;
+    onMount(() => {
+        // We wait a little bit in order not to overlap the different aural feedback
+        setTimeout(async () => await playAudio('invalid'), PLAY_DELAY);
+    });
 </script>
 
 <style>

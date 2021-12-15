@@ -11,6 +11,7 @@
     import FullScreenLoader from '../components/FullScreenLoader.svelte';
     import { BarcodeFormat, BrowserMultiFormatReader, DecodeHintType } from '@zxing/library';
     import type { IdentityService } from '../services/identityService';
+import { playAudio } from '../lib/ui/helpers';
 
     const { Toast } = Plugins;
     const formats = new Map().set(DecodeHintType.POSSIBLE_FORMATS, [BarcodeFormat.DATA_MATRIX, BarcodeFormat.QR_CODE]);
@@ -22,25 +23,35 @@
 
     async function handleScannerData(event) {
         try {
+            await playAudio('scanned');
+
             loading = true;
             let parsedData = parse(event.detail);
             VP = parsedData;
 
-            if (!VP) return showAlert();
+            if (!VP) {
+                await playAudio('invalid');
+                return showAlert();
+            }
 
             const identityService = ServiceFactory.get<IdentityService>('identity');
             const verificationResult = await identityService.verifyVerifiablePresentation(VP);
     
             if (verificationResult) {
+                await playAudio('valid');
+
                 showToast();
                 loading = false;
                 navigate('credential', { state: { credential: VP, save: true }});
             } else {
+                await playAudio('invalid');
+
                 loading = false;
                 showAlert();
                 error.set('Invalid Data Matrix');
             }
         } catch (err) {
+            await playAudio('invalid');
             console.error(err);
         };
     }

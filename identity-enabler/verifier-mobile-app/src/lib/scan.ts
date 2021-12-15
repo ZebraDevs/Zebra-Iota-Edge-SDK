@@ -3,6 +3,7 @@ import { navigate } from "svelte-routing";
 import { ServiceFactory } from "../factories/serviceFactory";
 import type { IdentityService } from "../services/identityService";
 import { loadingScreen, updateStorage } from "./store";
+import { playAudio } from "./ui/helpers";
 
 /**
  * Handles data string captured by Camera, DataWedge or Image selection.
@@ -41,6 +42,7 @@ export async function handleScannerData(decodedText: string): Promise<void> {
             text: 'Credential verified!',
             position: 'center'
         });
+        playAudio('valid');
         navigate('/credential', { state: { credential } });
     } else {
         loadingScreen.set();

@@ -19,7 +19,7 @@
 
 	import { hasSetupAccount } from './lib/store';
 	import Keychain from './lib/keychain';
-import { showAlert } from './lib/ui/helpers';
+import { playAudio, showAlert } from './lib/ui/helpers';
 import { parse } from './lib/helpers';
 import type { IdentityService } from './services/identityService';
 import { Toast } from '@capacitor/core';
@@ -31,20 +31,33 @@ import { Toast } from '@capacitor/core';
 		let credential = parse(text);
 
         if (!credential) {
+			await playAudio('invalid');
+
 			await showAlert('Error', 'Invalid Credential Received');
 			return;
 		}
 
-        const identityService = ServiceFactory.get<IdentityService>('identity');
-        const verificationResult = await identityService.verifyVerifiablePresentation(credential);
+		let verificationResult;
+		const identityService = ServiceFactory.get<IdentityService>('identity');
+		try {
+        	verificationResult = await identityService.verifyVerifiablePresentation(credential);
+		}
+		catch (error) {
+			await playAudio('invalid');      
+			console.error(error);
+			return;
+		}
     
         if (verificationResult) {
+			await playAudio('valid');
+
             await Toast.show({
             	text: 'Credential verified!',
             	position: 'center'
         	});
             navigate('credential', { state: { credential, save: true }});
-        } else {      
+        } else {
+				await playAudio('invalid');      
 				await showAlert('Error', 'Invalid Credential Received');
         }
 	}
@@ -55,9 +68,10 @@ import { Toast } from '@capacitor/core';
      * @param decodedText The content supplied by DataWedge (Zebra Scanner)
      */
 	async function onScan(decodedText: string) {
-		console.log("on Scan: ", window.location);
 		// If we are not expecting a credential we just ignore the event
 		if (!window.location.href.includes("requestcredential")) {
+			// We give feedback to the user telling scanning happing on the wrong page
+			await playAudio('invalid');
 			return;
 		}
 

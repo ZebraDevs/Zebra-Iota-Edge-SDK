@@ -6,6 +6,7 @@
     import Scanner from '../components/Scanner.svelte';
     import FullScreenLoader from '../components/FullScreenLoader.svelte';
     import { BarcodeFormat, BrowserMultiFormatReader, DecodeHintType } from '@zxing/library';
+import { playAudio } from '../lib/ui/helpers';
 
     const formats = new Map().set(DecodeHintType.POSSIBLE_FORMATS, [BarcodeFormat.DATA_MATRIX, BarcodeFormat.QR_CODE]);
     const reader = new BrowserMultiFormatReader(formats);
@@ -13,18 +14,27 @@
     let invalid = false;
     let loading = false;
 
+    // We delay playing the valid or invalid sound in order not to overlap
+	// with the scanning sound
+    const PLAY_DELAY = 400;
+
     async function handleScannerData(event) {
         try {
+            await playAudio('scanned');
+
             loading = true;
             let parsedData = parse(event.detail);
             claims = parsedData;
     
             if (claims) {
+                setTimeout(async () => await playAudio('valid'), PLAY_DELAY);
                 navigate('devicecredential', { state: { claims: claims }});
             } else {
+                setTimeout(async () => await playAudio('invalid'), PLAY_DELAY);
                 return showAlert();
             }
         } catch (err) {
+            setTimeout(async () => await playAudio('invalid'), PLAY_DELAY);
             console.error(err);
         };
     }

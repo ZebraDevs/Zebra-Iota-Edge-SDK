@@ -6,6 +6,7 @@
     import Scanner from '../components/Scanner.svelte';
     import { BarcodeFormat, BrowserMultiFormatReader, DecodeHintType } from '@zxing/library';
     import { handleScannerData } from '../lib/scan';
+import { playAudio } from '../lib/ui/helpers';
 
     const formats = new Map().set(DecodeHintType.POSSIBLE_FORMATS, [BarcodeFormat.DATA_MATRIX, BarcodeFormat.QR_CODE]);
     const reader = new BrowserMultiFormatReader(formats);
@@ -30,6 +31,7 @@
 
     // handles Scanner message
     async function message(ev: CustomEvent) {
+        await playAudio('scanned');
         await handleScannerData(ev.detail);
     }
 </script>
