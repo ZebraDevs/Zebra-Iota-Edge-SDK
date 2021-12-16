@@ -90,7 +90,7 @@
             <Route path="/devicecredential" component={DeviceCredential} />
             <Route path="/datamatrix" component={DataMatrix} />
 
-            <Route route="/scan" component={Scan} />
+            <Route path="/scan" component={Scan} />
 
             <Route path="/devinfo" component={DevInfo} />
             <Route path="/presentationjson" component={PresentationJSON} />

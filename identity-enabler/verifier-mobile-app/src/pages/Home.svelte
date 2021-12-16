@@ -40,8 +40,6 @@
             await showAlert("Error", "You need Internet connectivity for verifying credentials");
             return;
         }
-        // We ensure that only the Camera is switched on when we want
-        window["cameraStatus"] = "on";
         navigate("/scan");
     }
 
