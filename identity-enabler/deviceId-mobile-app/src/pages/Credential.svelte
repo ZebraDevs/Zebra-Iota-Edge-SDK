@@ -31,7 +31,7 @@
     }
 
     function goBack() {
-        navigate("home");
+        history.back();
     }
 
     function onClickDev() {
@@ -67,7 +67,7 @@
             {#if save}
                 <Button style="background: #0099FF; color: white;" label="Save credential" onClick={onSaveCredential} />
             {:else}
-                <Button style="background: #0099FF; color: white;" label="Share" onClick={"share"}>
+                <Button style="background: #0099FF; color: white;" label="Share" onClick={share}>
                     <img src="../assets/share.png" alt="share" />
                 </Button>
             {/if}

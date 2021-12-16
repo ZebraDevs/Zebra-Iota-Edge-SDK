@@ -3,37 +3,23 @@
     import { navigate } from "svelte-routing";
     import { Plugins } from "@capacitor/core";
     import Button from "../Button.svelte";
-    import { ServiceFactory } from "../../factories/serviceFactory";
 
     const { close } = getContext("simple-modal");
     const { Share } = Plugins;
 
-    const credential = window.history.state.credential;
-    const identityService = ServiceFactory.get("identity");
+    const credential = window.history.state.credential
 
     function share() {
-        navigate("createPresentation", { state: { credential: credential } });
+        navigate("createPresentation", { state: { credential } });
         close();
     }
 
     async function shareJSON() {
-        try {
-            const storedIdentity = await identityService.retrieveIdentity();
-            const verifiablePresentation = await identityService.createVerifiablePresentation(
-                storedIdentity,
-                credential
-            );
-            const presentationJSON = JSON.stringify(verifiablePresentation, null, 2);
-            console.log("presentationJSON", presentationJSON);
-
-            await Share.share({
-                title: "Verifiable Presentation",
-                text: presentationJSON
-            });
-        } catch (error) {
-            console.log("Error sharing: " + error);
-            return;
-        }
+        await Share.share({
+            title: "Verifiable Presentation",
+            text: JSON.stringify(credential, null, 2)
+        });
+        close();
     }
 </script>
 

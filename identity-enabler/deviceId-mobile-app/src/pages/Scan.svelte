@@ -87,7 +87,7 @@
     }
 
     function goBack() {
-        navigate("home");
+        history.back();
     }
 </script>
 

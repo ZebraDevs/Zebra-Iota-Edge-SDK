@@ -1,10 +1,7 @@
 <script>
-    import { navigate } from "svelte-routing";
     import { onMount, beforeUpdate } from "svelte";
     import { Plugins } from "@capacitor/core";
     import bwipjs from "bwip-js";
-    import { ServiceFactory } from "../factories/serviceFactory";
-    import { error } from "../lib/store";
     import FullScreenLoader from "../components/FullScreenLoader.svelte";
     import Button from "../components/Button.svelte";
     import DevInfo from "./DevInfo.svelte";
@@ -12,27 +9,26 @@
 
     const { App } = Plugins;
 
-    let presentationJSON = "";
     let loading = true;
     let showJSON = false;
     let showTutorial = false;
 
     const credential = window.history.state.credential;
-    const identityService = ServiceFactory.get("identity");
-    // const preparedCredentialDocument = identityService.prepareCredentialForDisplay(credential);
 
-    async function createMatrix(content) {
+    function createMatrix() {
+        loading = true;
         try {
             // The return value is the canvas element
             bwipjs.toCanvas("presentation", {
                 bcid: "datamatrix",
-                text: content,
+                text: JSON.stringify(credential),
                 scale: 3,
                 padding: 20
             });
         } catch (e) {
             console.error(e);
         }
+        loading = false;
     }
 
     const addDaysToDate = (date, days) => {
@@ -43,24 +39,7 @@
     };
 
     onMount(() => {
-        setTimeout(async () => {
-            error.set(null);
-            try {
-                const storedIdentity = await identityService.retrieveIdentity();
-                console.log(storedIdentity, credential);
-                const verifiablePresentation = await identityService.createVerifiablePresentation(
-                    storedIdentity,
-                    credential
-                );
-                console.log("verifiablePresentation", verifiablePresentation);
-                presentationJSON = JSON.stringify(verifiablePresentation, null, 2);
-                await createMatrix(presentationJSON);
-                loading = false;
-            } catch (err) {
-                error.set("Error creating identity. Please try again.");
-                loading = false;
-            }
-        }, 500);
+        createMatrix();
     });
 
     beforeUpdate(() => {
@@ -68,7 +47,7 @@
     });
 
     function goBack() {
-        navigate("credential", { state: { credential: credential } });
+        history.back();
     }
 
     function onClickDev() {
@@ -84,7 +63,7 @@
     {#if showTutorial}
         <DevInfo page="Presentation" bind:showTutorial />
     {:else if showJSON}
-        <PresentationJson code={presentationJSON} bind:showJSON />
+        <PresentationJson code={JSON.stringify(credential, null, 2)} bind:showJSON />
     {/if}
 
     {#if loading}
@@ -100,7 +79,7 @@
                 <img class="credential-logo" src="../assets/credentialLarge.svg" alt="credential-logo" />
                 <header>
                     <span>Device {credential?.verifiableCredential?.credentialSubject?.DeviceData["Device Name"]}</span>
-                    <p>{credential?.metaInformation?.issuer}</p>
+                    <p>{credential?.metaInformation?.issuer ?? "No issuer information"}</p>
                 </header>
             </div>
         {/if}

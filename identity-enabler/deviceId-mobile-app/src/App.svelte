@@ -8,7 +8,6 @@
     import Landing from "./pages/Landing.svelte";
     import Name from "./pages/Name.svelte";
     import PresentationJSON from "./pages/PresentationJSON.svelte";
-    import DataMatrix from "./pages/DataMatrix.svelte";
     import Credential from "./pages/Credential.svelte";
     import DevInfo from "./pages/DevInfo.svelte";
     import Content from "./components/modal/Content.svelte";
@@ -86,7 +85,7 @@
             return Keychain.clear();
         }
 
-        const identityService = ServiceFactory.get("identity");
+        const identityService = ServiceFactory.get<IdentityService>("identity");
         const storedIdentity = await identityService.retrieveIdentity();
 
         if (storedIdentity) {
@@ -108,14 +107,11 @@
             <Route path="/landing" component={Landing} />
             <Route path="/name" component={Name} />
             <Route path="/credential" component={Credential} />
-            <Route path="/datamatrix" component={DataMatrix} />
-
             <Route path="/devinfo" component={DevInfo} />
             <Route path="/presentationjson" component={PresentationJSON} />
             <Route path="/requestcredential" component={RequestCredential} />
-
             <Route path="/createQR" component={CreateQR} />
-            <Route route="/scan" component={Scan} />
+            <Route path="/scan" component={Scan} />
             <Route path="/createPresentation" component={CreatePresentation} />
         </div>
     </Router>
