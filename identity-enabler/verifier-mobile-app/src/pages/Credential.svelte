@@ -53,17 +53,17 @@
     {/if}
 
     {#if !showTutorial}
-        <div class="header-wrapper" style={expired ? "background: #000000;" : null}>
+        <div class="header-wrapper" class:expired>
             <div class="options-wrapper">
-                <img src="../assets/delete.svg" on:click={onDelete} alt="delete" />
-                <img src="../assets/code.svg" on:click={onClickDev} alt="code" />
+                <i on:click={onDelete} class="icon-remove" />
+                <i on:click={onClickDev} class="icon-code" />
             </div>
             <header>
                 {#if !expired}
-                    <img class="credential-logo" src="../assets/tick-large.svg" alt="valid" />
+                    <i class="icon-check" />
                     <p>VALID CREDENTIAL</p>
                 {:else}
-                    <img class="credential-logo" src="../assets/expire.svg" alt="expired" />
+                    <i class="icon-cross" />
                     <p>EXPIRED CREDENTIAL</p>
                 {/if}
             </header>
@@ -72,7 +72,7 @@
             <ObjectList object={credential.credentialSubject} />
         </section>
         <footer>
-            <Button style="background: #0099FF; color: white;" label="Done" onClick={onDone} />
+            <Button label="Done" onClick={() => navigate("/home")} />
         </footer>
     {/if}
 </main>
@@ -94,7 +94,15 @@
     .header-wrapper {
         text-align: center;
         padding-bottom: 3vh;
-        background: linear-gradient(90deg, #00ffff 0%, #0099ff 100%);
+        background-color: #6165e3;
+    }
+
+    header > i {
+        font-size: 64px;
+    }
+
+    .header-wrapper.expired {
+        background-color: black;
     }
 
     header {
@@ -124,10 +132,6 @@
         width: 100%;
         bottom: 0;
         z-index: 1;
-    }
-
-    .credential-logo {
-        width: 15%;
     }
 
     .options-wrapper {

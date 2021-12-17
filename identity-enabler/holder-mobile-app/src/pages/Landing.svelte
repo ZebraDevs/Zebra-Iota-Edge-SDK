@@ -113,7 +113,7 @@
                 in:fly={mounted ? { ...getInAnimation(), duration: 400, opacity: 0 } : false}
                 out:fly={{ ...getOutAnimation(), duration: 400, opacity: 0 }}
             >
-                <img src="../assets/landing-{$landingIndex + 1}.png" alt="landing-{$landingIndex + 1}" />
+                <img src="/img/landing-{$landingIndex + 1}.png" alt="landing-{$landingIndex + 1}" />
                 <div class="dots">
                     {#each Array(3)
                         .fill()

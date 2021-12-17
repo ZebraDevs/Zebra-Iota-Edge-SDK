@@ -58,11 +58,11 @@
     {#if !showTutorial}
         <div class="header-wrapper">
             <div class="options-wrapper">
-                <img src="../assets/chevron-left.svg" on:click={goBack} alt="chevron-left" />
-                <img src="../assets/code.svg" on:click={onClickDev} alt="code" />
+                <i on:click={goBack} class="icon-chevron" />
+                <i on:click={onClickDev} class="icon-code" />
             </div>
             <header>
-                <img class="credential-logo" src="../assets/zebra.svg" alt="credential-logo" />
+                <i class="icon-zebra credential-logo" />
                 <p>ZEBRA TECHNOLOGIES</p>
                 <p>Device DID</p>
             </header>
@@ -72,10 +72,10 @@
         </section>
         <footer>
             {#if save}
-                <Button style="background: #0099FF; color: white;" label="Save credential" onClick={onSaveCredential} />
+                <Button label="Save credential" onClick={onSaveCredential} />
             {:else}
-                <Button style="background: #0099FF; color: white;" label="Share" onClick={share}>
-                    <img src="../assets/share.png" alt="share" />
+                <Button label="Share credential" onClick={share}>
+                    <i class="icon-share" />
                 </Button>
             {/if}
         </footer>
@@ -99,7 +99,7 @@
     .header-wrapper {
         text-align: center;
         padding-bottom: 3vh;
-        background: linear-gradient(90deg, #00ffff 0%, #0099ff 100%);
+        background-color: #aee693;
     }
 
     header {
@@ -115,7 +115,6 @@
         font-weight: 700;
         font-size: 2.6vh;
         line-height: 2.6vh;
-        color: #fff;
         margin: 0;
     }
 
@@ -142,7 +141,7 @@
     }
 
     .credential-logo {
-        width: 10%;
+        font-size: 64px;
     }
 
     .options-wrapper {

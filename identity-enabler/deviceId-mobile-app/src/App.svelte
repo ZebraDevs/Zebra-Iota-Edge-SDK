@@ -7,7 +7,6 @@
     import CreatePresentation from "./pages/CreatePresentation.svelte";
     import Landing from "./pages/Landing.svelte";
     import Name from "./pages/Name.svelte";
-    import PresentationJSON from "./pages/PresentationJSON.svelte";
     import Credential from "./pages/Credential.svelte";
     import DevInfo from "./pages/DevInfo.svelte";
     import Content from "./components/modal/Content.svelte";
@@ -108,7 +107,6 @@
             <Route path="/name" component={Name} />
             <Route path="/credential" component={Credential} />
             <Route path="/devinfo" component={DevInfo} />
-            <Route path="/presentationjson" component={PresentationJSON} />
             <Route path="/requestcredential" component={RequestCredential} />
             <Route path="/createQR" component={CreateQR} />
             <Route path="/scan" component={Scan} />
@@ -121,6 +119,10 @@
 </main>
 
 <style>
+    main {
+        background-color: white;
+    }
+
     main,
     div {
         height: 100%;

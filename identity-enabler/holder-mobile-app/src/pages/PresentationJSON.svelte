@@ -12,7 +12,7 @@
 <main>
     <div class="header-wrapper">
         <span>VERIFIABLE PRESENTATION</span>
-        <img class="close" on:click={onClose} src="../assets/close.svg" alt="close" />
+        <i on:click={onClose} class="icon-cross" />
     </div>
     <section>
         <div class="highlightjs-component">
@@ -51,7 +51,7 @@
         white-space: nowrap;
     }
 
-    .close {
+    i.icon-cross {
         position: absolute;
         right: 3.4vh;
     }

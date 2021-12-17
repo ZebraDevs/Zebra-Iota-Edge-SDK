@@ -35,7 +35,7 @@
     {#if !loading}
         <div class="header-wrapper">
             <span>{page.toUpperCase()}</span>
-            <img class="close" on:click={onClose} src="../assets/close.svg" alt="close" />
+            <i on:click={onClose} class="icon-cross" />
         </div>
         <section>
             <div class="box-wrapper">
@@ -86,9 +86,10 @@
         white-space: nowrap;
     }
 
-    .close {
+    i.icon-cross {
         position: absolute;
         right: 3.4vh;
+        color: white;
     }
 
     section {

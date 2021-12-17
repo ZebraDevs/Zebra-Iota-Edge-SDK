@@ -6,10 +6,11 @@
     import InvalidCredential from "./pages/InvalidCredential.svelte";
     import { onMount } from "svelte";
     import FullScreenLoader from "./components/FullScreenLoader.svelte";
-    import { loadingScreen } from "./lib/store";
+    import { firstLaunch, loadingScreen } from "./lib/store";
     import { handleScannerData } from "./lib/scan";
     import { showAlert } from "./lib/ui/helpers";
     import Credential from "./pages/Credential.svelte";
+    import Landing from "./pages/Landing.svelte";
 
     let url = window.location.pathname;
 
@@ -37,7 +38,12 @@
     {/if}
     <Router {url}>
         <div>
-            <Route path="/" component={Home} />
+            {#if $firstLaunch}
+                <Route path="/" component={Landing} />
+            {:else}
+                <Route path="/" component={Home} />
+            {/if}
+            <Route path="/landing" component={Landing} />
             <Route path="/home" component={Home} />
             <Route path="/devinfo" component={DevInfo} />
             <Route path="/invalid" component={InvalidCredential} />
@@ -48,6 +54,10 @@
 </main>
 
 <style>
+    main {
+        background-color: white;
+    }
+
     main,
     div {
         height: 100%;

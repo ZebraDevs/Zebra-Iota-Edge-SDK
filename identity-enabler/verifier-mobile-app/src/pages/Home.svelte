@@ -3,8 +3,8 @@
     import { onMount } from "svelte";
     import { navigate } from "svelte-routing";
     import { slide } from "svelte/transition";
-    import { getFromStorage } from "../lib/store";
-    import { isExpired, wait } from "../lib/helpers";
+    import { firstLaunch, getFromStorage } from "../lib/store";
+    import { isExpired } from "../lib/helpers";
     import FullScreenLoader from "../components/FullScreenLoader.svelte";
     import Button from "../components/Button.svelte";
     import ListItem from "../components/ListItem.svelte";
@@ -92,6 +92,8 @@
                 blood: ""
             };
             isEmpty = Object.values(localCredentials).every(x => x === null || x === "");
+            firstLaunch.set(true);
+            navigate("/landing");
         }
     }
 </script>
@@ -108,9 +110,9 @@
     {#if !showTutorial && !loading}
         <header>
             <div class="options-wrapper">
-                <img src="../assets/reset.svg" on:click={onClickReset} alt="reset" />
+                <i on:click={onClickReset} class="icon-reset" />
                 <p>SCANNED CREDENTIALS</p>
-                <img class="code" src="../assets/code.svg" on:click={onClickDev} alt="code" />
+                <i on:click={onClickDev} class="icon-code" />
             </div>
         </header>
         <section>
@@ -122,6 +124,8 @@
                 {#each Object.values(localCredentials) as credential}
                     <div transition:slide class="list">
                         <ListItem
+                            icon={isExpired(credential.issuanceDate) ? "cross" : "check"}
+                            iconColor="#1e22aa"
                             onClick={() => onClickCredential(credential)}
                             heading={"IOTA"}
                             subheading={credential.type[1]}
@@ -132,11 +136,8 @@
             {/if}
         </section>
         <footer>
-            <Button
-                style="background: #00A7FF; color: white; height: 64px; width: 64px; border-radius: 50%;"
-                onClick={scan}
-            >
-                <img src="../assets/scan.png" alt="scan" />
+            <Button style="height: 64px; width: 64px; border-radius: 50%;" onClick={scan}>
+                <i class="icon-scan" />
             </Button>
         </footer>
     {/if}
@@ -155,7 +156,7 @@
         display: flex;
         flex-direction: column;
         height: 72px;
-        background: linear-gradient(90deg, #00ffff 0%, #0099ff 100%);
+        background-color: #6165e3;
     }
 
     section {
@@ -163,23 +164,11 @@
         align-content: space-between;
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
-        background: #f8f8f8;
+        margin: 2rem 1.5rem;
     }
 
     .list {
-        padding: 0 20px;
-    }
-
-    .list:first-child {
-        margin-top: 3.5vh;
-    }
-
-    .list:not(:last-child) {
-        margin-bottom: 3vh;
-    }
-
-    .list:last-child {
-        margin-bottom: 9vh;
+        margin-bottom: 2vh;
     }
 
     .options-wrapper > p {
@@ -198,14 +187,6 @@
         justify-content: space-between;
         align-items: center;
         margin: 3.5vh;
-    }
-
-    img {
-        margin: 0 !important;
-    }
-
-    .code {
-        margin-left: auto;
     }
 
     .empty-wrapper {
@@ -230,6 +211,5 @@
         bottom: 0;
         padding-bottom: 4.1vh;
         z-index: 1;
-        background: #f8f8f8;
     }
 </style>

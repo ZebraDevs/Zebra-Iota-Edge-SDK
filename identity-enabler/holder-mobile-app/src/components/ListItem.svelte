@@ -1,74 +1,76 @@
-<script>
+<script type="ts">
     export let onClick;
-    export let heading;
-    export let subheading;
+    export let heading: string | undefined = undefined;
+    export let subheading: string;
+    export let icon: string = "credential";
+    export let iconColor: string = "black";
+    export let arrow = true;
 </script>
 
 <li on:click={onClick}>
-    <span class="icon">
-        <img class="arrow" src="../assets/landing-3.png" alt="landing-3" />
-    </span>
-    <div>
-        <h5>{heading}</h5>
-        <h6>{subheading}</h6>
+    <i class="icon-{icon}" style="color: {iconColor};" />
+    <div class="text-container">
+        {#if heading}
+            <div class="overflow-container">
+                <h5>{heading}</h5>
+            </div>
+        {/if}
+        <div class="overflow-container">
+            <h6>{subheading}</h6>
+        </div>
     </div>
-    <img class="arrow" src="../assets/chevron-right.svg" alt="chevron-right" />
+    {#if arrow}
+        <i class="icon-chevron rotate-180" />
+    {/if}
 </li>
 
 <style>
     li {
+        border: 2px solid rgb(219, 219, 219);
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background: #ffffff;
-        box-shadow: 0px 4px 12px rgba(217, 225, 238, 0.3);
-        padding: 2vh 6vw;
+        padding: 0.8rem;
     }
 
-    .icon {
-        height: 14vw;
-        width: 14vw;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        background-color: #f8f8f8;
+    li > i {
+        color: rgb(175, 175, 175);
+        font-size: 3em;
     }
 
-    .icon > img {
-        max-width: 100%;
-        max-height: 100%;
+    .icon-chevron {
+        font-size: 1.75em;
     }
 
-    div {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-around;
+    .text-container {
         flex: 1;
-        margin-left: 5vw;
-        margin-right: 5vw;
+        padding: 0 1rem;
+        min-width: 0;
+        max-width: 100%;
     }
 
-    h5 {
-        font-family: "Proxima Nova", sans-serif;
-        font-weight: 600;
-        font-size: 2.7vw;
-        line-height: 4vw;
-        letter-spacing: 0.06em;
-        color: #8593ac;
-        text-transform: uppercase;
-        display: block;
+    .overflow-container {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+    }
+
+    h5 {
+        display: inline;
+        font-family: "Proxima Nova", sans-serif;
+        font-weight: 600;
+        font-size: 0.75em;
+        letter-spacing: 0.06em;
+        color: #8593ac;
+        text-transform: uppercase;
         margin: 0 0 0.9vh 0;
     }
 
     h6 {
+        display: inline;
         font-family: "Proxima Nova", sans-serif;
         font-weight: 600;
-        font-size: 4vw;
-        line-height: 3.4vw;
+        font-size: 1em;
         margin: 0;
         color: #051923;
     }

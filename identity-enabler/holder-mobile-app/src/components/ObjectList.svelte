@@ -15,7 +15,6 @@
 
 <style>
     ul {
-        background: #fff;
         margin: 3vh 0 11vh 0;
         padding: 0;
         box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);

@@ -69,7 +69,7 @@
                 <Header text="Set the name of the device" />
             </div>
             <div>
-                <img src="../assets/landing-2.png" alt="set-name" />
+                <img src="/img/landing-2.png" alt="set-name" />
             </div>
             <div>
                 <TextField bind:value={name} placeholder="Device name" />

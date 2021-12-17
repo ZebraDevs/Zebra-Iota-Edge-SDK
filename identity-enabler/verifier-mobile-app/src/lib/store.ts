@@ -67,3 +67,5 @@ error.subscribe(item => {
         }, 3500);
     }
 });
+
+export const firstLaunch = persistent<boolean>("firstLaunch", true);

@@ -7,13 +7,13 @@
     import ListItem from "../components/ListItem.svelte";
     import FullScreenLoader from "../components/FullScreenLoader.svelte";
     import DevInfo from "./DevInfo.svelte";
-    import { credentialPayload } from "../assets/credentialPayload";
+    import { credentialPayload } from "../lib/credentialPayload";
     import { ServiceFactory } from "../factories/serviceFactory";
     import { SchemaNames } from "../schemas";
     import { updateStorage, getFromStorage, account, resetAllStores } from "../lib/store";
     import { getRandomUserData, generateRandomId, wait } from "../lib/helpers";
     import type { IdentityService } from "../services/identityService";
-    import { showAlert } from "../lib/ui/helpers";
+    import { credentialIcon, showAlert } from "../lib/ui/helpers";
     import { BACK_BUTTON_EXIT_GRACE_PERIOD } from "../config";
 
     let showTutorial = false;
@@ -168,10 +168,10 @@
     {#if !loading && $account}
         <header>
             <div class="options-wrapper">
-                <img src="../assets/reset.svg" on:click={onClickReset} alt="reset" />
-                <img class="code" src="../assets/code.svg" on:click={onClickDev} alt="code" />
+                <i on:click={onClickReset} class="icon-reset" />
+                <i on:click={onClickDev} class="icon-code" />
             </div>
-            <div class="logo"><img src="../assets/person.png" alt="logo" /></div>
+            <div class="avatar" />
         </header>
         <name-wrapper>
             <p>{$account.name}</p>
@@ -180,30 +180,30 @@
             {#each localCredentials as credential}
                 <div transition:slide class="list">
                     <ListItem
-                        onClick={() => navigate("/credential", { state: { credential } })}
+                        icon={credential.enrichment
+                            ? credentialIcon[credential.enrichment.credentialLabel]
+                            : "credential"}
+                        onClick={() => navigate("credential", { state: { credential } })}
                         heading={credential.enrichment ? credential.enrichment.issuerLabel : ""}
                         subheading={credential.enrichment ? credential.enrichment.credentialLabel : ""}
                     />
                 </div>
             {/each}
             {#if localCredentials.length < 3}
-                <div class="btn-wrapper">
-                    <Button
-                        style="background: white; color: #051923; display: flex; justify-content: flex-start; padding-left: 20px;"
-                        label="Add new credential"
+                <div transition:slide class="list">
+                    <ListItem
+                        icon="add"
+                        iconColor="#00a7ff"
+                        arrow={false}
                         onClick={generateCredential}
-                    >
-                        <img class="add" src="../assets/add.png" alt="add" />
-                    </Button>
+                        subheading="Add new credential"
+                    />
                 </div>
             {/if}
         </section>
         <footer>
-            <Button
-                style="background: #00A7FF; color: white; height: 64px; width: 64px; border-radius: 50%;"
-                onClick={scan}
-            >
-                <img class="scan" src="../assets/scan.png" alt="scan" />
+            <Button style="height: 64px; width: 64px; border-radius: 50%;" onClick={scan}>
+                <i class="icon-scan" />
             </Button>
         </footer>
     {/if}
@@ -217,15 +217,12 @@
     }
 
     header {
-        display: flex;
-        flex-direction: column;
-        height: 141px;
-        background: linear-gradient(90deg, #00ffff 0%, #0099ff 100%);
+        height: 155px;
+        background-color: #00a7ff;
     }
 
     name-wrapper {
-        padding-top: 5.6vh;
-        background: #f8f8f8;
+        padding-top: 1.8rem;
     }
 
     section {
@@ -233,38 +230,24 @@
         align-content: space-between;
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
-        background: #f8f8f8;
         z-index: 2;
     }
 
-    .logo {
-        position: relative;
-        bottom: 5%;
-        border: 25px solid rgba(165, 165, 165, 0.1);
+    .avatar {
+        background-image: url("/img/person.png");
+        width: 120px;
+        height: 120px;
+        background-size: cover;
+        background-position: top center;
+        background-repeat: no-repeat;
         border-radius: 50%;
-        width: 100px;
-        height: 100px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
         margin: 0 auto;
-    }
-
-    .logo > img {
-        width: 15vh;
-        height: 15vh;
+        border: 15px solid rgba(165, 165, 165, 0.2);
     }
 
     .list {
         padding: 0 20px;
-    }
-
-    .list:not(:last-child) {
-        margin-bottom: 3vh;
-    }
-
-    .list:last-child {
-        margin-bottom: 9vh;
+        margin-bottom: 2vh;
     }
 
     name-wrapper > p {
@@ -280,25 +263,7 @@
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        margin: 3.5vh 3.5vh 0 3.5vh;
-    }
-
-    .add {
-        width: 40px;
-        height: 40px;
-    }
-
-    .code {
-        margin-left: auto;
-    }
-
-    .scan {
-        margin: 0 !important;
-    }
-
-    .btn-wrapper {
-        height: 72px;
-        padding: 0 20px;
+        margin: 1.5rem 3.5vh 0 3.5vh;
     }
 
     footer {
@@ -309,6 +274,5 @@
         bottom: 0;
         padding: 2.1vh 0 4.1vh 0;
         z-index: 3;
-        background: #f8f8f8;
     }
 </style>

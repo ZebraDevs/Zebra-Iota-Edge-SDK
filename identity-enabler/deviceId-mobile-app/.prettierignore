@@ -1,7 +1,10 @@
 android/**
 node_modules/**
 public/**
-src/assets/**
+src/web/audio/**
+src/web/img/**
+src/web/fonts/**
+*.ico
 .gitignore
 .prettierignore
 .eslintignore

@@ -57,15 +57,15 @@
     {#if !showTutorial}
         <div class="header-wrapper">
             <div class="options-wrapper">
-                <img src="../assets/chevron-left.svg" on:click={goBack} alt="chevron-left" />
-                <img src="../assets/code.svg" on:click={onClickDev} alt="code" />
+                <i on:click={goBack} class="icon-chevron" />
+                <i on:click={onClickDev} class="icon-code" />
             </div>
             <header>
                 {#if credential.enrichment.credentialLabel === "Organisation ID"}
-                    <img class="credential-logo" src="../assets/zebra.svg" alt="credential-logo" />
+                    <i class="icon-zebra credential-logo" />
                     <p>{credential.metaInformation.issuer.toUpperCase()}</p>
                 {:else}
-                    <img class="credential-logo" src="../assets/credentialLarge.svg" alt="credential-logo" />
+                    <i class="icon-credential credential-logo" />
                     <p>{credential.enrichment.issuerLabel}</p>
                 {/if}
                 <p>{credential.enrichment.credentialLabel}</p>
@@ -76,8 +76,8 @@
             <ObjectList object={preparedCredentialDocument.credentialSubject} />
         </section>
         <footer>
-            <Button style="background: #0099FF; color: white;" label="Share" onClick={share}>
-                <img src="../assets/share.png" alt="share" />
+            <Button label="Share credential" onClick={share}>
+                <i class="icon-share" />
             </Button>
         </footer>
     {/if}
@@ -100,7 +100,7 @@
     .header-wrapper {
         text-align: center;
         padding-bottom: 3vh;
-        background: linear-gradient(90deg, #00ffff 0%, #0099ff 100%);
+        background-color: #00a7ff;
     }
 
     header {
@@ -148,7 +148,7 @@
     }
 
     .credential-logo {
-        width: 10%;
+        font-size: 64px;
     }
 
     .options-wrapper {
@@ -156,5 +156,9 @@
         flex-direction: row;
         justify-content: space-between;
         margin: 3.5vh 3.5vh 0 3.5vh;
+    }
+
+    i.icon-share {
+        margin-right: 0.6rem;
     }
 </style>

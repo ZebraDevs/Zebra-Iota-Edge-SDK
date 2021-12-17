@@ -11,7 +11,7 @@ export async function playAudio(sound: string) {
         console.error("Audio Play Error", audio.error);
     };
 
-    audio.src = `../assets/audio/${sound}.wav`;
+    audio.src = `/audio/${sound}.wav`;
 
     await audio.play();
 }

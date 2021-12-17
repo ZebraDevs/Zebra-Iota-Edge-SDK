@@ -39,7 +39,8 @@
                 bcid: "qrcode",
                 text: content,
                 height: 50,
-                width: 50
+                width: 50,
+                backgroundcolor: "ffffff"
             });
         } catch (e) {
             console.error(e);
@@ -63,7 +64,7 @@
     <div class={loading ? "wrapper mini" : "wrapper"} transition:fly={{ x: 500, duration: 500 }}>
         {#if !loading}
             <header>
-                <img on:click={goBack} src="../assets/chevron-left.svg" alt="back" />
+                <i on:click={goBack} class="icon-chevron" />
                 <p>Request Device DID credential</p>
             </header>
 
@@ -84,7 +85,7 @@
 
             <footer>
                 <Button
-                    style="background: #00A7FF; color: white; height: 64px;"
+                    style="height: 64px;"
                     loadingText={"Generating identity"}
                     label="Next"
                     onClick={requestCredential}
@@ -97,18 +98,17 @@
 <style>
     main {
         height: 100%;
-        background: #f8f8f8;
         flex-direction: column;
         display: flex;
         flex: 1;
     }
 
     header {
-        background: linear-gradient(90deg, #00ffff 0%, #0099ff 100%);
+        background-color: #aee693;
         display: flex;
         align-items: center;
         justify-content: center;
-        height: 7.9vh;
+        height: 72px;
         padding: 0 2.6vh;
     }
 
@@ -118,16 +118,13 @@
         white-space: nowrap;
         font-family: "Proxima Nova", sans-serif;
         font-weight: 600;
-        font-size: 2.3vh;
-        line-height: 2.7vh;
-        color: #ffffff;
+        font-size: 1.2em;
         margin: 0;
     }
 
     .qr-wrapper {
         height: fit-content;
         position: relative;
-        background: white;
         display: flex;
         flex-direction: row;
         align-items: center;

@@ -17,11 +17,11 @@
 
 <main transition:fly={{ y: 200, duration: 500 }}>
     <section>
-        <img class="credential-logo" src="../assets/expire.svg" alt="invalid" />
+        <i class="icon-cross" />
         <p>INVALID CREDENTIAL</p>
     </section>
     <footer>
-        <Button style="background: #0099FF; color: white;" label="Done" onClick={onDone} />
+        <Button label="Done" onClick={() => navigate("/home")} />
     </footer>
 </main>
 
@@ -58,8 +58,8 @@
         color: #fff;
     }
 
-    .credential-logo {
-        width: 15%;
+    .icon-cross {
+        font-size: 64px;
     }
 
     footer {

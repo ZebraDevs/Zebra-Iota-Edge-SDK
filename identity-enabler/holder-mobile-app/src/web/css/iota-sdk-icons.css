@@ -1,0 +1,78 @@
+@font-face {
+    font-family: "iota-sdk-icons";
+    src: url("/fonts/iota-sdk-icons/iota-sdk-icons.eot?qje88s");
+    src: url("/fonts/iota-sdk-icons/iota-sdk-icons.eot?qje88s#iefix") format("embedded-opentype"),
+        url("/fonts/iota-sdk-icons/iota-sdk-icons.ttf?qje88s") format("truetype"),
+        url("/fonts/iota-sdk-icons/iota-sdk-icons.woff?qje88s") format("woff"),
+        url("/fonts/iota-sdk-icons/iota-sdk-icons.svg?qje88s#iota-sdk-icons") format("svg");
+    font-weight: normal;
+    font-style: normal;
+    font-display: block;
+}
+
+i {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: "iota-sdk-icons" !important;
+    speak: never;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-add:before {
+    content: "\e900";
+}
+.icon-check:before {
+    content: "\e901";
+}
+.icon-chevron:before {
+    content: "\e902";
+}
+.icon-chip:before {
+    content: "\e903";
+}
+.icon-code:before {
+    content: "\e904";
+}
+.icon-credential:before {
+    content: "\e905";
+}
+.icon-cross:before {
+    content: "\e906";
+}
+.icon-link:before {
+    content: "\e907";
+}
+.icon-organization:before {
+    content: "\e908";
+}
+.icon-person:before {
+    content: "\e909";
+}
+.icon-qr:before {
+    content: "\e90a";
+}
+.icon-remove:before {
+    content: "\e90b";
+}
+.icon-reset:before {
+    content: "\e90c";
+}
+.icon-scan:before {
+    content: "\e90d";
+}
+.icon-share:before {
+    content: "\e90e";
+}
+.icon-supply-chain:before {
+    content: "\e90f";
+}
+.icon-zebra:before {
+    content: "\e910";
+}

@@ -5,11 +5,12 @@ import livereload from "rollup-plugin-livereload";
 import css from "rollup-plugin-css-only";
 import { terser } from "rollup-plugin-terser";
 import sveltePreprocess from "svelte-preprocess";
-import { wasm } from "@rollup/plugin-wasm";
 import copy from "rollup-plugin-copy";
 import typescript from "@rollup/plugin-typescript";
 import { string } from "rollup-plugin-string";
 import json from "@rollup/plugin-json";
+import * as fs from "fs";
+import * as path from "path";
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -40,9 +41,23 @@ export default {
         sourcemap: !production,
         format: "iife",
         name: "app",
-        file: "public/build/bundle.js"
+        file: "public/js/bundle.js"
     },
     plugins: [
+        copy({
+            copyOnce: Boolean(process.env.ROLLUP_WATCH),
+            targets: [
+                {
+                    src: "src/web",
+                    dest: ".",
+                    rename: "public"
+                },
+                {
+                    src: "node_modules/@iota/identity-wasm/web/identity_wasm_bg.wasm",
+                    dest: "public/wasm"
+                }
+            ]
+        }),
         svelte({
             compilerOptions: {
                 // enable run-time checks when not in production
@@ -50,31 +65,19 @@ export default {
             },
             preprocess: sveltePreprocess()
         }),
-        copy({
-            targets: [
-                {
-                    src: "node_modules/@iota/identity-wasm/web/identity_wasm_bg.wasm",
-                    dest: "public",
-                    rename: "identity_wasm_bg.wasm"
-                },
-                {
-                    src: "./src/assets/*",
-                    dest: "public/assets"
-                }
-            ]
-        }),
-        wasm({
-            sync: ["node_modules/@iota/identity-wasm/web/identity_wasm_bg.wasm", "identity_wasm_bg.wasm"]
-        }),
         json(),
         string({
             include: ["**/*.md"]
         }),
         // we'll extract any component CSS out into
         // a separate file - better for performance
-        // css({ output: "bundle.css" }),
-        css({ output: "bundle.css" }),
-        css({ output: "extra.css" }),
+        css({
+            output: (styles, _) => {
+                const dir = path.resolve(process.cwd(), "public/css");
+                fs.mkdirSync(dir, { recursive: true });
+                fs.writeFileSync(path.join(dir, "bundle.css"), styles);
+            }
+        }),
 
         // If you have external dependencies installed from
         // npm, you'll most likely need these plugins. In

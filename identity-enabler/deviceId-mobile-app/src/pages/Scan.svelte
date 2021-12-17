@@ -102,14 +102,12 @@
 
     {#if !invalid && !loading}
         <header>
-            <div class="options-wrapper">
-                <img on:click={goBack} src="../assets/chevron-left.svg" alt="back" />
-                <p>Scanner</p>
-                <label class="image-select">
-                    <input type="file" accept="image/*" on:change={e => imageSelected(e)} />
-                    Browse
-                </label>
-            </div>
+            <i on:click={goBack} class="icon-chevron" />
+            <p>Scanner</p>
+            <label class="image-select">
+                <input type="file" accept="image/*" on:change={e => imageSelected(e)} />
+                Browse
+            </label>
         </header>
         <Scanner on:message={handleScannerData} />
     {/if}
@@ -122,28 +120,19 @@
     }
 
     header {
+        background-color: #aee693;
         display: flex;
-        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
         height: 72px;
-        background: linear-gradient(90deg, #00ffff 0%, #0099ff 100%);
+        padding: 0 2.6vh;
     }
 
-    .options-wrapper > p {
+    header > p {
         font-family: "Proxima Nova", sans-serif;
         font-weight: 600;
-        font-size: 14px;
-        line-height: 16px;
-        color: #f8f8f8;
+        font-size: 1.2em;
         margin: 0;
-        z-index: 1;
-    }
-
-    .options-wrapper {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        margin: 3.5vh;
     }
 
     input[type="file"] {
@@ -155,9 +144,8 @@
         font-weight: 600;
         font-size: 14px;
         line-height: 16px;
-        color: #f8f8f8;
-        border: 1px solid #ccc;
-        background-color: #00a7ff;
+        border: 1px solid #9d9d9d;
+        background-color: #78d64b;
         padding: 6px 12px;
         border-radius: 4px;
         cursor: pointer;

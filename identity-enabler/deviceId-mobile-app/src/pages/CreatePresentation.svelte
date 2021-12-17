@@ -20,7 +20,8 @@
                 bcid: "datamatrix",
                 text: JSON.stringify(credential),
                 scale: 3,
-                padding: 20
+                padding: 20,
+                backgroundcolor: "ffffff"
             });
         } catch (e) {
             console.error(e);
@@ -65,11 +66,11 @@
     <div class={loading ? "wrapper mini" : "wrapper"}>
         {#if !loading}
             <div class="options-wrapper">
-                <img src="../assets/chevron-left.svg" on:click={goBack} alt="chevron-left" />
-                <img src="../assets/code.svg" on:click={onClickDev} alt="code" />
+                <i on:click={goBack} class="icon-chevron" />
+                <i on:click={onClickDev} class="icon-code" />
             </div>
             <div class="header">
-                <img class="credential-logo" src="../assets/credentialLarge.svg" alt="credential-logo" />
+                <i class="icon-credential credential-logo" />
                 <header>
                     <span>Device {credential?.verifiableCredential?.credentialSubject?.DeviceData["Device Name"]}</span>
                     <p>{credential?.metaInformation?.issuer ?? "No issuer information"}</p>
@@ -83,7 +84,7 @@
             <footer class="footerContainer">
                 <p>Valid until {addDaysToDate(credential?.verifiableCredential?.issuanceDate, 30)}</p>
                 <Button
-                    style="background: transparent; color: white; font-weight: 500; font-size: 1.7vh; line-height: 2.3vh; border: none; height:fit-content;"
+                    style="background: transparent; color: white; font-weight: 500; border: none;"
                     label="VIEW IN JSON FORMAT"
                     onClick={onClickJSON}
                 />
@@ -115,7 +116,7 @@
     }
 
     header > p {
-        margin: 1.5vh 0 6.2vh 0;
+        margin: 2vh 0;
         font-family: "Proxima Nova", sans-serif;
         font-weight: 700;
         font-size: 5vw;
@@ -136,9 +137,13 @@
         text-align: center;
     }
 
+    .options-wrapper > i {
+        color: white;
+    }
+
     .credential-logo {
-        width: 15%;
-        margin-bottom: 1.5vh;
+        color: white;
+        font-size: 64px;
     }
 
     .presentation-wrapper {
@@ -160,7 +165,7 @@
 
     footer > p {
         color: #fff;
-        padding: 4.6vh 0 1vh 0;
+        padding: 2vh 0 1vh 0;
         margin: 0;
         font-family: "Proxima Nova", sans-serif;
         font-weight: 500;

@@ -4,7 +4,7 @@
 
 <div class="container">
     <div class="logo">
-        <img src="../assets/logo.svg" alt="logo" />
+        <i class="icon-zebra" />
     </div>
 
     <header>
@@ -17,11 +17,14 @@
         padding: 0 8vw;
     }
 
+    .icon-zebra {
+        color: black;
+        font-size: 110px;
+    }
+
     .logo {
-        margin: 40px auto;
-        filter: invert(100%);
-        width: 56.26px;
-        height: 63px;
+        margin: 20px auto;
+        text-align: center;
     }
 
     header > pre {

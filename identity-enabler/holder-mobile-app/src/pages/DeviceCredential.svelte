@@ -91,8 +91,8 @@
     {#if !loading && !showTutorial}
         <div class="header-wrapper">
             <div class="options-wrapper">
-                <img src="../assets/chevron-left.svg" on:click={goBack} alt="chevron-left" />
-                <img src="../assets/code.svg" on:click={onClickDev} alt="code" />
+                <i on:click={goBack} class="icon-chevron" />
+                <i on:click={onClickDev} class="icon-code" />
             </div>
             <header>
                 <p>Device {claims.deviceName} claims</p>
@@ -102,11 +102,7 @@
             <ObjectList object={claims} />
         </section>
         <footer>
-            <Button
-                style="background: #0099FF; color: white;"
-                label="Issue Device ID credential"
-                onClick={createCredential}
-            />
+            <Button label="Issue Device ID credential" onClick={createCredential} />
         </footer>
     {/if}
 </main>
@@ -128,7 +124,7 @@
     .header-wrapper {
         text-align: center;
         padding-bottom: 3vh;
-        background: linear-gradient(90deg, #00ffff 0%, #0099ff 100%);
+        background-color: #00a7ff;
     }
 
     header {

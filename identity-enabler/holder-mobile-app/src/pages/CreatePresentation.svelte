@@ -26,7 +26,8 @@
                 bcid: "datamatrix",
                 text: content,
                 scale: 3,
-                padding: 20
+                padding: 20,
+                backgroundcolor: "ffffff"
             });
         } catch (e) {
             console.error(e);
@@ -45,12 +46,10 @@
             error.set(null);
             try {
                 const storedIdentity = await identityService.retrieveIdentity();
-                console.log(storedIdentity, credential);
                 const verifiablePresentation = await identityService.createVerifiablePresentation(
                     storedIdentity,
                     credential?.credentialDocument
                 );
-                console.log("verifiablePresentation", verifiablePresentation);
                 presentationJSON = JSON.stringify(verifiablePresentation, null, 2);
                 createMatrix(JSON.stringify(verifiablePresentation));
                 loading = false;
@@ -96,41 +95,38 @@
     {#if loading}
         <FullScreenLoader label="Creating Data Matrix..." />
     {/if}
-    <div class={loading ? "wrapper mini" : "wrapper"}>
-        {#if !loading}
-            <div class="options-wrapper">
-                <img src="../assets/chevron-left.svg" on:click={goBack} alt="chevron-left" />
-                <img src="../assets/code.svg" on:click={onClickDev} alt="code" />
-            </div>
-            <header>
-                {#if credential.enrichment.credentialLabel === "Organisation ID"}
-                    <img class="credential-logo" src="../assets/zebra.svg" alt="credential-logo" />
-                    <span>{credential.metaInformation.issuer.toUpperCase()}</span>
-                {:else}
-                    <img class="credential-logo" src="../assets/credentialLarge.svg" alt="credential-logo" />
-                    <span>{credential.enrichment.issuerLabel.toUpperCase()}</span>
-                {/if}
-                <p>{credential.enrichment.credentialLabel}</p>
-            </header>
-        {/if}
+
+    <div class="wrapper">
+        <div class="options-wrapper">
+            <i on:click={goBack} class="icon-chevron" />
+            <i on:click={onClickDev} class="icon-code" />
+        </div>
+        <header>
+            {#if credential.enrichment.credentialLabel === "Organisation ID"}
+                <i class="icon-zebra credential-logo" />
+                <span>{credential.metaInformation.issuer.toUpperCase()}</span>
+            {:else}
+                <i class="icon-credential credential-logo" />
+                <span>{credential.enrichment.issuerLabel.toUpperCase()}</span>
+            {/if}
+            <p>{credential.enrichment.credentialLabel}</p>
+        </header>
         <div class="presentation-wrapper">
             <canvas id="presentation" />
         </div>
-        {#if !loading}
-            <footer class="footerContainer">
-                {#if credential.enrichment.credentialLabel === "Organisation ID"}
-                    <span>Scan this Barcode with the Device ID app</span>
-                    <p>Valid until {addDaysToDate(preparedCredentialDocument.issuanceDate, 30)}</p>
-                {:else}
-                    <p>Valid until {addDaysToDate(preparedCredentialDocument.issuanceDate, 30)}</p>
-                {/if}
-                <Button
-                    style="background: transparent; color: white; font-weight: 500; font-size: 1.7vh; line-height: 2.3vh; border: none; height:fit-content;"
-                    label="VIEW IN JSON FORMAT"
-                    onClick={onClickJSON}
-                />
-            </footer>
-        {/if}
+        <footer class="footerContainer">
+            {#if credential.enrichment.credentialLabel === "Organisation ID"}
+                <span>Scan this Barcode with the Device ID app</span>
+                <p>Valid until {addDaysToDate(preparedCredentialDocument.issuanceDate, 30)}</p>
+            {:else}
+                <p>Valid until {addDaysToDate(preparedCredentialDocument.issuanceDate, 30)}</p>
+            {/if}
+            <Button
+                style="background: transparent; color: white; font-weight: 500; font-size: 1.7vh; line-height: 2.3vh; border: none; height:fit-content;"
+                label="VIEW IN JSON FORMAT"
+                onClick={onClickJSON}
+            />
+        </footer>
     </div>
 </main>
 
@@ -148,12 +144,6 @@
     canvas {
         position: relative;
         width: 100%;
-        z-index: 5;
-    }
-
-    .mini {
-        width: 0px;
-        height: 0px;
     }
 
     header {
@@ -188,7 +178,7 @@
     }
 
     .credential-logo {
-        width: 10%;
+        font-size: 64px;
         margin-bottom: 1.5vh;
     }
 
@@ -212,7 +202,7 @@
 
     footer > p {
         color: #fff;
-        padding: 4.6vh 0 1vh 0;
+        padding: 1vh 0 1vh 0;
         margin: 0;
         font-family: "Proxima Nova", sans-serif;
         font-weight: 500;

@@ -95,10 +95,10 @@
     {#if !loading && $account}
         <header>
             <div class="options-wrapper">
-                <img src="../assets/reset.svg" on:click={onClickReset} alt="reset" />
-                <img class="code" src="../assets/code.svg" on:click={onClickDev} alt="code" />
+                <i on:click={onClickReset} class="icon-reset" />
+                <i on:click={onClickDev} class="icon-code" />
             </div>
-            <div class="logo"><img src="../assets/device.png" alt="logo" /></div>
+            <div class="logo"><img src="/img/device.png" alt="logo" /></div>
         </header>
         <name-wrapper>
             <p>Device {$account.name}</p>
@@ -107,22 +107,22 @@
             {#each localCredentials as credential}
                 <div class="list">
                     <ListItem
-                        onClick={() => navigate("credential", { state: { credential: credential } })}
+                        icon="chip"
+                        onClick={() => navigate("credential", { state: { credential } })}
                         heading={"IOTA"}
                         subheading={credential.verifiableCredential.type[1]}
-                        icon="device.svg"
                     />
                 </div>
             {/each}
             {#if localCredentials.length < 1}
-                <div class="btn-wrapper">
-                    <Button
-                        style="background: white; color: #051923; display: flex; justify-content: flex-start; padding-left: 20px;"
-                        label="Request Device ID credential"
+                <div class="list">
+                    <ListItem
+                        icon="add"
+                        iconColor="#78d64b"
                         onClick={createQR}
-                    >
-                        <img class="add" src="../assets/add.png" alt="add" />
-                    </Button>
+                        arrow={false}
+                        subheading="Request Device ID credential"
+                    />
                 </div>
             {/if}
         </section>
@@ -140,12 +140,11 @@
         display: flex;
         flex-direction: column;
         height: 141px;
-        background: linear-gradient(90deg, #00ffff 0%, #0099ff 100%);
+        background-color: #aee693;
     }
 
     name-wrapper {
         padding-top: 5.6vh;
-        background: #f8f8f8;
     }
 
     section {
@@ -153,7 +152,6 @@
         align-content: space-between;
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
-        background: #f8f8f8;
     }
 
     .logo {
@@ -176,14 +174,7 @@
 
     .list {
         padding: 0 20px;
-    }
-
-    .list:not(:last-child) {
-        margin-bottom: 3vh;
-    }
-
-    .list:last-child {
-        margin-bottom: 9vh;
+        margin-bottom: 2vh;
     }
 
     name-wrapper > p {
@@ -200,19 +191,5 @@
         flex-direction: row;
         justify-content: space-between;
         margin: 3.5vh 3.5vh 0 3.5vh;
-    }
-
-    .add {
-        width: 40px;
-        height: 40px;
-    }
-
-    .code {
-        margin-left: auto;
-    }
-
-    .btn-wrapper {
-        height: 72px;
-        padding: 0 20px;
     }
 </style>

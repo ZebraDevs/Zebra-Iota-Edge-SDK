@@ -11,6 +11,7 @@
 
 <style>
     .loader-wrapper {
+        position: absolute;
         height: 100%;
         width: 100%;
         display: flex;
@@ -18,7 +19,8 @@
         align-items: center;
         justify-content: center;
         row-gap: 40px;
-        background: linear-gradient(90deg, #00ffff 0%, #0099ff 100%);
+        background-color: #00a7ff;
+        z-index: 10;
     }
     .loader-label {
         font-family: "Proxima Nova", sans-serif;

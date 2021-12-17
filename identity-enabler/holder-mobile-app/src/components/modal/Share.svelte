@@ -49,7 +49,7 @@
                 label="Share as data matrix"
                 onClick={share}
             >
-                <img class="modal-icon" src="../assets/data-matrix.svg" alt="data-matrix" />
+                <i class="icon-qr" />
             </Button>
             <div class="border" />
             <Button
@@ -62,7 +62,7 @@
                 label="Share as JSON"
                 onClick={shareJSON}
             >
-                <img class="modal-icon" src="../assets/link.svg" alt="link" />
+                <i class="icon-link" />
             </Button>
         </div>
     </div>
@@ -74,7 +74,7 @@
         font-weight: 600 !important;
         font-size: 6.3vh !important;
         line-height: 3.4vh !important;
-        margin: 9.3vh 5.3vh 5.3vh 5.3vh;
+        margin: 5.3vh;
     }
 
     .border {
@@ -82,9 +82,9 @@
         border: 1px solid #dfdfdf;
     }
 
-    .modal-icon {
-        width: 16px;
-        height: 16px;
-        margin-right: 2.3vh;
+    .btn-wrapper i {
+        color: black;
+        margin-right: 0.5rem;
+        font-size: 1.5em;
     }
 </style>

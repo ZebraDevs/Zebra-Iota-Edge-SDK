@@ -18,7 +18,7 @@
         align-items: center;
         justify-content: center;
         row-gap: 40px;
-        background: linear-gradient(90deg, #00ffff 0%, #0099ff 100%);
+        background-color: #aee693;
     }
     .loader-label {
         font-family: "Proxima Nova", sans-serif;
@@ -29,7 +29,7 @@
         text-align: center;
         letter-spacing: 0.06em;
         text-transform: uppercase;
-        color: #f8f8f8;
+        color: black;
         margin-top: 40px;
     }
 </style>

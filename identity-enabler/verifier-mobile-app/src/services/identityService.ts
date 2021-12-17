@@ -4,6 +4,7 @@ import { parse } from "../lib/helpers";
 import type { InternalCredentialDataModel } from "../lib/store";
 import type { Identity, IdentityConfig, VerifiableCredentialEnrichment } from "../models/types/identity";
 import * as IotaIdentity from "@iota/identity-wasm/web";
+import { IDENTITY_WASM_PATH } from "../config";
 
 const {
     Client,
@@ -57,7 +58,7 @@ export class IdentityService {
      */
     async createIdentity(): Promise<Identity> {
         // Initialize the Library - Is cached after first initialization
-        await IotaIdentity.init();
+        await IotaIdentity.init(IDENTITY_WASM_PATH);
         const client = this.getClient();
 
         // Generate a new keypair and DID document
@@ -142,7 +143,7 @@ export class IdentityService {
         data: any
     ): Promise<IotaIdentity.VerifiableCredential> {
         // Initialize the Library - Is cached after first initialization
-        await IotaIdentity.init();
+        await IotaIdentity.init(IDENTITY_WASM_PATH);
 
         // Prepare credential Data
         const IssuerDidDoc = Document.fromJSON(JSON.parse(issuer.didDoc));
@@ -246,7 +247,7 @@ export class IdentityService {
         signedVc: IotaIdentity.VerifiableCredential
     ): Promise<IotaIdentity.VerifiablePresentation> {
         //Initialize the Library - Is cached after first initialization
-        await IotaIdentity.init();
+        await IotaIdentity.init(IDENTITY_WASM_PATH);
 
         // Prepare presentation Data
         const IssuerKeys = KeyCollection.fromJSON(issuer.keys);
@@ -268,7 +269,7 @@ export class IdentityService {
 
     async verifyVerifiablePresentation(presentation: IotaIdentity.VerifiablePresentation): Promise<boolean> {
         //Initialize the Library - Is cached after first initialization
-        await IotaIdentity.init();
+        await IotaIdentity.init(IDENTITY_WASM_PATH);
         try {
             //Create from VP
             const verifiablePresentation = VerifiablePresentation.fromJSON(presentation);
