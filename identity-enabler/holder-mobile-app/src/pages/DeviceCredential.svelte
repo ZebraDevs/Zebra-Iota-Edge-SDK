@@ -1,7 +1,5 @@
 <script>
     import { navigate } from "svelte-routing";
-    import { beforeUpdate } from "svelte";
-    import { Plugins } from "@capacitor/core";
     import { updateStorage, error } from "../lib/store";
     import { SchemaNames } from "../schemas";
     import { ServiceFactory } from "../factories/serviceFactory";
@@ -11,9 +9,10 @@
     import Button from "../components/Button.svelte";
     import ObjectList from "../components/ObjectList.svelte";
     import DevInfo from "./DevInfo.svelte";
+    import { onMount } from "svelte";
+    import { Plugins } from "@capacitor/core";
 
     const { App } = Plugins;
-
     let showTutorial = false;
     let loading = false;
 
@@ -57,7 +56,7 @@
             console.log("new credential", credential);
             await updateStorage("credentials", { ["organization"]: credential });
             loading = false;
-            navigate("createPresentation", { state: { credential } });
+            navigate("/createPresentation", { state: { credential } });
         } catch (err) {
             error.set("Error creating credential. Please try again.");
             loading = false;
@@ -65,16 +64,19 @@
     }
 
     function goBack() {
-        navigate("home");
+        if (showTutorial) {
+            showTutorial = false;
+            return;
+        }
+
+        window.history.back();
     }
 
     function onClickDev() {
         showTutorial = true;
     }
 
-    beforeUpdate(() => {
-        !showTutorial && App.removeAllListeners();
-    });
+    onMount(() => App.addListener("backButton", goBack).remove);
 </script>
 
 <main>

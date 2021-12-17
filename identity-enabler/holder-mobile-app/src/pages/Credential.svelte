@@ -1,14 +1,13 @@
 <script>
-    import { navigate } from "svelte-routing";
-    import { beforeUpdate } from "svelte";
     import { fly } from "svelte/transition";
-    import { Plugins } from "@capacitor/core";
     import Button from "../components/Button.svelte";
     import ObjectList from "../components/ObjectList.svelte";
     import DevInfo from "./DevInfo.svelte";
     import { modalStatus } from "../lib/store";
     import { ServiceFactory } from "../factories/serviceFactory";
     import { showAlert } from "../lib/ui/helpers";
+    import { onMount } from "svelte";
+    import { Plugins } from "@capacitor/core";
 
     const { App } = Plugins;
     let showTutorial = false;
@@ -30,16 +29,24 @@
     }
 
     function goBack() {
-        navigate("home");
+        if ($modalStatus.active) {
+            modalStatus.set({ active: false });
+            return;
+        }
+
+        if (showTutorial) {
+            showTutorial = false;
+            return;
+        }
+
+        window.history.back();
     }
 
     function onClickDev() {
         showTutorial = true;
     }
 
-    beforeUpdate(() => {
-        !showTutorial && App.removeAllListeners();
-    });
+    onMount(() => App.addListener("backButton", goBack).remove);
 </script>
 
 <main transition:fly={{ x: 500, duration: 500 }}>

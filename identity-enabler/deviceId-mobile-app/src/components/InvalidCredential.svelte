@@ -4,7 +4,7 @@
     import Button from "../components/Button.svelte";
 
     function goBack() {
-        navigate("home");
+        navigate("/home");
     }
 </script>
 

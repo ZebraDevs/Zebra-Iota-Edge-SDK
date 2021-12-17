@@ -11,29 +11,50 @@
     import { ServiceFactory } from "../factories/serviceFactory";
     import { SchemaNames } from "../schemas";
     import { updateStorage, getFromStorage, account, resetAllStores } from "../lib/store";
-    import { getRandomUserData, generateRandomId } from "../lib/helpers";
+    import { getRandomUserData, generateRandomId, wait } from "../lib/helpers";
     import type { IdentityService } from "../services/identityService";
     import { showAlert } from "../lib/ui/helpers";
+    import { BACK_BUTTON_EXIT_GRACE_PERIOD } from "../config";
 
     let showTutorial = false;
 
-    const { App, Modals } = Plugins;
+    const { App, Toast, Modals } = Plugins;
 
     let loading = false;
     let localCredentials = [];
+    let exitOnBack = false;
 
+    onMount(() => App.addListener("backButton", onBack).remove);
     onMount(async () => {
-        App.addListener("backButton", function () {});
-        setTimeout(async () => {
-            try {
-                const creds = await getFromStorage("credentials");
-                localCredentials = Object.values(creds)?.filter(data => data) ?? [];
-                console.log("onMount", localCredentials);
-            } catch (err) {
-                console.log(err);
-            }
-        }, 0);
+        try {
+            const creds = await getFromStorage("credentials");
+            localCredentials = Object.values(creds)?.filter(data => data) ?? [];
+        } catch (err) {
+            console.log(err);
+        }
     });
+
+    async function onBack() {
+        if (showTutorial) {
+            showTutorial = false;
+            return;
+        }
+
+        if (exitOnBack) {
+            // From the home screen, navigating back twice should exit the app
+            App.exitApp();
+            return;
+        }
+
+        exitOnBack = true;
+        await Toast.show({
+            position: "bottom",
+            duration: "short",
+            text: "Tap back again to exit"
+        });
+        await wait(BACK_BUTTON_EXIT_GRACE_PERIOD);
+        exitOnBack = false;
+    }
 
     async function generateCredential() {
         if (navigator.onLine === false) {
@@ -126,12 +147,12 @@
                 });
                 return;
             }
-            navigate("landing");
+            navigate("/landing");
         }
     }
 
     function scan() {
-        navigate("scan");
+        navigate("/scan");
     }
 </script>
 
@@ -159,7 +180,7 @@
             {#each localCredentials as credential}
                 <div transition:slide class="list">
                     <ListItem
-                        onClick={() => navigate("credential", { state: { credential } })}
+                        onClick={() => navigate("/credential", { state: { credential } })}
                         heading={credential.enrichment ? credential.enrichment.issuerLabel : ""}
                         subheading={credential.enrichment ? credential.enrichment.credentialLabel : ""}
                     />

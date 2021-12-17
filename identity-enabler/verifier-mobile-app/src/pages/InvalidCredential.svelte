@@ -9,6 +9,10 @@
         // We wait a little bit in order not to overlap the different aural feedback
         setTimeout(async () => await playAudio("invalid"), PLAY_DELAY);
     });
+
+    function onDone() {
+        navigate("/home");
+    }
 </script>
 
 <main transition:fly={{ y: 200, duration: 500 }}>
@@ -17,7 +21,7 @@
         <p>INVALID CREDENTIAL</p>
     </section>
     <footer>
-        <Button style="background: #0099FF; color: white;" label="Done" onClick={() => navigate("/home")} />
+        <Button style="background: #0099FF; color: white;" label="Done" onClick={onDone} />
     </footer>
 </main>
 

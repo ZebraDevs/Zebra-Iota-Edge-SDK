@@ -4,35 +4,34 @@
     import { navigate } from "svelte-routing";
     import { slide } from "svelte/transition";
     import { getFromStorage } from "../lib/store";
-    import { isExpired } from "../lib/helpers";
+    import { isExpired, wait } from "../lib/helpers";
     import FullScreenLoader from "../components/FullScreenLoader.svelte";
     import Button from "../components/Button.svelte";
     import ListItem from "../components/ListItem.svelte";
     import DevInfo from "./DevInfo.svelte";
     import { showAlert } from "../lib/ui/helpers";
+    import { BACK_BUTTON_EXIT_GRACE_PERIOD } from "../config";
 
-    const { App, Modals } = Plugins;
+    const { App, Toast, Modals } = Plugins;
 
     let isEmpty = false;
     let showTutorial = false;
     let localCredentials = {};
     let loading = false;
+    let exitOnBack = false;
 
+    onMount(() => App.addListener("backButton", onBack).remove);
     onMount(async () => {
-        App.addListener("backButton", function () {}, false);
-        setTimeout(async () => {
-            try {
-                loading = true;
-                localCredentials = await getFromStorage("credentials");
-                localCredentials = Object.values(localCredentials)?.filter(data => data);
-                console.log("onMount", localCredentials);
-                isEmpty = Object.values(localCredentials).every(x => x === null || x === "");
-                loading = false;
-            } catch (err) {
-                console.log(err);
-                loading = false;
-            }
-        }, 0);
+        try {
+            loading = true;
+            localCredentials = await getFromStorage("credentials");
+            localCredentials = Object.values(localCredentials)?.filter(data => data);
+            isEmpty = Object.values(localCredentials).every(x => x === null || x === "");
+            loading = false;
+        } catch (err) {
+            console.log(err);
+            loading = false;
+        }
     });
 
     async function scan() {
@@ -41,6 +40,28 @@
             return;
         }
         navigate("/scan");
+    }
+
+    async function onBack() {
+        if (showTutorial) {
+            showTutorial = false;
+            return;
+        }
+
+        if (exitOnBack) {
+            // From the home screen, navigating back twice should exit the app
+            App.exitApp();
+            return;
+        }
+
+        exitOnBack = true;
+        await Toast.show({
+            position: "bottom",
+            duration: "short",
+            text: "Tap back again to exit"
+        });
+        await wait(BACK_BUTTON_EXIT_GRACE_PERIOD);
+        exitOnBack = false;
     }
 
     function onClickDev() {

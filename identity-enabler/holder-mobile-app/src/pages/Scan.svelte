@@ -28,7 +28,7 @@
 
             if (claims) {
                 setTimeout(async () => await playAudio("valid"), PLAY_DELAY);
-                navigate("devicecredential", { state: { claims: claims } });
+                navigate("/devicecredential", { state: { claims: claims } });
             } else {
                 setTimeout(async () => await playAudio("invalid"), PLAY_DELAY);
                 return showAlert();
@@ -63,7 +63,7 @@
     }
 
     function goBack() {
-        navigate("/home");
+        window.history.back();
     }
 </script>
 

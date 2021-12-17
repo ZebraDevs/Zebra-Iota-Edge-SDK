@@ -12,8 +12,8 @@
     const identityService = ServiceFactory.get("identity");
 
     function share() {
-        navigate("createPresentation", { state: { credential } });
         close();
+        navigate("/createPresentation", { state: { credential } });
     }
 
     async function shareJSON() {

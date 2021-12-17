@@ -51,7 +51,7 @@
                 text: "Credential verified!",
                 position: "center"
             });
-            navigate("credential", { state: { credential, save: true } });
+            navigate("/credential", { state: { credential, save: true } });
         } else {
             await playAudio("invalid");
             await showAlert("Error", "Invalid Credential Received");

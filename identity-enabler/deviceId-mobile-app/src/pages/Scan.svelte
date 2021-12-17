@@ -87,7 +87,7 @@
     }
 
     function goBack() {
-        history.back();
+        window.history.back();
     }
 </script>
 

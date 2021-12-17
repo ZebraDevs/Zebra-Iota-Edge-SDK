@@ -49,7 +49,7 @@
 </script>
 
 <main>
-    <Link to="/">Back</Link>
+    <Link to="/home">Back</Link>
     <h1>Credential</h1>
     {#if loading}
         <Spinner />

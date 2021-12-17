@@ -1,13 +1,10 @@
 <script>
-    import { onMount, beforeUpdate } from "svelte";
-    import { Plugins } from "@capacitor/core";
+    import { onMount } from "svelte";
     import bwipjs from "bwip-js";
     import FullScreenLoader from "../components/FullScreenLoader.svelte";
     import Button from "../components/Button.svelte";
     import DevInfo from "./DevInfo.svelte";
     import PresentationJson from "./PresentationJSON.svelte";
-
-    const { App } = Plugins;
 
     let loading = true;
     let showJSON = false;
@@ -42,12 +39,8 @@
         createMatrix();
     });
 
-    beforeUpdate(() => {
-        !showTutorial && App.removeAllListeners();
-    });
-
     function goBack() {
-        history.back();
+        window.history.back();
     }
 
     function onClickDev() {

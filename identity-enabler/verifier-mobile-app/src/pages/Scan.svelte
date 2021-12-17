@@ -35,12 +35,16 @@
         await playAudio("scanned");
         await handleScannerData(ev.detail);
     }
+
+    function goBack() {
+        window.history.back();
+    }
 </script>
 
 <main transition:fly={{ y: 200, duration: 500 }}>
     <header>
         <div class="options-wrapper">
-            <img on:click={() => navigate("/home")} src="../assets/chevron-left.svg" alt="back" />
+            <img on:click={goBack} src="../assets/chevron-left.svg" alt="back" />
             <p>Scanner</p>
             <label class="image-select">
                 <input type="file" accept="image/*" on:change={imageSelected} />

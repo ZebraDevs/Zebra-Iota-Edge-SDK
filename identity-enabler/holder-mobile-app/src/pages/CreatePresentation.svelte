@@ -1,7 +1,5 @@
 <script>
-    import { navigate } from "svelte-routing";
-    import { onMount, beforeUpdate } from "svelte";
-    import { Plugins } from "@capacitor/core";
+    import { onMount } from "svelte";
     import bwipjs from "bwip-js";
     import { ServiceFactory } from "../factories/serviceFactory";
     import { error } from "../lib/store";
@@ -9,9 +7,9 @@
     import Button from "../components/Button.svelte";
     import DevInfo from "./DevInfo.svelte";
     import PresentationJson from "./PresentationJSON.svelte";
+    import { Plugins } from "@capacitor/core";
 
     const { App } = Plugins;
-
     let presentationJSON = "";
     let loading = true;
     let showJSON = false;
@@ -63,12 +61,18 @@
         }, 500);
     });
 
-    beforeUpdate(() => {
-        !showTutorial && App.removeAllListeners();
-    });
-
     function goBack() {
-        navigate("credential", { state: { credential: credential } });
+        if (showTutorial) {
+            showTutorial = false;
+            return;
+        }
+
+        if (showJSON) {
+            showJSON = false;
+            return;
+        }
+
+        window.history.back();
     }
 
     function onClickDev() {
@@ -78,6 +82,8 @@
     function onClickJSON() {
         showJSON = true;
     }
+
+    onMount(() => App.addListener("backButton", goBack).remove);
 </script>
 
 <main>

@@ -47,11 +47,11 @@
     }
 
     function goBack() {
-        history.back();
+        window.history.back();
     }
 
     function requestCredential() {
-        navigate("requestcredential");
+        navigate("/requestcredential");
     }
 </script>
 

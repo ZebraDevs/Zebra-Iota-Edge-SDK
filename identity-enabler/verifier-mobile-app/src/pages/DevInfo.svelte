@@ -1,12 +1,9 @@
 <script>
     import { onMount } from "svelte";
-    import { Plugins } from "@capacitor/core";
     import Markdown from "../components/Markdown.svelte";
     import { getMarkdownContent } from "../lib/helpers";
     import { TUTORIAL_BASE_URL } from "../config";
     import { loadingScreen } from "../lib/store";
-
-    const { App } = Plugins;
 
     export let page = "";
     export let showTutorial = Boolean;
@@ -15,10 +12,6 @@
 
     onMount(async () => {
         loadingScreen.set("Loading...");
-        App.addListener("backButton", function () {
-            showTutorial = false;
-        });
-
         try {
             code = await getMarkdownContent(`${TUTORIAL_BASE_URL}/${page}.md`);
         } catch (err) {
@@ -29,7 +22,6 @@
 
     function onClose() {
         showTutorial = false;
-        App.removeAllListeners();
     }
 </script>
 

@@ -1,5 +1,4 @@
 <script>
-    import { beforeUpdate } from "svelte";
     import { fly } from "svelte/transition";
     import { Plugins } from "@capacitor/core";
     import { updateStorage } from "../lib/store";
@@ -8,12 +7,17 @@
     import DevInfo from "./DevInfo.svelte";
     import { isExpired } from "../lib/helpers";
     import { navigate } from "svelte-routing";
+    import { onMount } from "svelte";
 
     const { App, Modals } = Plugins;
 
     let showTutorial = false;
     let credential = window.history.state.credential;
     let expired = isExpired(credential.issuanceDate);
+
+    function onDone() {
+        navigate("/home");
+    }
 
     async function onDelete() {
         let confirmRet = await Modals.confirm({
@@ -22,7 +26,8 @@
         });
         if (confirmRet.value) {
             await updateStorage("credentials", { [credential.type[1].split(/\b/)[0].toLowerCase()]: "" });
-            navigate("/home");
+            // ensure impossible to navigate back to a deleted credential page
+            navigate("/home", { replace: true });
         }
     }
 
@@ -30,9 +35,16 @@
         showTutorial = true;
     }
 
-    beforeUpdate(() => {
-        !showTutorial && App.removeAllListeners();
-    });
+    function onBack() {
+        if (showTutorial) {
+            showTutorial = false;
+            return;
+        }
+
+        window.history.back();
+    }
+
+    onMount(() => App.addListener("backButton", onBack).remove);
 </script>
 
 <main transition:fly={{ x: 500, duration: 500 }}>
@@ -60,7 +72,7 @@
             <ObjectList object={credential.credentialSubject} />
         </section>
         <footer>
-            <Button style="background: #0099FF; color: white;" label="Done" onClick={() => navigate("/home")} />
+            <Button style="background: #0099FF; color: white;" label="Done" onClick={onDone} />
         </footer>
     {/if}
 </main>

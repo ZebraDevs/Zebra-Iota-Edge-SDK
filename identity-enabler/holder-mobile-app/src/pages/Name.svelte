@@ -1,6 +1,5 @@
 <script>
     import { Plugins } from "@capacitor/core";
-    import { flip } from "svelte/animate";
     import { navigate } from "svelte-routing";
     import Button from "../components/Button.svelte";
     import TextField from "../components/TextField.svelte";
@@ -52,7 +51,7 @@
             loading = false;
             hasSetupAccount.set(true);
 
-            navigate("home");
+            navigate("/home");
         } catch (err) {
             error.set("Error creating identity. Please try again.");
             loading = false;

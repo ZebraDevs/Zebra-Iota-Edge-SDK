@@ -9,29 +9,51 @@
     import { getFromStorage, account, resetAllStores } from "../lib/store";
     import { ServiceFactory } from "../factories/serviceFactory";
     import type { IdentityService } from "../services/identityService";
+    import { wait } from "../lib/helpers";
+    import { BACK_BUTTON_EXIT_GRACE_PERIOD } from "../config";
 
     let showTutorial = false;
 
-    const { App, Modals } = Plugins;
+    const { App, Toast, Modals } = Plugins;
 
     let loading = false;
     let localCredentials = [];
+    let exitOnBack = false;
 
+    onMount(() => App.addListener("backButton", onBack).remove);
     onMount(async () => {
-        App.addListener("backButton", function () {});
-        setTimeout(async () => {
-            try {
-                localCredentials = await getFromStorage("credentials");
-                localCredentials = Object.values(localCredentials)?.filter(data => data);
-                console.log("onMount", localCredentials);
-            } catch (err) {
-                console.log(err);
-            }
-        }, 0);
+        try {
+            localCredentials = await getFromStorage("credentials");
+            localCredentials = Object.values(localCredentials)?.filter(data => data);
+        } catch (err) {
+            console.log(err);
+        }
     });
 
+    async function onBack() {
+        if (showTutorial) {
+            showTutorial = false;
+            return;
+        }
+
+        if (exitOnBack) {
+            // From the home screen, navigating back twice should exit the app
+            App.exitApp();
+            return;
+        }
+
+        exitOnBack = true;
+        await Toast.show({
+            position: "bottom",
+            duration: "short",
+            text: "Tap back again to exit"
+        });
+        await wait(BACK_BUTTON_EXIT_GRACE_PERIOD);
+        exitOnBack = false;
+    }
+
     async function createQR() {
-        navigate("createQR", { state: { name: $account.name } });
+        navigate("/createQR", { state: { name: $account.name } });
     }
 
     function onClickDev() {
@@ -56,7 +78,7 @@
                 });
                 return;
             }
-            navigate("landing");
+            navigate("/landing");
         }
     }
 </script>

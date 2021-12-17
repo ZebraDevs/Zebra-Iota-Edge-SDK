@@ -1,12 +1,16 @@
 <script>
+    import { Plugins } from "@capacitor/core";
+    import { onMount } from "svelte";
     import { navigate } from "svelte-routing";
     import { fly } from "svelte/transition";
     import Button from "../components/Button.svelte";
     import DevInfo from "./DevInfo.svelte";
     import { showAlert } from "../lib/ui/helpers";
 
+    const { App } = Plugins;
     let showTutorial = false;
 
+    onMount(() => App.addListener("backButton", goBack).remove);
     async function scan() {
         if (navigator.onLine === false) {
             await showAlert("Error", "You need Internet connectivity to verify a Device Credential");
@@ -20,7 +24,12 @@
     }
 
     function goBack() {
-        history.back();
+        if (showTutorial) {
+            showTutorial = false;
+            return;
+        }
+
+        window.history.back();
     }
 </script>
 
