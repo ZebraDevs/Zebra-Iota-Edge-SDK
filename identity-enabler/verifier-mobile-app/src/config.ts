@@ -10,6 +10,4 @@ export const DEFAULT_LANGUAGE = "English";
 
 export const DEFAULT_LOCALE = "en";
 
-export const TUTORIAL_BASE_URL = "https://jmcanterafonseca-iota.github.io/zebra-iota-edge-sdk";
-
-export const BACK_BUTTON_EXIT_GRACE_PERIOD = 2000; // 2s is same duration as "short" Toast
+export const TUTORIAL_BASE_URL = "https://jmcanterafonseca-iota.github.io/zebra-iota-edge-sdk/docs";

@@ -1,10 +1,14 @@
-# Svelte + Capacitor (w/ live reload) Template
+# Verifier Mobile App
+
+## Introduction
+
+The Verifier Mobile Application is a reference application that serves as an skeleton to build decentralized identity solutions. Such application offers the functionalities needed to scan and verify credentials bound to decentralized identities.
+
+## Setup
 
 This is a project template for [Svelte](https://svelte.dev) + [CapacitorJS](https://capacitorjs.com) apps with live reload.
 
 *Note that you will need to have [Node.js](https://nodejs.org) installed.*
-
-## Setup
 
 ### Get started
 

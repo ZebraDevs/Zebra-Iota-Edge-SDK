@@ -1,10 +1,14 @@
-# Svelte + Capacitor (w/ live reload) Template
+# Holder Mobile App
+
+## Introduction
+
+The Holder Mobile Application is a reference application that serves as an skeleton to build decentralized identity solutions. Such application offers the usual functionalities for the Holder role i.e. credential management and presentation. 
+
+## Setup
 
 This is a project template for [Svelte](https://svelte.dev) + [CapacitorJS](https://capacitorjs.com) apps with live reload.
 
 *Note that you will need to have [Node.js](https://nodejs.org) installed.*
-
-## Setup
 
 ### Get started
 

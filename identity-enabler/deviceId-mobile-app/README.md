@@ -1,10 +1,14 @@
-# Svelte + Capacitor (w/ live reload) Template
+# Device ID Mobile App
+
+## Introduction
+
+The Device ID Mobile Application is a reference application that serves as an skeleton to build decentralized identity solutions. Such application offers the functionalities needed to onboard a device so that it can interact with different services using its own decentralized identity verified by the organization owning the device.
+
+## Setup
 
 This is a project template for [Svelte](https://svelte.dev) + [CapacitorJS](https://capacitorjs.com) apps with live reload.
 
 *Note that you will need to have [Node.js](https://nodejs.org) installed.*
-
-## Setup
 
 ### Get started
 
