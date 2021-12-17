@@ -55,6 +55,12 @@
             await showAlert("Error", "You need Internet connectivity to issue a credential");
             return;
         }
+
+        if (!$hasSetupAccount) {
+            await showAlert("Error", "You need to create an IOTA Identity prior to issuing a credential");
+            return;
+        }
+
         await handleScannerData(decodedText);
     }
 
