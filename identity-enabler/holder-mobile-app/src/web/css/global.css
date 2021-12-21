@@ -135,3 +135,11 @@ i {
 .rotate-180 {
     transform: rotate(180deg);
 }
+
+/* 
+  Show a little arrow glyph after `target="_blank"` anchors.
+*/
+a[target="_blank"]:after {
+    content: " \2197";
+    font-size: 0.9em;
+}
