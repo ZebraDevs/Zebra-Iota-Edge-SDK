@@ -104,7 +104,12 @@
                     };
             }
 
-            const newCredential = await identityService.createSignedCredential(JSON.parse(storedIdentity.didDoc).id, storedIdentity, schema, payload);
+            const newCredential = await identityService.createSignedCredential(
+                JSON.parse(storedIdentity.didDoc).id,
+                storedIdentity,
+                schema,
+                payload
+            );
             const credentialId = generateRandomId();
             const enrichment = identityService.enrichCredential({ ...newCredential });
             const credential = {

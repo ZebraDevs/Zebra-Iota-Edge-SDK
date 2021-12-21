@@ -236,10 +236,10 @@ export function wait(milliseconds: number) {
 
 export function generateRandomNumericString(charLength: number): string {
     const alphabet = "0123456789";
-    let str = '';
+    let str = "";
     for (let i = 0; i < charLength; i++) {
         const chIdx = Math.floor(Math.random() * alphabet.length);
-        str += alphabet[chIdx];     
+        str += alphabet[chIdx];
     }
     return str;
 }
