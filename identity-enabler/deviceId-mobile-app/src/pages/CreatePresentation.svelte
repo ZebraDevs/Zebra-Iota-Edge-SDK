@@ -2,13 +2,15 @@
     import { onMount } from "svelte";
     import bwipjs from "bwip-js";
     import FullScreenLoader from "../components/FullScreenLoader.svelte";
-    import Button from "../components/Button.svelte";
+    import { wait } from "../lib/helpers";
     import DevInfo from "./DevInfo.svelte";
     import PresentationJson from "./PresentationJSON.svelte";
 
     let loading = true;
     let showJSON = false;
     let showTutorial = false;
+    let singleTapped = false;
+    const MAX_DOUBLE_TAP_DELAY = 500;
 
     const credential = window.history.state.credential;
 
@@ -48,8 +50,16 @@
         showTutorial = true;
     }
 
-    function onClickJSON() {
-        showJSON = true;
+    async function onClickDataMatrix() {
+        if (singleTapped) {
+            singleTapped = false;
+            showJSON = true;
+            return;
+        }
+
+        singleTapped = true;
+        await wait(MAX_DOUBLE_TAP_DELAY);
+        singleTapped = false;
     }
 </script>
 
@@ -78,16 +88,11 @@
             </div>
         {/if}
         <div class="presentation-wrapper">
-            <canvas id="presentation" />
+            <canvas id="presentation" on:click={onClickDataMatrix} />
         </div>
         {#if !loading}
             <footer class="footerContainer">
                 <p>Valid until {addDaysToDate(credential?.verifiableCredential?.issuanceDate, 30)}</p>
-                <Button
-                    style="background: transparent; color: white; font-weight: 500; border: none;"
-                    label="VIEW IN JSON FORMAT"
-                    onClick={onClickJSON}
-                />
             </footer>
         {/if}
     </div>
