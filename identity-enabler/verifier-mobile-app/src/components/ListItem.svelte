@@ -44,7 +44,7 @@
 
     .text-container {
         flex: 1;
-        padding: 0 1rem;
+        padding: 0 0.75rem;
         min-width: 0;
         max-width: 100%;
     }

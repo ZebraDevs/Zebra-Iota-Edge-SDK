@@ -20,18 +20,21 @@
             header: "AppX stores your health records and tests",
             content:
                 "A safe space for your personal information, only accessible by you. AppX is powered by the neutral, free and decentralized network: IOTA.",
-            footer: "Next"
+            footer: "Next",
+            image: "checklist.svg"
         },
         {
             header: "Your data, your ownership",
             content: "Your data is controlled only on your phone. Currently, no backup options are available.",
-            footer: "Next"
+            footer: "Next",
+            image: "notepad.svg"
         },
         {
             header: "You control access to your immunity status",
             content:
                 "AppX is all about controlling your information, not locking it up. You can decide who you share your data with by providing consent.",
-            footer: "Next"
+            footer: "Next",
+            image: "folder.svg"
         }
     ];
 
@@ -113,7 +116,7 @@
                 in:fly={mounted ? { ...getInAnimation(), duration: 400, opacity: 0 } : false}
                 out:fly={{ ...getOutAnimation(), duration: 400, opacity: 0 }}
             >
-                <img src="/img/landing-{$landingIndex + 1}.png" alt="landing-{$landingIndex + 1}" />
+                <img src="/img/{info[$landingIndex].image}" alt={info[$landingIndex].image.replace(/\.svg$/, "")} />
                 <div class="dots">
                     {#each Array(3)
                         .fill()

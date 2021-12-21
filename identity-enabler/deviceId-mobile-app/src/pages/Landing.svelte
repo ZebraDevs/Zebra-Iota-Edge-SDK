@@ -10,7 +10,8 @@
     const info = {
         header: "Create and store device digital identity",
         content: "Share device credentials and immunity status safely and privately using IOTA’s Identity solution.",
-        footer: "Next"
+        footer: "Next",
+        image: "checklist.svg"
     };
 
     const { App, Toast } = Plugins;
@@ -45,7 +46,7 @@
         <div>
             <Header text={info.header} />
         </div>
-        <img src="/img/landing-1.png" alt="landing-1" />
+        <img src="/img/{info.image}" alt="checklist" />
         <p class="info">{info.content}</p>
     </div>
     <footer class="footerContainer">
