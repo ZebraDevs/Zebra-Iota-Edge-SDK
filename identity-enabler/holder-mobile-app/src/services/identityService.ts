@@ -1,5 +1,5 @@
 import Keychain from "../lib/keychain";
-import { SchemaNames, DIDMapping } from "../schemas";
+import { CredentialType, DIDMapping } from "../schemas";
 import { parse } from "../lib/helpers";
 import type { InternalCredentialDataModel } from "../lib/store";
 import type { Identity, IdentityConfig, VerifiableCredentialEnrichment } from "../models/types/identity";
@@ -146,14 +146,14 @@ export class IdentityService {
      * @method createSelfSignedCredential
      *
      * @param {Identity} issuer
-     * @param {SchemaNames} schemaName
+     * @param {CredentialType} credentialType
      * @param {any} data
      *
      * @returns {Promise}
      */
     async createSelfSignedCredential(
         issuer: Identity,
-        schemaName: SchemaNames,
+        credentialType: CredentialType,
         data: any
     ): Promise<IotaIdentity.VerifiableCredential> {
         // Initialize the Library - Is cached after first initialization
@@ -174,7 +174,7 @@ export class IdentityService {
         // Issue an unsigned credential
         const unsignedVc = VerifiableCredential.extend({
             id: "http://example.com/credentials/3732",
-            type: schemaName,
+            type: credentialType,
             issuer: IssuerDidDoc.id.toString(),
             credentialSubject
         });
