@@ -9,7 +9,7 @@
     {#each Object.entries(flattenObj(object)) as entry}
         <li>
             <p>{entry[0].split(".").pop()}</p>
-            {#if entry[1]?.startsWith("did:iota:")}
+            {#if typeof entry[1] === "string" && entry[1].startsWith("did:iota:")}
                 <a
                     class="cut-text"
                     href={`${IOTA_IDENTITY_RESOLVER}/${entry[1]}`}
