@@ -63,8 +63,8 @@
             </div>
             <header>
                 <i class="icon-zebra credential-logo" />
-                <p>ZEBRA TECHNOLOGIES</p>
-                <p>Device DID</p>
+                <p>IOTA</p>
+                <p>{credential.verifiableCredential.type[1]}</p>
             </header>
         </div>
         <section>

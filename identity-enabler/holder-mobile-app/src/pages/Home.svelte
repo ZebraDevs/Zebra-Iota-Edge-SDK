@@ -9,11 +9,11 @@
     import DevInfo from "./DevInfo.svelte";
     import { credentialPayload } from "../lib/credentialPayload";
     import { ServiceFactory } from "../factories/serviceFactory";
-    import { SchemaNames } from "../schemas";
+    import { CredentialType } from "../schemas";
     import { updateStorage, getFromStorage, account, resetAllStores } from "../lib/store";
     import { getRandomUserData, generateRandomId, wait } from "../lib/helpers";
     import type { IdentityService } from "../services/identityService";
-    import { credentialIcon, showAlert } from "../lib/ui/helpers";
+    import { showAlert } from "../lib/ui/helpers";
     import { BACK_BUTTON_EXIT_GRACE_PERIOD } from "../config";
 
     let showTutorial = false;
@@ -76,17 +76,17 @@
             let payload = {};
             switch (credentialKey) {
                 case "health":
-                    schema = SchemaNames.HEALTH_TEST;
+                    schema = CredentialType.HEALTH_TEST;
                     payload = credentialPayload.health;
                     break;
                 case "blood":
-                    schema = SchemaNames.BLOOD_TEST;
+                    schema = CredentialType.BLOOD_TEST;
                     payload = credentialPayload.blood;
                     break;
                 case "personal":
                 default:
                     const userData = await getRandomUserData();
-                    schema = SchemaNames.PERSONAL_DATA;
+                    schema = CredentialType.PERSONAL_DATA;
                     payload = {
                         UserPersonalData: {
                             UserName: {
@@ -180,9 +180,7 @@
             {#each localCredentials as credential}
                 <div transition:slide class="list">
                     <ListItem
-                        icon={credential.enrichment
-                            ? credentialIcon[credential.enrichment.credentialLabel]
-                            : "credential"}
+                        icon="credential"
                         onClick={() => navigate("credential", { state: { credential } })}
                         heading={credential.enrichment ? credential.enrichment.issuerLabel : ""}
                         subheading={credential.enrichment ? credential.enrichment.credentialLabel : ""}

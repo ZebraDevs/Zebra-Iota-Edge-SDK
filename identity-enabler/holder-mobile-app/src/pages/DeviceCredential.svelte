@@ -1,7 +1,7 @@
 <script>
     import { navigate } from "svelte-routing";
-    import { updateStorage, error } from "../lib/store";
-    import { SchemaNames } from "../schemas";
+    import { error } from "../lib/store";
+    import { CredentialType } from "../schemas";
     import { ServiceFactory } from "../factories/serviceFactory";
     import { generateRandomId } from "../lib/helpers";
     import { showAlert } from "../lib/ui/helpers";
@@ -42,7 +42,7 @@
             };
             const newCredential = await identityService.createSelfSignedCredential(
                 storedIdentity,
-                SchemaNames.Organisation_ID,
+                CredentialType.DEVICE_ID,
                 payload
             );
             const credentialId = generateRandomId();
@@ -53,8 +53,6 @@
                 id: credentialId,
                 enrichment
             };
-            console.log("new credential", credential);
-            await updateStorage("credentials", { ["organization"]: credential });
             loading = false;
             navigate("/createPresentation", { state: { credential } });
         } catch (err) {
