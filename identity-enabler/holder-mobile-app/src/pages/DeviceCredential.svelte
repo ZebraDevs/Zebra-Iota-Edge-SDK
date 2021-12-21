@@ -31,7 +31,6 @@
             const storedIdentity = await identityService.retrieveIdentity();
             const payload = {
                 DeviceData: {
-                    "Device ID": claims.id,
                     "Device Name": claims.deviceName,
                     Manufacturer: claims.manufacturer,
                     "Serial Number": claims.uuid,
@@ -40,7 +39,8 @@
                     "OS Version": claims.osVersion
                 }
             };
-            const newCredential = await identityService.createSelfSignedCredential(
+            const newCredential = await identityService.createSignedCredential(
+                claims.id,
                 storedIdentity,
                 CredentialType.DEVICE_ID,
                 payload
