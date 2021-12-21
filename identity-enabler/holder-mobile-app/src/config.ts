@@ -12,7 +12,7 @@ export const DEFAULT_LOCALE = "en";
 
 export const RANDOM_USER_DATA_API_URL = "https://randomuser.me/api/?nat=us,au,ca,ie,gb";
 
-export const TUTORIAL_BASE_URL = "https://jmcanterafonseca-iota.github.io/zebra-iota-edge-sdk/docs";
+export const TUTORIAL_BASE_URL = "https://zebradevs.github.io/Zebra-Iota-Edge-SDK/docs";
 
 export const IDENTITY_WASM_PATH = "/wasm/identity_wasm_bg.wasm";
 
