@@ -1,5 +1,5 @@
 import Keychain from "../lib/keychain";
-import { SchemaNames, DIDMapping } from "../schemas";
+import { DIDMapping } from "../schemas";
 import { parse } from "../lib/helpers";
 import type { InternalCredentialDataModel } from "../lib/store";
 import type { Identity, IdentityConfig, VerifiableCredentialEnrichment } from "../models/types/identity";
@@ -16,7 +16,6 @@ const {
     KeyPair,
     Network,
     VerificationMethod,
-    VerifiableCredential,
     VerifiablePresentation
 } = IotaIdentity;
 
@@ -124,69 +123,6 @@ export class IdentityService {
                 console.error(e);
                 return [];
             });
-    }
-
-    /**
-     * Creates credential
-     *
-     * @method createSelfSignedCredential
-     *
-     * @param {Identity} issuer
-     * @param {SchemaNames} schemaName
-     * @param {any} data
-     *
-     * @returns {Promise}
-     */
-    async createSelfSignedCredential(
-        issuer: Identity,
-        schemaName: SchemaNames,
-        data: any
-    ): Promise<IotaIdentity.VerifiableCredential> {
-        // Initialize the Library - Is cached after first initialization
-        await IotaIdentity.init(IDENTITY_WASM_PATH);
-
-        // Prepare credential Data
-        const IssuerDidDoc = Document.fromJSON(JSON.parse(issuer.didDoc));
-        const IssuerKeys = KeyCollection.fromJSON(issuer.keys);
-        const IssuerDoc = Document.fromJSON(issuer.doc);
-        const IssuerMethod = VerificationMethod.fromJSON(issuer.method);
-
-        // Prepare a credential subject
-        const credentialSubject = {
-            id: IssuerDidDoc.id.toString(),
-            ...data
-        };
-
-        // Issue an unsigned credential
-        const unsignedVc = VerifiableCredential.extend({
-            id: "http://example.com/credentials/3732",
-            type: schemaName,
-            issuer: IssuerDidDoc.id.toString(),
-            credentialSubject
-        });
-
-        // Sign the credential with User's Merkle Key Collection method
-        const signedVc = IssuerDoc.signCredential(unsignedVc, {
-            method: IssuerMethod.id.toString(),
-            public: IssuerKeys.public(0),
-            private: IssuerKeys.private(0),
-            proof: IssuerKeys.merkleProof(Digest.Sha256, 0)
-        });
-
-        // Ensure the credential signature is valid
-        const svcJson = signedVc.toJSON();
-        console.log("Verifiable Credential JSON", svcJson);
-        console.log("Verified (credential)", IssuerDoc.verifyData(signedVc));
-
-        // Check the validation status of the Verifiable Credential
-        const validation = await this.getClient().checkCredential(JSON.stringify(svcJson));
-        console.log("Credential Validation", validation.verified);
-
-        if (validation.verified && IssuerDoc.verifyData(signedVc)) {
-            return signedVc.toJSON();
-        } else {
-            return null;
-        }
     }
 
     /**

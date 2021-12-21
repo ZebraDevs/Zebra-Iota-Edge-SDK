@@ -233,3 +233,13 @@ export async function getMarkdownContent(url): Promise<any> {
 export function wait(milliseconds: number) {
     return new Promise(resolve => setTimeout(resolve, milliseconds));
 }
+
+export function generateRandomNumericString(charLength: number): string {
+    const alphabet = "0123456789";
+    let str = "";
+    for (let i = 0; i < charLength; i++) {
+        const chIdx = Math.floor(Math.random() * alphabet.length);
+        str += alphabet[chIdx];
+    }
+    return str;
+}

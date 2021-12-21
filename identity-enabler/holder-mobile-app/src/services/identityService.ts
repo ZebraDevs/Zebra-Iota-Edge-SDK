@@ -1,6 +1,6 @@
 import Keychain from "../lib/keychain";
 import { CredentialType, DIDMapping } from "../schemas";
-import { parse } from "../lib/helpers";
+import { generateRandomNumericString, parse } from "../lib/helpers";
 import type { InternalCredentialDataModel } from "../lib/store";
 import type { Identity, IdentityConfig, VerifiableCredentialEnrichment } from "../models/types/identity";
 import * as IotaIdentity from "@iota/identity-wasm/web";
@@ -141,17 +141,19 @@ export class IdentityService {
     }
 
     /**
-     * Creates credential
+     * Creates a signed credential
      *
-     * @method createSelfSignedCredential
+     * @method createSignedCredential
      *
+     * @param {string} subjectId
      * @param {Identity} issuer
      * @param {CredentialType} credentialType
      * @param {any} data
      *
      * @returns {Promise}
      */
-    async createSelfSignedCredential(
+    async createSignedCredential(
+        subjectId: string,
         issuer: Identity,
         credentialType: CredentialType,
         data: any
@@ -167,13 +169,13 @@ export class IdentityService {
 
         // Prepare a credential subject
         const credentialSubject = {
-            id: IssuerDidDoc.id.toString(),
+            id: subjectId,
             ...data
         };
 
         // Issue an unsigned credential
         const unsignedVc = VerifiableCredential.extend({
-            id: "http://example.com/credentials/3732",
+            id: `http://example.org/zebra-iota-sdk/${generateRandomNumericString(4)}`,
             type: credentialType,
             issuer: IssuerDidDoc.id.toString(),
             credentialSubject
@@ -189,12 +191,9 @@ export class IdentityService {
 
         // Ensure the credential signature is valid
         const svcJson = signedVc.toJSON();
-        console.log("Verifiable Credential JSON", svcJson);
-        console.log("Verified (credential)", IssuerDoc.verifyData(signedVc));
 
         // Check the validation status of the Verifiable Credential
         const validation = await this.getClient().checkCredential(JSON.stringify(svcJson));
-        console.log("Credential Validation", validation.verified);
 
         if (validation.verified && IssuerDoc.verifyData(signedVc)) {
             return signedVc.toJSON();
