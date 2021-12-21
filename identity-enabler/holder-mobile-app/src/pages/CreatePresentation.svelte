@@ -4,7 +4,7 @@
     import { ServiceFactory } from "../factories/serviceFactory";
     import { error } from "../lib/store";
     import FullScreenLoader from "../components/FullScreenLoader.svelte";
-    import Button from "../components/Button.svelte";
+    import { wait } from "../lib/helpers";
     import DevInfo from "./DevInfo.svelte";
     import PresentationJson from "./PresentationJSON.svelte";
     import { Plugins } from "@capacitor/core";
@@ -14,6 +14,8 @@
     let loading = true;
     let showJSON = false;
     let showTutorial = false;
+    let singleTapped = false;
+    const MAX_DOUBLE_TAP_DELAY = 500;
 
     const credential = window.history.state.credential;
     const identityService = ServiceFactory.get("identity");
@@ -78,8 +80,16 @@
         showTutorial = true;
     }
 
-    function onClickJSON() {
-        showJSON = true;
+    async function onClickDataMatrix() {
+        if (singleTapped) {
+            singleTapped = false;
+            showJSON = true;
+            return;
+        }
+
+        singleTapped = true;
+        await wait(MAX_DOUBLE_TAP_DELAY);
+        singleTapped = false;
     }
 
     onMount(() => App.addListener("backButton", goBack).remove);
@@ -112,7 +122,7 @@
             <p>{credential.enrichment.credentialLabel}</p>
         </header>
         <div class="presentation-wrapper">
-            <canvas id="presentation" />
+            <canvas id="presentation" on:click={onClickDataMatrix} />
         </div>
         <footer class="footerContainer">
             {#if credential.enrichment.credentialLabel === "Organisation ID"}
@@ -121,11 +131,6 @@
             {:else}
                 <p>Valid until {addDaysToDate(preparedCredentialDocument.issuanceDate, 30)}</p>
             {/if}
-            <Button
-                style="background: transparent; color: white; font-weight: 500; font-size: 1.7vh; line-height: 2.3vh; border: none; height:fit-content;"
-                label="VIEW IN JSON FORMAT"
-                onClick={onClickJSON}
-            />
         </footer>
     </div>
 </main>
