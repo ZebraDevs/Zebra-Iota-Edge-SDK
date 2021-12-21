@@ -117,7 +117,9 @@ export default {
         // The following modules use `this` at the top level and expect it
         // to be the global `window` object (runs in a browser), so we tell
         // Rollup to set `this = window` for these modules.
-        const thisAsWindowForModules = ["node_modules/@zxing/library/esm"];
+        const thisAsWindowForModules = [
+            path.normalize("node_modules/@zxing/library/esm")
+        ];
 
         if (thisAsWindowForModules.some(id_ => id.trimRight().includes(id_))) {
             return "window";
