@@ -1,4 +1,5 @@
 <script>
+    import { IOTA_IDENTITY_RESOLVER } from "../config";
     import { flattenObj } from "../lib/helpers";
 
     export let object;
@@ -8,7 +9,16 @@
     {#each Object.entries(flattenObj(object)) as entry}
         <li>
             <p>{entry[0].split(".").pop()}</p>
-            <span class="cut-text">{entry[1]}</span>
+            {#if entry[1]?.startsWith("did:iota:")}
+                <a
+                    class="cut-text"
+                    href={`${IOTA_IDENTITY_RESOLVER}/${entry[1]}`}
+                    target="_blank"
+                    title="View in IOTA Explorer">{entry[1]}</a
+                >
+            {:else}
+                <span class="cut-text">{entry[1]}</span>
+            {/if}
         </li>
     {/each}
 </ul>
@@ -48,7 +58,8 @@
         margin: 0.43vh 0;
     }
 
-    li > span {
+    li > span,
+    li > a {
         font-family: "Proxima Nova", sans-serif;
         font-weight: 600;
         font-size: 2vh;

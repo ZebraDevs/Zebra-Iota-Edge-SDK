@@ -17,3 +17,5 @@ export const TUTORIAL_BASE_URL = "https://jmcanterafonseca-iota.github.io/zebra-
 export const IDENTITY_WASM_PATH = "/wasm/identity_wasm_bg.wasm";
 
 export const BACK_BUTTON_EXIT_GRACE_PERIOD = 2000; // 2s is same duration as "short" Toast
+
+export const IOTA_IDENTITY_RESOLVER = "https://explorer.iota.org/mainnet/identity-resolver";
