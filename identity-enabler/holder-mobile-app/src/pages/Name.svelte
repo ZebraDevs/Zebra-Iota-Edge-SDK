@@ -68,7 +68,7 @@
                 <Header text="Set your name" />
             </div>
             <div>
-                <img src="/img/set-name.png" alt="set-name" />
+                <img src="/img/inspect.svg" alt="inspect" />
             </div>
             <div>
                 <TextField bind:value={name} placeholder="Your Name" />
