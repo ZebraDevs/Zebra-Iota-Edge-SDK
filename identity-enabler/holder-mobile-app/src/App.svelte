@@ -17,6 +17,7 @@
     import Keychain from "./lib/keychain";
     import { parse } from "./lib/helpers";
     import type { IdentityService } from "./services/identityService";
+    import InvalidCredential from "./pages/InvalidCredential.svelte";
 
     let url = window.location.pathname;
     let displayHome = false;
@@ -95,6 +96,7 @@
             <Route path="/scan" component={Scan} />
             <Route path="/devinfo" component={DevInfo} />
             <Route path="/createPresentation" component={CreatePresentation} />
+            <Route path="/invalid" component={InvalidCredential} />
         </div>
     </Router>
     <Modal>

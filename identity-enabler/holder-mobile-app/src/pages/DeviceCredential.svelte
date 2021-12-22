@@ -16,7 +16,7 @@
     let showTutorial = false;
     let loading = false;
 
-    const claims = window.history.state.claims;
+    const credentialSubject = window.history.state.credentialSubject;
 
     async function createCredential() {
         if (navigator.onLine === false) {
@@ -29,21 +29,14 @@
         error.set(null);
         try {
             const storedIdentity = await identityService.retrieveIdentity();
-            const payload = {
-                DeviceData: {
-                    "Device Name": claims.deviceName,
-                    Manufacturer: claims.manufacturer,
-                    "Serial Number": claims.uuid,
-                    "Operating System": claims.operatingSystem,
-                    Model: claims.model,
-                    "OS Version": claims.osVersion
-                }
-            };
+            const subjectId = credentialSubject.id;
+            const claims = {...credentialSubject};
+            delete claims.id;
             const newCredential = await identityService.createSignedCredential(
-                claims.id,
+                subjectId,
                 storedIdentity,
                 CredentialType.DEVICE_ID,
-                payload
+                claims
             );
             const credentialId = generateRandomId();
             const enrichment = identityService.enrichCredential({ ...newCredential });
@@ -93,11 +86,11 @@
                 <i on:click={onClickDev} class="icon-code" />
             </div>
             <header>
-                <p>Device {claims.deviceName} claims</p>
+                <p>Device claims</p>
             </header>
         </div>
         <section>
-            <ObjectList object={claims} />
+            <ObjectList object={credentialSubject} />
         </section>
         <footer>
             <Button label="Issue Device ID credential" onClick={createCredential} />

@@ -7,6 +7,7 @@
     import { ServiceFactory } from "../factories/serviceFactory";
     import FullScreenLoader from "../components/FullScreenLoader.svelte";
     import Button from "../components/Button.svelte";
+    import { showAlert } from "../lib/ui/helpers";
 
     const { Device } = Plugins;
 
@@ -14,19 +15,24 @@
     const name = window.history.state.name;
 
     let loading = false;
-    let deviceClaims = "";
 
     onMount(async () => {
         try {
             loading = true;
             const storedIdentity = await identityService.retrieveIdentity();
-            deviceClaims = await Device.getInfo();
-            deviceClaims = { deviceName: name, id: storedIdentity.doc.id, ...deviceClaims };
-            console.log("deviceClaims", deviceClaims);
-            deviceClaims = JSON.stringify(deviceClaims, null, 2);
-            await createMatrix(deviceClaims);
+            const deviceInfo = await Device.getInfo();
+            const credentialSubject = {
+                id: storedIdentity.doc.id,
+                deviceName: name,
+                manufacturer: deviceInfo.manufacturer,
+                model: deviceInfo.model,
+                operatingSystem: deviceInfo.operatingSystem,
+                osVersion: deviceInfo.osVersion
+            };
+            await createMatrix(JSON.stringify(credentialSubject));
             loading = false;
         } catch (err) {
+            await showAlert("Error", err.message);
             console.error(err);
             loading = false;
         }

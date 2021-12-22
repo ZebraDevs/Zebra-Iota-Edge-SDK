@@ -3,8 +3,6 @@
     import { fly } from "svelte/transition";
     import { Plugins } from "@capacitor/core";
     import { ServiceFactory } from "../factories/serviceFactory";
-    import { error } from "../lib/store";
-    import { parse } from "../lib/helpers";
     import { __ANDROID__ } from "../lib/platforms";
     import Scanner from "../components/Scanner.svelte";
     import InvalidCredential from "../components/InvalidCredential.svelte";
@@ -12,63 +10,82 @@
     import { BarcodeFormat, BrowserMultiFormatReader, DecodeHintType } from "@zxing/library";
     import type { IdentityService } from "../services/identityService";
     import { playAudio } from "../lib/ui/helpers";
+    import { onMount } from "svelte";
 
-    const { Toast } = Plugins;
+    // We delay playing the valid or invalid sound in order not to overlap
+    // with the scanning sound
+    const PLAY_DELAY = 400;
+    const { Toast, App } = Plugins;
     const formats = new Map().set(DecodeHintType.POSSIBLE_FORMATS, [BarcodeFormat.DATA_MATRIX, BarcodeFormat.QR_CODE]);
     const reader = new BrowserMultiFormatReader(formats);
 
     let VP;
-    let invalid = false;
+    let showInvalid = false;
+    let invalidMessage: string;
     let loading = false;
 
+    onMount(() => App.addListener("backButton", goBack).remove);
+
     async function handleScannerData(event) {
+        await playAudio("scanned");
+        loading = true;
         try {
-            await playAudio("scanned");
-
-            loading = true;
-            let parsedData = parse(event.detail);
-            VP = parsedData;
-
-            if (!VP) {
-                await playAudio("invalid");
-                return showAlert();
-            }
-
-            const identityService = ServiceFactory.get<IdentityService>("identity");
-            const verificationResult = await identityService.verifyVerifiablePresentation(VP);
-
-            if (verificationResult) {
-                await playAudio("valid");
-
-                showToast();
-                loading = false;
-                navigate("credential", { state: { credential: VP, save: true } });
-            } else {
-                await playAudio("invalid");
-
-                loading = false;
-                showAlert();
-                error.set("Invalid Data Matrix");
-            }
-        } catch (err) {
-            await playAudio("invalid");
-            console.error(err);
+            VP = JSON.parse(event.detail);
+        } catch (e) {
+            console.error(e);
+            setTimeout(async () => await playAudio("invalid"), PLAY_DELAY);
+            return showAlert("Invalid JSON");
         }
+
+        if (!VP) {
+            setTimeout(async () => await playAudio("invalid"), PLAY_DELAY);
+            return showAlert();
+        }
+
+        const identityService = ServiceFactory.get<IdentityService>("identity");
+        const identity = await identityService.retrieveIdentity();
+
+        const credentialSubjectId = VP.verifiableCredential?.credentialSubject?.id;
+        if (credentialSubjectId === undefined) {
+            await playAudio("invalid");
+            showAlert();
+            return;
+        }
+
+        const id = JSON.parse(identity.didDoc).id;
+        if (id !== credentialSubjectId) {
+            // check that this VP/VC is for the current device
+            await playAudio("invalid");
+            showAlert("Incorrect credential subject");
+            return;
+        }
+
+        const verificationResult = await identityService.verifyVerifiablePresentation(VP);
+
+        if (!verificationResult) {
+            await playAudio("invalid");
+            loading = false;
+            return showAlert();
+        }
+
+        await playAudio("valid");
+        showToast();
+        loading = false;
+        navigate("credential", { state: { credential: VP, save: true } });
     }
 
     // handles input button
     const imageSelected = e => {
         const image = e.currentTarget.files[0];
-
         const fr = new FileReader();
         fr.onload = (e: ProgressEvent<FileReader>) => {
             reader
                 .decodeFromImageUrl(e.target.result as string)
-                .then(result => {
-                    handleScannerData({ detail: result.getText() });
-                })
-                .catch(e => {
+                .then(result => handleScannerData({ detail: result.getText() }))
+                .catch(async e => {
                     console.error(e);
+                    await playAudio("invalid");
+                    showAlert("Failed to decode image");
                 });
         };
         fr.readAsDataURL(image);
@@ -81,12 +98,18 @@
         });
     }
 
-    function showAlert() {
-        invalid = true;
+    function showAlert(message = "Invalid credential") {
+        showInvalid = true;
+        invalidMessage = message;
         loading = false;
     }
 
     function goBack() {
+        if (showInvalid) {
+            showInvalid = false;
+            return;
+        }
+
         window.history.back();
     }
 </script>
@@ -96,11 +119,11 @@
         <FullScreenLoader label="Verifying Credential..." />
     {/if}
 
-    {#if invalid && !loading}
-        <InvalidCredential />
+    {#if showInvalid && !loading}
+        <InvalidCredential bind:showInvalid message={invalidMessage} />
     {/if}
 
-    {#if !invalid && !loading}
+    {#if !showInvalid && !loading}
         <header>
             <i on:click={goBack} class="icon-chevron" />
             <p>Scanner</p>
