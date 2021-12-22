@@ -114,9 +114,8 @@
                 id: credentialId,
                 enrichment
             };
-            console.log("new credential", credential);
             await updateStorage("credentials", { [credentialKey]: credential });
-            localCredentials.push(credential);
+            localCredentials = localCredentials.concat(credential);
             loadingScreen.set();
         } catch (err) {
             console.log(err);

@@ -77,7 +77,7 @@
         <div class="header">
             <i class="icon-credential credential-logo" />
             <header>
-                <span>Device {credential?.verifiableCredential?.credentialSubject?.DeviceData["Device Name"]}</span>
+                <span>Device {credential?.verifiableCredential?.credentialSubject?.deviceName}</span>
                 <p>{credential?.metaInformation?.issuer ?? "No issuer information"}</p>
             </header>
         </div>
