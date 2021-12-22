@@ -2,9 +2,7 @@
     import { Plugins } from "@capacitor/core";
     import { onMount } from "svelte";
     import { navigate } from "svelte-routing";
-    import Button from "../components/Button.svelte";
     import ListItem from "../components/ListItem.svelte";
-    import FullScreenLoader from "../components/FullScreenLoader.svelte";
     import DevInfo from "./DevInfo.svelte";
     import { getFromStorage, account, resetAllStores } from "../lib/store";
     import { ServiceFactory } from "../factories/serviceFactory";
@@ -16,7 +14,6 @@
 
     const { App, Toast, Modals } = Plugins;
 
-    let loading = false;
     let localCredentials = [];
     let exitOnBack = false;
 
@@ -88,11 +85,7 @@
         <DevInfo page="Identity" bind:showTutorial />
     {/if}
 
-    {#if loading}
-        <FullScreenLoader label="Loading Credential..." />
-    {/if}
-
-    {#if !loading && $account}
+    {#if $account}
         <header>
             <div class="options-wrapper">
                 <i on:click={onClickReset} class="icon-reset" />

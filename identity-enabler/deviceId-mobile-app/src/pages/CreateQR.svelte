@@ -5,7 +5,6 @@
     import { Plugins } from "@capacitor/core";
     import bwipjs from "bwip-js";
     import { ServiceFactory } from "../factories/serviceFactory";
-    import FullScreenLoader from "../components/FullScreenLoader.svelte";
     import Button from "../components/Button.svelte";
     import { showAlert } from "../lib/ui/helpers";
 
@@ -14,11 +13,10 @@
     const identityService = ServiceFactory.get("identity");
     const name = window.history.state.name;
 
-    let loading = false;
-
     onMount(async () => {
+        loadingScreen.set("Generating QR Code...");
+
         try {
-            loading = true;
             const storedIdentity = await identityService.retrieveIdentity();
             const deviceInfo = await Device.getInfo();
             const credentialSubject = {
@@ -30,12 +28,12 @@
                 osVersion: deviceInfo.osVersion
             };
             await createMatrix(JSON.stringify(credentialSubject));
-            loading = false;
         } catch (err) {
             await showAlert("Error", err.message);
             console.error(err);
-            loading = false;
         }
+
+        loadingScreen.set();
     });
 
     async function createMatrix(content) {
@@ -63,41 +61,29 @@
 </script>
 
 <main>
-    {#if loading}
-        <FullScreenLoader label="Creating QR Code..." />
-    {/if}
-
-    <div class={loading ? "wrapper mini" : "wrapper"} transition:fly={{ x: 500, duration: 500 }}>
-        {#if !loading}
-            <header>
-                <i on:click={goBack} class="icon-chevron" />
-                <p>Request Device DID credential</p>
-            </header>
-
-            <div class="subheader">
-                <p>Share device claims with the Organization ID holder app</p>
-            </div>
-        {/if}
-
+    <div class="wrapper" transition:fly={{ x: 500, duration: 500 }}>
+        <header>
+            <i on:click={goBack} class="icon-chevron" />
+            <p>Request Device DID credential</p>
+        </header>
+        <div class="subheader">
+            <p>Share device claims with the Organization ID holder app</p>
+        </div>
         <div class="qr-wrapper">
             <canvas id="device-claims" />
         </div>
-
-        {#if !loading}
-            <div class="info">
-                <pre>Scan this QR code with the Holder app
-                    to continue</pre>
-            </div>
-
-            <footer>
-                <Button
-                    style="height: 64px;"
-                    loadingText={"Generating identity"}
-                    label="Next"
-                    onClick={requestCredential}
-                />
-            </footer>
-        {/if}
+        <div class="info">
+            <pre>Scan this QR code with the Holder app
+                to continue</pre>
+        </div>
+        <footer>
+            <Button
+                style="height: 64px;"
+                loadingText={"Generating identity"}
+                label="Next"
+                onClick={requestCredential}
+            />
+        </footer>
     </div>
 </main>
 
@@ -137,11 +123,6 @@
         justify-content: center;
         width: 100%;
         margin: 7vh 0 9vh 0;
-    }
-
-    .mini {
-        width: 0px;
-        height: 0px;
     }
 
     .wrapper {

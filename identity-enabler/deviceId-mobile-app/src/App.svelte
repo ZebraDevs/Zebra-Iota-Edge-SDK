@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { Router, Route, navigate } from "svelte-routing";
+    import { Router, Route } from "svelte-routing";
     import { onMount } from "svelte";
     import Home from "./pages/Home.svelte";
     import { ServiceFactory } from "./factories/serviceFactory";
@@ -13,49 +13,16 @@
     import Modal from "./components/modal/Index.svelte";
     import Scan from "./pages/Scan.svelte";
     import RequestCredential from "./pages/RequestCredential.svelte";
-    import { hasSetupAccount } from "./lib/store";
+    import { hasSetupAccount, loadingScreen } from "./lib/store";
     import Keychain from "./lib/keychain";
     import { playAudio, showAlert } from "./lib/ui/helpers";
-    import { parse } from "./lib/helpers";
     import type { IdentityService } from "./services/identityService";
-    import { Toast } from "@capacitor/core";
+    import InvalidCredential from "./pages/InvalidCredential.svelte";
+    import FullScreenLoader from "./components/FullScreenLoader.svelte";
+    import { handleScannerData } from "./lib/scan";
 
     let url = window.location.pathname;
     let displayHome = false;
-
-    async function handleScannerData(text: string) {
-        let credential = parse(text);
-
-        if (!credential) {
-            await playAudio("invalid");
-
-            await showAlert("Error", "Invalid Credential Received");
-            return;
-        }
-
-        let verificationResult;
-        const identityService = ServiceFactory.get<IdentityService>("identity");
-        try {
-            verificationResult = await identityService.verifyVerifiablePresentation(credential);
-        } catch (error) {
-            await playAudio("invalid");
-            console.error(error);
-            return;
-        }
-
-        if (verificationResult) {
-            await playAudio("valid");
-
-            await Toast.show({
-                text: "Credential verified!",
-                position: "center"
-            });
-            navigate("/credential", { state: { credential, save: true } });
-        } else {
-            await playAudio("invalid");
-            await showAlert("Error", "Invalid Credential Received");
-        }
-    }
 
     /**
      * Function executed when a Zebra DataWedge scanning event happens
@@ -74,7 +41,8 @@
             await showAlert("Error", "You need Internet connectivity to verify your credential");
             return;
         }
-        await handleScannerData(decodedText);
+
+        await handleScannerData(decodedText, "DataWedge");
     }
 
     onMount(async () => {
@@ -95,6 +63,9 @@
 </script>
 
 <main>
+    {#if $loadingScreen}
+        <FullScreenLoader label={$loadingScreen} />
+    {/if}
     <Router {url}>
         <div>
             {#if !$hasSetupAccount}
@@ -111,6 +82,7 @@
             <Route path="/createQR" component={CreateQR} />
             <Route path="/scan" component={Scan} />
             <Route path="/createPresentation" component={CreatePresentation} />
+            <Route path="/invalid" component={InvalidCredential} />
         </div>
     </Router>
     <Modal>

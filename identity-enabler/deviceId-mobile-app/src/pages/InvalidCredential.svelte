@@ -1,9 +1,26 @@
-<script>
+<script lang="ts">
+    import { onMount } from "svelte";
     import { fly } from "svelte/transition";
     import Button from "../components/Button.svelte";
+    import { playAudio } from "../lib/ui/helpers";
 
-    export let showInvalid = false;
-    export let message = "Invalid credential";
+    const PLAY_DELAY = 400;
+
+    const message = window.history?.state?.message || "Invalid credential";
+    const scanSoundStart = window.history?.state?.scanSoundStart;
+    onMount(async () => {
+        // We wait a little bit in order not to overlap the different aural feedback
+        const delay = scanSoundStart ? PLAY_DELAY - (Date.now() - scanSoundStart) : PLAY_DELAY;
+        if (delay < 0) {
+            await playAudio("invalid");
+        } else {
+            setTimeout(async () => await playAudio("invalid"), delay);
+        }
+    });
+
+    function onDone() {
+        window.history.back();
+    }
 </script>
 
 <main transition:fly={{ y: 200, duration: 500 }}>
@@ -12,7 +29,7 @@
         <p>{message}</p>
     </section>
     <footer>
-        <Button label="Done" onClick={() => (showInvalid = false)} />
+        <Button label="Done" onClick={onDone} />
     </footer>
 </main>
 
@@ -52,6 +69,7 @@
 
     .icon-cross {
         font-size: 64px;
+        color: white;
     }
 
     footer {

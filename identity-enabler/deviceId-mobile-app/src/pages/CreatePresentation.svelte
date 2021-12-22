@@ -1,12 +1,11 @@
 <script>
     import { onMount } from "svelte";
     import bwipjs from "bwip-js";
-    import FullScreenLoader from "../components/FullScreenLoader.svelte";
     import { wait } from "../lib/helpers";
     import DevInfo from "./DevInfo.svelte";
     import PresentationJson from "./PresentationJSON.svelte";
+    import { loadingScreen } from "../lib/store";
 
-    let loading = true;
     let showJSON = false;
     let showTutorial = false;
     let singleTapped = false;
@@ -15,7 +14,7 @@
     const credential = window.history.state.credential;
 
     function createMatrix() {
-        loading = true;
+        loadingScreen.set("Generating DataMatrix...");
         try {
             // The return value is the canvas element
             bwipjs.toCanvas("presentation", {
@@ -28,7 +27,7 @@
         } catch (e) {
             console.error(e);
         }
-        loading = false;
+        loadingScreen.set();
     }
 
     const addDaysToDate = (date, days) => {
@@ -70,31 +69,24 @@
         <PresentationJson code={JSON.stringify(credential, null, 2)} bind:showJSON />
     {/if}
 
-    {#if loading}
-        <FullScreenLoader label="Creating Data Matrix..." />
-    {/if}
-    <div class={loading ? "wrapper mini" : "wrapper"}>
-        {#if !loading}
-            <div class="options-wrapper">
-                <i on:click={goBack} class="icon-chevron" />
-                <i on:click={onClickDev} class="icon-code" />
-            </div>
-            <div class="header">
-                <i class="icon-credential credential-logo" />
-                <header>
-                    <span>Device {credential?.verifiableCredential?.credentialSubject?.DeviceData["Device Name"]}</span>
-                    <p>{credential?.metaInformation?.issuer ?? "No issuer information"}</p>
-                </header>
-            </div>
-        {/if}
+    <div class="wrapper">
+        <div class="options-wrapper">
+            <i on:click={goBack} class="icon-chevron" />
+            <i on:click={onClickDev} class="icon-code" />
+        </div>
+        <div class="header">
+            <i class="icon-credential credential-logo" />
+            <header>
+                <span>Device {credential?.verifiableCredential?.credentialSubject?.DeviceData["Device Name"]}</span>
+                <p>{credential?.metaInformation?.issuer ?? "No issuer information"}</p>
+            </header>
+        </div>
         <div class="presentation-wrapper">
             <canvas id="presentation" on:click={onClickDataMatrix} />
         </div>
-        {#if !loading}
-            <footer class="footerContainer">
-                <p>Valid until {addDaysToDate(credential?.verifiableCredential?.issuanceDate, 30)}</p>
-            </footer>
-        {/if}
+        <footer class="footerContainer">
+            <p>Valid until {addDaysToDate(credential?.verifiableCredential?.issuanceDate, 30)}</p>
+        </footer>
     </div>
 </main>
 
@@ -113,11 +105,6 @@
         position: relative;
         width: 100%;
         z-index: 5;
-    }
-
-    .mini {
-        width: 0px;
-        height: 0px;
     }
 
     header > p {

@@ -68,27 +68,12 @@ export interface InternalCredentialDataModel {
     credentialDocument: any;
 }
 
-const errorInitialState = null;
-/**
- * Error string
- */
-export const error = writable<string>(errorInitialState);
-
-let errorTimeout: any;
-
-error.subscribe(item => {
-    clearTimeout(errorTimeout);
-    if (item) {
-        errorTimeout = setTimeout(() => {
-            error.set(null);
-        }, 3500);
-    }
-});
+export const loadingScreen = writable<string | void>();
 
 export function resetAllStores() {
     hasSetupAccount.set(hasSetupAccountInitialState);
     credentials.set(credentialsInitialState);
     account.set(accountInitialState);
     modalStatus.set(modalStatusInitialState);
-    error.set(errorInitialState);
+    loadingScreen.set();
 }
