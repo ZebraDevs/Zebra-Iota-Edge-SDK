@@ -1,7 +1,7 @@
 <script lang="ts">
-    import { Router, Route, navigate } from "svelte-routing";
+    import { Router, Route } from "svelte-routing";
     import { onMount } from "svelte";
-    import { playAudio, showAlert } from "./lib/ui/helpers";
+    import { showAlert } from "./lib/ui/helpers";
     import Home from "./pages/Home.svelte";
     import { ServiceFactory } from "./factories/serviceFactory";
     import CreatePresentation from "./pages/CreatePresentation.svelte";
@@ -15,34 +15,12 @@
     import Modal from "./components/modal/Index.svelte";
     import { hasSetupAccount } from "./lib/store";
     import Keychain from "./lib/keychain";
-    import { parse } from "./lib/helpers";
     import type { IdentityService } from "./services/identityService";
     import InvalidCredential from "./pages/InvalidCredential.svelte";
+    import { handleScannerData } from "./lib/scan";
 
     let url = window.location.pathname;
     let displayHome = false;
-
-    // We delay playing the valid or invalid sound in order not to overlap
-    // with the scanning sound
-    const PLAY_DELAY = 400;
-
-    async function handleScannerData(text: string) {
-        try {
-            const parsedData = parse(text);
-            const claims = parsedData;
-
-            if (claims) {
-                setTimeout(async () => await playAudio("valid"), PLAY_DELAY);
-                navigate("/devicecredential", { state: { claims: claims } });
-            } else {
-                setTimeout(async () => await playAudio("invalid"), PLAY_DELAY);
-                await showAlert("Error", "Invalid Claims");
-            }
-        } catch (err) {
-            setTimeout(async () => await playAudio("invalid"), PLAY_DELAY);
-            console.error(err);
-        }
-    }
 
     /**
      * Function executed when a Zebra DataWedge scanning event happens

@@ -4,7 +4,7 @@
     import { __ANDROID__ } from "../lib/platforms";
     import Scanner from "../components/Scanner.svelte";
     import { BarcodeFormat, BrowserMultiFormatReader, DecodeHintType } from "@zxing/library";
-    import { playAudio } from "../lib/ui/helpers";
+    import { handleScannerData } from "../lib/scan";
 
     const formats = new Map().set(DecodeHintType.POSSIBLE_FORMATS, [BarcodeFormat.DATA_MATRIX, BarcodeFormat.QR_CODE]);
     const reader = new BrowserMultiFormatReader(formats);
@@ -12,27 +12,6 @@
     // We delay playing the valid or invalid sound in order not to overlap
     // with the scanning sound
     const PLAY_DELAY = 400;
-
-    async function handleScannerData(event) {
-        await playAudio("scanned");
-        let credentialSubject;
-
-        try {
-            credentialSubject = JSON.parse(event.detail);
-        } catch (err) {
-            console.error(err);
-            navigate("/invalid", { state: { message: "Invalid JSON" } });
-            return;
-        }
-
-        if (typeof credentialSubject?.id !== "string" || !credentialSubject.id.startsWith("did:iota:")) {
-            navigate("/invalid", { state: { message: "Missing subject ID" } });
-            return;
-        }
-
-        setTimeout(async () => await playAudio("valid"), PLAY_DELAY);
-        navigate("/devicecredential", { state: { credentialSubject } });
-    }
 
     // handles input button
     const imageSelected = e => {
@@ -42,7 +21,7 @@
         fr.onload = (e: ProgressEvent<FileReader>) => {
             reader
                 .decodeFromImageUrl(e.target.result as string)
-                .then(result => handleScannerData({ detail: result.getText() }))
+                .then(result => handleScannerData(result.getText()))
                 .catch(e => {
                     console.error(e);
                     navigate("/invalid", { state: { message: "Failed to decode image" } });
@@ -67,7 +46,7 @@
             </label>
         </div>
     </header>
-    <Scanner on:message={handleScannerData} />
+    <Scanner on:message={ev => handleScannerData(ev.detail)} />
 </main>
 
 <style>

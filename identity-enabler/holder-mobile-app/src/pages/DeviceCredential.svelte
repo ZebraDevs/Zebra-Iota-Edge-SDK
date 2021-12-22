@@ -30,7 +30,7 @@
         try {
             const storedIdentity = await identityService.retrieveIdentity();
             const subjectId = credentialSubject.id;
-            const claims = {...credentialSubject};
+            const claims = { ...credentialSubject };
             delete claims.id;
             const newCredential = await identityService.createSignedCredential(
                 subjectId,
