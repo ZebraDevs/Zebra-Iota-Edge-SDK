@@ -4,6 +4,7 @@ import type { IdentityService } from "../services/identityService";
 import { loadingScreen } from "./store";
 import { playAudio } from "./ui/helpers";
 import { Plugins } from "@capacitor/core";
+import { wait } from "./helpers";
 
 /**
  * Handles data string captured by Camera, DataWedge or Image selection.
@@ -26,14 +27,12 @@ export async function handleScannerData(decodedText: string, method: "Camera" | 
         vp = JSON.parse(decodedText);
     } catch (e) {
         console.error(e);
-        loadingScreen.set();
-        navigate("/invalid", { state: { scanSoundStart, message: "Invalid JSON" } });
+        await handleError("Invalid JSON", scanSoundStart);
         return;
     }
 
     if (!vp) {
-        loadingScreen.set();
-        navigate("/invalid", { state: { scanSoundStart } });
+        await handleError("No data", scanSoundStart);
         return;
     }
 
@@ -42,16 +41,14 @@ export async function handleScannerData(decodedText: string, method: "Camera" | 
 
     const credentialSubjectId = vp.verifiableCredential?.credentialSubject?.id;
     if (credentialSubjectId === undefined) {
-        loadingScreen.set();
-        navigate("/invalid", { state: { scanSoundStart } });
+        await handleError("Missing credential subject", scanSoundStart);
         return;
     }
 
     const id = JSON.parse(identity.didDoc).id;
     if (id !== credentialSubjectId) {
         // check that this VP/VC is for the current device
-        loadingScreen.set();
-        navigate("/invalid", { state: { scanSoundStart, message: "Incorrect credential subject" } });
+        await handleError("Incorrect credential subject", scanSoundStart);
         return;
     }
 
@@ -59,8 +56,7 @@ export async function handleScannerData(decodedText: string, method: "Camera" | 
     const verificationResult = await identityService.verifyVerifiablePresentation(vp);
 
     if (!verificationResult) {
-        loadingScreen.set();
-        navigate("/invalid", { state: { scanSoundStart } });
+        await handleError("Invalid credential", scanSoundStart);
         return;
     }
 
@@ -71,4 +67,16 @@ export async function handleScannerData(decodedText: string, method: "Camera" | 
     });
     loadingScreen.set();
     navigate("credential", { state: { credential: vp, save: true } });
+}
+
+async function handleError(message: string, scanSoundStart?: number) {
+    loadingScreen.set();
+
+    if (window.location.pathname === "/invalid") {
+        // workaround to ensure InvalidCredentialPage remounts
+        window.history.back();
+        await wait(550);
+    }
+
+    navigate("/invalid", { state: { scanSoundStart, message } });
 }
