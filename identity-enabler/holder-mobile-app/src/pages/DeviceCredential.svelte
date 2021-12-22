@@ -1,11 +1,10 @@
 <script>
     import { navigate } from "svelte-routing";
-    import { error } from "../lib/store";
+    import { loadingScreen } from "../lib/store";
     import { CredentialType } from "../schemas";
     import { ServiceFactory } from "../factories/serviceFactory";
     import { generateRandomId } from "../lib/helpers";
     import { showAlert } from "../lib/ui/helpers";
-    import FullScreenLoader from "../components/FullScreenLoader.svelte";
     import Button from "../components/Button.svelte";
     import ObjectList from "../components/ObjectList.svelte";
     import DevInfo from "./DevInfo.svelte";
@@ -14,7 +13,6 @@
 
     const { App } = Plugins;
     let showTutorial = false;
-    let loading = false;
 
     const credentialSubject = window.history.state.credentialSubject;
 
@@ -24,9 +22,9 @@
             return;
         }
 
-        loading = true;
+        loadingScreen.set("Generating Credential...");
         const identityService = ServiceFactory.get("identity");
-        error.set(null);
+
         try {
             const storedIdentity = await identityService.retrieveIdentity();
             const subjectId = credentialSubject.id;
@@ -46,11 +44,11 @@
                 id: credentialId,
                 enrichment
             };
-            loading = false;
+            loadingScreen.set();
             navigate("/createPresentation", { state: { credential } });
         } catch (err) {
-            error.set("Error creating credential. Please try again.");
-            loading = false;
+            loadingScreen.set();
+            await showAlert("Error", "Error creating credential. Please try again.");
         }
     }
 
@@ -71,15 +69,11 @@
 </script>
 
 <main>
-    {#if loading}
-        <FullScreenLoader label="Loading Credential..." />
-    {/if}
-
-    {#if !loading && showTutorial}
+    {#if showTutorial}
         <DevInfo page="Credential" bind:showTutorial />
     {/if}
 
-    {#if !loading && !showTutorial}
+    {#if !showTutorial}
         <div class="header-wrapper">
             <div class="options-wrapper">
                 <i on:click={goBack} class="icon-chevron" />

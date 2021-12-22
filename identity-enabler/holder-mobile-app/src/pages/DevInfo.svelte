@@ -1,25 +1,24 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import FullScreenLoader from "../components/FullScreenLoader.svelte";
     import Markdown from "../components/Markdown.svelte";
     import { getMarkdownContent } from "../lib/helpers";
     import { TUTORIAL_BASE_URL } from "../config";
-    import { error } from "../lib/store";
+    import { loadingScreen } from "../lib/store";
+    import { showAlert } from "../lib/ui/helpers";
 
     export let page = "";
     export let showTutorial: boolean;
 
-    let loading = true;
     let code = "";
 
     onMount(async () => {
+        loadingScreen.set("Loading...");
         try {
             code = await getMarkdownContent(`${TUTORIAL_BASE_URL}/${page}.md`);
-            loading = false;
         } catch (err) {
-            error.set("Error getting markdown file. Please try again.");
-            loading = false;
+            await showAlert("Error", "Error getting tutorial. Please try again.");
         }
+        loadingScreen.set();
     });
 
     function onClose() {
@@ -28,32 +27,26 @@
 </script>
 
 <main>
-    {#if loading}
-        <FullScreenLoader label="Loading..." />
-    {/if}
-
-    {#if !loading}
-        <div class="header-wrapper">
-            <span>{page.toUpperCase()}</span>
-            <i on:click={onClose} class="icon-cross" />
+    <div class="header-wrapper">
+        <span>{page.toUpperCase()}</span>
+        <i on:click={onClose} class="icon-cross" />
+    </div>
+    <section>
+        <div class="box-wrapper">
+            <span style="font-weight: 600;"
+                >This app doesn’t support adding a new credential, but here’s how it works.</span
+            >
         </div>
-        <section>
-            <div class="box-wrapper">
-                <span style="font-weight: 600;"
-                    >This app doesn’t support adding a new credential, but here’s how it works.</span
-                >
-            </div>
-            <p>
-                In the IOTA Identity framework, we have implemented the DID standard according to the iota DID Method
-                Specification, which can be viewed here.
-                <br /><br />
-                An example of DID conforming to the IOTA method specification:
-            </p>
-            <div class="highlightjs-component">
-                <Markdown markdown={code} language="javascript" />
-            </div>
-        </section>
-    {/if}
+        <p>
+            In the IOTA Identity framework, we have implemented the DID standard according to the iota DID Method
+            Specification, which can be viewed here.
+            <br /><br />
+            An example of DID conforming to the IOTA method specification:
+        </p>
+        <div class="highlightjs-component">
+            <Markdown markdown={code} language="javascript" />
+        </div>
+    </section>
 </main>
 
 <style>

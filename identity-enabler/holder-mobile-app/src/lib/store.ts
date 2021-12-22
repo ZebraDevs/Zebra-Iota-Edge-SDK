@@ -117,22 +117,7 @@ storedCredentials.subscribe(value => {
     });
 });
 
-const errorInitialState = null;
-/**
- * Error string
- */
-export const error = writable<string>(errorInitialState);
-
-let errorTimeout: any;
-
-error.subscribe(item => {
-    clearTimeout(errorTimeout);
-    if (item) {
-        errorTimeout = setTimeout(() => {
-            error.set(null);
-        }, 3500);
-    }
-});
+export const loadingScreen = writable<string | void>();
 
 export function resetAllStores() {
     hasSetupAccount.set(hasSetupAccountInitialState);
@@ -142,5 +127,5 @@ export function resetAllStores() {
     modalStatus.set(modalStatusInitialState);
     landingIndex.set(landingIndexInitialState);
     storedCredentials.set(storedCredentialsInitialState);
-    error.set(errorInitialState);
+    loadingScreen.set();
 }

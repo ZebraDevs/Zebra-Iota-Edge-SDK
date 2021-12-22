@@ -13,11 +13,12 @@
     import Scan from "./pages/Scan.svelte";
     import Content from "./components/modal/Content.svelte";
     import Modal from "./components/modal/Index.svelte";
-    import { hasSetupAccount } from "./lib/store";
+    import { hasSetupAccount, loadingScreen } from "./lib/store";
     import Keychain from "./lib/keychain";
     import type { IdentityService } from "./services/identityService";
     import InvalidCredential from "./pages/InvalidCredential.svelte";
     import { handleScannerData } from "./lib/scan";
+    import FullScreenLoader from "./components/FullScreenLoader.svelte";
 
     let url = window.location.pathname;
     let displayHome = false;
@@ -38,7 +39,7 @@
             return;
         }
 
-        await handleScannerData(decodedText);
+        await handleScannerData(decodedText, "DataWedge");
     }
 
     onMount(async () => {
@@ -59,6 +60,9 @@
 </script>
 
 <main>
+    {#if $loadingScreen}
+        <FullScreenLoader label={$loadingScreen} />
+    {/if}
     <Router {url}>
         <div>
             {#if !$hasSetupAccount}

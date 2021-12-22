@@ -4,11 +4,19 @@
     import Button from "../components/Button.svelte";
     import { playAudio } from "../lib/ui/helpers";
 
-    const message = window.history?.state?.message;
-    const PLAY_DELAY = 500;
-    onMount(() => {
+    const PLAY_DELAY = 400;
+
+    const message = window.history?.state?.message || "Invalid credential";
+    const scanSoundStart = window.history?.state?.scanSoundStart;
+
+    onMount(async () => {
         // We wait a little bit in order not to overlap the different aural feedback
-        setTimeout(async () => await playAudio("invalid"), PLAY_DELAY);
+        const delay = scanSoundStart ? PLAY_DELAY - (Date.now() - scanSoundStart) : PLAY_DELAY;
+        if (delay < 0) {
+            await playAudio("invalid");
+        } else {
+            setTimeout(async () => await playAudio("invalid"), delay);
+        }
     });
 
     function onDone() {
@@ -19,7 +27,7 @@
 <main transition:fly={{ y: 200, duration: 500 }}>
     <section>
         <i class="icon-cross" />
-        <p>{message ?? "Invalid credential"}</p>
+        <p>{message}</p>
     </section>
     <footer>
         <Button label="Done" onClick={onDone} />

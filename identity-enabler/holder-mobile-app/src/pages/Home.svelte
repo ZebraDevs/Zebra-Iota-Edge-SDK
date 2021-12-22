@@ -5,12 +5,11 @@
     import { navigate } from "svelte-routing";
     import Button from "../components/Button.svelte";
     import ListItem from "../components/ListItem.svelte";
-    import FullScreenLoader from "../components/FullScreenLoader.svelte";
     import DevInfo from "./DevInfo.svelte";
     import { credentialPayload } from "../lib/credentialPayload";
     import { ServiceFactory } from "../factories/serviceFactory";
     import { CredentialType } from "../schemas";
-    import { updateStorage, getFromStorage, account, resetAllStores } from "../lib/store";
+    import { updateStorage, getFromStorage, account, resetAllStores, loadingScreen } from "../lib/store";
     import { getRandomUserData, generateRandomId, wait } from "../lib/helpers";
     import type { IdentityService } from "../services/identityService";
     import { showAlert } from "../lib/ui/helpers";
@@ -20,7 +19,6 @@
 
     const { App, Toast, Modals } = Plugins;
 
-    let loading = false;
     let localCredentials = [];
     let exitOnBack = false;
 
@@ -62,10 +60,8 @@
             return;
         }
 
-        if (loading) {
-            return;
-        }
-        loading = true;
+        loadingScreen.set("Generating Credential...");
+
         try {
             const identityService = ServiceFactory.get<IdentityService>("identity");
             const storedIdentity = await identityService.retrieveIdentity();
@@ -121,11 +117,10 @@
             console.log("new credential", credential);
             await updateStorage("credentials", { [credentialKey]: credential });
             localCredentials.push(credential);
-
-            loading = false;
+            loadingScreen.set();
         } catch (err) {
-            loading = false;
             console.log(err);
+            loadingScreen.set();
             await showAlert("Error", err.name);
         }
     }
@@ -166,11 +161,7 @@
         <DevInfo page="Identity" bind:showTutorial />
     {/if}
 
-    {#if loading}
-        <FullScreenLoader label="Loading Credential..." />
-    {/if}
-
-    {#if !loading && $account}
+    {#if $account}
         <header>
             <div class="options-wrapper">
                 <i on:click={onClickReset} class="icon-reset" />
