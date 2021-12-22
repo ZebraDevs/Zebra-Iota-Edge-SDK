@@ -36,15 +36,14 @@ export async function handleScannerData(decodedText: string, method: "Camera" | 
         return;
     }
 
-    const identityService = ServiceFactory.get<IdentityService>("identity");
-    const identity = await identityService.retrieveIdentity();
-
     const credentialSubjectId = vp.verifiableCredential?.credentialSubject?.id;
     if (credentialSubjectId === undefined) {
         await handleError("Missing credential subject", scanSoundStart);
         return;
     }
 
+    const identityService = ServiceFactory.get<IdentityService>("identity");
+    const identity = await identityService.retrieveIdentity();
     const id = JSON.parse(identity.didDoc).id;
     if (id !== credentialSubjectId) {
         // check that this VP/VC is for the current device
@@ -60,12 +59,12 @@ export async function handleScannerData(decodedText: string, method: "Camera" | 
         return;
     }
 
+    loadingScreen.set();
     await playAudio("valid");
     await Plugins.Toast.show({
         text: "Credential verified!",
         position: "center"
     });
-    loadingScreen.set();
     navigate("credential", { state: { credential: vp, save: true } });
 }
 

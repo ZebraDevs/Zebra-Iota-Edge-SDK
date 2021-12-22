@@ -38,8 +38,8 @@ export async function handleScannerData(decodedText: string, method: "Camera" | 
         return;
     }
 
-    setTimeout(async () => await playAudio("valid"), PLAY_DELAY);
     loadingScreen.set();
+    setTimeout(async () => await playAudio("valid"), PLAY_DELAY);
     navigate("/devicecredential", { state: { credentialSubject } });
 }
 
