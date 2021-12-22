@@ -7,6 +7,7 @@
     import { ServiceFactory } from "../factories/serviceFactory";
     import Button from "../components/Button.svelte";
     import { showAlert } from "../lib/ui/helpers";
+    import { loadingScreen } from "../lib/store";
 
     const { Device } = Plugins;
 
@@ -29,8 +30,8 @@
             };
             await createMatrix(JSON.stringify(credentialSubject));
         } catch (err) {
-            await showAlert("Error", err.message);
             console.error(err);
+            await showAlert("Error", err.message);
         }
 
         loadingScreen.set();
