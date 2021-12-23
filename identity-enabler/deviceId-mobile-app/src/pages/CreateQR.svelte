@@ -23,6 +23,7 @@
             const credentialSubject = {
                 id: storedIdentity.doc.id,
                 deviceName: name,
+                uuid: deviceInfo.uuid,
                 manufacturer: deviceInfo.manufacturer,
                 model: deviceInfo.model,
                 operatingSystem: deviceInfo.operatingSystem,
