@@ -13,9 +13,9 @@
     import Modal from "./components/modal/Index.svelte";
     import Scan from "./pages/Scan.svelte";
     import RequestCredential from "./pages/RequestCredential.svelte";
-    import { hasSetupAccount, loadingScreen } from "./lib/store";
+    import { credentials, hasSetupAccount, loadingScreen } from "./lib/store";
     import Keychain from "./lib/keychain";
-    import { playAudio, showAlert } from "./lib/ui/helpers";
+    import { showAlert } from "./lib/ui/helpers";
     import type { IdentityService } from "./services/identityService";
     import InvalidCredential from "./pages/InvalidCredential.svelte";
     import FullScreenLoader from "./components/FullScreenLoader.svelte";
@@ -30,15 +30,23 @@
      * @param decodedText The content supplied by DataWedge (Zebra Scanner)
      */
     async function onScan(decodedText: string) {
-        // If we are not expecting a credential we just ignore the event
-        if (!window.location.href.includes("requestcredential")) {
-            // We give feedback to the user telling scanning happing on the wrong page
-            await playAudio("invalid");
+        if (navigator.onLine === false) {
+            await showAlert("Error", "You need Internet connectivity to verify your credential");
             return;
         }
 
-        if (navigator.onLine === false) {
-            await showAlert("Error", "You need Internet connectivity to verify your credential");
+        if (!$hasSetupAccount) {
+            await showAlert("Error", "You need to create an IOTA Identity prior to requesting a credential");
+            return;
+        }
+
+        if ($credentials.device) {
+            await showAlert("Error", "You already have a credential");
+            return;
+        }
+
+        if (window.location.pathname === "/invalid") {
+            await showAlert("Error", "You are already handling a credential");
             return;
         }
 

@@ -5,43 +5,14 @@ import type { VerifiableCredentialEnrichment } from "../models/types/identity";
 
 init();
 
-export const updateStorage = async (key, value) => {
-    try {
-        let stored = {};
-        let updated = {};
-        if (localStorage.getItem(key)) {
-            stored = JSON.parse(await localStorage.getItem(key));
-            updated = { ...stored, ...value };
-        } else {
-            updated = [value];
-        }
-        await localStorage.setItem(key, JSON.stringify(updated));
-        return;
-    } catch (err) {
-        console.error(err);
-    }
-};
-
-export const getFromStorage = async key => {
-    try {
-        const json = localStorage.getItem(key);
-        if (json) {
-            return JSON.parse(json);
-        }
-        return null;
-    } catch (err) {
-        console.error(err);
-    }
-};
-
 const hasSetupAccountInitialState = false;
 /**
  * Determines if use has completed onboarding
  */
 export const hasSetupAccount = persistent<boolean>("hasSetupAccount", hasSetupAccountInitialState);
 
-const credentialsInitialState = { organization: "" };
-export const credentials = persistent<{ organization: string }>("credentials", credentialsInitialState);
+const credentialsInitialState = { device: "" };
+export const credentials = persistent<{ device: string }>("credentials", credentialsInitialState);
 
 const accountInitialState = null;
 export const account = persistent<{ name: string } | null>("account", accountInitialState);

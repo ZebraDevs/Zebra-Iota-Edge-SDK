@@ -4,7 +4,7 @@
     import { navigate } from "svelte-routing";
     import ListItem from "../components/ListItem.svelte";
     import DevInfo from "./DevInfo.svelte";
-    import { getFromStorage, account, resetAllStores } from "../lib/store";
+    import { account, resetAllStores, credentials } from "../lib/store";
     import { ServiceFactory } from "../factories/serviceFactory";
     import type { IdentityService } from "../services/identityService";
     import { wait } from "../lib/helpers";
@@ -18,13 +18,8 @@
     let exitOnBack = false;
 
     onMount(() => App.addListener("backButton", onBack).remove);
-    onMount(async () => {
-        try {
-            localCredentials = await getFromStorage("credentials");
-            localCredentials = Object.values(localCredentials)?.filter(data => data);
-        } catch (err) {
-            console.log(err);
-        }
+    onMount(() => {
+        localCredentials = Object.values($credentials)?.filter(data => data);
     });
 
     async function onBack() {

@@ -4,7 +4,6 @@ import type { IdentityService } from "../services/identityService";
 import { loadingScreen } from "./store";
 import { playAudio } from "./ui/helpers";
 import { Plugins } from "@capacitor/core";
-import { wait } from "./helpers";
 
 /**
  * Handles data string captured by Camera, DataWedge or Image selection.
@@ -75,12 +74,5 @@ export async function handleScannerData(decodedText: string, method: "Camera" | 
 
 async function handleError(message: string, scanSoundStart?: number) {
     loadingScreen.set();
-
-    if (window.location.pathname === "/invalid") {
-        // workaround to ensure InvalidCredentialPage remounts
-        window.history.back();
-        await wait(550);
-    }
-
     navigate("/invalid", { state: { scanSoundStart, message } });
 }

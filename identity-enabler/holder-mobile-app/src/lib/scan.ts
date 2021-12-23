@@ -1,5 +1,4 @@
 import { navigate } from "svelte-routing";
-import { wait } from "./helpers";
 import { loadingScreen } from "./store";
 import { playAudio } from "./ui/helpers";
 
@@ -50,12 +49,5 @@ export async function handleScannerData(decodedText: string, method: "Camera" | 
 
 async function handleError(message: string, scanSoundStart?: number) {
     loadingScreen.set();
-
-    if (window.location.pathname === "/invalid") {
-        // workaround to ensure InvalidCredentialPage remounts
-        window.history.back();
-        await wait(550);
-    }
-
     navigate("/invalid", { state: { scanSoundStart, message } });
 }

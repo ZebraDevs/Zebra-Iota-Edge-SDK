@@ -39,6 +39,11 @@
             return;
         }
 
+        if (window.location.pathname === "/invalid") {
+            await showAlert("Error", "You are already handling new claims");
+            return;
+        }
+
         await handleScannerData(decodedText, "DataWedge");
     }
 
