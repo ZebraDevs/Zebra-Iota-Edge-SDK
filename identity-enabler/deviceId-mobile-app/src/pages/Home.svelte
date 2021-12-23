@@ -92,13 +92,13 @@
             <p>Device {$account.name}</p>
         </name-wrapper>
         <section>
-            {#each localCredentials as credential}
+            {#each localCredentials as vp}
                 <div class="list">
                     <ListItem
                         icon="chip"
-                        onClick={() => navigate("credential", { state: { credential } })}
-                        heading={"IOTA"}
-                        subheading={credential.verifiableCredential.type[1]}
+                        onClick={() => navigate("/credential", { state: { vp } })}
+                        heading={vp.verifiableCredential.type[1]}
+                        subheading="Issued by {vp.verifiableCredential.issuer.name}"
                     />
                 </div>
             {/each}
@@ -109,7 +109,7 @@
                         iconColor="#78d64b"
                         onClick={createQR}
                         arrow={false}
-                        subheading="Request Device ID credential"
+                        heading="Request Device ID credential"
                     />
                 </div>
             {/if}

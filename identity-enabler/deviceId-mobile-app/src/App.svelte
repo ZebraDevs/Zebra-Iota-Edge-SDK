@@ -64,7 +64,6 @@
         const storedIdentity = await identityService.retrieveIdentity();
 
         if (storedIdentity) {
-            console.log("Found identity", storedIdentity);
             displayHome = true;
         }
     });

@@ -7,7 +7,7 @@
     import { loadingScreen } from "../lib/store";
     import { Plugins } from "@capacitor/core";
     import { showAlert } from "../lib/ui/helpers";
-    import { IOTA_IDENTITY_RESOLVER } from "../config";
+    import CredentialHeader from "../components/CredentialHeader.svelte";
 
     const { App } = Plugins;
     let showJSON = false;
@@ -15,13 +15,13 @@
     let singleTapped = false;
     const MAX_DOUBLE_TAP_DELAY = 500;
 
-    const credential = window.history.state.credential.verifiableCredential;
+    const vp = window.history.state.vp;
 
     function createMatrix() {
         // The return value is the canvas element
         bwipjs.toCanvas("presentation", {
             bcid: "datamatrix",
-            text: JSON.stringify(credential),
+            text: JSON.stringify(vp),
             scale: 3,
             padding: 20,
             backgroundcolor: "ffffff"
@@ -75,17 +75,13 @@
         await wait(MAX_DOUBLE_TAP_DELAY);
         singleTapped = false;
     }
-
-    function shortenDID(did: string): string {
-        return `${did.substring(0, 15)}...${did.substring(did.length - 6)}`;
-    }
 </script>
 
 <main>
     {#if showTutorial}
         <DevInfo page="Presentation" bind:showTutorial />
     {:else if showJSON}
-        <PresentationJson code={JSON.stringify(credential, null, 2)} bind:showJSON />
+        <PresentationJson code={JSON.stringify(vp, null, 2)} bind:showJSON />
     {/if}
 
     <header>
@@ -93,24 +89,7 @@
             <i on:click={goBack} class="icon-chevron" />
             <i on:click={onClickDev} class="icon-code" />
         </div>
-        <i class="icon-credential credential-logo" />
-        <p>{credential.type[1]}</p>
-        <div class="details">
-            <p>
-                <span
-                    >Subject: <a href="{IOTA_IDENTITY_RESOLVER}/{credential.credentialSubject.id}" target="_blank"
-                        >{shortenDID(credential.credentialSubject.id)}</a
-                    ></span
-                >
-            </p>
-            <p>
-                <span
-                    >Issuer: <a href="{IOTA_IDENTITY_RESOLVER}/{credential.issuer.id}" target="_blank"
-                        >{credential.issuer.name}</a
-                    ></span
-                >
-            </p>
-        </div>
+        <CredentialHeader credential={vp.verifiableCredential} hideDetails={true} color="white" />
     </header>
 
     <div class="presentation-wrapper">
@@ -118,7 +97,7 @@
     </div>
 
     <footer class="footerContainer">
-        <p>Valid until {addDaysToDate(credential.issuanceDate, 30)}</p>
+        <p>Valid until {addDaysToDate(vp.verifiableCredential.issuanceDate, 30)}</p>
     </footer>
 </main>
 
@@ -139,44 +118,11 @@
     }
 
     header {
-        margin-bottom: 0;
+        margin-bottom: 1.5rem;
         display: flex;
         flex-direction: column;
         align-items: stretch;
         text-align: center;
-    }
-
-    header > p {
-        font-family: "Proxima Nova", sans-serif;
-        font-weight: 700;
-        font-size: 1.25em;
-        color: #fff;
-        margin: 0;
-        padding: 0 2rem;
-    }
-
-    .details {
-        padding: 1rem 2rem;
-    }
-
-    .details > p {
-        font-family: "Proxima Nova", sans-serif;
-        color: #fff;
-        margin: 0.3rem 0;
-    }
-
-    .details a {
-        color: white;
-        font-weight: bold;
-    }
-
-    .details a:visited {
-        color: unset;
-    }
-
-    .credential-logo {
-        font-size: 64px;
-        color: white;
     }
 
     .presentation-wrapper {
