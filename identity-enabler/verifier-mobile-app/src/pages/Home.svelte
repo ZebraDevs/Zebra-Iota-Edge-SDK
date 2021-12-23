@@ -9,7 +9,7 @@
     import Button from "../components/Button.svelte";
     import ListItem from "../components/ListItem.svelte";
     import DevInfo from "./DevInfo.svelte";
-    import { showAlert } from "../lib/ui/helpers";
+    import { showAlert, shortenDID } from "../lib/ui/helpers";
     import { BACK_BUTTON_EXIT_GRACE_PERIOD } from "../config";
 
     const { App, Toast, Modals } = Plugins;
@@ -128,7 +128,8 @@
                             iconColor="#1e22aa"
                             onClick={() => onClickCredential(credential)}
                             heading={credential.type[1]}
-                            subheading="Issued by {credential.issuer.name}"
+                            subheading="Issued by {credential.issuer.name ??
+                                shortenDID(credential.issuer.id ?? credential.issuer)}"
                         />
                     </div>
                 {/each}

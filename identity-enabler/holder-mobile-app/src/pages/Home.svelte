@@ -12,7 +12,7 @@
     import { updateStorage, getFromStorage, account, resetAllStores, loadingScreen } from "../lib/store";
     import { getRandomUserData, wait } from "../lib/helpers";
     import type { IdentityService } from "../services/identityService";
-    import { showAlert } from "../lib/ui/helpers";
+    import { shortenDID, showAlert } from "../lib/ui/helpers";
     import { BACK_BUTTON_EXIT_GRACE_PERIOD } from "../config";
 
     let showTutorial = false;
@@ -170,7 +170,8 @@
                         icon="credential"
                         onClick={() => navigate("/credential", { state: { credential } })}
                         heading={credential.type[1]}
-                        subheading="Issued by {credential.issuer.name}"
+                        subheading="Issued by {credential.issuer.name ??
+                            shortenDID(credential.issuer.id ?? credential.issuer)}"
                     />
                 </div>
             {/each}

@@ -12,16 +12,17 @@
     <h2>{credential.type[1]}</h2>
     {#if !hideDetails}
         <p>
-            <span>Issued to </span>
-            <a href="{IOTA_IDENTITY_RESOLVER}/{credential.credentialSubject.id}" class="emphasis" target="_blank">
-                {shortenDID(credential.credentialSubject.id)}
-            </a>
-            <span> by </span>
-            <a href="{IOTA_IDENTITY_RESOLVER}/{credential.issuer.id}" class="emphasis" target="_blank"
-                >{credential.issuer.name}
+            <span>Issued by </span>
+            <a
+                href="{IOTA_IDENTITY_RESOLVER}/{credential.issuer.id ?? credential.issuer}"
+                class="emphasis"
+                target="_blank"
+                >{credential.issuer.name ?? shortenDID(credential.issuer.id ?? credential.issuer)}
             </a>
             <span> at </span>
-            <span class="emphasis">{new Date(credential.issuanceDate).toLocaleString([...window.navigator.languages])}</span>
+            <span class="emphasis"
+                >{new Date(credential.issuanceDate).toLocaleString([...window.navigator.languages])}</span
+            >
         </p>
     {/if}
 </div>
