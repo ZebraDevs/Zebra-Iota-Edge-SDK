@@ -1,10 +1,11 @@
 import Keychain from "../lib/keychain";
 import { CredentialType, DIDMapping } from "../schemas";
 import { generateRandomNumericString, parse } from "../lib/helpers";
-import type { InternalCredentialDataModel } from "../lib/store";
+import { account, InternalCredentialDataModel } from "../lib/store";
 import type { Identity, IdentityConfig, VerifiableCredentialEnrichment } from "../models/types/identity";
 import * as IotaIdentity from "@iota/identity-wasm/web";
 import { IDENTITY_WASM_PATH } from "../config";
+import { get } from "svelte/store";
 
 const {
     Client,
@@ -177,7 +178,10 @@ export class IdentityService {
         const unsignedVc = VerifiableCredential.extend({
             id: `http://example.org/zebra-iota-sdk/${generateRandomNumericString(4)}`,
             type: credentialType,
-            issuer: IssuerDidDoc.id.toString(),
+            issuer: {
+                id: IssuerDidDoc.id.toString(),
+                name: get(account).name
+            },
             credentialSubject
         });
 
@@ -295,7 +299,7 @@ export class IdentityService {
     }
 
     enrichCredential(credential: any): VerifiableCredentialEnrichment {
-        const override = DIDMapping[credential.issuer];
+        const override = DIDMapping[credential.issuer.id];
         const enrichment = {
             issuerLabel: override?.issuerLabel ?? "iota", // credential.issuer
             logo: override?.logo ?? "personal",

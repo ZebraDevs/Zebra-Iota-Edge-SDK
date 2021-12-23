@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import { onMount } from "svelte";
     import bwipjs from "bwip-js";
     import { ServiceFactory } from "../factories/serviceFactory";
@@ -8,6 +8,8 @@
     import PresentationJson from "./PresentationJSON.svelte";
     import { Plugins } from "@capacitor/core";
     import { showAlert } from "../lib/ui/helpers";
+    import { IOTA_IDENTITY_RESOLVER } from "../config";
+    import type { IdentityService } from "../services/identityService";
 
     const { App } = Plugins;
     let presentationJSON = "";
@@ -16,9 +18,9 @@
     let singleTapped = false;
     const MAX_DOUBLE_TAP_DELAY = 500;
 
-    const credential = window.history.state.credential;
-    const identityService = ServiceFactory.get("identity");
-    const preparedCredentialDocument = identityService.prepareCredentialForDisplay(credential.credentialDocument);
+    const credential = window.history.state.credential.credentialDocument;
+    const identityService = ServiceFactory.get<IdentityService>("identity");
+    const preparedCredentialDocument = identityService.prepareCredentialForDisplay(credential);
 
     function createMatrix(content) {
         try {
@@ -35,11 +37,10 @@
         }
     }
 
-    const addDaysToDate = (date, days) => {
-        let dateOptions = { year: "numeric", month: "long", day: "numeric" };
+    const addDaysToDate = (date: string, days: number) => {
         let res = new Date(date);
         res.setDate(res.getDate() + days);
-        return res.toLocaleDateString("en-US", dateOptions);
+        return res.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
     };
 
     onMount(async () => {
@@ -49,7 +50,7 @@
             const storedIdentity = await identityService.retrieveIdentity();
             const verifiablePresentation = await identityService.createVerifiablePresentation(
                 storedIdentity,
-                credential?.credentialDocument
+                credential
             );
             presentationJSON = JSON.stringify(verifiablePresentation, null, 2);
             createMatrix(JSON.stringify(verifiablePresentation));
@@ -91,6 +92,10 @@
     }
 
     onMount(() => App.addListener("backButton", goBack).remove);
+
+    function shortenDID(did: string): string {
+        return `${did.substring(0, 15)}...${did.substring(did.length - 6)}`;
+    }
 </script>
 
 <main>
@@ -100,33 +105,41 @@
         <PresentationJson code={presentationJSON} bind:showJSON />
     {/if}
 
-    <div class="wrapper">
+    <header>
         <div class="options-wrapper">
             <i on:click={goBack} class="icon-chevron" />
             <i on:click={onClickDev} class="icon-code" />
         </div>
-        <header>
-            {#if credential.enrichment.credentialLabel === "Organisation ID"}
-                <i class="icon-zebra credential-logo" />
-                <span>{credential.metaInformation.issuer.toUpperCase()}</span>
-            {:else}
-                <i class="icon-credential credential-logo" />
-                <span>{credential.enrichment.issuerLabel.toUpperCase()}</span>
-            {/if}
-            <p>{credential.enrichment.credentialLabel}</p>
-        </header>
-        <div class="presentation-wrapper">
-            <canvas id="presentation" on:click={onClickDataMatrix} />
+        <i class="icon-credential credential-logo" />
+        <p>{credential.type[1]}</p>
+        <div class="details">
+            <p>
+                <span
+                    >Subject: <a href="{IOTA_IDENTITY_RESOLVER}/{credential.credentialSubject.id}" target="_blank"
+                        >{shortenDID(credential.credentialSubject.id)}</a
+                    ></span
+                >
+            </p>
+            <p>
+                <span
+                    >Issuer: <a href="{IOTA_IDENTITY_RESOLVER}/{credential.issuer.id}" target="_blank"
+                        >{credential.issuer.name}</a
+                    ></span
+                >
+            </p>
         </div>
-        <footer class="footerContainer">
-            {#if credential.enrichment.credentialLabel === "Organisation ID"}
-                <span>Scan this Barcode with the Device ID app</span>
-                <p>Valid until {addDaysToDate(preparedCredentialDocument.issuanceDate, 30)}</p>
-            {:else}
-                <p>Valid until {addDaysToDate(preparedCredentialDocument.issuanceDate, 30)}</p>
-            {/if}
-        </footer>
+    </header>
+
+    <div class="presentation-wrapper">
+        <canvas id="presentation" on:click={onClickDataMatrix} />
     </div>
+
+    <footer class="footerContainer">
+        {#if credential.type[1] === "Device ID"}
+            <span>Scan this DataMatrix with the Device ID app</span>
+        {/if}
+        <p>Valid until {addDaysToDate(preparedCredentialDocument.issuanceDate, 30)}</p>
+    </footer>
 </main>
 
 <style>
@@ -146,75 +159,71 @@
     }
 
     header {
-        z-index: 1;
-        height: fit-content;
         margin-bottom: 0;
         display: flex;
         flex-direction: column;
-        align-items: center;
+        align-items: stretch;
+        text-align: center;
     }
 
     header > p {
-        margin: 1.5vh 0 6.2vh 0;
         font-family: "Proxima Nova", sans-serif;
         font-weight: 700;
-        font-size: 2.4vh;
-        line-height: 2.4vh;
+        font-size: 1.25em;
         color: #fff;
-        padding: 0;
+        margin: 0;
+        padding: 0 2rem;
     }
 
-    header > span {
+    .details {
+        padding: 1rem 2rem;
+    }
+
+    .details > p {
         font-family: "Proxima Nova", sans-serif;
-        font-weight: 600;
-        font-size: 1.4vh;
-        line-height: 1.8vh;
         color: #fff;
+        margin: 0.3rem 0;
     }
 
-    .wrapper {
-        text-align: center;
+    .details a {
+        color: white;
+        font-weight: bold;
+    }
+
+    .details a:visited {
+        color: unset;
     }
 
     .credential-logo {
         font-size: 64px;
-        margin-bottom: 1.5vh;
     }
 
     .presentation-wrapper {
-        height: fit-content;
-        position: relative;
         background: white;
         display: flex;
         flex-direction: row;
         align-items: center;
         justify-content: center;
-        width: 100%;
-        bottom: 1.5vh;
     }
 
-    @media (min-width: 640px) {
-        main {
-            max-width: none;
-        }
+    footer {
+        padding: 1.5rem;
+        text-align: center;
     }
 
     footer > p {
         color: #fff;
-        padding: 1vh 0 1vh 0;
         margin: 0;
         font-family: "Proxima Nova", sans-serif;
         font-weight: 500;
-        font-size: 2.9vh;
-        line-height: 3.5vh;
+        font-size: 1.2em;
     }
 
     footer > span {
         color: #fff;
-        margin-top: 5.4vh;
         font-family: "Proxima Nova", sans-serif;
         font-weight: 500;
-        font-size: 1.7vh;
+        font-size: 1em;
     }
 
     .options-wrapper {
@@ -223,12 +232,5 @@
         justify-content: space-between;
         margin: 3.5vh 3.5vh 0 3.5vh;
         position: relative;
-        z-index: 2;
-    }
-
-    .footerContainer {
-        position: fixed;
-        text-align: center;
-        width: 100%;
     }
 </style>
