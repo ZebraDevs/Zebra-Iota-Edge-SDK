@@ -1,9 +1,6 @@
 import { writable } from "svelte/store";
 import { persistent } from "./helpers";
-import init from "./init";
 import type { VerifiableCredentialEnrichment } from "../models/types/identity";
-
-init();
 
 const hasSetupAccountInitialState = false;
 /**

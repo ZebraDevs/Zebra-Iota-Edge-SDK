@@ -1,11 +1,9 @@
 import { writable } from "svelte/store";
 import { persistent } from "./helpers";
-import init from "./init";
 import { ServiceFactory } from "../factories/serviceFactory";
 import type { VerifiableCredentialEnrichment } from "../models/types/identity";
 import type { IdentityService } from "../services/identityService";
 
-init();
 const identityService = ServiceFactory.get<IdentityService>("identity");
 
 export const updateStorage = async (key, value) => {
