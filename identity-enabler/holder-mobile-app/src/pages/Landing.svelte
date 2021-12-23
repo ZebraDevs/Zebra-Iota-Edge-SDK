@@ -32,7 +32,7 @@
         {
             header: "You control access to your credentials",
             content:
-                "AppX is all about controlling your personal, organizational and supply chain credentials. You decide who to share them with.",
+                "AppX is all about controlling your credentials. You decide who to share them with.",
             footer: "Next",
             image: "folder.svg"
         }
