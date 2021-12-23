@@ -198,34 +198,6 @@ export class IdentityService {
     }
 
     /**
-     * Remove credential from keychain
-     *
-     * @method removeCredential
-     *
-     * @param {string} credentialId
-     *
-     * @returns {Promise}
-     */
-    removeCredential(credentialId: string): Promise<{ value: boolean }> {
-        return Keychain.remove(credentialId);
-    }
-
-    /**
-     * Retrieves credential from keychain
-     *
-     * @method retrieveCredential
-     *
-     * @param {string} credentialId
-     *
-     * @returns {Promise}
-     */
-    retrieveCredential(credentialId: string): Promise<IotaIdentity.VerifiableCredential> {
-        return Keychain.get(credentialId)
-            .then(async data => parse(data.value))
-            .catch(() => null);
-    }
-
-    /**
      * Creates verifiable presentations for provided schema names
      *
      * @method createVerifiablePresentations

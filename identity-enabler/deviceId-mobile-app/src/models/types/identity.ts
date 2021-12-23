@@ -15,10 +15,3 @@ export type IdentityConfig = {
     network: string;
     permanode?: string;
 };
-
-export type VerifiableCredentialEnrichment = {
-    issuerLabel: string;
-    logo: string;
-    credentialLabel: string;
-    theme: string;
-};

@@ -1,6 +1,5 @@
 import { writable } from "svelte/store";
 import { persistent } from "./helpers";
-import type { VerifiableCredentialEnrichment } from "../models/types/identity";
 
 export const updateStorage = async (key, value) => {
     try {
@@ -38,16 +37,6 @@ export const credentials = persistent<{ personal: string; health: string; blood:
 });
 
 export const loadingScreen = writable<string | void>();
-
-export interface InternalCredentialDataModel {
-    id: string;
-    metaInformation: {
-        issuer: string;
-        receivedAt: string;
-    };
-    enrichment: VerifiableCredentialEnrichment | null;
-    credentialDocument: any;
-}
 
 /**
  * Error string

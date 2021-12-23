@@ -1,8 +1,6 @@
 import Keychain from "../lib/keychain";
-import { DIDMapping } from "../schemas";
 import { parse } from "../lib/helpers";
-import type { InternalCredentialDataModel } from "../lib/store";
-import type { Identity, IdentityConfig, VerifiableCredentialEnrichment } from "../models/types/identity";
+import type { Identity, IdentityConfig } from "../models/types/identity";
 import * as IotaIdentity from "@iota/identity-wasm/web";
 import { IDENTITY_WASM_PATH } from "../config";
 
@@ -130,57 +128,6 @@ export class IdentityService {
         }
     }
 
-    retrieveCredentials(ids: string[]): Promise<InternalCredentialDataModel[]> {
-        return Promise.all(ids.map(id => Keychain.get(id)))
-            .then(data => data.map(entry => parse(entry.value)))
-            .catch(e => {
-                console.error(e);
-                return [];
-            });
-    }
-
-    /**
-     * Stores credential in keychain
-     *
-     * @method storeCredential
-     *
-     * @param {string} credentialId
-     * @param {VerifiableCredentialDataModel} credential
-     *
-     * @returns {Promise}
-     */
-    storeCredential(credentialId: string, credential: InternalCredentialDataModel): Promise<{ value: boolean }> {
-        return Keychain.set(credentialId, JSON.stringify(credential));
-    }
-
-    /**
-     * Remove credential from keychain
-     *
-     * @method removeCredential
-     *
-     * @param {string} credentialId
-     *
-     * @returns {Promise}
-     */
-    removeCredential(credentialId: string): Promise<{ value: boolean }> {
-        return Keychain.remove(credentialId);
-    }
-
-    /**
-     * Retrieves credential from keychain
-     *
-     * @method retrieveCredential
-     *
-     * @param {string} credentialId
-     *
-     * @returns {Promise}
-     */
-    retrieveCredential(credentialId: string): Promise<IotaIdentity.VerifiableCredential> {
-        return Keychain.get(credentialId)
-            .then(async data => parse(data.value))
-            .catch(() => null);
-    }
-
     /**
      * Creates verifiable presentations for provided schema names
      *
@@ -229,17 +176,6 @@ export class IdentityService {
             console.error("Error during VP Check: " + err);
             return false;
         }
-    }
-
-    enrichCredential(credential: any): VerifiableCredentialEnrichment {
-        const override = DIDMapping[credential.issuer];
-        const enrichment = {
-            issuerLabel: override?.issuerLabel ?? "iota", // credential.issuer
-            logo: override?.logo ?? "personal",
-            credentialLabel: credential?.type?.[1],
-            theme: override?.theme ?? "#550000"
-        };
-        return enrichment;
     }
 
     prepareCredentialForDisplay(credential: any): any {
