@@ -67,7 +67,7 @@
             <ObjectList object={credential.credentialSubject} />
         </section>
         <footer>
-            <Button label="Done" onClick={() => navigate("/home")} />
+            <Button label="Done" onClick={onDone} />
         </footer>
     {/if}
 </main>
@@ -92,10 +92,6 @@
         background-color: #6165e3;
     }
 
-    header > i {
-        font-size: 64px;
-    }
-
     .header-wrapper.expired {
         background-color: black;
     }
@@ -106,15 +102,6 @@
         z-index: 1;
         height: fit-content;
         margin-bottom: 0;
-    }
-
-    header > p {
-        font-family: "Proxima Nova", sans-serif;
-        font-weight: 600;
-        font-size: 1.9vh;
-        line-height: 3.4vh;
-        color: #fff;
-        margin: 0;
     }
 
     section {
