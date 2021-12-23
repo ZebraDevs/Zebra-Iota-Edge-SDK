@@ -23,18 +23,14 @@
     const preparedCredentialDocument = identityService.prepareCredentialForDisplay(credential);
 
     function createMatrix(content) {
-        try {
-            // The return value is the canvas element
-            bwipjs.toCanvas("presentation", {
-                bcid: "datamatrix",
-                text: content,
-                scale: 3,
-                padding: 20,
-                backgroundcolor: "ffffff"
-            });
-        } catch (e) {
-            console.error(e);
-        }
+        // The return value is the canvas element
+        bwipjs.toCanvas("presentation", {
+            bcid: "datamatrix",
+            text: content,
+            scale: 3,
+            padding: 20,
+            backgroundcolor: "ffffff"
+        });
     }
 
     const addDaysToDate = (date: string, days: number) => {
@@ -43,6 +39,7 @@
         return res.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
     };
 
+    onMount(() => App.addListener("backButton", goBack).remove);
     onMount(async () => {
         loadingScreen.set("Generating DataMatrix...");
 
@@ -55,6 +52,7 @@
             presentationJSON = JSON.stringify(verifiablePresentation, null, 2);
             createMatrix(JSON.stringify(verifiablePresentation));
         } catch (err) {
+            console.error(err);
             await showAlert("Error", "Error creating DataMatrix. Please try again.");
         }
 
@@ -90,8 +88,6 @@
         await wait(MAX_DOUBLE_TAP_DELAY);
         singleTapped = false;
     }
-
-    onMount(() => App.addListener("backButton", goBack).remove);
 
     function shortenDID(did: string): string {
         return `${did.substring(0, 15)}...${did.substring(did.length - 6)}`;
