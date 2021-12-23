@@ -8,8 +8,8 @@
     import PresentationJson from "./PresentationJSON.svelte";
     import { Plugins } from "@capacitor/core";
     import { showAlert } from "../lib/ui/helpers";
-    import { IOTA_IDENTITY_RESOLVER } from "../config";
     import type { IdentityService } from "../services/identityService";
+    import CredentialHeader from "../components/CredentialHeader.svelte";
 
     const { App } = Plugins;
     let presentationJSON = "";
@@ -18,9 +18,8 @@
     let singleTapped = false;
     const MAX_DOUBLE_TAP_DELAY = 500;
 
-    const credential = window.history.state.credential.credentialDocument;
+    const credential = window.history.state.credential;
     const identityService = ServiceFactory.get<IdentityService>("identity");
-    const preparedCredentialDocument = identityService.prepareCredentialForDisplay(credential);
 
     function createMatrix(content) {
         // The return value is the canvas element
@@ -88,10 +87,6 @@
         await wait(MAX_DOUBLE_TAP_DELAY);
         singleTapped = false;
     }
-
-    function shortenDID(did: string): string {
-        return `${did.substring(0, 15)}...${did.substring(did.length - 6)}`;
-    }
 </script>
 
 <main>
@@ -106,24 +101,7 @@
             <i on:click={goBack} class="icon-chevron" />
             <i on:click={onClickDev} class="icon-code" />
         </div>
-        <i class="icon-credential credential-logo" />
-        <p>{credential.type[1]}</p>
-        <div class="details">
-            <p>
-                <span
-                    >Subject: <a href="{IOTA_IDENTITY_RESOLVER}/{credential.credentialSubject.id}" target="_blank"
-                        >{shortenDID(credential.credentialSubject.id)}</a
-                    ></span
-                >
-            </p>
-            <p>
-                <span
-                    >Issuer: <a href="{IOTA_IDENTITY_RESOLVER}/{credential.issuer.id}" target="_blank"
-                        >{credential.issuer.name}</a
-                    ></span
-                >
-            </p>
-        </div>
+        <CredentialHeader {credential} hideDetails={true} />
     </header>
 
     <div class="presentation-wrapper">
@@ -131,10 +109,10 @@
     </div>
 
     <footer class="footerContainer">
+        <p>Valid until {addDaysToDate(credential.issuanceDate, 30)}</p>
         {#if credential.type[1] === "Device ID"}
-            <span>Scan this DataMatrix with the Device ID app</span>
+            <p style="font-size: smaller;">Scan this DataMatrix with the Device ID app</p>
         {/if}
-        <p>Valid until {addDaysToDate(preparedCredentialDocument.issuanceDate, 30)}</p>
     </footer>
 </main>
 
@@ -155,43 +133,11 @@
     }
 
     header {
-        margin-bottom: 0;
+        margin-bottom: 1.5rem;
         display: flex;
         flex-direction: column;
         align-items: stretch;
         text-align: center;
-    }
-
-    header > p {
-        font-family: "Proxima Nova", sans-serif;
-        font-weight: 700;
-        font-size: 1.25em;
-        color: #fff;
-        margin: 0;
-        padding: 0 2rem;
-    }
-
-    .details {
-        padding: 1rem 2rem;
-    }
-
-    .details > p {
-        font-family: "Proxima Nova", sans-serif;
-        color: #fff;
-        margin: 0.3rem 0;
-    }
-
-    .details a {
-        color: white;
-        font-weight: bold;
-    }
-
-    .details a:visited {
-        color: unset;
-    }
-
-    .credential-logo {
-        font-size: 64px;
     }
 
     .presentation-wrapper {
@@ -209,17 +155,9 @@
 
     footer > p {
         color: #fff;
-        margin: 0;
         font-family: "Proxima Nova", sans-serif;
         font-weight: 500;
         font-size: 1.2em;
-    }
-
-    footer > span {
-        color: #fff;
-        font-family: "Proxima Nova", sans-serif;
-        font-weight: 500;
-        font-size: 1em;
     }
 
     .options-wrapper {

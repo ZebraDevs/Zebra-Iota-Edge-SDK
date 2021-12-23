@@ -10,7 +10,7 @@
     import { ServiceFactory } from "../factories/serviceFactory";
     import { CredentialType } from "../schemas";
     import { updateStorage, getFromStorage, account, resetAllStores, loadingScreen } from "../lib/store";
-    import { getRandomUserData, generateRandomId, wait } from "../lib/helpers";
+    import { getRandomUserData, wait } from "../lib/helpers";
     import type { IdentityService } from "../services/identityService";
     import { showAlert } from "../lib/ui/helpers";
     import { BACK_BUTTON_EXIT_GRACE_PERIOD } from "../config";
@@ -28,7 +28,7 @@
             const creds = await getFromStorage("credentials");
             localCredentials = Object.values(creds)?.filter(data => data) ?? [];
         } catch (err) {
-            console.log(err);
+            console.error(err);
         }
     });
 
@@ -100,25 +100,17 @@
                     };
             }
 
-            const newCredential = await identityService.createSignedCredential(
+            const credential = await identityService.createSignedCredential(
                 JSON.parse(storedIdentity.didDoc).id,
                 storedIdentity,
                 schema,
                 payload
             );
-            const credentialId = generateRandomId();
-            const enrichment = identityService.enrichCredential({ ...newCredential });
-            const credential = {
-                credentialDocument: { ...newCredential },
-                metaInformation: { issuer: "iota" },
-                id: credentialId,
-                enrichment
-            };
             await updateStorage("credentials", { [credentialKey]: credential });
             localCredentials = localCredentials.concat(credential);
             loadingScreen.set();
         } catch (err) {
-            console.log(err);
+            console.error(err);
             loadingScreen.set();
             await showAlert("Error", err.name);
         }
@@ -176,9 +168,9 @@
                 <div transition:slide class="list">
                     <ListItem
                         icon="credential"
-                        onClick={() => navigate("credential", { state: { credential } })}
-                        heading={credential.enrichment ? credential.enrichment.issuerLabel : ""}
-                        subheading={credential.enrichment ? credential.enrichment.credentialLabel : ""}
+                        onClick={() => navigate("/credential", { state: { credential } })}
+                        heading={credential.type[1]}
+                        subheading="Issued by {credential.issuer.name}"
                     />
                 </div>
             {/each}
@@ -189,7 +181,7 @@
                         iconColor="#00a7ff"
                         arrow={false}
                         onClick={generateCredential}
-                        subheading="Add new credential"
+                        heading="Add new credential"
                     />
                 </div>
             {/if}

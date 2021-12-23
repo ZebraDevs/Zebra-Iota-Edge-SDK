@@ -21,7 +21,7 @@
             const storedIdentity = await identityService.retrieveIdentity();
             const verifiablePresentation = await identityService.createVerifiablePresentation(
                 storedIdentity,
-                credential?.credentialDocument
+                credential
             );
             const presentationJSON = JSON.stringify(verifiablePresentation, null, 2);
 
@@ -30,7 +30,7 @@
                 text: presentationJSON
             });
         } catch (error) {
-            console.log("Error sharing: " + error);
+            console.error("Error sharing: " + error);
             return;
         }
     }

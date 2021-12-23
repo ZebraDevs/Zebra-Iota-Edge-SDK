@@ -1,4 +1,3 @@
-import { v4 as uuidv4 } from "uuid";
 import { writable, Writable } from "svelte/store";
 import { RANDOM_USER_DATA_API_URL } from "../config";
 
@@ -185,10 +184,6 @@ export function persistent<T>(key: string, initialValue: T, saveTransformation?:
     });
 
     return state;
-}
-
-export function generateRandomId(): string {
-    return uuidv4();
 }
 
 export function flattenObj(ob) {
