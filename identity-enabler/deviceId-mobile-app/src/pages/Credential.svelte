@@ -3,7 +3,7 @@
     import { onMount } from "svelte";
     import { navigate } from "svelte-routing";
     import { fly } from "svelte/transition";
-    import { updateStorage, modalStatus } from "../lib/store";
+    import { modalStatus, credentials } from "../lib/store";
     import Button from "../components/Button.svelte";
     import ObjectList from "../components/ObjectList.svelte";
     import DevInfo from "./DevInfo.svelte";
@@ -25,8 +25,9 @@
     }
 
     async function onSaveCredential() {
-        await updateStorage("credentials", {
-            [credential.verifiableCredential.type[1].split(/\b/)[0].toLowerCase()]: credential
+        credentials.update(creds => {
+            creds[credential.verifiableCredential.type[1].split(/\b/)[0].toLowerCase()] = credential;
+            return creds;
         });
         navigate("/home");
     }

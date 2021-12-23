@@ -5,31 +5,37 @@
     import { Plugins } from "@capacitor/core";
     import bwipjs from "bwip-js";
     import { ServiceFactory } from "../factories/serviceFactory";
-    import FullScreenLoader from "../components/FullScreenLoader.svelte";
     import Button from "../components/Button.svelte";
+    import { showAlert } from "../lib/ui/helpers";
+    import { loadingScreen } from "../lib/store";
 
     const { Device } = Plugins;
 
     const identityService = ServiceFactory.get("identity");
     const name = window.history.state.name;
 
-    let loading = false;
-    let deviceClaims = "";
-
     onMount(async () => {
+        loadingScreen.set("Generating QR Code...");
+
         try {
-            loading = true;
             const storedIdentity = await identityService.retrieveIdentity();
-            deviceClaims = await Device.getInfo();
-            deviceClaims = { deviceName: name, id: storedIdentity.doc.id, ...deviceClaims };
-            console.log("deviceClaims", deviceClaims);
-            deviceClaims = JSON.stringify(deviceClaims, null, 2);
-            await createMatrix(deviceClaims);
-            loading = false;
+            const deviceInfo = await Device.getInfo();
+            const credentialSubject = {
+                id: storedIdentity.doc.id,
+                deviceName: name,
+                uuid: deviceInfo.uuid,
+                manufacturer: deviceInfo.manufacturer,
+                model: deviceInfo.model,
+                operatingSystem: deviceInfo.operatingSystem,
+                osVersion: deviceInfo.osVersion
+            };
+            await createMatrix(JSON.stringify(credentialSubject));
         } catch (err) {
             console.error(err);
-            loading = false;
+            await showAlert("Error", err.message);
         }
+
+        loadingScreen.set();
     });
 
     async function createMatrix(content) {
@@ -57,41 +63,29 @@
 </script>
 
 <main>
-    {#if loading}
-        <FullScreenLoader label="Creating QR Code..." />
-    {/if}
-
-    <div class={loading ? "wrapper mini" : "wrapper"} transition:fly={{ x: 500, duration: 500 }}>
-        {#if !loading}
-            <header>
-                <i on:click={goBack} class="icon-chevron" />
-                <p>Request Device DID credential</p>
-            </header>
-
-            <div class="subheader">
-                <p>Share device claims with the Organization ID holder app</p>
-            </div>
-        {/if}
-
+    <div class="wrapper" transition:fly={{ x: 500, duration: 500 }}>
+        <header>
+            <i on:click={goBack} class="icon-chevron" />
+            <p>Request Device DID credential</p>
+        </header>
+        <div class="subheader">
+            <p>Share device claims with the Organization ID holder app</p>
+        </div>
         <div class="qr-wrapper">
             <canvas id="device-claims" />
         </div>
-
-        {#if !loading}
-            <div class="info">
-                <pre>Scan this QR code with the Holder app
-                    to continue</pre>
-            </div>
-
-            <footer>
-                <Button
-                    style="height: 64px;"
-                    loadingText={"Generating identity"}
-                    label="Next"
-                    onClick={requestCredential}
-                />
-            </footer>
-        {/if}
+        <div class="info">
+            <pre>Scan this QR code with the Holder app
+                to continue</pre>
+        </div>
+        <footer>
+            <Button
+                style="height: 64px;"
+                loadingText={"Generating identity"}
+                label="Next"
+                onClick={requestCredential}
+            />
+        </footer>
     </div>
 </main>
 
@@ -131,11 +125,6 @@
         justify-content: center;
         width: 100%;
         margin: 7vh 0 9vh 0;
-    }
-
-    .mini {
-        width: 0px;
-        height: 0px;
     }
 
     .wrapper {

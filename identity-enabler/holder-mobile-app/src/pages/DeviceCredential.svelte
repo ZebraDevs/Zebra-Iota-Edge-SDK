@@ -1,11 +1,10 @@
 <script>
     import { navigate } from "svelte-routing";
-    import { error } from "../lib/store";
+    import { loadingScreen } from "../lib/store";
     import { CredentialType } from "../schemas";
     import { ServiceFactory } from "../factories/serviceFactory";
     import { generateRandomId } from "../lib/helpers";
     import { showAlert } from "../lib/ui/helpers";
-    import FullScreenLoader from "../components/FullScreenLoader.svelte";
     import Button from "../components/Button.svelte";
     import ObjectList from "../components/ObjectList.svelte";
     import DevInfo from "./DevInfo.svelte";
@@ -14,9 +13,8 @@
 
     const { App } = Plugins;
     let showTutorial = false;
-    let loading = false;
 
-    const claims = window.history.state.claims;
+    const credentialSubject = window.history.state.credentialSubject;
 
     async function createCredential() {
         if (navigator.onLine === false) {
@@ -24,26 +22,19 @@
             return;
         }
 
-        loading = true;
+        loadingScreen.set("Generating Credential...");
         const identityService = ServiceFactory.get("identity");
-        error.set(null);
+
         try {
             const storedIdentity = await identityService.retrieveIdentity();
-            const payload = {
-                DeviceData: {
-                    "Device Name": claims.deviceName,
-                    Manufacturer: claims.manufacturer,
-                    "Serial Number": claims.uuid,
-                    "Operating System": claims.operatingSystem,
-                    Model: claims.model,
-                    "OS Version": claims.osVersion
-                }
-            };
+            const subjectId = credentialSubject.id;
+            const claims = { ...credentialSubject };
+            delete claims.id;
             const newCredential = await identityService.createSignedCredential(
-                claims.id,
+                subjectId,
                 storedIdentity,
                 CredentialType.DEVICE_ID,
-                payload
+                claims
             );
             const credentialId = generateRandomId();
             const enrichment = identityService.enrichCredential({ ...newCredential });
@@ -53,11 +44,11 @@
                 id: credentialId,
                 enrichment
             };
-            loading = false;
+            loadingScreen.set();
             navigate("/createPresentation", { state: { credential } });
         } catch (err) {
-            error.set("Error creating credential. Please try again.");
-            loading = false;
+            loadingScreen.set();
+            await showAlert("Error", "Error creating credential. Please try again.");
         }
     }
 
@@ -78,26 +69,22 @@
 </script>
 
 <main>
-    {#if loading}
-        <FullScreenLoader label="Loading Credential..." />
-    {/if}
-
-    {#if !loading && showTutorial}
+    {#if showTutorial}
         <DevInfo page="Credential" bind:showTutorial />
     {/if}
 
-    {#if !loading && !showTutorial}
+    {#if !showTutorial}
         <div class="header-wrapper">
             <div class="options-wrapper">
                 <i on:click={goBack} class="icon-chevron" />
                 <i on:click={onClickDev} class="icon-code" />
             </div>
             <header>
-                <p>Device {claims.deviceName} claims</p>
+                <p>Device claims</p>
             </header>
         </div>
         <section>
-            <ObjectList object={claims} />
+            <ObjectList object={credentialSubject} />
         </section>
         <footer>
             <Button label="Issue Device ID credential" onClick={createCredential} />

@@ -2,11 +2,9 @@
     import { Plugins } from "@capacitor/core";
     import { onMount } from "svelte";
     import { navigate } from "svelte-routing";
-    import Button from "../components/Button.svelte";
     import ListItem from "../components/ListItem.svelte";
-    import FullScreenLoader from "../components/FullScreenLoader.svelte";
     import DevInfo from "./DevInfo.svelte";
-    import { getFromStorage, account, resetAllStores } from "../lib/store";
+    import { account, resetAllStores, credentials } from "../lib/store";
     import { ServiceFactory } from "../factories/serviceFactory";
     import type { IdentityService } from "../services/identityService";
     import { wait } from "../lib/helpers";
@@ -16,18 +14,12 @@
 
     const { App, Toast, Modals } = Plugins;
 
-    let loading = false;
     let localCredentials = [];
     let exitOnBack = false;
 
     onMount(() => App.addListener("backButton", onBack).remove);
-    onMount(async () => {
-        try {
-            localCredentials = await getFromStorage("credentials");
-            localCredentials = Object.values(localCredentials)?.filter(data => data);
-        } catch (err) {
-            console.log(err);
-        }
+    onMount(() => {
+        localCredentials = Object.values($credentials)?.filter(data => data);
     });
 
     async function onBack() {
@@ -88,11 +80,7 @@
         <DevInfo page="Identity" bind:showTutorial />
     {/if}
 
-    {#if loading}
-        <FullScreenLoader label="Loading Credential..." />
-    {/if}
-
-    {#if !loading && $account}
+    {#if $account}
         <header>
             <div class="options-wrapper">
                 <i on:click={onClickReset} class="icon-reset" />

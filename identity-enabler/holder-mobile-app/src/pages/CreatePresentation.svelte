@@ -2,16 +2,15 @@
     import { onMount } from "svelte";
     import bwipjs from "bwip-js";
     import { ServiceFactory } from "../factories/serviceFactory";
-    import { error } from "../lib/store";
-    import FullScreenLoader from "../components/FullScreenLoader.svelte";
+    import { loadingScreen } from "../lib/store";
     import { wait } from "../lib/helpers";
     import DevInfo from "./DevInfo.svelte";
     import PresentationJson from "./PresentationJSON.svelte";
     import { Plugins } from "@capacitor/core";
+    import { showAlert } from "../lib/ui/helpers";
 
     const { App } = Plugins;
     let presentationJSON = "";
-    let loading = true;
     let showJSON = false;
     let showTutorial = false;
     let singleTapped = false;
@@ -43,23 +42,22 @@
         return res.toLocaleDateString("en-US", dateOptions);
     };
 
-    onMount(() => {
-        setTimeout(async () => {
-            error.set(null);
-            try {
-                const storedIdentity = await identityService.retrieveIdentity();
-                const verifiablePresentation = await identityService.createVerifiablePresentation(
-                    storedIdentity,
-                    credential?.credentialDocument
-                );
-                presentationJSON = JSON.stringify(verifiablePresentation, null, 2);
-                createMatrix(JSON.stringify(verifiablePresentation));
-                loading = false;
-            } catch (err) {
-                error.set("Error creating identity. Please try again.");
-                loading = false;
-            }
-        }, 500);
+    onMount(async () => {
+        loadingScreen.set("Generating DataMatrix...");
+
+        try {
+            const storedIdentity = await identityService.retrieveIdentity();
+            const verifiablePresentation = await identityService.createVerifiablePresentation(
+                storedIdentity,
+                credential?.credentialDocument
+            );
+            presentationJSON = JSON.stringify(verifiablePresentation, null, 2);
+            createMatrix(JSON.stringify(verifiablePresentation));
+        } catch (err) {
+            await showAlert("Error", "Error creating DataMatrix. Please try again.");
+        }
+
+        loadingScreen.set();
     });
 
     function goBack() {
@@ -100,10 +98,6 @@
         <DevInfo page="Presentation" bind:showTutorial />
     {:else if showJSON}
         <PresentationJson code={presentationJSON} bind:showJSON />
-    {/if}
-
-    {#if loading}
-        <FullScreenLoader label="Creating Data Matrix..." />
     {/if}
 
     <div class="wrapper">

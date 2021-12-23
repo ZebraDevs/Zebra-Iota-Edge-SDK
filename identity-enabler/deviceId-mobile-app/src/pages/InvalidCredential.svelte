@@ -1,20 +1,35 @@
-<script>
-    import { navigate } from "svelte-routing";
+<script lang="ts">
+    import { onMount } from "svelte";
     import { fly } from "svelte/transition";
     import Button from "../components/Button.svelte";
+    import { playAudio } from "../lib/ui/helpers";
 
-    function goBack() {
-        navigate("/home");
+    const PLAY_DELAY = 400;
+
+    const message = window.history?.state?.message || "Invalid credential";
+    const scanSoundStart = window.history?.state?.scanSoundStart;
+    onMount(async () => {
+        // We wait a little bit in order not to overlap the different aural feedback
+        const delay = scanSoundStart ? PLAY_DELAY - (Date.now() - scanSoundStart) : PLAY_DELAY;
+        if (delay < 0) {
+            await playAudio("invalid");
+        } else {
+            setTimeout(async () => await playAudio("invalid"), delay);
+        }
+    });
+
+    function onDone() {
+        window.history.back();
     }
 </script>
 
 <main transition:fly={{ y: 200, duration: 500 }}>
     <section>
         <i class="icon-cross" />
-        <p>INVALID CREDENTIAL</p>
+        <p>{message}</p>
     </section>
     <footer>
-        <Button label="Done" onClick={goBack} />
+        <Button label="Done" onClick={onDone} />
     </footer>
 </main>
 
@@ -49,10 +64,12 @@
         font-size: 1.9vh;
         line-height: 3.4vh;
         color: #fff;
+        text-transform: uppercase;
     }
 
     .icon-cross {
         font-size: 64px;
+        color: white;
     }
 
     footer {

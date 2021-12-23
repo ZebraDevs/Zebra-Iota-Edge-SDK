@@ -4,21 +4,27 @@
     export let label;
 </script>
 
-<div class="loader-wrapper">
-    <Spinner />
-    <div class="loader-label">{label}</div>
-</div>
+<main>
+    <div class="loader-wrapper">
+        <Spinner />
+        <div class="loader-label">{label ?? "Loading..."}</div>
+    </div>
+</main>
 
 <style>
-    .loader-wrapper {
+    main {
+        position: absolute;
+        background: #aee693;
         height: 100%;
         width: 100%;
+        z-index: 10;
+    }
+    .loader-wrapper {
+        height: inherit;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        row-gap: 40px;
-        background-color: #aee693;
     }
     .loader-label {
         font-family: "Proxima Nova", sans-serif;
