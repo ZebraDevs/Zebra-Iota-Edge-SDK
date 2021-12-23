@@ -29,7 +29,7 @@
             isEmpty = Object.values(localCredentials).every(x => x === null || x === "");
             loading = false;
         } catch (err) {
-            console.log(err);
+            console.error(err);
             loading = false;
         }
     });
@@ -127,9 +127,8 @@
                             icon={isExpired(credential.issuanceDate) ? "cross" : "check"}
                             iconColor="#1e22aa"
                             onClick={() => onClickCredential(credential)}
-                            heading={"IOTA"}
-                            subheading={credential.type[1]}
-                            expired={isExpired(credential.issuanceDate)}
+                            heading={credential.type[1]}
+                            subheading="Issued by {credential.issuer.name}"
                         />
                     </div>
                 {/each}
