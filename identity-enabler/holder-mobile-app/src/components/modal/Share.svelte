@@ -4,6 +4,7 @@
     import { Plugins } from "@capacitor/core";
     import Button from "../Button.svelte";
     import { ServiceFactory } from "../../factories/serviceFactory";
+    import { showAlert } from "../../lib/ui/helpers";
 
     const { close } = getContext("simple-modal");
     const { Share } = Plugins;
@@ -30,8 +31,8 @@
                 text: presentationJSON
             });
         } catch (error) {
-            console.error("Error sharing: " + error);
-            return;
+            console.error(error);
+            await showAlert("Error", error.message);
         }
     }
 </script>
