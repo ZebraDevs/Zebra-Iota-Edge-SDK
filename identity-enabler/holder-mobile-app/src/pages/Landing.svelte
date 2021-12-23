@@ -17,9 +17,9 @@
 
     const info = [
         {
-            header: "AppX stores your health records and tests",
+            header: "AppX stores your decentralized identity",
             content:
-                "A safe space for your personal information, only accessible by you. AppX is powered by the neutral, free and decentralized network: IOTA.",
+                "A safe space for your information, only accessible by you. AppX is powered by the neutral, free and decentralized network: IOTA.",
             footer: "Next",
             image: "checklist.svg"
         },
@@ -30,9 +30,9 @@
             image: "notepad.svg"
         },
         {
-            header: "You control access to your immunity status",
+            header: "You control access to your credentials",
             content:
-                "AppX is all about controlling your information, not locking it up. You can decide who you share your data with by providing consent.",
+                "AppX is all about controlling your credentials. You decide who to share them with.",
             footer: "Next",
             image: "folder.svg"
         }
