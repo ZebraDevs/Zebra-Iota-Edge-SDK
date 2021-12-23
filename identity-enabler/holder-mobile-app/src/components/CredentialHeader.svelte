@@ -21,7 +21,7 @@
                 >{credential.issuer.name}
             </a>
             <span> at </span>
-            <span class="emphasis">{new Date(credential.issuanceDate).toLocaleString()}</span>
+            <span class="emphasis">{new Date(credential.issuanceDate).toLocaleString([...window.navigator.languages])}</span>
         </p>
     {/if}
 </div>

@@ -35,7 +35,7 @@
     const addDaysToDate = (date: string, days: number) => {
         let res = new Date(date);
         res.setDate(res.getDate() + days);
-        return res.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+        return res.toLocaleDateString([...window.navigator.languages], { year: "numeric", month: "long", day: "numeric" });
     };
 
     onMount(() => App.addListener("backButton", goBack).remove);
