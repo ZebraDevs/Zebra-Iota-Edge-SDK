@@ -17,7 +17,7 @@
 
     const info = [
         {
-            header: "AppX stores your personal, organizational and supply chain data",
+            header: "AppX stores your decentralized identity",
             content:
                 "A safe space for your information, only accessible by you. AppX is powered by the neutral, free and decentralized network: IOTA.",
             footer: "Next",
