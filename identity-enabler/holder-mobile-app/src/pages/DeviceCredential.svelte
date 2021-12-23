@@ -71,7 +71,7 @@
                 <i on:click={onClickDev} class="icon-code" />
             </div>
             <header>
-                <p>Device claims</p>
+                <p>Device Claims</p>
             </header>
         </div>
         <section>
@@ -95,7 +95,6 @@
 
     .header-wrapper {
         text-align: center;
-        padding-bottom: 3vh;
         background-color: #00a7ff;
     }
 
@@ -112,6 +111,7 @@
         font-size: 3.4vh;
         line-height: 3.4vh;
         color: #fff;
+        margin: 0.5rem 0 1.5rem 0;
     }
 
     header > p:nth-child(2) {
