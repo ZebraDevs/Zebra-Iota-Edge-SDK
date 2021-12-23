@@ -31,12 +31,17 @@ export async function handleScannerData(decodedText: string, method: "Camera" | 
         return;
     }
 
-    if (!vp) {
+    if (typeof vp !== "object") {
         await handleError("No data", scanSoundStart);
         return;
     }
 
-    const credentialSubjectId = vp.verifiableCredential?.credentialSubject?.id;
+    if (!vp.verifiableCredential) {
+        await handleError("The scanned data does not contain a credential", scanSoundStart);
+        return;
+    }
+
+    const credentialSubjectId = vp.verifiableCredential.credentialSubject?.id;
     if (credentialSubjectId === undefined) {
         await handleError("Missing credential subject", scanSoundStart);
         return;

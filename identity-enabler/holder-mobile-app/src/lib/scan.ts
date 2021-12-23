@@ -33,7 +33,12 @@ export async function handleScannerData(decodedText: string, method: "Camera" | 
         return;
     }
 
-    if (typeof credentialSubject?.id !== "string" || !credentialSubject.id.startsWith("did:iota:")) {
+    if (typeof credentialSubject !== "object") {
+        await handleError("No data", scanSoundStart);
+        return;
+    }
+
+    if (typeof credentialSubject.id !== "string" || !credentialSubject.id.startsWith("did:iota:")) {
         await handleError("Missing subject ID", scanSoundStart);
         return;
     }
