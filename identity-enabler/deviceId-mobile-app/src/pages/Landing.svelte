@@ -9,7 +9,7 @@
 
     const info = {
         header: "Create and store device digital identity",
-        content: "Share device credentials and immunity status safely and privately using IOTA’s Identity solution.",
+        content: "Generate a identity and share verifiable data about the device using IOTA’s Identity solution.",
         footer: "Next",
         image: "checklist.svg"
     };

@@ -14,7 +14,7 @@
 <style>
     main {
         position: absolute;
-        background: linear-gradient(90deg, #00ffff 0%, #0099ff 100%);
+        background: #6165e3;
         height: 100%;
         width: 100%;
         z-index: 10;
