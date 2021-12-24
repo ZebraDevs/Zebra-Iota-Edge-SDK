@@ -32,7 +32,7 @@ export function shortenDID(did: string): string {
  * @param node The node to which this is attached.
  * @param opts Parameters to configure the multiClick event.
  */
-export function multiClick(node: HTMLElement, opts: { numClicks?: number; maxDelay?: number }): void {
+export function multiClick(node: HTMLElement, opts?: { numClicks?: number; maxDelay?: number }): void {
     let clicks = 0;
 
     const handleClick = async (_: MouseEvent) => {
