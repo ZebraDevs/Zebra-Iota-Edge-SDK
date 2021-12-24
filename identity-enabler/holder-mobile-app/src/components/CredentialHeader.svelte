@@ -5,6 +5,18 @@
     export let credential;
     export let color = "white";
     export let hideDetails = false;
+
+    function getDateString(): string {
+        return new Date(credential.issuanceDate).toLocaleDateString([...window.navigator.languages], {
+            dateStyle: "long"
+        });
+    }
+
+    function getTimeString(): string {
+        return new Date(credential.issuanceDate).toLocaleTimeString([...window.navigator.languages], {
+            timeStyle: "short"
+        });
+    }
 </script>
 
 <div id="wrapper" style="color: {color};">
@@ -19,10 +31,7 @@
                 target="_blank"
                 >{credential.issuer.name ?? shortenDID(credential.issuer.id ?? credential.issuer)}
             </a>
-            <span> at </span>
-            <span class="emphasis"
-                >{new Date(credential.issuanceDate).toLocaleString([...window.navigator.languages])}</span
-            >
+            <span> on {getDateString()} at {getTimeString()}</span>
         </p>
     {/if}
 </div>
@@ -48,11 +57,12 @@
 
     p {
         line-height: 1.5em;
+        font-size: smaller;
     }
 
     p .emphasis {
         font-weight: bold;
-        padding: 0 0.2rem;
+        padding: 0 0.1rem;
     }
 
     a {
