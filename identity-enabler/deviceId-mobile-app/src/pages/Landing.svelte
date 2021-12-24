@@ -37,7 +37,7 @@
     }
 
     function onNext() {
-        navigate("name");
+        navigate("/name");
     }
 </script>
 
