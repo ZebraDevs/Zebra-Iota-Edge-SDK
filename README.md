@@ -1,5 +1,3 @@
-# zebra-iota-edge-sdk
-
 <h2 align="center">Zebra-IOTA Edge SDK</h2>
 
 <p align="center">
@@ -23,7 +21,7 @@ This SDK allows building applications with Zebra Devices in combination with the
 
 * **[Identity Enabler](./identity-enabler)**. Provides all the scaffolding structured around reference applications that facilitate the creation of solutions that exploit [IOTA  Decentralized Identities](https://files.iota.org/comms/IOTA_The_Case_for_a_Unified_Identity.pdf) in different domains (Personal identity and health passports, Organizational Identities and Device Identities in the Global Trade and Supply Chain domain).
 
-* **EPCIS 2.0 Enabler**. Adds the capability to record [GS1 EPCIS 2.0](https://github.com/gs1/EPCIS) events directly from Zebra Devices. Those events can be stored on distributed datastores and anchored immutably to the IOTA Distributed Ledge. As a result, supply chain participants, in combination with the Identity Enabler, can share authenticated, trusted, verifiable and immutable data about business processes. *(This enabler will come out in Q2 2022)*.
+* **EPCIS 2.0 Enabler**. Adds the capability to record [GS1 EPCIS 2.0](https://github.com/gs1/EPCIS) events directly from Zebra Devices. Those events can be stored on distributed datastores and anchored immutably to the IOTA Distributed Ledger. As a result, supply chain participants, in combination with the Identity Enabler, can share authenticated, trusted, verifiable and immutable data about business processes. *(This enabler will come out in Q2 2022)*.
 
 ## Prerequisites
 
@@ -52,7 +50,7 @@ npm install
 npm run android
 ```
 
-Afterwards the Web application code will be compiled and generated. Then, ff your Android Studio is present and configured on your local machine automatically a new project with the application will be open. You can then compile and run your Android application.
+Afterwards the Web application code will be compiled and generated. Then, if your Android Studio is present and configured on your local machine automatically a new project with the application will be open. You can then compile and run your Android application.
 
 If you want to run the applications as local Web application, for instance the Verifier Application, you just need to:
 
