@@ -6,21 +6,25 @@
     import bwipjs from "bwip-js";
     import { ServiceFactory } from "../factories/serviceFactory";
     import Button from "../components/Button.svelte";
-    import { showAlert } from "../lib/ui/helpers";
+    import { showAlert, multiClick } from "../lib/ui/helpers";
     import { loadingScreen } from "../lib/store";
+    import PresentationJson from "./PresentationJSON.svelte";
 
-    const { Device } = Plugins;
+    const { App, Device } = Plugins;
 
     const identityService = ServiceFactory.get("identity");
     const name = window.history.state.name;
+    let showJSON = false;
+    let credentialSubject;
 
+    onMount(() => App.addListener("backButton", goBack).remove);
     onMount(async () => {
         loadingScreen.set("Generating QR Code...");
 
         try {
             const storedIdentity = await identityService.retrieveIdentity();
             const deviceInfo = await Device.getInfo();
-            const credentialSubject = {
+            credentialSubject = {
                 id: storedIdentity.doc.id,
                 deviceName: name,
                 uuid: deviceInfo.uuid,
@@ -54,6 +58,11 @@
     }
 
     function goBack() {
+        if (showJSON) {
+            showJSON = false;
+            return;
+        }
+
         window.history.back();
     }
 
@@ -63,6 +72,10 @@
 </script>
 
 <main>
+    {#if showJSON && credentialSubject}
+        <PresentationJson code={JSON.stringify(credentialSubject, null, 2)} bind:showJSON />
+    {/if}
+
     <div class="wrapper" transition:fly={{ x: 500, duration: 500 }}>
         <header>
             <i on:click={goBack} class="icon-chevron" />
@@ -72,7 +85,7 @@
             <p>Share device claims with the Organization ID holder app</p>
         </div>
         <div class="qr-wrapper">
-            <canvas id="device-claims" />
+            <canvas id="device-claims" use:multiClick on:multiClick={() => (showJSON = true)} />
         </div>
         <div class="info">
             <pre>Scan this QR code with the Holder app

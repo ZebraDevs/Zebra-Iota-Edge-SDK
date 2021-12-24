@@ -3,11 +3,10 @@
     import bwipjs from "bwip-js";
     import { ServiceFactory } from "../factories/serviceFactory";
     import { loadingScreen } from "../lib/store";
-    import { wait } from "../lib/helpers";
     import DevInfo from "./DevInfo.svelte";
     import PresentationJson from "./PresentationJSON.svelte";
     import { Plugins } from "@capacitor/core";
-    import { showAlert } from "../lib/ui/helpers";
+    import { showAlert, multiClick } from "../lib/ui/helpers";
     import type { IdentityService } from "../services/identityService";
     import CredentialHeader from "../components/CredentialHeader.svelte";
 
@@ -15,8 +14,6 @@
     let presentationJSON = "";
     let showJSON = false;
     let showTutorial = false;
-    let singleTapped = false;
-    const MAX_DOUBLE_TAP_DELAY = 500;
 
     const credential = window.history.state.credential;
     const identityService = ServiceFactory.get<IdentityService>("identity");
@@ -79,18 +76,6 @@
     function onClickDev() {
         showTutorial = true;
     }
-
-    async function onClickDataMatrix() {
-        if (singleTapped) {
-            singleTapped = false;
-            showJSON = true;
-            return;
-        }
-
-        singleTapped = true;
-        await wait(MAX_DOUBLE_TAP_DELAY);
-        singleTapped = false;
-    }
 </script>
 
 <main>
@@ -109,7 +94,7 @@
     </header>
 
     <div class="presentation-wrapper">
-        <canvas id="presentation" on:click={onClickDataMatrix} />
+        <canvas id="presentation" use:multiClick on:multiClick={() => (showJSON = true)} />
     </div>
 
     <footer class="footerContainer">
