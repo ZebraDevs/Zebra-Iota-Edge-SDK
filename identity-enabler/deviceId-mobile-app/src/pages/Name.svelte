@@ -37,7 +37,7 @@
             const identity = await identityService.createIdentity();
             await identityService.storeIdentity("did", identity);
             hasSetupAccount.set(true);
-            navigate("home");
+            navigate("/home");
         } catch (err) {
             console.error(err);
             await showAlert("Error", "Error creating identity. Please try again.");

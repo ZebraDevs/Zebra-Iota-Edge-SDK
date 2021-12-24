@@ -16,7 +16,7 @@
             await showAlert("Error", "You need Internet connectivity to verify a Device Credential");
             return;
         }
-        navigate("scan");
+        navigate("/scan");
     }
 
     function onClickDev() {
