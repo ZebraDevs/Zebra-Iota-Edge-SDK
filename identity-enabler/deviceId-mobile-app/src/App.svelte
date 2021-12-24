@@ -45,7 +45,7 @@
             return;
         }
 
-        if (window.location.pathname === "/invalid") {
+        if (window.location.pathname === "/invalid" || window.location.pathname === "/credential") {
             await showAlert("Error", "You are already handling a credential");
             return;
         }
@@ -64,7 +64,6 @@
         const storedIdentity = await identityService.retrieveIdentity();
 
         if (storedIdentity) {
-            console.log("Found identity", storedIdentity);
             displayHome = true;
         }
     });

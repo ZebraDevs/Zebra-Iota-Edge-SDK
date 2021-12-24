@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import { Plugins } from "@capacitor/core";
     import { onMount } from "svelte";
     import { navigate } from "svelte-routing";
@@ -7,11 +7,12 @@
     import Button from "../components/Button.svelte";
     import ObjectList from "../components/ObjectList.svelte";
     import DevInfo from "./DevInfo.svelte";
+    import CredentialHeader from "../components/CredentialHeader.svelte";
 
     const { App } = Plugins;
     let showTutorial = false;
 
-    const credential = window.history.state.credential;
+    const vp = window.history.state.vp;
     const save = window?.history?.state?.save;
 
     onMount(() => App.addListener("backButton", goBack).remove);
@@ -20,13 +21,13 @@
         modalStatus.set({
             active: true,
             type: "share",
-            props: { credential }
+            props: { vp }
         });
     }
 
     async function onSaveCredential() {
         credentials.update(creds => {
-            creds[credential.verifiableCredential.type[1].split(/\b/)[0].toLowerCase()] = credential;
+            creds[vp.verifiableCredential.type[1].split(/\b/)[0].toLowerCase()] = vp;
             return creds;
         });
         navigate("/home");
@@ -34,7 +35,7 @@
 
     function goBack() {
         if ($modalStatus.active) {
-            modalStatus.set({ active: false });
+            modalStatus.set({ active: false, type: null });
             return;
         }
 
@@ -63,13 +64,11 @@
                 <i on:click={onClickDev} class="icon-code" />
             </div>
             <header>
-                <i class="icon-zebra credential-logo" />
-                <p>IOTA</p>
-                <p>{credential.verifiableCredential.type[1]}</p>
+                <CredentialHeader credential={vp.verifiableCredential} />
             </header>
         </div>
         <section>
-            <ObjectList object={credential.verifiableCredential.credentialSubject} />
+            <ObjectList object={vp.verifiableCredential.credentialSubject} />
         </section>
         <footer>
             {#if save}
@@ -99,7 +98,7 @@
 
     .header-wrapper {
         text-align: center;
-        padding-bottom: 3vh;
+        padding-bottom: 0.5rem;
         background-color: #aee693;
     }
 
@@ -109,24 +108,6 @@
         z-index: 1;
         height: fit-content;
         margin-bottom: 0;
-    }
-
-    header > p {
-        font-family: "Proxima Nova", sans-serif;
-        font-weight: 700;
-        font-size: 2.6vh;
-        line-height: 2.6vh;
-        margin: 0;
-    }
-
-    header > p:nth-child(3) {
-        text-transform: uppercase;
-        margin: 1.7vh 0 0 0;
-    }
-
-    header > p:nth-child(2) {
-        margin: 1.2vh 0 1.7vh 0;
-        font-size: 1.7vh;
     }
 
     section {
@@ -139,10 +120,6 @@
         width: 100%;
         bottom: 0;
         z-index: 1;
-    }
-
-    .credential-logo {
-        font-size: 64px;
     }
 
     .options-wrapper {

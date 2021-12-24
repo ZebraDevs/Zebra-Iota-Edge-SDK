@@ -1,10 +1,11 @@
 import Keychain from "../lib/keychain";
-import { CredentialType, DIDMapping } from "../schemas";
+import type { CredentialType } from "../schemas";
 import { generateRandomNumericString, parse } from "../lib/helpers";
-import type { InternalCredentialDataModel } from "../lib/store";
-import type { Identity, IdentityConfig, VerifiableCredentialEnrichment } from "../models/types/identity";
+import { account } from "../lib/store";
+import type { Identity, IdentityConfig } from "../models/types/identity";
 import * as IotaIdentity from "@iota/identity-wasm/web";
 import { IDENTITY_WASM_PATH } from "../config";
+import { get } from "svelte/store";
 
 const {
     Client,
@@ -131,15 +132,6 @@ export class IdentityService {
         }
     }
 
-    retrieveCredentials(ids: string[]): Promise<InternalCredentialDataModel[]> {
-        return Promise.all(ids.map(id => Keychain.get(id)))
-            .then(data => data.map(entry => parse(entry.value)))
-            .catch(e => {
-                console.error(e);
-                return [];
-            });
-    }
-
     /**
      * Creates a signed credential
      *
@@ -177,7 +169,10 @@ export class IdentityService {
         const unsignedVc = VerifiableCredential.extend({
             id: `http://example.org/zebra-iota-sdk/${generateRandomNumericString(4)}`,
             type: credentialType,
-            issuer: IssuerDidDoc.id.toString(),
+            issuer: {
+                id: IssuerDidDoc.id.toString(),
+                name: get(account).name
+            },
             credentialSubject
         });
 
@@ -200,48 +195,6 @@ export class IdentityService {
         } else {
             return null;
         }
-    }
-
-    /**
-     * Stores credential in keychain
-     *
-     * @method storeCredential
-     *
-     * @param {string} credentialId
-     * @param {VerifiableCredentialDataModel} credential
-     *
-     * @returns {Promise}
-     */
-    storeCredential(credentialId: string, credential: InternalCredentialDataModel): Promise<{ value: boolean }> {
-        return Keychain.set(credentialId, JSON.stringify(credential));
-    }
-
-    /**
-     * Remove credential from keychain
-     *
-     * @method removeCredential
-     *
-     * @param {string} credentialId
-     *
-     * @returns {Promise}
-     */
-    removeCredential(credentialId: string): Promise<{ value: boolean }> {
-        return Keychain.remove(credentialId);
-    }
-
-    /**
-     * Retrieves credential from keychain
-     *
-     * @method retrieveCredential
-     *
-     * @param {string} credentialId
-     *
-     * @returns {Promise}
-     */
-    retrieveCredential(credentialId: string): Promise<IotaIdentity.VerifiableCredential> {
-        return Keychain.get(credentialId)
-            .then(async data => parse(data.value))
-            .catch(() => null);
     }
 
     /**
@@ -292,36 +245,5 @@ export class IdentityService {
             console.error("Error during VP Check: " + err);
             return false;
         }
-    }
-
-    enrichCredential(credential: any): VerifiableCredentialEnrichment {
-        const override = DIDMapping[credential.issuer];
-        const enrichment = {
-            issuerLabel: override?.issuerLabel ?? "iota", // credential.issuer
-            logo: override?.logo ?? "personal",
-            credentialLabel: credential?.type?.[1],
-            theme: override?.theme ?? "#550000"
-        };
-        return enrichment;
-    }
-
-    prepareCredentialForDisplay(credential: any): any {
-        // TODO: deep copy
-        const copy = { ...credential, credentialSubject: { ...credential.credentialSubject } };
-        // TODO: typing
-        if (copy.credentialSubject.DID) {
-            delete copy.credentialSubject.DID;
-        }
-        return copy;
-    }
-    preparePresentationForDisplay(presentation: any): any {
-        // TODO: deep copy
-        const copy = { ...presentation, verifiableCredential: presentation.verifiableCredential };
-
-        // removes DID entry of presentation array
-        copy.verifiableCredential = copy.verifiableCredential.filter(
-            credential => !(Object.keys(credential.credentialSubject).length === 1 && credential.credentialSubject)
-        );
-        return copy;
     }
 }

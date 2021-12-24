@@ -21,6 +21,7 @@
             } catch (e) {
                 console.error(e);
                 navigate("/invalid", { state: { message: "Failed to decode image" } });
+                return;
             }
 
             await handleScannerData(result.getText(), "File");

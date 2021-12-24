@@ -9,7 +9,7 @@
     import Button from "../components/Button.svelte";
     import ListItem from "../components/ListItem.svelte";
     import DevInfo from "./DevInfo.svelte";
-    import { showAlert } from "../lib/ui/helpers";
+    import { showAlert, shortenDID } from "../lib/ui/helpers";
     import { BACK_BUTTON_EXIT_GRACE_PERIOD } from "../config";
 
     const { App, Toast, Modals } = Plugins;
@@ -29,7 +29,7 @@
             isEmpty = Object.values(localCredentials).every(x => x === null || x === "");
             loading = false;
         } catch (err) {
-            console.log(err);
+            console.error(err);
             loading = false;
         }
     });
@@ -127,9 +127,9 @@
                             icon={isExpired(credential.issuanceDate) ? "cross" : "check"}
                             iconColor="#1e22aa"
                             onClick={() => onClickCredential(credential)}
-                            heading={"IOTA"}
-                            subheading={credential.type[1]}
-                            expired={isExpired(credential.issuanceDate)}
+                            heading={credential.type[1]}
+                            subheading="Issued by {credential.issuer.name ??
+                                shortenDID(credential.issuer.id ?? credential.issuer)}"
                         />
                     </div>
                 {/each}

@@ -1,12 +1,5 @@
 import { writable } from "svelte/store";
 import { persistent } from "./helpers";
-import init from "./init";
-import { ServiceFactory } from "../factories/serviceFactory";
-import type { VerifiableCredentialEnrichment } from "../models/types/identity";
-import type { IdentityService } from "../services/identityService";
-
-init();
-const identityService = ServiceFactory.get<IdentityService>("identity");
 
 export const updateStorage = async (key, value) => {
     try {
@@ -43,23 +36,12 @@ const hasSetupAccountInitialState = false;
  */
 export const hasSetupAccount = persistent<boolean>("hasSetupAccount", hasSetupAccountInitialState);
 
-const listOfCredentialsInitialState = {
-    init: false,
-    values: []
-};
-export const listOfCredentials = persistent<{ init: boolean; values: string[] }>(
-    "listOfCredentials",
-    listOfCredentialsInitialState,
-    value => ({ ...value, init: false })
-);
-
 const credentialsInitialState = {
     personal: "",
     health: "",
-    blood: "",
-    organization: ""
+    blood: ""
 };
-export const credentials = persistent<{ personal: string; health: string; blood: string; organization: string }>(
+export const credentials = persistent<{ personal: string; health: string; blood: string }>(
     "credentials",
     credentialsInitialState
 );
@@ -82,50 +64,13 @@ export const modalStatus = writable<ModalStatus>(modalStatusInitialState);
 const landingIndexInitialState = 0;
 export const landingIndex = writable<number>(landingIndexInitialState);
 
-export interface InternalCredentialDataModel {
-    id: string;
-    metaInformation: {
-        issuer: string;
-        receivedAt: string;
-    };
-    enrichment: VerifiableCredentialEnrichment | null;
-    credentialDocument: any;
-}
-
-const storedCredentialsInitialState = [];
-export const storedCredentials = writable<InternalCredentialDataModel[]>(storedCredentialsInitialState);
-
-storedCredentials.subscribe(value => {
-    listOfCredentials.update(prev => {
-        if (prev.init) {
-            const idsToDelete = prev.values.filter(id => !value.find(credential => credential.id === id));
-            idsToDelete.map(id => identityService.removeCredential(id));
-            return { ...prev, values: value.map(credential => credential.id) };
-        }
-        return { ...prev, init: true };
-    });
-    value.map(credential => {
-        if (!credential.enrichment) {
-            const enrichment = identityService.enrichCredential(credential.credentialDocument);
-            storedCredentials.update(prev =>
-                prev.map(prevCredential =>
-                    prevCredential.id === credential.id ? { ...prevCredential, enrichment } : prevCredential
-                )
-            );
-        }
-        return identityService.storeCredential(credential.id, credential);
-    });
-});
-
 export const loadingScreen = writable<string | void>();
 
 export function resetAllStores() {
     hasSetupAccount.set(hasSetupAccountInitialState);
-    listOfCredentials.set(listOfCredentialsInitialState);
     credentials.set(credentialsInitialState);
     account.set(accountInitialState);
     modalStatus.set(modalStatusInitialState);
     landingIndex.set(landingIndexInitialState);
-    storedCredentials.set(storedCredentialsInitialState);
     loadingScreen.set();
 }

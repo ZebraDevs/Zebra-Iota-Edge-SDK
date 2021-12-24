@@ -1,7 +1,7 @@
 <script>
     import Markdown from "../components/Markdown.svelte";
 
-    export let showJSON = Boolean;
+    export let showJSON = true;
     export let code = "";
 
     function onClose() {

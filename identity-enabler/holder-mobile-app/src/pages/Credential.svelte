@@ -1,19 +1,17 @@
-<script>
+<script lang="ts">
     import { fly } from "svelte/transition";
     import Button from "../components/Button.svelte";
     import ObjectList from "../components/ObjectList.svelte";
     import DevInfo from "./DevInfo.svelte";
     import { modalStatus } from "../lib/store";
-    import { ServiceFactory } from "../factories/serviceFactory";
     import { showAlert } from "../lib/ui/helpers";
     import { onMount } from "svelte";
     import { Plugins } from "@capacitor/core";
+    import CredentialHeader from "../components/CredentialHeader.svelte";
 
     const { App } = Plugins;
     let showTutorial = false;
     const credential = window.history.state.credential;
-    const identityService = ServiceFactory.get("identity");
-    const preparedCredentialDocument = identityService.prepareCredentialForDisplay(credential.credentialDocument);
 
     async function share() {
         if (navigator.onLine === false) {
@@ -30,7 +28,7 @@
 
     function goBack() {
         if ($modalStatus.active) {
-            modalStatus.set({ active: false });
+            modalStatus.set({ active: false, type: null });
             return;
         }
 
@@ -61,19 +59,11 @@
                 <i on:click={onClickDev} class="icon-code" />
             </div>
             <header>
-                {#if credential.enrichment.credentialLabel === "Organisation ID"}
-                    <i class="icon-zebra credential-logo" />
-                    <p>{credential.metaInformation.issuer.toUpperCase()}</p>
-                {:else}
-                    <i class="icon-credential credential-logo" />
-                    <p>{credential.enrichment.issuerLabel}</p>
-                {/if}
-                <p>{credential.enrichment.credentialLabel}</p>
-                <p>{new Date(preparedCredentialDocument.issuanceDate).toLocaleString()}</p>
+                <CredentialHeader {credential} />
             </header>
         </div>
         <section>
-            <ObjectList object={preparedCredentialDocument.credentialSubject} />
+            <ObjectList object={credential.credentialSubject} />
         </section>
         <footer>
             <Button label="Share credential" onClick={share}>
@@ -99,7 +89,7 @@
 
     .header-wrapper {
         text-align: center;
-        padding-bottom: 3vh;
+        padding-bottom: 0.5rem;
         background-color: #00a7ff;
     }
 
@@ -109,30 +99,6 @@
         z-index: 1;
         height: fit-content;
         margin-bottom: 0;
-    }
-
-    header > p {
-        font-family: "Proxima Nova", sans-serif;
-        font-weight: 700;
-        font-size: 3.4vh;
-        line-height: 3.4vh;
-        color: #fff;
-    }
-
-    header > p:nth-child(2) {
-        font-weight: 600;
-        text-transform: uppercase;
-        font-size: 1.7vh;
-        line-height: 2.3vh;
-    }
-
-    header > p:nth-child(3) {
-        margin: 1.6vh 0 0 0;
-    }
-
-    header > p:nth-child(4) {
-        margin-bottom: 0;
-        font-size: 1.7vh;
     }
 
     section {
@@ -145,10 +111,6 @@
         width: 100%;
         bottom: 0;
         z-index: 1;
-    }
-
-    .credential-logo {
-        font-size: 64px;
     }
 
     .options-wrapper {

@@ -15,3 +15,13 @@ export async function playAudio(sound: string) {
 
     await audio.play();
 }
+
+/**
+ * Shorten a DID for display.
+ *
+ * @param did DID
+ * @returns Short DID with ellipsis.
+ */
+export function shortenDID(did: string): string {
+    return `${did.substring(0, 15)}...${did.substring(did.length - 6)}`;
+}

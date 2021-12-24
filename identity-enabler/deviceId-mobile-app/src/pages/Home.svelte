@@ -9,6 +9,7 @@
     import type { IdentityService } from "../services/identityService";
     import { wait } from "../lib/helpers";
     import { BACK_BUTTON_EXIT_GRACE_PERIOD } from "../config";
+    import { shortenDID } from "../lib/ui/helpers";
 
     let showTutorial = false;
 
@@ -92,13 +93,14 @@
             <p>Device {$account.name}</p>
         </name-wrapper>
         <section>
-            {#each localCredentials as credential}
+            {#each localCredentials as vp}
                 <div class="list">
                     <ListItem
                         icon="chip"
-                        onClick={() => navigate("credential", { state: { credential } })}
-                        heading={"IOTA"}
-                        subheading={credential.verifiableCredential.type[1]}
+                        onClick={() => navigate("/credential", { state: { vp } })}
+                        heading={vp.verifiableCredential.type[1]}
+                        subheading="Issued by {vp.verifiableCredential.issuer.name ??
+                            shortenDID(vp.verifiableCredential.issuer.id ?? vp.verifiableCredential.issuer)}"
                     />
                 </div>
             {/each}
@@ -109,7 +111,7 @@
                         iconColor="#78d64b"
                         onClick={createQR}
                         arrow={false}
-                        subheading="Request Device ID credential"
+                        heading="Request Device ID credential"
                     />
                 </div>
             {/if}

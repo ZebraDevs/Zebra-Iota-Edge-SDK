@@ -3,7 +3,6 @@
     import { loadingScreen } from "../lib/store";
     import { CredentialType } from "../schemas";
     import { ServiceFactory } from "../factories/serviceFactory";
-    import { generateRandomId } from "../lib/helpers";
     import { showAlert } from "../lib/ui/helpers";
     import Button from "../components/Button.svelte";
     import ObjectList from "../components/ObjectList.svelte";
@@ -30,20 +29,12 @@
             const subjectId = credentialSubject.id;
             const claims = { ...credentialSubject };
             delete claims.id;
-            const newCredential = await identityService.createSignedCredential(
+            const credential = await identityService.createSignedCredential(
                 subjectId,
                 storedIdentity,
                 CredentialType.DEVICE_ID,
                 claims
             );
-            const credentialId = generateRandomId();
-            const enrichment = identityService.enrichCredential({ ...newCredential });
-            const credential = {
-                credentialDocument: { ...newCredential },
-                metaInformation: { issuer: "Zebra Technologies" },
-                id: credentialId,
-                enrichment
-            };
             loadingScreen.set();
             navigate("/createPresentation", { state: { credential } });
         } catch (err) {
@@ -80,7 +71,7 @@
                 <i on:click={onClickDev} class="icon-code" />
             </div>
             <header>
-                <p>Device claims</p>
+                <p>Device Claims</p>
             </header>
         </div>
         <section>
@@ -102,13 +93,8 @@
         height: 100%;
     }
 
-    header {
-        margin-bottom: 5vh;
-    }
-
     .header-wrapper {
         text-align: center;
-        padding-bottom: 3vh;
         background-color: #00a7ff;
     }
 
@@ -125,6 +111,7 @@
         font-size: 3.4vh;
         line-height: 3.4vh;
         color: #fff;
+        margin: 0.5rem 0 1.5rem 0;
     }
 
     header > p:nth-child(2) {
