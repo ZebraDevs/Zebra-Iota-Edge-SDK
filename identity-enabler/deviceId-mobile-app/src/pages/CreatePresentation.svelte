@@ -1,19 +1,16 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import bwipjs from "bwip-js";
-    import { wait } from "../lib/helpers";
     import DevInfo from "./DevInfo.svelte";
     import PresentationJson from "./PresentationJSON.svelte";
     import { loadingScreen } from "../lib/store";
     import { Plugins } from "@capacitor/core";
-    import { showAlert } from "../lib/ui/helpers";
+    import { showAlert, multiClick } from "../lib/ui/helpers";
     import CredentialHeader from "../components/CredentialHeader.svelte";
 
     const { App } = Plugins;
     let showJSON = false;
     let showTutorial = false;
-    let singleTapped = false;
-    const MAX_DOUBLE_TAP_DELAY = 500;
 
     const vp = window.history.state.vp;
 
@@ -67,18 +64,6 @@
     function onClickDev() {
         showTutorial = true;
     }
-
-    async function onClickDataMatrix() {
-        if (singleTapped) {
-            singleTapped = false;
-            showJSON = true;
-            return;
-        }
-
-        singleTapped = true;
-        await wait(MAX_DOUBLE_TAP_DELAY);
-        singleTapped = false;
-    }
 </script>
 
 <main>
@@ -97,7 +82,7 @@
     </header>
 
     <div class="presentation-wrapper">
-        <canvas id="presentation" on:click={onClickDataMatrix} />
+        <canvas id="presentation" use:multiClick on:multiClick={() => (showJSON = true)} />
     </div>
 
     <footer class="footerContainer">
