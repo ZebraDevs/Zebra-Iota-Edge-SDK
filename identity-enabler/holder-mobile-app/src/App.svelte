@@ -39,7 +39,7 @@
             return;
         }
 
-        if (window.location.pathname === "/invalid") {
+        if (window.location.pathname === "/invalid" || window.location.pathname === "/devicecredential") {
             await showAlert("Error", "You are already handling new claims");
             return;
         }

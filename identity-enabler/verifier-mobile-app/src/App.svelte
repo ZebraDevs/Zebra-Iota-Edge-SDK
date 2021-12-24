@@ -24,6 +24,12 @@
             await showAlert("Error", "You need Internet connectivity to verify a credential");
             return;
         }
+
+        if (window.location.pathname === "/invalid" || window.location.pathname === "/credential") {
+            await showAlert("Error", "You are already handling a credential");
+            return;
+        }
+
         await handleScannerData(decodedText);
     }
 
