@@ -1,7 +1,7 @@
 <script type="ts">
     export let onClick;
-    export let heading: string | undefined = undefined;
-    export let subheading: string;
+    export let heading: string;
+    export let subheading: string | undefined = undefined;
     export let icon: string = "credential";
     export let iconColor: string = "black";
     export let arrow = true;
@@ -10,14 +10,14 @@
 <li on:click={onClick}>
     <i class="icon-{icon}" style="color: {iconColor};" />
     <div class="text-container">
-        {#if heading}
+        <div class="overflow-container">
+            <h5>{heading}</h5>
+        </div>
+        {#if subheading}
             <div class="overflow-container">
-                <h5>{heading}</h5>
+                <h6>{subheading}</h6>
             </div>
         {/if}
-        <div class="overflow-container">
-            <h6>{subheading}</h6>
-        </div>
     </div>
     {#if arrow}
         <i class="icon-chevron rotate-180" />
@@ -59,19 +59,16 @@
         display: inline;
         font-family: "Proxima Nova", sans-serif;
         font-weight: 600;
-        font-size: 0.75em;
-        letter-spacing: 0.06em;
-        color: #8593ac;
-        text-transform: uppercase;
-        margin: 0 0 0.9vh 0;
+        font-size: 1em;
+        margin: 0;
     }
 
     h6 {
         display: inline;
         font-family: "Proxima Nova", sans-serif;
         font-weight: 600;
-        font-size: 1em;
+        font-size: 0.75em;
         margin: 0;
-        color: #051923;
+        color: #8593ac;
     }
 </style>

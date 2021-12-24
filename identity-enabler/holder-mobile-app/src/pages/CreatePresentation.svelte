@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import { onMount } from "svelte";
     import bwipjs from "bwip-js";
     import { ServiceFactory } from "../factories/serviceFactory";
@@ -8,6 +8,8 @@
     import PresentationJson from "./PresentationJSON.svelte";
     import { Plugins } from "@capacitor/core";
     import { showAlert } from "../lib/ui/helpers";
+    import type { IdentityService } from "../services/identityService";
+    import CredentialHeader from "../components/CredentialHeader.svelte";
 
     const { App } = Plugins;
     let presentationJSON = "";
@@ -17,31 +19,30 @@
     const MAX_DOUBLE_TAP_DELAY = 500;
 
     const credential = window.history.state.credential;
-    const identityService = ServiceFactory.get("identity");
-    const preparedCredentialDocument = identityService.prepareCredentialForDisplay(credential.credentialDocument);
+    const identityService = ServiceFactory.get<IdentityService>("identity");
 
     function createMatrix(content) {
-        try {
-            // The return value is the canvas element
-            bwipjs.toCanvas("presentation", {
-                bcid: "datamatrix",
-                text: content,
-                scale: 3,
-                padding: 20,
-                backgroundcolor: "ffffff"
-            });
-        } catch (e) {
-            console.error(e);
-        }
+        // The return value is the canvas element
+        bwipjs.toCanvas("presentation", {
+            bcid: "datamatrix",
+            text: content,
+            scale: 3,
+            padding: 20,
+            backgroundcolor: "ffffff"
+        });
     }
 
-    const addDaysToDate = (date, days) => {
-        let dateOptions = { year: "numeric", month: "long", day: "numeric" };
+    const addDaysToDate = (date: string, days: number) => {
         let res = new Date(date);
         res.setDate(res.getDate() + days);
-        return res.toLocaleDateString("en-US", dateOptions);
+        return res.toLocaleDateString([...window.navigator.languages], {
+            year: "numeric",
+            month: "long",
+            day: "numeric"
+        });
     };
 
+    onMount(() => App.addListener("backButton", goBack).remove);
     onMount(async () => {
         loadingScreen.set("Generating DataMatrix...");
 
@@ -49,11 +50,12 @@
             const storedIdentity = await identityService.retrieveIdentity();
             const verifiablePresentation = await identityService.createVerifiablePresentation(
                 storedIdentity,
-                credential?.credentialDocument
+                credential
             );
             presentationJSON = JSON.stringify(verifiablePresentation, null, 2);
             createMatrix(JSON.stringify(verifiablePresentation));
         } catch (err) {
+            console.error(err);
             await showAlert("Error", "Error creating DataMatrix. Please try again.");
         }
 
@@ -89,8 +91,6 @@
         await wait(MAX_DOUBLE_TAP_DELAY);
         singleTapped = false;
     }
-
-    onMount(() => App.addListener("backButton", goBack).remove);
 </script>
 
 <main>
@@ -100,33 +100,24 @@
         <PresentationJson code={presentationJSON} bind:showJSON />
     {/if}
 
-    <div class="wrapper">
+    <header>
         <div class="options-wrapper">
             <i on:click={goBack} class="icon-chevron" />
             <i on:click={onClickDev} class="icon-code" />
         </div>
-        <header>
-            {#if credential.enrichment.credentialLabel === "Organisation ID"}
-                <i class="icon-zebra credential-logo" />
-                <span>{credential.metaInformation.issuer.toUpperCase()}</span>
-            {:else}
-                <i class="icon-credential credential-logo" />
-                <span>{credential.enrichment.issuerLabel.toUpperCase()}</span>
-            {/if}
-            <p>{credential.enrichment.credentialLabel}</p>
-        </header>
-        <div class="presentation-wrapper">
-            <canvas id="presentation" on:click={onClickDataMatrix} />
-        </div>
-        <footer class="footerContainer">
-            {#if credential.enrichment.credentialLabel === "Organisation ID"}
-                <span>Scan this Barcode with the Device ID app</span>
-                <p>Valid until {addDaysToDate(preparedCredentialDocument.issuanceDate, 30)}</p>
-            {:else}
-                <p>Valid until {addDaysToDate(preparedCredentialDocument.issuanceDate, 30)}</p>
-            {/if}
-        </footer>
+        <CredentialHeader {credential} hideDetails={true} />
+    </header>
+
+    <div class="presentation-wrapper">
+        <canvas id="presentation" on:click={onClickDataMatrix} />
     </div>
+
+    <footer class="footerContainer">
+        <p>Valid until {addDaysToDate(credential.issuanceDate, 30)}</p>
+        {#if credential.type[1] === "Device ID"}
+            <p style="font-size: smaller;">Scan this DataMatrix with the Device ID app</p>
+        {/if}
+    </footer>
 </main>
 
 <style>
@@ -146,75 +137,31 @@
     }
 
     header {
-        z-index: 1;
-        height: fit-content;
-        margin-bottom: 0;
+        margin-bottom: 1.5rem;
         display: flex;
         flex-direction: column;
-        align-items: center;
-    }
-
-    header > p {
-        margin: 1.5vh 0 6.2vh 0;
-        font-family: "Proxima Nova", sans-serif;
-        font-weight: 700;
-        font-size: 2.4vh;
-        line-height: 2.4vh;
-        color: #fff;
-        padding: 0;
-    }
-
-    header > span {
-        font-family: "Proxima Nova", sans-serif;
-        font-weight: 600;
-        font-size: 1.4vh;
-        line-height: 1.8vh;
-        color: #fff;
-    }
-
-    .wrapper {
+        align-items: stretch;
         text-align: center;
     }
 
-    .credential-logo {
-        font-size: 64px;
-        margin-bottom: 1.5vh;
-    }
-
     .presentation-wrapper {
-        height: fit-content;
-        position: relative;
         background: white;
         display: flex;
         flex-direction: row;
         align-items: center;
         justify-content: center;
-        width: 100%;
-        bottom: 1.5vh;
     }
 
-    @media (min-width: 640px) {
-        main {
-            max-width: none;
-        }
+    footer {
+        padding: 1.5rem;
+        text-align: center;
     }
 
     footer > p {
         color: #fff;
-        padding: 1vh 0 1vh 0;
-        margin: 0;
         font-family: "Proxima Nova", sans-serif;
         font-weight: 500;
-        font-size: 2.9vh;
-        line-height: 3.5vh;
-    }
-
-    footer > span {
-        color: #fff;
-        margin-top: 5.4vh;
-        font-family: "Proxima Nova", sans-serif;
-        font-weight: 500;
-        font-size: 1.7vh;
+        font-size: 1.2em;
     }
 
     .options-wrapper {
@@ -223,12 +170,5 @@
         justify-content: space-between;
         margin: 3.5vh 3.5vh 0 3.5vh;
         position: relative;
-        z-index: 2;
-    }
-
-    .footerContainer {
-        position: fixed;
-        text-align: center;
-        width: 100%;
     }
 </style>

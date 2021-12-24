@@ -69,7 +69,7 @@ export async function handleScannerData(decodedText: string, method: "Camera" | 
         text: "Credential verified!",
         position: "center"
     });
-    navigate("credential", { state: { credential: vp, save: true } });
+    navigate("credential", { state: { vp, save: true } });
 }
 
 async function handleError(message: string, scanSoundStart?: number) {

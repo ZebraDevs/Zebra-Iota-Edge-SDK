@@ -31,8 +31,7 @@
         },
         {
             header: "You control access to your credentials",
-            content:
-                "AppX is all about controlling your credentials. You decide who to share them with.",
+            content: "AppX is all about controlling your credentials. You decide who to share them with.",
             footer: "Next",
             image: "folder.svg"
         }

@@ -7,17 +7,17 @@
     const { close } = getContext("simple-modal");
     const { Share } = Plugins;
 
-    const credential = window.history.state.credential;
+    const vp = window.history.state.vp;
 
     function share() {
-        navigate("/createPresentation", { state: { credential } });
+        navigate("/createPresentation", { state: { vp } });
         close();
     }
 
     async function shareJSON() {
         await Share.share({
             title: "Verifiable Presentation",
-            text: JSON.stringify(credential, null, 2)
+            text: JSON.stringify(vp, null, 2)
         });
         close();
     }

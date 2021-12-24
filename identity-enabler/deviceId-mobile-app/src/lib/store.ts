@@ -1,9 +1,5 @@
 import { writable } from "svelte/store";
 import { persistent } from "./helpers";
-import init from "./init";
-import type { VerifiableCredentialEnrichment } from "../models/types/identity";
-
-init();
 
 const hasSetupAccountInitialState = false;
 /**
@@ -28,16 +24,6 @@ export type ModalStatus = {
 
 const modalStatusInitialState = { active: false, type: null, props: null };
 export const modalStatus = writable<ModalStatus>(modalStatusInitialState);
-
-export interface InternalCredentialDataModel {
-    id: string;
-    metaInformation: {
-        issuer: string;
-        receivedAt: string;
-    };
-    enrichment: VerifiableCredentialEnrichment | null;
-    credentialDocument: any;
-}
 
 export const loadingScreen = writable<string | void>();
 

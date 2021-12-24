@@ -8,6 +8,7 @@
     import { isExpired } from "../lib/helpers";
     import { navigate } from "svelte-routing";
     import { onMount } from "svelte";
+    import CredentialHeader from "../components/CredentialHeader.svelte";
 
     const { App, Modals } = Plugins;
 
@@ -59,20 +60,14 @@
                 <i on:click={onClickDev} class="icon-code" />
             </div>
             <header>
-                {#if !expired}
-                    <i class="icon-check" />
-                    <p>VALID CREDENTIAL</p>
-                {:else}
-                    <i class="icon-cross" />
-                    <p>EXPIRED CREDENTIAL</p>
-                {/if}
+                <CredentialHeader {credential} />
             </header>
         </div>
         <section>
             <ObjectList object={credential.credentialSubject} />
         </section>
         <footer>
-            <Button label="Done" onClick={() => navigate("/home")} />
+            <Button label="Done" onClick={onDone} />
         </footer>
     {/if}
 </main>
@@ -97,10 +92,6 @@
         background-color: #6165e3;
     }
 
-    header > i {
-        font-size: 64px;
-    }
-
     .header-wrapper.expired {
         background-color: black;
     }
@@ -111,15 +102,6 @@
         z-index: 1;
         height: fit-content;
         margin-bottom: 0;
-    }
-
-    header > p {
-        font-family: "Proxima Nova", sans-serif;
-        font-weight: 600;
-        font-size: 1.9vh;
-        line-height: 3.4vh;
-        color: #fff;
-        margin: 0;
     }
 
     section {
