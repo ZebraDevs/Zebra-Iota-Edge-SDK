@@ -1,7 +1,6 @@
 <script lang="ts">
     import { navigate } from "svelte-routing";
     import { fly } from "svelte/transition";
-    import { loadingScreen } from "../lib/store";
     import { __ANDROID__ } from "../lib/platforms";
     import Scanner from "../components/Scanner.svelte";
     import { BarcodeFormat, BrowserMultiFormatReader, DecodeHintType } from "@zxing/library";
@@ -16,16 +15,17 @@
         const image = e.currentTarget.files[0];
 
         const fr = new FileReader();
-        fr.onload = (e: ProgressEvent<FileReader>) => {
-            loadingScreen.set("Decoding image...");
-            reader
-                .decodeFromImageUrl(e.target.result as string)
-                .then(result => handleScannerData(result.getText()))
-                .catch(e => {
-                    console.error(e);
-                    loadingScreen.set();
-                    navigate("/invalid");
-                });
+        fr.onload = async (e: ProgressEvent<FileReader>) => {
+            let result;
+            try {
+                result = await reader.decodeFromImageUrl(e.target.result as string);
+            } catch (e) {
+                console.error(e);
+                navigate("/invalid", { state: { message: "Failed to decode image", detail: e.message } });
+                return;
+            }
+
+            await handleScannerData(result.getText());
         };
         fr.readAsDataURL(image);
     };
