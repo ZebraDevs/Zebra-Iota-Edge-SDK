@@ -150,7 +150,7 @@ export class IdentityService {
         return signedVp.toJSON();
     }
 
-    async verifyVerifiablePresentation(presentation: Record<string, any>): Promise<boolean> {
+    async verifyVerifiablePresentation(presentation: Record<string, unknown>): Promise<boolean> {
         //Initialize the Library - Is cached after first initialization
         await IotaIdentity.init(IDENTITY_WASM_PATH);
         // create VP
