@@ -45,7 +45,7 @@ export async function handleScannerData(decodedText: string): Promise<void> {
     const identityService = ServiceFactory.get<IdentityService>("identity");
     let verificationResult: boolean;
     try {
-        verificationResult = await identityService.verifyVerifiablePresentation(vp);
+        verificationResult = await identityService.verifyVerifiablePresentation(decodedText);
     } catch (e) {
         console.error(e);
         handleInvalid({ message: "Verification error", detail: e.message });

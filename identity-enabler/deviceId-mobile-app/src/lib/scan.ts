@@ -60,7 +60,7 @@ export async function handleScannerData(decodedText: string, method: "Camera" | 
     loadingScreen.set("Verifying Credential...");
     let verificationResult: boolean;
     try {
-        verificationResult = await identityService.verifyVerifiablePresentation(vp);
+        verificationResult = await identityService.verifyVerifiablePresentation(decodedText);
     } catch (e) {
         console.error(e);
         handleInvalid({ message: "Verification error", detail: e.message, scanSoundStart });
