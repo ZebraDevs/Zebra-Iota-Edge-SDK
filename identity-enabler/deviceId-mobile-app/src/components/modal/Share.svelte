@@ -7,7 +7,7 @@
     const { close } = getContext("simple-modal");
     const { Share } = Plugins;
 
-    const vp = window.history.state.vp;
+    export let vp;
 
     function share() {
         navigate("/createPresentation", { state: { vp } });

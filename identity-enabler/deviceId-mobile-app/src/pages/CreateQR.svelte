@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import { onMount } from "svelte";
     import { navigate } from "svelte-routing";
     import { fly } from "svelte/transition";
@@ -7,14 +7,12 @@
     import { ServiceFactory } from "../factories/serviceFactory";
     import Button from "../components/Button.svelte";
     import { showAlert, multiClick } from "../lib/ui/helpers";
-    import { loadingScreen } from "../lib/store";
-    import PresentationJson from "./PresentationJSON.svelte";
+    import { loadingScreen, modalStatus } from "../lib/store";
 
     const { App, Device } = Plugins;
 
     const identityService = ServiceFactory.get("identity");
     const name = window.history.state.name;
-    let showJSON = false;
     let credentialSubject;
 
     onMount(() => App.addListener("backButton", goBack).remove);
@@ -42,7 +40,7 @@
         loadingScreen.set();
     });
 
-    async function createMatrix(content) {
+    async function createMatrix(content: string) {
         try {
             // The return value is the canvas element
             bwipjs.toCanvas("device-claims", {
@@ -58,8 +56,8 @@
     }
 
     function goBack() {
-        if (showJSON) {
-            showJSON = false;
+        if ($modalStatus.active) {
+            modalStatus.set({ active: false, type: null });
             return;
         }
 
@@ -69,13 +67,17 @@
     function requestCredential() {
         navigate("/requestcredential");
     }
+
+    function showJSON() {
+        modalStatus.set({
+            active: true,
+            type: "json",
+            props: { json: JSON.stringify(credentialSubject, null, 2) }
+        });
+    }
 </script>
 
 <main>
-    {#if showJSON && credentialSubject}
-        <PresentationJson code={JSON.stringify(credentialSubject, null, 2)} bind:showJSON />
-    {/if}
-
     <div class="wrapper" transition:fly={{ x: 500, duration: 500 }}>
         <header>
             <i on:click={goBack} class="icon-chevron" />
@@ -85,7 +87,7 @@
             <p>Share device claims with the Organization ID holder app</p>
         </div>
         <div class="qr-wrapper">
-            <canvas id="device-claims" use:multiClick on:multiClick={() => (showJSON = true)} />
+            <canvas id="device-claims" use:multiClick on:multiClick={showJSON} />
         </div>
         <div class="info">
             <pre>Scan this QR code with the Holder app
