@@ -1,4 +1,5 @@
 import { navigate } from "svelte-routing";
+import type { IInvalidCredentialPageState } from "../models/types/IInvalidCredentialPageState";
 import { loadingScreen } from "./store";
 import { playAudio } from "./ui/helpers";
 
@@ -28,17 +29,17 @@ export async function handleScannerData(decodedText: string, method: "Camera" | 
         credentialSubject = JSON.parse(decodedText);
     } catch (err) {
         console.error(err);
-        await handleError("Invalid JSON", scanSoundStart);
+        handleInvalid({ message: "Invalid JSON", detail: err.message, scanSoundStart });
         return;
     }
 
     if (typeof credentialSubject !== "object") {
-        await handleError("No data", scanSoundStart);
+        handleInvalid({ message: "No data", scanSoundStart });
         return;
     }
 
     if (typeof credentialSubject.id !== "string" || !credentialSubject.id.startsWith("did:iota:")) {
-        await handleError("Missing subject ID", scanSoundStart);
+        handleInvalid({ message: "Missing subject ID", scanSoundStart });
         return;
     }
 
@@ -47,7 +48,7 @@ export async function handleScannerData(decodedText: string, method: "Camera" | 
     navigate("/devicecredential", { state: { credentialSubject } });
 }
 
-async function handleError(message: string, scanSoundStart?: number) {
+function handleInvalid(state?: IInvalidCredentialPageState): void {
     loadingScreen.set();
-    navigate("/invalid", { state: { scanSoundStart, message } });
+    navigate("/invalid", { state });
 }

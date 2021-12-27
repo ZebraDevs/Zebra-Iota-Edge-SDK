@@ -4,6 +4,7 @@ import type { IdentityService } from "../services/identityService";
 import { loadingScreen } from "./store";
 import { playAudio } from "./ui/helpers";
 import { Plugins } from "@capacitor/core";
+import type { IInvalidCredentialPageState } from "../models/types/IInvalidCredentialPageState";
 
 /**
  * Handles data string captured by Camera, DataWedge or Image selection.
@@ -26,23 +27,23 @@ export async function handleScannerData(decodedText: string, method: "Camera" | 
         vp = JSON.parse(decodedText);
     } catch (e) {
         console.error(e);
-        await handleError("Invalid JSON", scanSoundStart);
+        handleInvalid({ message: "Invalid JSON", detail: e.message, scanSoundStart });
         return;
     }
 
     if (typeof vp !== "object") {
-        await handleError("No data", scanSoundStart);
+        handleInvalid({ message: "No data", scanSoundStart });
         return;
     }
 
     if (!vp.verifiableCredential) {
-        await handleError("Missing verifiable credential", scanSoundStart);
+        handleInvalid({ message: "Missing verifiable credential", scanSoundStart });
         return;
     }
 
     const credentialSubjectId = vp.verifiableCredential.credentialSubject?.id;
     if (!credentialSubjectId) {
-        await handleError("Missing credential subject", scanSoundStart);
+        handleInvalid({ message: "Missing credential subject", scanSoundStart });
         return;
     }
 
@@ -51,7 +52,7 @@ export async function handleScannerData(decodedText: string, method: "Camera" | 
     const id = JSON.parse(identity.didDoc).id;
     if (id !== credentialSubjectId) {
         // check that this VP/VC is for the current device
-        await handleError("Incorrect credential subject", scanSoundStart);
+        handleInvalid({ message: "Incorrect credential subject", scanSoundStart });
         return;
     }
 
@@ -61,12 +62,12 @@ export async function handleScannerData(decodedText: string, method: "Camera" | 
         verificationResult = await identityService.verifyVerifiablePresentation(vp);
     } catch (e) {
         console.error(e);
-        await handleError(e.message, scanSoundStart);
+        handleInvalid({ message: "Verification error", detail: e.message, scanSoundStart });
         return;
     }
 
     if (!verificationResult) {
-        await handleError("Invalid credential", scanSoundStart);
+        handleInvalid({ scanSoundStart });
         return;
     }
 
@@ -74,7 +75,7 @@ export async function handleScannerData(decodedText: string, method: "Camera" | 
         // only check expiry date if it is set
         const expiry = new Date(vp.verifiableCredential.expirationDate);
         if (expiry.getTime() < Date.now()) {
-            await handleError("Expired credential", scanSoundStart);
+            handleInvalid({ message: "Expired credential", scanSoundStart });
             return;
         }
     }
@@ -88,7 +89,7 @@ export async function handleScannerData(decodedText: string, method: "Camera" | 
     navigate("/credential", { state: { vp, save: true } });
 }
 
-async function handleError(message: string, scanSoundStart?: number): Promise<void> {
+function handleInvalid(state?: IInvalidCredentialPageState): void {
     loadingScreen.set();
-    navigate("/invalid", { state: { scanSoundStart, message } });
+    navigate("/invalid", { state });
 }

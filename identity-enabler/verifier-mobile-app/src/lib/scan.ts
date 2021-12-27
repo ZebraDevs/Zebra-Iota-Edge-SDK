@@ -1,6 +1,7 @@
 import { Plugins } from "@capacitor/core";
 import { navigate } from "svelte-routing";
 import { ServiceFactory } from "../factories/serviceFactory";
+import type { IInvalidCredentialPageState } from "../models/types/IInvalidCredentialPageState";
 import type { IdentityService } from "../services/identityService";
 import { loadingScreen, updateStorage } from "./store";
 import { playAudio } from "./ui/helpers";
@@ -19,23 +20,23 @@ export async function handleScannerData(decodedText: string): Promise<void> {
         vp = JSON.parse(decodedText);
     } catch (e) {
         console.error(e);
-        await handleError("Invalid JSON");
+        handleInvalid({ message: "Invalid JSON", detail: e.message });
         return;
     }
 
     if (typeof vp !== "object") {
-        await handleError("No data");
+        handleInvalid({ message: "No data" });
         return;
     }
 
     if (!vp.verifiableCredential) {
-        await handleError("Missing verifiable credential");
+        handleInvalid({ message: "Missing verifiable credential" });
         return;
     }
 
     const credentialSubjectId = vp.verifiableCredential.credentialSubject?.id;
     if (!credentialSubjectId) {
-        await handleError("Missing credential subject");
+        handleInvalid({ message: "Missing credential subject" });
         return;
     }
 
@@ -46,12 +47,12 @@ export async function handleScannerData(decodedText: string): Promise<void> {
         verificationResult = await identityService.verifyVerifiablePresentation(vp);
     } catch (e) {
         console.error(e);
-        await handleError(e.message);
+        handleInvalid({ message: "Verification error", detail: e.message });
         return;
     }
 
     if (!verificationResult) {
-        await handleError("Invalid credential");
+        handleInvalid();
         return;
     }
 
@@ -61,7 +62,7 @@ export async function handleScannerData(decodedText: string): Promise<void> {
         // only check expiry date if it is set
         const expiry = new Date(credential.expirationDate);
         if (expiry.getTime() < Date.now()) {
-            await handleError("Expired credential");
+            handleInvalid({ message: "Expired credential" });
             return;
         }
     }
@@ -77,7 +78,7 @@ export async function handleScannerData(decodedText: string): Promise<void> {
     navigate("/credential", { state: { credential } });
 }
 
-async function handleError(message: string): Promise<void> {
+function handleInvalid(state?: IInvalidCredentialPageState): void {
     loadingScreen.set();
-    navigate("/invalid", { state: { message } });
+    navigate("/invalid", { state });
 }
