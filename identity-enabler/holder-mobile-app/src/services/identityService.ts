@@ -165,7 +165,10 @@ export class IdentityService {
             ...data
         };
 
-        // Issue an unsigned credential
+        // Issue an unsigned credential with expiry midnight in 30 days
+        const expiry = new Date();
+        expiry.setDate(expiry.getDate() + 30);
+        expiry.setHours(24, 0, 0, 0);
         const unsignedVc = VerifiableCredential.extend({
             id: `http://example.org/zebra-iota-sdk/${generateRandomNumericString(4)}`,
             type: credentialType,
@@ -173,7 +176,8 @@ export class IdentityService {
                 id: IssuerDidDoc.id.toString(),
                 name: get(account).name
             },
-            credentialSubject
+            credentialSubject,
+            expirationDate: expiry.toISOString()
         });
 
         // Sign the credential with User's Merkle Key Collection method
