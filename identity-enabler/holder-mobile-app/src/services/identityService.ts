@@ -232,18 +232,4 @@ export class IdentityService {
 
         return signedVp.toJSON();
     }
-
-    async verifyVerifiablePresentation(presentation: IotaIdentity.VerifiablePresentation): Promise<boolean> {
-        //Initialize the Library - Is cached after first initialization
-        await IotaIdentity.init(IDENTITY_WASM_PATH);
-        try {
-            //Create from VP
-            const verifiablePresentation = VerifiablePresentation.fromJSON(presentation);
-            const result = await this.getClient().checkPresentation(JSON.stringify(verifiablePresentation.toJSON()));
-            return result?.verified;
-        } catch (err) {
-            console.error("Error during VP Check: " + err);
-            return false;
-        }
-    }
 }
