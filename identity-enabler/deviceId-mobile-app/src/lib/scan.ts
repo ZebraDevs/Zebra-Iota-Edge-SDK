@@ -36,12 +36,12 @@ export async function handleScannerData(decodedText: string, method: "Camera" | 
     }
 
     if (!vp.verifiableCredential) {
-        await handleError("The scanned data does not contain a credential", scanSoundStart);
+        await handleError("Missing verifiable credential", scanSoundStart);
         return;
     }
 
     const credentialSubjectId = vp.verifiableCredential.credentialSubject?.id;
-    if (credentialSubjectId === undefined) {
+    if (!credentialSubjectId) {
         await handleError("Missing credential subject", scanSoundStart);
         return;
     }
@@ -56,11 +56,27 @@ export async function handleScannerData(decodedText: string, method: "Camera" | 
     }
 
     loadingScreen.set("Verifying Credential...");
-    const verificationResult = await identityService.verifyVerifiablePresentation(vp);
+    let verificationResult: boolean;
+    try {
+        verificationResult = await identityService.verifyVerifiablePresentation(vp);
+    } catch (e) {
+        console.error(e);
+        await handleError(e.message, scanSoundStart);
+        return;
+    }
 
     if (!verificationResult) {
         await handleError("Invalid credential", scanSoundStart);
         return;
+    }
+
+    if (vp.verifiableCredential.expirationDate) {
+        // only check expiry date if it is set
+        const expiry = new Date(vp.verifiableCredential.expirationDate);
+        if (expiry.getTime() < Date.now()) {
+            await handleError("Expired credential", scanSoundStart);
+            return;
+        }
     }
 
     loadingScreen.set();
@@ -72,7 +88,7 @@ export async function handleScannerData(decodedText: string, method: "Camera" | 
     navigate("/credential", { state: { vp, save: true } });
 }
 
-async function handleError(message: string, scanSoundStart?: number) {
+async function handleError(message: string, scanSoundStart?: number): Promise<void> {
     loadingScreen.set();
     navigate("/invalid", { state: { scanSoundStart, message } });
 }
