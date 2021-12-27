@@ -5,6 +5,7 @@ import { loadingScreen } from "./store";
 import { playAudio } from "./ui/helpers";
 import { Plugins } from "@capacitor/core";
 import type { IInvalidCredentialPageState } from "../models/types/IInvalidCredentialPageState";
+import { isExpired } from "./helpers";
 
 /**
  * Handles data string captured by Camera, DataWedge or Image selection.
@@ -71,13 +72,9 @@ export async function handleScannerData(decodedText: string, method: "Camera" | 
         return;
     }
 
-    if (vp.verifiableCredential.expirationDate) {
-        // only check expiry date if it is set
-        const expiry = new Date(vp.verifiableCredential.expirationDate);
-        if (expiry.getTime() < Date.now()) {
-            handleInvalid({ message: "Expired credential", scanSoundStart });
-            return;
-        }
+    if (isExpired(vp.verifiableCredential)) {
+        handleInvalid({ message: "Expired credential", scanSoundStart });
+        return;
     }
 
     loadingScreen.set();

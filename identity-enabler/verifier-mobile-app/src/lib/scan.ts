@@ -3,6 +3,7 @@ import { navigate } from "svelte-routing";
 import { ServiceFactory } from "../factories/serviceFactory";
 import type { IInvalidCredentialPageState } from "../models/types/IInvalidCredentialPageState";
 import type { IdentityService } from "../services/identityService";
+import { isExpired } from "./helpers";
 import { loadingScreen, updateStorage } from "./store";
 import { playAudio } from "./ui/helpers";
 
@@ -58,13 +59,9 @@ export async function handleScannerData(decodedText: string): Promise<void> {
 
     const credential = vp.verifiableCredential;
 
-    if (credential.expirationDate) {
-        // only check expiry date if it is set
-        const expiry = new Date(credential.expirationDate);
-        if (expiry.getTime() < Date.now()) {
-            handleInvalid({ message: "Expired credential" });
-            return;
-        }
+    if (isExpired(vp.verifiableCredential)) {
+        handleInvalid({ message: "Expired credential" });
+        return;
     }
 
     await updateStorage("credentials", { [credential.type[1].split(/\b/)[0].toLowerCase()]: credential });

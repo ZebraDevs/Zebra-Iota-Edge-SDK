@@ -53,3 +53,18 @@ export function multiClick(node: HTMLElement, opts?: { numClicks?: number; maxDe
 
     node.addEventListener("click", handleClick);
 }
+
+export function getDateString(date: Date): string {
+    return date.toLocaleDateString([...window.navigator.languages], {
+        day: "numeric",
+        month: "long",
+        year: "numeric"
+    });
+}
+
+export function getTimeString(date: Date): string {
+    return date.toLocaleTimeString([...window.navigator.languages], {
+        hour: "2-digit",
+        minute: "2-digit"
+    });
+}
