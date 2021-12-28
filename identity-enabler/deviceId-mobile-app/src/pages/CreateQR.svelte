@@ -7,7 +7,6 @@
     import { ServiceFactory } from "../factories/serviceFactory";
     import Button from "../components/Button.svelte";
     import { showAlert, multiClick } from "../lib/ui/helpers";
-    import { loadingScreen } from "../lib/store";
     import type { IdentityService } from "../services/identityService";
 
     const { Device } = Plugins;
@@ -17,8 +16,6 @@
     let credentialSubject;
 
     onMount(async () => {
-        loadingScreen.set("Generating QR Code...");
-
         try {
             const storedIdentity = await identityService.retrieveIdentity();
             const { uuid, model, manufacturer, osVersion } = await Device.getInfo();
@@ -40,8 +37,6 @@
             console.error(err);
             await showAlert("Error", err.message);
         }
-
-        loadingScreen.set();
     });
 
     async function createMatrix(content: string) {
