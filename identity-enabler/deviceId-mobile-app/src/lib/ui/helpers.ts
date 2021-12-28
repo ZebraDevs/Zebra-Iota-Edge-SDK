@@ -39,7 +39,7 @@ export function multiClick(node: HTMLElement, opts?: { numClicks?: number; maxDe
         const thisClicks = ++clicks;
 
         if (thisClicks === (opts?.numClicks ?? 2)) {
-            node.dispatchEvent(new CustomEvent("multiClick"));
+            node.dispatchEvent(new CustomEvent<void>("multiClick"));
             clicks = 0;
             return;
         }

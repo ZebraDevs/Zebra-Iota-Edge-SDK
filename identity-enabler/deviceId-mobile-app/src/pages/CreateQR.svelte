@@ -8,10 +8,11 @@
     import Button from "../components/Button.svelte";
     import { showAlert, multiClick } from "../lib/ui/helpers";
     import { loadingScreen, modalStatus } from "../lib/store";
+    import type { IdentityService } from "../services/identityService";
 
     const { App, Device } = Plugins;
 
-    const identityService = ServiceFactory.get("identity");
+    const identityService = ServiceFactory.get<IdentityService>("identity");
     const name = window.history.state.name;
     let credentialSubject;
 
@@ -71,8 +72,8 @@
     function showJSON() {
         modalStatus.set({
             active: true,
-            type: "json",
-            props: { json: JSON.stringify(credentialSubject, null, 2) }
+            type: "code",
+            props: { code: JSON.stringify(credentialSubject, null, 2) }
         });
     }
 </script>

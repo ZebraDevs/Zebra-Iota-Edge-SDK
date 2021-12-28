@@ -2,7 +2,7 @@
     import { onDestroy, getContext } from "svelte";
     import { modalStatus } from "../../lib/store";
     import Share from "./Share.svelte";
-    import JSON from "./JSON.svelte";
+    import CodeBlock from "../CodeBlock.svelte";
 
     const { open } = getContext("simple-modal");
 
@@ -10,10 +10,10 @@
         if (status.active) {
             switch (status.type) {
                 case "share":
-                    open(Share, {...status.props });
+                    open(Share, { ...status.props });
                     break;
-                case "json":
-                    open(JSON, { ...status.props });
+                case "code":
+                    open(CodeBlock, { ...status.props });
                     break;
             }
         }

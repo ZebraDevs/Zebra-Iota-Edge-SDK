@@ -50,7 +50,7 @@
             modalStatus.set({ active: false, type: null });
             return;
         }
-        
+
         if (showTutorial) {
             showTutorial = false;
             return;
@@ -66,8 +66,8 @@
     function showJSON() {
         modalStatus.set({
             active: true,
-            type: "json",
-            props: { json: JSON.stringify(vp, null, 2) }
+            type: "code",
+            props: { code: JSON.stringify(vp, null, 2) }
         });
     }
 </script>

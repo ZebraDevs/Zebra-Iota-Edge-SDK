@@ -2,9 +2,8 @@
     import { onMount } from "svelte";
     import bwipjs from "bwip-js";
     import { ServiceFactory } from "../factories/serviceFactory";
-    import { loadingScreen } from "../lib/store";
+    import { loadingScreen, modalStatus } from "../lib/store";
     import DevInfo from "./DevInfo.svelte";
-    import PresentationJson from "./PresentationJSON.svelte";
     import { Plugins } from "@capacitor/core";
     import { showAlert, multiClick } from "../lib/ui/helpers";
     import type { IdentityService } from "../services/identityService";
@@ -12,7 +11,6 @@
 
     const { App } = Plugins;
     let presentationJSON = "";
-    let showJSON = false;
     let showTutorial = false;
 
     const credential = window.history.state.credential;
@@ -60,13 +58,13 @@
     });
 
     function goBack() {
-        if (showTutorial) {
-            showTutorial = false;
+        if ($modalStatus.active) {
+            modalStatus.set({ active: false, type: null });
             return;
         }
 
-        if (showJSON) {
-            showJSON = false;
+        if (showTutorial) {
+            showTutorial = false;
             return;
         }
 
@@ -76,13 +74,19 @@
     function onClickDev() {
         showTutorial = true;
     }
+
+    function showJSON() {
+        modalStatus.set({
+            active: true,
+            type: "code",
+            props: { code: presentationJSON }
+        });
+    }
 </script>
 
 <main>
     {#if showTutorial}
         <DevInfo page="Presentation" bind:showTutorial />
-    {:else if showJSON}
-        <PresentationJson code={presentationJSON} bind:showJSON />
     {/if}
 
     <header>
@@ -94,7 +98,7 @@
     </header>
 
     <div class="presentation-wrapper">
-        <canvas id="presentation" use:multiClick on:multiClick={() => (showJSON = true)} />
+        <canvas id="presentation" use:multiClick on:multiClick={showJSON} />
     </div>
 
     <footer class="footerContainer">
