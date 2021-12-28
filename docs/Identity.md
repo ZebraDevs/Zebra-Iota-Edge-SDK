@@ -1,47 +1,64 @@
-
-1. Initialize the **`identityService`** on application start
+The below tutorial demonstrates the use of the IOTA Identity library to produce a DID document and publish it to the Tangle.
 
 ```js
-import { ServiceFactory } from '../factories/serviceFactory';
-import { IdentityService } from '../services/identityService';
-import { IOTA_NODE_URL, DEVNET } from '../config';
-import type { IdentityConfig } from '../models/types/identity';
+import {
+    init,
+    Client,
+    Config,
+    Digest,
+    Document,
+    KeyCollection,
+    KeyPair,
+    KeyType,
+    Network,
+    VerificationMethod
+} from "@iota/identity-wasm/web";
 
-const config: IdentityConfig = {
-	  node: IOTA_NODE_URL,
-	  network: DEVNET ? 'dev' : 'main',
-};
+// Run the tutorial
+run()
+    .then(() => console.log("Complete!"))
+    .catch(() => console.error(err));
 
-export default () => {
-      ServiceFactory.register('identity', () => new IdentityService(config));  
+async function run() {
+    // Ensure the WASM library is initialized. 
+    // Note: the library is cached after first initialization.
+    await init("/wasm/identity_wasm_bg.wasm");
+
+    const client = await createClient();
+    const device = await createIdentity(client);
+
+    console.log(device.doc.toJSON());
 }
-```
 
-2. Generate a new Identity by invoking the **`createIdentity()`** function from the **`identityService`**.
-
-```js
-import { ServiceFactory } from '../factories/serviceFactory';
-
-try {
-      const identityService = ServiceFactory.get('identity');
-
-      const identity = await identityService.createIdentity();
-
-      await identityService.storeIdentity('did', identity);
-} catch (err) {
-      error.set('Error creating identity.');
+async function createClient() {
+    // Configure IOTA Identity client to connect to the IOTA mainnet.
+    const cfg = Config.fromNetwork(Network.try_from_name("main"));
+    cfg.setNode("https://chrysalis-nodes.iota.org");
+    cfg.setPermanode("https://chrysalis-chronicle.iota.org/api/mainnet/");
+    
+    // Return the client.
+    return Client.fromConfig(cfg);
 }
-```
 
-3. You can also load an existing Identity from internal Application Storage
+async function createIdentity(client) {
+    // Generate a new key pair and DID document for the new identity.
+    const authKeyPair = new KeyPair(KeyType.Ed25519);
+    const doc = new Document(authKeyPair, client.network().toString());
 
-```js
-import { onMount } from 'svelte';
-import { ServiceFactory } from './factories/serviceFactory';
+    // Add a Merkle Key Collection method for the identity, so compromised keys can be revoked.
+    const keys = new KeyCollection(KeyType.Ed25519, 8);
+    const method = VerificationMethod.createMerkleKey(Digest.Sha256, doc.id, keys, "key-collection");
 
-onMount(async () => {
-      const identityService = ServiceFactory.get('identity');
+    // Add to the DID Document as a general-purpose verification method.
+    doc.insertMethod(method, "VerificationMethod");
 
-      const storedIdentity = await identityService.retrieveIdentity();
-});
+    // Sign the DID document with the auth key.
+    doc.sign(authKeyPair);
+
+    // Publish the document to the Tangle.
+    await client.publishDocument(doc);
+
+    // Return the new identity data
+    return { authKeyPair, doc, keys, method };
+}
 ```

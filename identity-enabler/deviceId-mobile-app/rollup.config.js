@@ -55,6 +55,10 @@ export default {
                 {
                     src: "node_modules/@iota/identity-wasm/web/identity_wasm_bg.wasm",
                     dest: "public/wasm"
+                },
+                {
+                    src: "../../docs",
+                    dest: "public"
                 }
             ]
         }),

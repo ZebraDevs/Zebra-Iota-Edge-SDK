@@ -6,7 +6,7 @@ export const IOTA_NODE_URL = "https://chrysalis-nodes.iota.org";
 
 export const IOTA_PERMANODE_URL = "https://chrysalis-chronicle.iota.org/api/mainnet/";
 
-export const TUTORIAL_BASE_URL = "https://zebradevs.github.io/Zebra-Iota-Edge-SDK/docs";
+export const TUTORIAL_BASE_URL = "/docs";
 
 export const IDENTITY_WASM_PATH = "/wasm/identity_wasm_bg.wasm";
 

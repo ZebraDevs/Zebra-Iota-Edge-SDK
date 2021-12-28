@@ -35,17 +35,6 @@
         <i on:click={onClose} class="icon-cross" />
     </div>
     <section>
-        <div class="box-wrapper">
-            <span style="font-weight: 600;"
-                >This app doesn’t support adding a new credential, but here’s how it works.</span
-            >
-        </div>
-        <p>
-            In the IOTA Identity framework, we have implemented the DID standard according to the iota DID Method
-            Specification, which can be viewed here.
-            <br /><br />
-            An example of DID conforming to the IOTA method specification:
-        </p>
         <div class="highlightjs-component">
             <Markdown markdown={code} language="javascript" />
         </div>
@@ -92,35 +81,13 @@
         background: white;
     }
 
-    section > p {
-        font-size: 2vh;
-        margin: 0 2.3vh;
-    }
-
-    .box-wrapper {
-        background: #eeeeee;
-        border-radius: 4px;
-        padding: 2.15vh 1.15vh;
-        margin: 2.4vh 2.3vh;
-        font-size: 2vh;
-        line-height: 2.3vh;
-    }
-
-    .box-wrapper > span {
-        overflow-wrap: break-word;
-        word-wrap: break-word;
-        hyphens: auto;
-        font-size: 2vh;
-        line-height: 2.3vh;
-    }
-
     .highlightjs-component {
         overflow-wrap: break-word;
         word-wrap: break-word;
         overflow-x: auto;
-        background: #eeeeee;
         border-radius: 4px;
-        padding: 0 1.15vh;
-        margin: 2.4vh 2.3vh;
+        background-color: #eee;
+        padding: 1rem;
+        margin: 1rem;
     }
 </style>
