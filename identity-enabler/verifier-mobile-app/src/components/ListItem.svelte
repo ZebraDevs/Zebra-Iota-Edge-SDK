@@ -30,7 +30,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 0.8rem;
+        padding: 0.65rem 0.8rem;
     }
 
     li > i {
