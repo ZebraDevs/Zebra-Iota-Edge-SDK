@@ -3,15 +3,14 @@
     import bwipjs from "bwip-js";
     import { ServiceFactory } from "../factories/serviceFactory";
     import { loadingScreen, modalStatus } from "../lib/store";
-    import DevInfo from "./DevInfo.svelte";
     import { Plugins } from "@capacitor/core";
     import { showAlert, multiClick } from "../lib/ui/helpers";
     import type { IdentityService } from "../services/identityService";
     import CredentialHeader from "../components/CredentialHeader.svelte";
+    import { navigate } from "svelte-routing";
 
     const { App } = Plugins;
     let presentationJSON = "";
-    let showTutorial = false;
 
     const credential = window.history.state.credential;
     const identityService = ServiceFactory.get<IdentityService>("identity");
@@ -63,16 +62,11 @@
             return;
         }
 
-        if (showTutorial) {
-            showTutorial = false;
-            return;
-        }
-
         window.history.back();
     }
 
     function onClickDev() {
-        showTutorial = true;
+        navigate("/tutorial");
     }
 
     function showJSON() {
@@ -85,10 +79,6 @@
 </script>
 
 <main>
-    {#if showTutorial}
-        <DevInfo page="Presentation" bind:showTutorial />
-    {/if}
-
     <header>
         <div class="options-wrapper">
             <i on:click={goBack} class="icon-chevron" />

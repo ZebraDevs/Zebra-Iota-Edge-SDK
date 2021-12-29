@@ -9,7 +9,6 @@
     import Name from "./pages/Name.svelte";
     import Credential from "./pages/Credential.svelte";
     import DeviceCredential from "./pages/DeviceCredential.svelte";
-    import DevInfo from "./pages/DevInfo.svelte";
     import Scan from "./pages/Scan.svelte";
     import Content from "./components/modal/Content.svelte";
     import Modal from "./components/modal/Index.svelte";
@@ -19,6 +18,7 @@
     import InvalidCredential from "./pages/InvalidCredential.svelte";
     import { handleScannerData } from "./lib/scan";
     import FullScreenLoader from "./components/FullScreenLoader.svelte";
+    import Tutorial from "./pages/Tutorial.svelte";
 
     let url = window.location.pathname;
     let displayHome = false;
@@ -80,9 +80,9 @@
             <Route path="/credential" component={Credential} />
             <Route path="/devicecredential" component={DeviceCredential} />
             <Route path="/scan" component={Scan} />
-            <Route path="/devinfo" component={DevInfo} />
             <Route path="/createPresentation" component={CreatePresentation} />
             <Route path="/invalid" component={InvalidCredential} />
+            <Route path="/tutorial" component={Tutorial} />
         </div>
     </Router>
     <Modal>

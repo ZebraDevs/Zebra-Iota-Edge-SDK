@@ -1,7 +1,6 @@
 <script lang="ts">
     import { Router, Route } from "svelte-routing";
     import Home from "./pages/Home.svelte";
-    import DevInfo from "./pages/DevInfo.svelte";
     import Scan from "./pages/Scan.svelte";
     import InvalidCredential from "./pages/InvalidCredential.svelte";
     import { onMount } from "svelte";
@@ -11,6 +10,7 @@
     import { showAlert } from "./lib/ui/helpers";
     import Credential from "./pages/Credential.svelte";
     import Landing from "./pages/Landing.svelte";
+    import Tutorial from "./pages/Tutorial.svelte";
 
     let url = window.location.pathname;
 
@@ -51,10 +51,10 @@
             {/if}
             <Route path="/landing" component={Landing} />
             <Route path="/home" component={Home} />
-            <Route path="/devinfo" component={DevInfo} />
             <Route path="/invalid" component={InvalidCredential} />
             <Route path="/scan" component={Scan} />
             <Route path="/credential" component={Credential} />
+            <Route path="/tutorial" component={Tutorial} />
         </div>
     </Router>
 </main>

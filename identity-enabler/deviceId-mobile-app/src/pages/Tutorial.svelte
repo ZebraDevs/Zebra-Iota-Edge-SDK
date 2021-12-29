@@ -2,34 +2,30 @@
     import { onMount } from "svelte";
     import Markdown from "../components/Markdown.svelte";
     import { getMarkdownContent } from "../lib/helpers";
-    import { TUTORIAL_BASE_URL } from "../config";
+    import { TUTORIAL_URL } from "../config";
     import { loadingScreen } from "../lib/store";
     import { showAlert } from "../lib/ui/helpers";
-
-    export let page = "";
-    export let showTutorial: boolean;
 
     let code = "";
 
     onMount(async () => {
         loadingScreen.set("Loading...");
         try {
-            code = await getMarkdownContent(`${TUTORIAL_BASE_URL}/${page}.md`);
+            code = await getMarkdownContent(TUTORIAL_URL);
         } catch (err) {
-            await showAlert("Error", "Error getting tutorial. Please try again.");
+            await showAlert("Error", `Error loading tutorial: ${err.message}`);
         }
         loadingScreen.set();
     });
 
-    function onClose() {
-        showTutorial = false;
+    function onBack() {
+        window.history.back();
     }
 </script>
 
 <main>
     <div class="header-wrapper">
-        <span>{page.toUpperCase()}</span>
-        <i on:click={onClose} class="icon-cross" />
+        <i on:click={onBack} class="icon-chevron" />
     </div>
     <section>
         <div class="highlightjs-component">
@@ -42,7 +38,6 @@
     main {
         height: 100%;
         width: 100%;
-        background: white;
         display: flex;
         flex-direction: column;
         position: absolute;
@@ -50,31 +45,15 @@
     }
 
     .header-wrapper {
-        text-align: center;
         display: flex;
-        justify-content: center;
+        justify-content: space-between;
         align-items: center;
         background: black;
-        padding: 4vh 17.7vh;
-        position: relative;
+        padding: 1.2rem;
     }
 
-    .header-wrapper > span {
-        font-family: "Proxima Nova", sans-serif;
-        font-weight: 500;
-        font-size: 2vh;
-        line-height: 2.3vh;
-        color: #fff;
-        white-space: nowrap;
-    }
-
-    i.icon-cross {
-        position: absolute;
-        right: 3.4vh;
-    }
-
-    section {
-        background: white;
+    .icon-chevron {
+        color: white;
     }
 
     .highlightjs-component {
@@ -84,6 +63,5 @@
         border-radius: 4px;
         background-color: #eee;
         padding: 1rem;
-        margin: 1rem;
     }
 </style>

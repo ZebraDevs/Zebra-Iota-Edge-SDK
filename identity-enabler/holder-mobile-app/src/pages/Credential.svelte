@@ -2,15 +2,14 @@
     import { fly } from "svelte/transition";
     import Button from "../components/Button.svelte";
     import ObjectList from "../components/ObjectList.svelte";
-    import DevInfo from "./DevInfo.svelte";
     import { modalStatus } from "../lib/store";
     import { showAlert } from "../lib/ui/helpers";
     import { onMount } from "svelte";
     import { Plugins } from "@capacitor/core";
     import CredentialHeader from "../components/CredentialHeader.svelte";
+    import { navigate } from "svelte-routing";
 
     const { App } = Plugins;
-    let showTutorial = false;
     const credential = window.history.state.credential;
 
     async function share() {
@@ -32,45 +31,34 @@
             return;
         }
 
-        if (showTutorial) {
-            showTutorial = false;
-            return;
-        }
-
         window.history.back();
     }
 
     function onClickDev() {
-        showTutorial = true;
+        navigate("/tutorial");
     }
 
     onMount(() => App.addListener("backButton", goBack).remove);
 </script>
 
 <main transition:fly={{ x: 500, duration: 500 }}>
-    {#if showTutorial}
-        <DevInfo page="Credential" bind:showTutorial />
-    {/if}
-
-    {#if !showTutorial}
-        <div class="header-wrapper">
-            <div class="options-wrapper">
-                <i on:click={goBack} class="icon-chevron" />
-                <i on:click={onClickDev} class="icon-code" />
-            </div>
-            <header>
-                <CredentialHeader {credential} />
-            </header>
+    <div class="header-wrapper">
+        <div class="options-wrapper">
+            <i on:click={goBack} class="icon-chevron" />
+            <i on:click={onClickDev} class="icon-code" />
         </div>
-        <section>
-            <ObjectList object={credential.credentialSubject} />
-        </section>
-        <footer>
-            <Button label="Share credential" onClick={share}>
-                <i class="icon-share" />
-            </Button>
-        </footer>
-    {/if}
+        <header>
+            <CredentialHeader {credential} />
+        </header>
+    </div>
+    <section>
+        <ObjectList object={credential.credentialSubject} />
+    </section>
+    <footer>
+        <Button label="Share credential" onClick={share}>
+            <i class="icon-share" />
+        </Button>
+    </footer>
 </main>
 
 <style>

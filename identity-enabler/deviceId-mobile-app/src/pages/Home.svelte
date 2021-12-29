@@ -3,15 +3,12 @@
     import { onMount } from "svelte";
     import { navigate } from "svelte-routing";
     import ListItem from "../components/ListItem.svelte";
-    import DevInfo from "./DevInfo.svelte";
     import { account, resetAllStores, credentials } from "../lib/store";
     import { ServiceFactory } from "../factories/serviceFactory";
     import type { IdentityService } from "../services/identityService";
     import { wait } from "../lib/helpers";
     import { BACK_BUTTON_EXIT_GRACE_PERIOD } from "../config";
     import { shortenDID } from "../lib/ui/helpers";
-
-    let showTutorial = false;
 
     const { App, Toast, Modals } = Plugins;
 
@@ -24,11 +21,6 @@
     });
 
     async function onBack() {
-        if (showTutorial) {
-            showTutorial = false;
-            return;
-        }
-
         if (exitOnBack) {
             // From the home screen, navigating back twice should exit the app
             App.exitApp();
@@ -50,7 +42,7 @@
     }
 
     function onClickDev() {
-        showTutorial = true;
+        navigate("/tutorial");
     }
 
     async function onClickReset() {
@@ -77,10 +69,6 @@
 </script>
 
 <main>
-    {#if showTutorial}
-        <DevInfo page="Identity" bind:showTutorial />
-    {/if}
-
     {#if $account}
         <header>
             <div class="options-wrapper">
