@@ -1,7 +1,7 @@
 <script>
     import { fly } from "svelte/transition";
     import { Plugins } from "@capacitor/core";
-    import { updateStorage } from "../lib/store";
+    import { credentials } from "../lib/store";
     import Button from "../components/Button.svelte";
     import ObjectList from "../components/ObjectList.svelte";
     import { isExpired } from "../lib/helpers";
@@ -23,7 +23,10 @@
             message: "Are you sure you want to delete the credential?"
         });
         if (confirmRet.value) {
-            await updateStorage("credentials", { [credential.type[1].split(/\b/)[0].toLowerCase()]: "" });
+            credentials.update(current => {
+                current[credential.type[1].split(/\b/)[0].toLowerCase()] = "";
+                return current;
+            });
             // ensure impossible to navigate back to a deleted credential page
             navigate("/home", { replace: true });
         }

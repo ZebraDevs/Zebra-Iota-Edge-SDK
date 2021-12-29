@@ -4,7 +4,7 @@ import { ServiceFactory } from "../factories/serviceFactory";
 import type { IInvalidCredentialPageState } from "../models/types/IInvalidCredentialPageState";
 import type { IdentityService } from "../services/identityService";
 import { isExpired } from "./helpers";
-import { loadingScreen, updateStorage } from "./store";
+import { loadingScreen, credentials } from "./store";
 import { playAudio } from "./ui/helpers";
 
 /**
@@ -64,7 +64,10 @@ export async function handleScannerData(decodedText: string): Promise<void> {
         return;
     }
 
-    await updateStorage("credentials", { [credential.type[1].split(/\b/)[0].toLowerCase()]: credential });
+    credentials.update(current => {
+        current[credential.type[1].split(/\b/)[0].toLowerCase()] = credential;
+        return current;
+    });
     loadingScreen.set();
     const { Toast } = Plugins;
     await Toast.show({
