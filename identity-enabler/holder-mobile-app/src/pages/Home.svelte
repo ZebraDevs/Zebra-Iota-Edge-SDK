@@ -244,6 +244,6 @@
         width: 100%;
         bottom: 0;
         padding: 2.1vh 0 4.1vh 0;
-        z-index: 3;
+        z-index: 1;
     }
 </style>

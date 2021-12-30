@@ -77,7 +77,6 @@
         line-height: 16px;
         color: #f8f8f8;
         margin: 0;
-        z-index: 1;
     }
 
     .options-wrapper {

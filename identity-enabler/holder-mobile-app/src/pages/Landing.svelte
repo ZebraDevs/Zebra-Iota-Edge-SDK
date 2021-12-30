@@ -116,7 +116,7 @@
                 <div
                     class="content"
                     in:fly={mounted ? { ...getInAnimation(), duration: 400, opacity: 0 } : false}
-                    out:fly={{ ...getOutAnimation(), duration: 400, opacity: 0 }}
+                    out:fly|local={{ ...getOutAnimation(), duration: 400, opacity: 0 }}
                 >
                     <img src="/img/{info[$landingIndex].image}" alt={info[$landingIndex].image.replace(/\.svg$/, "")} />
                     <div class="dots">

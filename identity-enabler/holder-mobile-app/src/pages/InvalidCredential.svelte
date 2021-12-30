@@ -50,7 +50,6 @@
     }
 
     section {
-        z-index: 2;
         height: 100%;
         width: 100%;
         display: flex;
@@ -60,7 +59,6 @@
     }
 
     section > p {
-        z-index: 2;
         position: relative;
         justify-content: center;
         align-items: center;
@@ -84,6 +82,6 @@
         position: fixed;
         width: 100%;
         bottom: 0;
-        z-index: 6;
+        z-index: 1;
     }
 </style>

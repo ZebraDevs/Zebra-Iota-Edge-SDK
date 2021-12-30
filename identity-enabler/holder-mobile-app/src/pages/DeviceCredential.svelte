@@ -123,7 +123,6 @@
 
     section {
         margin: 0 7vw;
-        z-index: 0;
     }
 
     footer {
