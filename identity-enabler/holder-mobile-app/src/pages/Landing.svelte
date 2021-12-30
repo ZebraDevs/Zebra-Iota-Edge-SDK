@@ -9,6 +9,7 @@
     import { Plugins } from "@capacitor/core";
     import { wait } from "../lib/helpers";
     import { BACK_BUTTON_EXIT_GRACE_PERIOD } from "../config";
+    import PageTransition from "../components/PageTransition.svelte";
 
     const { App, Toast } = Plugins;
     let mounted;
@@ -104,33 +105,36 @@
     });
 </script>
 
-<main id="wrapper">
-    <div class="headerContainer">
-        <Header text={info[$landingIndex].header} />
-    </div>
-    <div class="contentContainer">
-        {#each [$landingIndex] as count (count)}
-            <div
-                class="content"
-                in:fly={mounted ? { ...getInAnimation(), duration: 400, opacity: 0 } : false}
-                out:fly={{ ...getOutAnimation(), duration: 400, opacity: 0 }}
-            >
-                <img src="/img/{info[$landingIndex].image}" alt={info[$landingIndex].image.replace(/\.svg$/, "")} />
-                <div class="dots">
-                    {#each Array(3)
-                        .fill()
-                        .map((_, i) => i) as idx}
-                        <span class:active={idx === $landingIndex} />
-                    {/each}
+
+<PageTransition>
+    <main id="wrapper">
+        <div class="headerContainer">
+            <Header text={info[$landingIndex].header} />
+        </div>
+        <div class="contentContainer">
+            {#each [$landingIndex] as count (count)}
+                <div
+                    class="content"
+                    in:fly={mounted ? { ...getInAnimation(), duration: 400, opacity: 0 } : false}
+                    out:fly={{ ...getOutAnimation(), duration: 400, opacity: 0 }}
+                >
+                    <img src="/img/{info[$landingIndex].image}" alt={info[$landingIndex].image.replace(/\.svg$/, "")} />
+                    <div class="dots">
+                        {#each Array(3)
+                            .fill()
+                            .map((_, i) => i) as idx}
+                            <span class:active={idx === $landingIndex} />
+                        {/each}
+                    </div>
+                    <p class="info">{info[$landingIndex].content}</p>
                 </div>
-                <p class="info">{info[$landingIndex].content}</p>
-            </div>
-        {/each}
-    </div>
-    <footer class="footerContainer">
-        <Button label={info[$landingIndex].footer} onClick={nextLanding} />
-    </footer>
-</main>
+            {/each}
+        </div>
+        <footer class="footerContainer">
+            <Button label={info[$landingIndex].footer} onClick={nextLanding} />
+        </footer>
+    </main>
+</PageTransition>
 
 <style>
     main {

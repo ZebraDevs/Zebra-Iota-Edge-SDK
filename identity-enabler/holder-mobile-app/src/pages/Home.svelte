@@ -19,6 +19,7 @@
     import { get } from "svelte/store";
     import { CredentialType } from "../models/types/CredentialType";
     import { credentialDisplayMap } from "../lib/ui/credentialDisplayMap";
+    import PageTransition from "../components/PageTransition.svelte";
 
     const { App, Toast, Modals } = Plugins;
 
@@ -134,49 +135,51 @@
     }
 </script>
 
-<main>
-    {#if $account}
-        <header>
-            <div class="options-wrapper">
-                <i on:click={onClickReset} class="icon-reset" />
-                <i on:click={onClickDev} class="icon-code" />
-            </div>
-            <div class="avatar" />
-        </header>
-        <name-wrapper>
-            <p>{$account.name}</p>
-        </name-wrapper>
-        <section>
-            {#each localCredentials as credential}
-                <div transition:slide class="list">
-                    <ListItem
-                        icon="credential"
-                        onClick={() => navigate("/credential", { state: { credential } })}
-                        heading={credentialDisplayMap[credential.type[1]]}
-                        subheading="Issued by {credential.issuer.name ??
-                            shortenDID(credential.issuer.id ?? credential.issuer)}"
-                    />
+<PageTransition>
+    <main>
+        {#if $account}
+            <header>
+                <div class="options-wrapper">
+                    <i on:click={onClickReset} class="icon-reset" />
+                    <i on:click={onClickDev} class="icon-code" />
                 </div>
-            {/each}
-            {#if localCredentials.length < 3}
-                <div transition:slide class="list">
-                    <ListItem
-                        icon="add"
-                        iconColor="#00a7ff"
-                        arrow={false}
-                        onClick={generateCredential}
-                        heading="Add new credential"
-                    />
-                </div>
-            {/if}
-        </section>
-        <footer>
-            <Button style="height: 55px; width: 55px; border-radius: 50%;" onClick={scan}>
-                <i class="icon-scan" />
-            </Button>
-        </footer>
-    {/if}
-</main>
+                <div class="avatar" />
+            </header>
+            <name-wrapper>
+                <p>{$account.name}</p>
+            </name-wrapper>
+            <section>
+                {#each localCredentials as credential}
+                    <div transition:slide|local class="list">
+                        <ListItem
+                            icon="credential"
+                            onClick={() => navigate("/credential", { state: { credential } })}
+                            heading={credentialDisplayMap[credential.type[1]]}
+                            subheading="Issued by {credential.issuer.name ??
+                                shortenDID(credential.issuer.id ?? credential.issuer)}"
+                        />
+                    </div>
+                {/each}
+                {#if localCredentials.length < 3}
+                    <div transition:slide|local class="list">
+                        <ListItem
+                            icon="add"
+                            iconColor="#00a7ff"
+                            arrow={false}
+                            onClick={generateCredential}
+                            heading="Add new credential"
+                        />
+                    </div>
+                {/if}
+            </section>
+            <footer>
+                <Button style="height: 64px; width: 64px; border-radius: 50%;" onClick={scan}>
+                    <i class="icon-scan" />
+                </Button>
+            </footer>
+        {/if}
+    </main>
+</PageTransition>
 
 <style>
     main {
@@ -199,7 +202,6 @@
         align-content: space-between;
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
-        z-index: 2;
     }
 
     .avatar {

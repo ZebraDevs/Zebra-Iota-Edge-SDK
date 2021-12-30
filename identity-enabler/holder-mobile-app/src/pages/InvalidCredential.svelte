@@ -1,12 +1,11 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import { fly } from "svelte/transition";
     import Button from "../components/Button.svelte";
     import { playAudio } from "../lib/ui/helpers";
     import type { IInvalidCredentialPageState } from "../models/types/IInvalidCredentialPageState";
+    import PageTransition from "../components/PageTransition.svelte";
 
     const PLAY_DELAY = 400;
-
     const state: IInvalidCredentialPageState | null = window.history?.state;
 
     onMount(async () => {
@@ -19,23 +18,25 @@
         }
     });
 
-    function onDone() {
+    function goBack() {
         window.history.back();
     }
 </script>
 
-<main transition:fly={{ y: 200, duration: 500 }}>
-    <section>
-        <i class="icon-cross" />
-        <p>{state?.message ?? "Invalid credential"}</p>
-        {#if state?.detail}
-            <small>{state.detail}</small>
-        {/if}
-    </section>
-    <footer>
-        <Button label="Done" onClick={onDone} />
-    </footer>
-</main>
+<PageTransition backwards={true}>
+    <main>
+        <section>
+            <i class="icon-cross" />
+            <p>{state?.message ?? "Invalid credential"}</p>
+            {#if state?.detail}
+                <small>{state.detail}</small>
+            {/if}
+        </section>
+        <footer>
+            <Button label="Done" onClick={goBack} />
+        </footer>
+    </main>
+</PageTransition>
 
 <style>
     main {
