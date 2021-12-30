@@ -105,7 +105,6 @@
     });
 </script>
 
-
 <PageTransition>
     <main id="wrapper">
         <div class="headerContainer">

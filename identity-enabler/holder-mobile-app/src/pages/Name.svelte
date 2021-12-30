@@ -61,7 +61,6 @@
     }
 </script>
 
-
 <PageTransition {backwards}>
     <main bind:this={background} on:click={handleOuterClick}>
         <div class="content">

@@ -6,7 +6,7 @@
     $: flyParams = {
         x: backwards ? window.innerWidth : -window.innerWidth,
         duration: 400,
-        opacity: 1,
+        opacity: 1
     };
 </script>
 
@@ -16,7 +16,7 @@
 
 <style>
     div {
-        z-index: 10;
+        z-index: 5;
         width: 100%;
         height: 100%;
         position: absolute;
