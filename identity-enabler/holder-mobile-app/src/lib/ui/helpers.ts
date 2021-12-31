@@ -155,7 +155,7 @@ export function flattenClaim(object: Record<string, any>): { [key: string]: stri
 
 /*
  * Wraps fly transition to ensure element is on top during outro or intro.
- *  
+ *
  * @param node
  * @param opts
  */

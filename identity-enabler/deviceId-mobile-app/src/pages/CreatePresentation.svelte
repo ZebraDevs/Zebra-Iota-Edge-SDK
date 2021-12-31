@@ -1,10 +1,15 @@
 <script lang="ts">
     import { onMount } from "svelte";
+    import { Plugins } from "@capacitor/core";
     import bwipjs from "bwip-js";
     import { loadingScreen } from "../lib/store";
     import { showAlert, multiClick, getDateString, getTimeString } from "../lib/ui/helpers";
     import CredentialHeader from "../components/CredentialHeader.svelte";
     import { navigate } from "svelte-routing";
+    import PageTransition from "../components/PageTransition.svelte";
+
+    const { App } = Plugins;
+    let backwards = false;
 
     const vp = window.history.state.vp;
     const expiry = vp.verifiableCredential.expirationDate
@@ -22,6 +27,7 @@
         });
     }
 
+    onMount(() => App.addListener("backButton", goBack).remove);
     onMount(async () => {
         loadingScreen.set("Generating DataMatrix...");
         try {
@@ -33,6 +39,11 @@
         loadingScreen.set();
     });
 
+    function goBack() {
+        backwards = true;
+        window.history.back();
+    }
+
     function onClickDev() {
         navigate("/tutorial");
     }
@@ -42,25 +53,27 @@
     }
 </script>
 
-<main>
-    <header>
-        <div class="options-wrapper">
-            <i on:click|once={() => window.history.back()} class="icon-chevron" />
-            <i on:click={onClickDev} class="icon-code" />
+<PageTransition {backwards}>
+    <main>
+        <header>
+            <div class="options-wrapper">
+                <i on:click|once={goBack} class="icon-chevron" />
+                <i on:click={onClickDev} class="icon-code" />
+            </div>
+            <CredentialHeader credential={vp.verifiableCredential} hideDetails={true} color="white" />
+        </header>
+
+        <div class="presentation-wrapper">
+            <canvas id="presentation" use:multiClick on:multiClick={showJSON} />
         </div>
-        <CredentialHeader credential={vp.verifiableCredential} hideDetails={true} color="white" />
-    </header>
 
-    <div class="presentation-wrapper">
-        <canvas id="presentation" use:multiClick on:multiClick={showJSON} />
-    </div>
-
-    <footer class="footerContainer">
-        {#if expiry}
-            <p>Valid until {getDateString(expiry)} at {getTimeString(expiry)}</p>
-        {/if}
-    </footer>
-</main>
+        <footer class="footerContainer">
+            {#if expiry}
+                <p>Valid until {getDateString(expiry)} at {getTimeString(expiry)}</p>
+            {/if}
+        </footer>
+    </main>
+</PageTransition>
 
 <style>
     main {

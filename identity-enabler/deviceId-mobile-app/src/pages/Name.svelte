@@ -7,12 +7,17 @@
     import { ServiceFactory } from "../factories/serviceFactory";
     import { account, hasSetupAccount, loadingScreen } from "../lib/store";
     import { showAlert } from "../lib/ui/helpers";
+    import PageTransition from "../components/PageTransition.svelte";
+    import { onMount } from "svelte";
 
-    const { Keyboard } = Plugins;
+    const { Keyboard, App } = Plugins;
     let name = "";
     let background;
+    let backwards = false;
 
-    function handleOuterClick() {
+    onMount(() => App.addListener("backButton", goBack).remove);
+
+    function handleOuterClick(event) {
         if (event.target === background) {
             event.preventDefault();
 
@@ -48,29 +53,36 @@
         loadingScreen.set();
         navigate("/home");
     }
+
+    function goBack() {
+        backwards = true;
+        window.history.back();
+    }
 </script>
 
-<main bind:this={background} on:click={handleOuterClick}>
-    <div class="content">
-        <div>
-            <Header text="Set the name of the device" />
+<PageTransition {backwards}>
+    <main bind:this={background} on:click={handleOuterClick}>
+        <div class="content">
+            <div>
+                <Header text="Set the name of the device" />
+            </div>
+            <div>
+                <img src="/img/notepad.svg" alt="notepad" />
+            </div>
+            <div>
+                <TextField bind:value={name} placeholder="Device name" />
+            </div>
         </div>
-        <div>
-            <img src="/img/notepad.svg" alt="notepad" />
-        </div>
-        <div>
-            <TextField bind:value={name} placeholder="Device name" />
-        </div>
-    </div>
-    <footer>
-        <Button
-            loadingText={"Generating identity"}
-            disabled={name.length === 0 || Boolean($loadingScreen)}
-            label="Next"
-            onClick={save}
-        />
-    </footer>
-</main>
+        <footer>
+            <Button
+                loadingText={"Generating identity"}
+                disabled={name.length === 0 || Boolean($loadingScreen)}
+                label="Next"
+                onClick={save}
+            />
+        </footer>
+    </main>
+</PageTransition>
 
 <style>
     main {

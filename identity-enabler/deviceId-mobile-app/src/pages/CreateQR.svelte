@@ -1,7 +1,6 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import { navigate } from "svelte-routing";
-    import { fly } from "svelte/transition";
     import { Plugins } from "@capacitor/core";
     import bwipjs from "bwip-js";
     import { ServiceFactory } from "../factories/serviceFactory";
@@ -9,13 +8,16 @@
     import { showAlert, multiClick } from "../lib/ui/helpers";
     import { loadingScreen } from "../lib/store";
     import type { IdentityService } from "../services/identityService";
+    import PageTransition from "../components/PageTransition.svelte";
 
-    const { Device } = Plugins;
+    const { App, Device } = Plugins;
 
     const identityService = ServiceFactory.get<IdentityService>("identity");
     const name = window.history.state.name;
     let credentialSubject;
+    let backwards = false;
 
+    onMount(() => App.addListener("backButton", goBack).remove);
     onMount(async () => {
         loadingScreen.set("Generating QR Code...");
 
@@ -59,6 +61,16 @@
         }
     }
 
+    function goBack() {
+        if ($modalStatus.active) {
+            modalStatus.set({ active: false, type: null });
+            return;
+        }
+
+        backwards = true;
+        window.history.back();
+    }
+
     function requestCredential() {
         navigate("/requestcredential");
     }
@@ -68,32 +80,34 @@
     }
 </script>
 
-<main>
-    <div class="wrapper" transition:fly={{ x: 500, duration: 500 }}>
-        <header>
-            <i on:click|once={() => window.history.back()} class="icon-chevron" />
-            <p>Request Device DID credential</p>
-        </header>
-        <div class="subheader">
-            <p>Share device claims with the Organization ID holder app</p>
+<PageTransition {backwards}>
+    <main>
+        <div class="wrapper">
+            <header>
+                <i on:click|once={goBack} class="icon-chevron" />
+                <p>Request Device DID credential</p>
+            </header>
+            <div class="subheader">
+                <p>Share device claims with the Organization ID holder app</p>
+            </div>
+            <div class="qr-wrapper">
+                <canvas id="device-claims" use:multiClick on:multiClick={showJSON} />
+            </div>
+            <div class="info">
+                <pre>Scan this QR code with the Holder app
+                    to continue</pre>
+            </div>
+            <footer>
+                <Button
+                    style="height: 64px;"
+                    loadingText={"Generating identity"}
+                    label="Next"
+                    onClick={requestCredential}
+                />
+            </footer>
         </div>
-        <div class="qr-wrapper">
-            <canvas id="device-claims" use:multiClick on:multiClick={showJSON} />
-        </div>
-        <div class="info">
-            <pre>Scan this QR code with the Holder app
-                to continue</pre>
-        </div>
-        <footer>
-            <Button
-                style="height: 64px;"
-                loadingText={"Generating identity"}
-                label="Next"
-                onClick={requestCredential}
-            />
-        </footer>
-    </div>
-</main>
+    </main>
+</PageTransition>
 
 <style>
     main {

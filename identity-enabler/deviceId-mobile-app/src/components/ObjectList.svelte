@@ -31,7 +31,6 @@
         text-align: left;
         /* overflow: auto; */
         position: relative;
-        z-index: 5;
         -webkit-overflow-scrolling: touch;
     }
 
