@@ -1,6 +1,5 @@
 <script lang="ts">
     import { navigate } from "svelte-routing";
-    import { fly } from "svelte/transition";
     import { __ANDROID__ } from "../lib/platforms";
     import Scanner from "../components/Scanner.svelte";
     import { BarcodeFormat, BrowserMultiFormatReader, DecodeHintType } from "@zxing/library";
