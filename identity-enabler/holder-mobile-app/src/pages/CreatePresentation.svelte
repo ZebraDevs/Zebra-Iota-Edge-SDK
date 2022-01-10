@@ -37,7 +37,7 @@
                 credential
             );
             presentationJSON = JSON.stringify(verifiablePresentation, null, 2);
-            // Fixes a bug where loading screen does not appear after the first time this 
+            // Fixes a bug where loading screen does not appear after the first time this
             // page gets mounted.
             await wait(0);
             createMatrix(JSON.stringify(verifiablePresentation));

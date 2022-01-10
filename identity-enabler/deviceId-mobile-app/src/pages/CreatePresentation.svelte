@@ -26,7 +26,7 @@
     onMount(async () => {
         loadingScreen.set("Generating DataMatrix...");
         try {
-            // Fixes a bug where loading screen does not appear after the first time this 
+            // Fixes a bug where loading screen does not appear after the first time this
             // page gets mounted.
             await wait(0);
             createMatrix();
