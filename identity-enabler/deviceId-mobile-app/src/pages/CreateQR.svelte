@@ -44,11 +44,9 @@
     async function createMatrix() {
         const qr = get(qrCodeDataUrl);
         if (qr) {
-            console.log("Found existing code");
             return;
         }
 
-        console.log("Creating code");
         loadingScreen.set("Generating QR Code...");
         const canvas = document.createElement("canvas");
         bwipjs.toCanvas(canvas, {
