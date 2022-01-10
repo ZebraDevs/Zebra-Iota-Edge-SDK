@@ -7,6 +7,8 @@
     import { ServiceFactory } from "../factories/serviceFactory";
     import Button from "../components/Button.svelte";
     import { showAlert, multiClick } from "../lib/ui/helpers";
+    import { loadingScreen, qrCodeDataUrl } from "../lib/store";
+    import { get } from "svelte/store";
     import type { IdentityService } from "../services/identityService";
 
     const { Device } = Plugins;
@@ -32,26 +34,33 @@
                 },
                 osVersion
             };
-            await createMatrix(JSON.stringify(credentialSubject));
+            await createMatrix();
         } catch (err) {
             console.error(err);
             await showAlert("Error", err.message);
         }
     });
 
-    async function createMatrix(content: string) {
-        try {
-            // The return value is the canvas element
-            bwipjs.toCanvas("device-claims", {
-                bcid: "qrcode",
-                text: content,
-                height: 50,
-                width: 50,
-                backgroundcolor: "ffffff"
-            });
-        } catch (e) {
-            console.error(e);
+    async function createMatrix() {
+        const qr = get(qrCodeDataUrl);
+        if (qr) {
+            console.log("Found existing code");
+            return;
         }
+
+        console.log("Creating code");
+        loadingScreen.set("Generating QR Code...");
+        const canvas = document.createElement("canvas");
+        bwipjs.toCanvas(canvas, {
+            bcid: "qrcode",
+            text: JSON.stringify(credentialSubject),
+            height: 50,
+            width: 50,
+            backgroundcolor: "ffffff"
+        });
+
+        qrCodeDataUrl.set(canvas.toDataURL("image/png"));
+        loadingScreen.set();
     }
 
     function requestCredential() {
@@ -73,7 +82,15 @@
             <p>Share device claims with the Organization ID holder app</p>
         </div>
         <div class="qr-wrapper">
-            <canvas id="device-claims" use:multiClick on:multiClick={showJSON} />
+            {#if $qrCodeDataUrl}
+                <img
+                    id="device-claims"
+                    alt="Device claims QR code"
+                    use:multiClick
+                    on:multiClick={showJSON}
+                    src={$qrCodeDataUrl}
+                />
+            {/if}
         </div>
         <div class="info">
             <pre>Scan this QR code with the Holder app

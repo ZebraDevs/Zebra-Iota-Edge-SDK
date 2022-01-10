@@ -28,10 +28,13 @@ export const modalStatus = writable<ModalStatus>(modalStatusInitialState());
 
 export const loadingScreen = writable<string | void>();
 
+export const qrCodeDataUrl = persistent<string | void>("qrCodeDataUrl", undefined);
+
 export function resetAllStores() {
     hasSetupAccount.set(hasSetupAccountInitialState());
     credentials.set(credentialsInitialState());
     account.set(accountInitialState());
     modalStatus.set(modalStatusInitialState());
     loadingScreen.set();
+    qrCodeDataUrl.set();
 }
