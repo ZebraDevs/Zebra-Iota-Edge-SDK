@@ -8,6 +8,7 @@
     import CredentialHeader from "../components/CredentialHeader.svelte";
     import { navigate } from "svelte-routing";
     import { CredentialType } from "../models/types/CredentialType";
+    import { wait } from "../lib/helpers";
 
     let presentationJSON = "";
 
@@ -36,6 +37,9 @@
                 credential
             );
             presentationJSON = JSON.stringify(verifiablePresentation, null, 2);
+            // Fixes a bug where loading screen does not appear after the first time this 
+            // page gets mounted.
+            await wait(0);
             createMatrix(JSON.stringify(verifiablePresentation));
         } catch (err) {
             console.error(err);

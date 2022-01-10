@@ -5,6 +5,7 @@
     import { showAlert, multiClick, getDateString, getTimeString } from "../lib/ui/helpers";
     import CredentialHeader from "../components/CredentialHeader.svelte";
     import { navigate } from "svelte-routing";
+    import { wait } from "../lib/helpers";
 
     const vp = window.history.state.vp;
     const expiry = vp.verifiableCredential.expirationDate
@@ -25,6 +26,9 @@
     onMount(async () => {
         loadingScreen.set("Generating DataMatrix...");
         try {
+            // Fixes a bug where loading screen does not appear after the first time this 
+            // page gets mounted.
+            await wait(0);
             createMatrix();
         } catch (e) {
             console.error(e);
