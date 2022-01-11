@@ -5,7 +5,6 @@
     import { slide } from "svelte/transition";
     import { firstLaunch, getFromStorage } from "../lib/store";
     import { isExpired } from "../lib/helpers";
-    import FullScreenLoader from "../components/FullScreenLoader.svelte";
     import Button from "../components/Button.svelte";
     import ListItem from "../components/ListItem.svelte";
     import DevInfo from "./DevInfo.svelte";
@@ -17,21 +16,13 @@
     let isEmpty = false;
     let showTutorial = false;
     let localCredentials = {};
-    let loading = false;
     let exitOnBack = false;
 
     onMount(() => App.addListener("backButton", onBack).remove);
     onMount(async () => {
-        try {
-            loading = true;
-            localCredentials = await getFromStorage("credentials");
-            localCredentials = Object.values(localCredentials)?.filter(data => data);
-            isEmpty = Object.values(localCredentials).every(x => x === null || x === "");
-            loading = false;
-        } catch (err) {
-            console.error(err);
-            loading = false;
-        }
+        localCredentials = await getFromStorage("credentials");
+        localCredentials = Object.values(localCredentials)?.filter(data => data);
+        isEmpty = Object.values(localCredentials).every(x => x === null || x === "");
     });
 
     async function scan() {
@@ -99,15 +90,11 @@
 </script>
 
 <main>
-    {#if loading}
-        <FullScreenLoader label="loading Credentials..." />
-    {/if}
-
     {#if showTutorial}
         <DevInfo page="Presentation" bind:showTutorial />
     {/if}
 
-    {#if !showTutorial && !loading}
+    {#if !showTutorial}
         <header>
             <div class="options-wrapper">
                 <i on:click={onClickReset} class="icon-reset" />
