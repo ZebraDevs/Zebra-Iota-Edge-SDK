@@ -188,7 +188,7 @@
             {/if}
         </section>
         <footer>
-            <Button style="height: 64px; width: 64px; border-radius: 50%;" onClick={scan}>
+            <Button style="height: 55px; width: 55px; border-radius: 50%;" onClick={scan}>
                 <i class="icon-scan" />
             </Button>
         </footer>
@@ -203,7 +203,7 @@
     }
 
     header {
-        height: 155px;
+        height: 115px;
         background-color: #00a7ff;
     }
 
@@ -221,13 +221,13 @@
 
     .avatar {
         background-image: url("/img/person.png");
-        width: 120px;
-        height: 120px;
+        width: 100px;
+        height: 100px;
         background-size: cover;
         background-position: top center;
         background-repeat: no-repeat;
         border-radius: 50%;
-        margin: 0 auto;
+        margin: -25px auto 0 auto;;
         border: 15px solid rgba(165, 165, 165, 0.2);
     }
 
@@ -239,10 +239,10 @@
     name-wrapper > p {
         font-family: "Proxima Nova", sans-serif;
         font-weight: 700;
-        font-size: 6vw;
-        line-height: 8vw;
+        font-size: 1.55em;
         text-align: center;
         color: #131f37;
+        margin: 1em 0 0.5em 0;
     }
 
     .options-wrapper {
