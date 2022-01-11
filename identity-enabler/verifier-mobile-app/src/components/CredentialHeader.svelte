@@ -1,25 +1,15 @@
 <script lang="ts">
     import { IOTA_IDENTITY_RESOLVER } from "../config";
     import { isExpired } from "../lib/helpers";
-    import { shortenDID } from "../lib/ui/helpers";
+    import { getDateString, getTimeString, shortenDID } from "../lib/ui/helpers";
 
     export let credential;
     export let color = "white";
     export let hideDetails = false;
 
-    let expired = isExpired(credential.issuanceDate);
+    const issuanceDate = new Date(credential.issuanceDate);
 
-    function getDateString(): string {
-        return new Date(credential.issuanceDate).toLocaleDateString([...window.navigator.languages], {
-            dateStyle: "long"
-        });
-    }
-
-    function getTimeString(): string {
-        return new Date(credential.issuanceDate).toLocaleTimeString([...window.navigator.languages], {
-            timeStyle: "short"
-        });
-    }
+    const expired = isExpired(credential);
 </script>
 
 <div id="wrapper" style="color: {color};">
@@ -39,7 +29,7 @@
                 target="_blank"
                 >{credential.issuer.name ?? shortenDID(credential.issuer.id ?? credential.issuer)}
             </a>
-            <span> on {getDateString()} at {getTimeString()}</span>
+            <span> on {getDateString(issuanceDate)} at {getTimeString(issuanceDate)}</span>
         </p>
     {/if}
 </div>

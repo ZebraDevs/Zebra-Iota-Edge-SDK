@@ -30,20 +30,22 @@
 
         Keyboard.hide();
         account.set({ name: name });
-        loadingScreen.set("Generating Identity...");
+        loadingScreen.set("Creating Identity...");
+        const identityService = ServiceFactory.get("identity");
+        let identity;
 
         try {
-            const identityService = ServiceFactory.get("identity");
-            const identity = await identityService.createIdentity();
-            await identityService.storeIdentity("did", identity);
-            hasSetupAccount.set(true);
-            navigate("/home");
+            identity = await identityService.createIdentity();
         } catch (err) {
             console.error(err);
-            await showAlert("Error", "Error creating identity. Please try again.");
+            loadingScreen.set();
+            await showAlert("Error", `Error creating identity: ${err.message}`);
         }
 
+        await identityService.storeIdentity("did", identity);
+        hasSetupAccount.set(true);
         loadingScreen.set();
+        navigate("/home");
     }
 </script>
 

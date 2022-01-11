@@ -25,3 +25,18 @@ export async function playAudio(sound: string) {
 export function shortenDID(did: string): string {
     return `${did.substring(0, 15)}...${did.substring(did.length - 6)}`;
 }
+
+export function getDateString(date: Date): string {
+    return date.toLocaleDateString([...window.navigator.languages], {
+        day: "numeric",
+        month: "long",
+        year: "numeric"
+    });
+}
+
+export function getTimeString(date: Date): string {
+    return date.toLocaleTimeString([...window.navigator.languages], {
+        hour: "2-digit",
+        minute: "2-digit"
+    });
+}

@@ -132,24 +132,12 @@ export async function getMarkdownContent(url): Promise<any> {
 /**
  * check if Credential is expired
  */
-export function isExpired(date: Date): Boolean {
-    const expiryDate = addDaysToDate(date, 30);
-    const today = new Date();
-
-    if (today.getTime() > expiryDate.getTime()) {
-        return true;
-    } else {
+export function isExpired(credential: { expirationDate?: string }): boolean {
+    if (!credential.expirationDate) {
         return false;
     }
-}
 
-/**
- * add number of days to a date
- */
-export function addDaysToDate(date: Date, days: number): Date {
-    let res = new Date(date);
-    res.setDate(res.getDate() + days);
-    return res;
+    return new Date(credential.expirationDate) < new Date();
 }
 
 /**

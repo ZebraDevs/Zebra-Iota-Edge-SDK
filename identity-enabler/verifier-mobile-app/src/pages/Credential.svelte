@@ -14,7 +14,7 @@
 
     let showTutorial = false;
     let credential = window.history.state.credential;
-    let expired = isExpired(credential.issuanceDate);
+    const expired = isExpired(credential);
 
     function onDone() {
         navigate("/home");

@@ -1,17 +1,17 @@
-<script>
+<script lang="ts">
     import { onMount } from "svelte";
     import { fly } from "svelte/transition";
     import Button from "../components/Button.svelte";
     import { playAudio } from "../lib/ui/helpers";
+    import type { IInvalidCredentialPageState } from "../models/types/IInvalidCredentialPageState";
 
     const PLAY_DELAY = 400;
 
-    const message = window.history?.state?.message || "Invalid credential";
-    const scanSoundStart = window.history?.state?.scanSoundStart;
+    const state: IInvalidCredentialPageState | null = window.history?.state;
 
     onMount(async () => {
         // We wait a little bit in order not to overlap the different aural feedback
-        const delay = scanSoundStart ? PLAY_DELAY - (Date.now() - scanSoundStart) : PLAY_DELAY;
+        const delay = state?.scanSoundStart ? PLAY_DELAY - (Date.now() - state?.scanSoundStart) : PLAY_DELAY;
         if (delay < 0) {
             await playAudio("invalid");
         } else {
@@ -27,7 +27,10 @@
 <main transition:fly={{ y: 200, duration: 500 }}>
     <section>
         <i class="icon-cross" />
-        <p>{message}</p>
+        <p>{state?.message ?? "Invalid credential"}</p>
+        {#if state?.detail}
+            <small>{state.detail}</small>
+        {/if}
     </section>
     <footer>
         <Button label="Done" onClick={onDone} />
@@ -66,6 +69,10 @@
         line-height: 3.4vh;
         color: #fff;
         text-transform: uppercase;
+    }
+
+    section > small {
+        color: #bbb;
     }
 
     .icon-cross {

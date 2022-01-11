@@ -4,13 +4,16 @@
     import DevInfo from "./DevInfo.svelte";
     import { loadingScreen, modalStatus } from "../lib/store";
     import { Plugins } from "@capacitor/core";
-    import { showAlert, multiClick } from "../lib/ui/helpers";
+    import { showAlert, multiClick, getDateString, getTimeString } from "../lib/ui/helpers";
     import CredentialHeader from "../components/CredentialHeader.svelte";
 
     const { App } = Plugins;
     let showTutorial = false;
 
     const vp = window.history.state.vp;
+    const expiry = vp.verifiableCredential.expirationDate
+        ? new Date(vp.verifiableCredential.expirationDate)
+        : undefined;
 
     function createMatrix() {
         // The return value is the canvas element
@@ -22,16 +25,6 @@
             backgroundcolor: "ffffff"
         });
     }
-
-    const addDaysToDate = (date: string, days: number) => {
-        let res = new Date(date);
-        res.setDate(res.getDate() + days);
-        return res.toLocaleDateString([...window.navigator.languages], {
-            year: "numeric",
-            month: "long",
-            day: "numeric"
-        });
-    };
 
     onMount(() => App.addListener("backButton", goBack).remove);
     onMount(async () => {
@@ -90,7 +83,9 @@
     </div>
 
     <footer class="footerContainer">
-        <p>Valid until {addDaysToDate(vp.verifiableCredential.issuanceDate, 30)}</p>
+        {#if expiry}
+            <p>Valid until {getDateString(expiry)} at {getTimeString(expiry)}</p>
+        {/if}
     </footer>
 </main>
 

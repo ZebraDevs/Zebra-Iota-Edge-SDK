@@ -19,7 +19,7 @@
                 result = await reader.decodeFromImageUrl(e.target.result as string);
             } catch (e) {
                 console.error(e);
-                navigate("/invalid", { state: { message: "Failed to decode image" } });
+                navigate("/invalid", { state: { message: "Failed to decode image", detail: e.message } });
                 return;
             }
 

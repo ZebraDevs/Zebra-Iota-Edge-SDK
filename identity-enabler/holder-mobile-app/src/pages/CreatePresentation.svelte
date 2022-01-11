@@ -5,7 +5,7 @@
     import { loadingScreen, modalStatus } from "../lib/store";
     import DevInfo from "./DevInfo.svelte";
     import { Plugins } from "@capacitor/core";
-    import { showAlert, multiClick } from "../lib/ui/helpers";
+    import { showAlert, multiClick, getTimeString, getDateString } from "../lib/ui/helpers";
     import type { IdentityService } from "../services/identityService";
     import CredentialHeader from "../components/CredentialHeader.svelte";
 
@@ -14,6 +14,7 @@
     let showTutorial = false;
 
     const credential = window.history.state.credential;
+    const expiry = credential.expirationDate ? new Date(credential.expirationDate) : undefined;
     const identityService = ServiceFactory.get<IdentityService>("identity");
 
     function createMatrix(content) {
@@ -26,16 +27,6 @@
             backgroundcolor: "ffffff"
         });
     }
-
-    const addDaysToDate = (date: string, days: number) => {
-        let res = new Date(date);
-        res.setDate(res.getDate() + days);
-        return res.toLocaleDateString([...window.navigator.languages], {
-            year: "numeric",
-            month: "long",
-            day: "numeric"
-        });
-    };
 
     onMount(() => App.addListener("backButton", goBack).remove);
     onMount(async () => {
@@ -102,7 +93,9 @@
     </div>
 
     <footer class="footerContainer">
-        <p>Valid until {addDaysToDate(credential.issuanceDate, 30)}</p>
+        {#if expiry}
+            <p>Valid until {getDateString(expiry)} at {getTimeString(expiry)}</p>
+        {/if}
         {#if credential.type[1] === "Device ID"}
             <p style="font-size: smaller;">Scan this DataMatrix with the Device ID app</p>
         {/if}

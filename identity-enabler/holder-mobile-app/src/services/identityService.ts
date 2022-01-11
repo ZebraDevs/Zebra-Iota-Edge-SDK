@@ -4,7 +4,7 @@ import { generateRandomNumericString, parse } from "../lib/helpers";
 import { account } from "../lib/store";
 import type { Identity, IdentityConfig } from "../models/types/identity";
 import * as IotaIdentity from "@iota/identity-wasm/web";
-import { IDENTITY_WASM_PATH } from "../config";
+import { CREDENTIAL_EXPIRY_DAYS, IDENTITY_WASM_PATH } from "../config";
 import { get } from "svelte/store";
 
 const {
@@ -165,7 +165,10 @@ export class IdentityService {
             ...data
         };
 
-        // Issue an unsigned credential
+        // Issue an unsigned credential with expiry midnight in CREDENTIAL_EXPIRY_DAYS days
+        const expiry = new Date();
+        expiry.setDate(expiry.getDate() + CREDENTIAL_EXPIRY_DAYS);
+        expiry.setHours(24, 0, 0, 0);
         const unsignedVc = VerifiableCredential.extend({
             id: `http://example.org/zebra-iota-sdk/${generateRandomNumericString(4)}`,
             type: credentialType,
@@ -173,7 +176,8 @@ export class IdentityService {
                 id: IssuerDidDoc.id.toString(),
                 name: get(account).name
             },
-            credentialSubject
+            credentialSubject,
+            expirationDate: expiry.toISOString()
         });
 
         // Sign the credential with User's Merkle Key Collection method
@@ -231,19 +235,5 @@ export class IdentityService {
         });
 
         return signedVp.toJSON();
-    }
-
-    async verifyVerifiablePresentation(presentation: IotaIdentity.VerifiablePresentation): Promise<boolean> {
-        //Initialize the Library - Is cached after first initialization
-        await IotaIdentity.init(IDENTITY_WASM_PATH);
-        try {
-            //Create from VP
-            const verifiablePresentation = VerifiablePresentation.fromJSON(presentation);
-            const result = await this.getClient().checkPresentation(JSON.stringify(verifiablePresentation.toJSON()));
-            return result?.verified;
-        } catch (err) {
-            console.error("Error during VP Check: " + err);
-            return false;
-        }
     }
 }
