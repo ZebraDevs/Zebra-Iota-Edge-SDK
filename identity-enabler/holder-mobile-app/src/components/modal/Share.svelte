@@ -9,7 +9,7 @@
     const { close } = getContext("simple-modal");
     const { Share } = Plugins;
 
-    const credential = window.history.state.credential;
+    export let credential;
     const identityService = ServiceFactory.get("identity");
 
     function share() {
