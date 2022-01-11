@@ -4,7 +4,7 @@ import { generateRandomNumericString, parse } from "../lib/helpers";
 import { account } from "../lib/store";
 import type { Identity, IdentityConfig } from "../models/types/identity";
 import * as IotaIdentity from "@iota/identity-wasm/web";
-import { IDENTITY_WASM_PATH } from "../config";
+import { CREDENTIAL_EXPIRY_DAYS, IDENTITY_WASM_PATH } from "../config";
 import { get } from "svelte/store";
 
 const {
@@ -165,9 +165,9 @@ export class IdentityService {
             ...data
         };
 
-        // Issue an unsigned credential with expiry midnight in 30 days
+        // Issue an unsigned credential with expiry midnight in CREDENTIAL_EXPIRY_DAYS days
         const expiry = new Date();
-        expiry.setDate(expiry.getDate() + 30);
+        expiry.setDate(expiry.getDate() + CREDENTIAL_EXPIRY_DAYS);
         expiry.setHours(24, 0, 0, 0);
         const unsignedVc = VerifiableCredential.extend({
             id: `http://example.org/zebra-iota-sdk/${generateRandomNumericString(4)}`,
