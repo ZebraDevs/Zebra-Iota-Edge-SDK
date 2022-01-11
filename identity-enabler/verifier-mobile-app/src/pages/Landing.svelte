@@ -59,7 +59,7 @@
         align-items: center;
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
-        padding-bottom: 11vh;
+        padding-bottom: 3.5em;
     }
 
     .content > * {

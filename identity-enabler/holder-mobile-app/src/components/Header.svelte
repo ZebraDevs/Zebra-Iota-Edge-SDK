@@ -3,18 +3,15 @@
 </script>
 
 <div class="container">
-    <div class="logo">
-        <i class="icon-zebra" />
-    </div>
+    <i class="icon-zebra" />
 
-    <header>
-        <pre>{text}</pre>
-    </header>
+    <h2>{text}</h2>
 </div>
 
 <style>
     .container {
-        padding: 0 8vw;
+        padding: 0 2rem;
+        text-align: center;
     }
 
     .icon-zebra {
@@ -22,19 +19,12 @@
         font-size: 110px;
     }
 
-    .logo {
-        margin: 20px auto;
-        text-align: center;
-    }
-
-    header > pre {
+    h2 {
         font-family: "Proxima Nova", sans-serif;
         font-weight: 700;
         font-size: 1.5em;
         line-height: 1.2em;
-        margin: 0 !important;
-        white-space: pre-wrap;
-        text-align: center;
+        margin: 0;
         color: #131f37;
     }
 </style>

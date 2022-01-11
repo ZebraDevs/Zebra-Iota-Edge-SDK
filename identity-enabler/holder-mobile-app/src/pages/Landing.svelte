@@ -150,27 +150,26 @@
     .content > img {
         mix-blend-mode: multiply;
         max-height: 150px;
-        padding: 3vh 0;
     }
 
     .dots {
         text-align: center;
         justify-content: center;
-        margin-bottom: 3.3vh;
+        margin: 1rem 0;
     }
 
-    span {
-        height: 1.3vh;
-        width: 1.3vh;
+    .dots > span {
+        height: 0.7em;
+        width: 0.7em;
         background-color: #c4d0e3;
         border-radius: 50%;
         display: inline-block;
-        margin-right: 1vh;
+        margin-right: 0.7rem;
     }
 
-    span.active {
-        height: 1.4vh;
-        width: 1.4vh;
+    .dots > span.active {
+        height: 0.75em;
+        width: 0.75em;
         background: #00a7ff;
     }
 
@@ -192,7 +191,7 @@
 
     .contentContainer {
         display: flex;
-        padding-bottom: 11vh;
+        padding-bottom: 3.5em;
     }
 
     .footerContainer {
