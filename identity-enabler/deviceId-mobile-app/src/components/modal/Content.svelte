@@ -2,7 +2,7 @@
     import { onDestroy, getContext } from "svelte";
     import { modalStatus } from "../../lib/store";
     import Share from "./Share.svelte";
-    import CodeBlock from "../CodeBlock.svelte";
+    import CodeBlock from "./CodeBlock.svelte";
 
     const { open } = getContext("simple-modal");
 
