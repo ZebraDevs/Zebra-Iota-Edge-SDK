@@ -43,8 +43,8 @@
             return;
         }
 
-        account.set({ name: name });
         await identityService.storeIdentity("did", identity);
+        account.set({ name });
         hasSetupAccount.set(true);
         loadingScreen.set();
         navigate("/home");
