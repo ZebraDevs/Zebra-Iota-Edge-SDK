@@ -30,7 +30,6 @@
         }
 
         Keyboard.hide();
-        account.set({ name: name });
         loadingScreen.set("Creating Identity...");
         const identityService = ServiceFactory.get("identity");
         let identity;
@@ -44,6 +43,7 @@
             return;
         }
 
+        account.set({ name: name });
         await identityService.storeIdentity("did", identity);
         hasSetupAccount.set(true);
         loadingScreen.set();

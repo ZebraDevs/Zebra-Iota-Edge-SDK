@@ -29,7 +29,6 @@
         }
 
         Keyboard.hide();
-        account.set({ name: name });
         loadingScreen.set("Creating Identity...");
         const identityService = ServiceFactory.get("identity");
         let identity;
@@ -40,8 +39,10 @@
             console.error(err);
             loadingScreen.set();
             await showAlert("Error", `Error creating identity: ${err.message}`);
+            return;
         }
 
+        account.set({ name: name });
         await identityService.storeIdentity("did", identity);
         hasSetupAccount.set(true);
         loadingScreen.set();
