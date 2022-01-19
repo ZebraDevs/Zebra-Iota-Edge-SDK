@@ -3,18 +3,20 @@
     import { loadingScreen } from "../lib/store";
     import { CredentialType } from "../models/types/CredentialType";
     import { ServiceFactory } from "../factories/serviceFactory";
-    import { flattenClaim, showAlert, handleOnce } from "../lib/ui/helpers";
+    import { flattenClaim, showAlert } from "../lib/ui/helpers";
     import Button from "../components/Button.svelte";
     import ObjectList from "../components/ObjectList.svelte";
 
     const credentialSubject = window.history.state.credentialSubject;
+    let btnDisabled = false;
 
-    
     async function createCredential() {
         if (navigator.onLine === false) {
             await showAlert("Error", "You need Internet connectivity to create a Device Credential");
             return;
         }
+
+        btnDisabled = true;
 
         loadingScreen.set("Generating Credential...");
         const identityService = ServiceFactory.get("identity");
@@ -36,6 +38,8 @@
             loadingScreen.set();
             await showAlert("Error", "Error creating credential. Please try again.");
         }
+
+        btnDisabled = false;
     }
 
     function goBack() {
@@ -50,7 +54,7 @@
 <main>
     <div class="header-wrapper">
         <div class="options-wrapper">
-            <i on:click={handleOnce(window.history.back)} class="icon-chevron" />
+            <i on:click|once={goBack} class="icon-chevron" />
             <i on:click={onClickDev} class="icon-code" />
         </div>
         <header>
@@ -61,7 +65,7 @@
         <ObjectList entries={flattenClaim(credentialSubject)} />
     </section>
     <footer>
-        <Button label="Issue Device ID credential" onClick={createCredential} />
+        <Button label="Issue Device ID credential" disabled={btnDisabled} on:click={createCredential} />
     </footer>
 </main>
 

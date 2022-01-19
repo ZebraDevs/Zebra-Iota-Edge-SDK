@@ -14,6 +14,7 @@
     let mounted;
     let back = $landingIndex > 0;
     let exitOnBack = false;
+    let btnDisabled = false;
 
     const info = [
         {
@@ -60,12 +61,14 @@
     }
 
     function nextLanding() {
+        btnDisabled = true;
         if ($landingIndex === info.length - 1) {
             navigate("/name");
         } else {
             back = false;
             landingIndex.update(x => x + 1);
         }
+        btnDisabled = false;
     }
 
     function prevLanding() {
@@ -128,7 +131,7 @@
         {/each}
     </div>
     <footer class="footerContainer">
-        <Button label={info[$landingIndex].footer} on:click={nextLanding} />
+        <Button label={info[$landingIndex].footer} disabled={btnDisabled} on:click={nextLanding} />
     </footer>
 </main>
 

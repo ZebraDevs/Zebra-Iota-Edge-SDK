@@ -5,7 +5,6 @@
     import Scanner from "../components/Scanner.svelte";
     import { BarcodeFormat, BrowserMultiFormatReader, DecodeHintType } from "@zxing/library";
     import { handleScannerData } from "../lib/scan";
-    import { handleOnce } from "../lib/ui/helpers";
 
     const formats = new Map().set(DecodeHintType.POSSIBLE_FORMATS, [BarcodeFormat.DATA_MATRIX, BarcodeFormat.QR_CODE]);
     const reader = new BrowserMultiFormatReader(formats);
@@ -34,7 +33,7 @@
 <main transition:fly={{ y: 200, duration: 500 }}>
     <header>
         <div class="options-wrapper">
-            <i on:click={handleOnce(window.history.back)} class="icon-chevron" />
+            <i on:click|once={() => window.history.back()} class="icon-chevron" />
             <p>Scanner</p>
             <label class="image-select">
                 <input type="file" accept="image/*" on:change={e => imageSelected(e)} />

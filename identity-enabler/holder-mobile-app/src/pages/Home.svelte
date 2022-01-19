@@ -156,7 +156,7 @@
                     <ListItem
                         icon="credential"
                         heading={credentialDisplayMap[credential.type[1]]}
-                        onClick={() => viewCredential(credential)}
+                        on:click|once={() => viewCredential(credential)}
                         subheading="Issued by {credential.issuer.name ??
                             shortenDID(credential.issuer.id ?? credential.issuer)}"
                     />
@@ -168,14 +168,14 @@
                         icon="add"
                         iconColor="#00a7ff"
                         arrow={false}
-                        onClick={generateCredential}
+                        on:click={generateCredential}
                         heading="Add new credential"
                     />
                 </div>
             {/if}
         </section>
         <footer>
-            <Button style="height: 55px; width: 55px; border-radius: 50%;" on:click={scan}>
+            <Button style="height: 55px; width: 55px; border-radius: 50%;" on:click|once={scan}>
                 <i class="icon-scan" />
             </Button>
         </footer>

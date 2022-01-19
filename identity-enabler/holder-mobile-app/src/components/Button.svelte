@@ -6,7 +6,7 @@
     export let loading = false;
 </script>
 
-<button style={$$props.style} type="button" class:disabled on:click>
+<button style={$$props.style} type="button" class:disabled {disabled} on:click>
     {#if loading}
         <Spinner />
     {:else}

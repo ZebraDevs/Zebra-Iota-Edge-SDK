@@ -1,5 +1,4 @@
 <script type="ts">
-    export let onClick;
     export let heading: string;
     export let subheading: string | undefined = undefined;
     export let icon: string = "credential";
@@ -7,7 +6,7 @@
     export let arrow = true;
 </script>
 
-<li on:click={onClick}>
+<li on:click>
     <i class="icon-{icon}" style="color: {iconColor};" />
     <div class="text-container">
         <div class="overflow-container">

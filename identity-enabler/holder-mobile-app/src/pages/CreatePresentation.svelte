@@ -2,7 +2,8 @@
     import { onMount } from "svelte";
     import bwipjs from "bwip-js";
     import { ServiceFactory } from "../factories/serviceFactory";
-    import { loadingScreen } from "../lib/store";
+    import { loadingScreen, modalStatus } from "../lib/store";
+    import { Plugins } from "@capacitor/core";
     import { showAlert, multiClick, getTimeString, getDateString } from "../lib/ui/helpers";
     import type { IdentityService } from "../services/identityService";
     import CredentialHeader from "../components/CredentialHeader.svelte";
@@ -57,7 +58,7 @@
 <main>
     <header>
         <div class="options-wrapper">
-            <i on:click|once={() => window.history.back()} class="icon-chevron" />4
+            <i on:click|once={() => window.history.back()} class="icon-chevron" />
             <i on:click={onClickDev} class="icon-code" />
         </div>
         <CredentialHeader {credential} hideDetails={true} />

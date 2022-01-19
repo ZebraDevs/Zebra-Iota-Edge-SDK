@@ -4,7 +4,7 @@
     import { Plugins } from "@capacitor/core";
     import Button from "../Button.svelte";
     import { ServiceFactory } from "../../factories/serviceFactory";
-    import { showAlert, handleOnce } from "../../lib/ui/helpers";
+    import { showAlert } from "../../lib/ui/helpers";
 
     const { close } = getContext("simple-modal");
     const { Share } = Plugins;
@@ -43,14 +43,15 @@
             <Button
                 style="background: white; color: #051923; display: flex; justify-content: flex-start; padding: 0; height: fit-content; font-weight: 600; font-size: 2.3vh; line-height: 3.4vh;"
                 label="Share as data matrix"
-                on:click={handleOnce(share)}>
+                on:click|once={share}
+            >
                 <i class="icon-qr" />
             </Button>
             <div class="border" />
             <Button
                 style="background: white; color: #051923; display: flex; justify-content: flex-start; padding: 0; height: fit-content; font-weight: 600; font-size: 2.3vh; line-height: 3.4vh;"
                 label="Share as JSON"
-                on:click={handleOnce(shareJSON)}
+                on:click={shareJSON}
             >
                 <i class="icon-link" />
             </Button>
