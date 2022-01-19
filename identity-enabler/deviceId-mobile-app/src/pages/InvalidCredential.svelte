@@ -7,6 +7,7 @@
 
     const PLAY_DELAY = 400;
     const state: IInvalidCredentialPageState | null = window.history?.state;
+    let navigated = false;
 
     onMount(async () => {
         // We wait a little bit in order not to overlap the different aural feedback
@@ -19,7 +20,12 @@
     });
 
     function onDone() {
+        if (navigated) {
+            return;
+        }
+
         window.history.back();
+        navigated = true;
     }
 </script>
 
@@ -32,7 +38,7 @@
         {/if}
     </section>
     <footer>
-        <Button label="Done" onClick={onDone} />
+        <Button label="Done" on:click={onDone} />
     </footer>
 </main>
 

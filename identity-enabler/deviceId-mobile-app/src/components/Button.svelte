@@ -2,12 +2,11 @@
     import Spinner from "./Spinner.svelte";
 
     export let label;
-    export let onClick;
     export let disabled = false;
     export let loading = false;
 </script>
 
-<button style={$$props.style} class:disabled on:click={onClick}>
+<button style={$$props.style} class:disabled on:click>
     {#if loading}
         <Spinner />
     {:else}

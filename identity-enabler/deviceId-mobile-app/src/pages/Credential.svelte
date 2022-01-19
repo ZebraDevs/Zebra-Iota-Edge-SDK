@@ -10,6 +10,7 @@
     import { flattenCredential } from "../lib/ui/helpers";
 
     const { App } = Plugins;
+    let navigated = false;
 
     const vp = window.history.state.vp;
     const save = window?.history?.state?.save;
@@ -25,20 +26,30 @@
     }
 
     async function onSaveCredential() {
+        if (navigated) {
+            return;
+        }
+
         credentials.update(creds => {
             creds[vp.verifiableCredential.type[1]] = vp;
             return creds;
         });
         navigate("/home");
+        navigated = true;
     }
 
     function goBack() {
+        if (navigated) {
+            return;
+        }
+
         if ($modalStatus.active) {
             modalStatus.set({ active: false, type: null });
             return;
         }
 
         window.history.back();
+        navigated = true;
     }
 
     function onClickDev() {

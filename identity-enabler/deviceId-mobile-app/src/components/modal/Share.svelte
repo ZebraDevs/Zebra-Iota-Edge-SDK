@@ -8,10 +8,17 @@
     const { Share } = Plugins;
 
     export let vp;
+    let navigated = false;
 
     function share() {
-        navigate("/createPresentation", { state: { vp } });
+        if (navigated) {
+            return;
+        }
+
+        console.log("navigate!");
         close();
+        navigate("/createPresentation", { state: { vp } });
+        navigated = true;
     }
 
     async function shareJSON() {
@@ -27,27 +34,17 @@
     <div class="modal-wrapper">
         <div class="btn-wrapper">
             <Button
-                style="background: white; color: #051923; display: flex; justify-content: flex-start;
-                            padding: 0;
-                            height: fit-content;
-                            font-weight: 600;
-                            font-size: 2.3vh;
-                            line-height: 3.4vh;"
+                style="background: white; color: #051923; display: flex; justify-content: flex-start; padding: 0; height: fit-content; font-weight: 600; font-size: 2.3vh; line-height: 3.4vh;"
                 label="Share as data matrix"
-                onClick={share}
+                on:click={share}
             >
                 <i class="icon-qr" />
             </Button>
             <div class="border" />
             <Button
-                style="background: white; color: #051923; display: flex; justify-content: flex-start;
-                            padding: 0;
-                            height: fit-content;
-                            font-weight: 600;
-                            font-size: 2.3vh;
-                            line-height: 3.4vh;"
+                style="background: white; color: #051923; display: flex; justify-content: flex-start; padding: 0; height: fit-content; font-weight: 600; font-size: 2.3vh; line-height: 3.4vh;"
                 label="Share as JSON"
-                onClick={shareJSON}
+                on:click={shareJSON}
             >
                 <i class="icon-link" />
             </Button>

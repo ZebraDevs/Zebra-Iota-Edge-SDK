@@ -89,7 +89,7 @@
                 style="height: 64px;"
                 loadingText={"Generating identity"}
                 label="Next"
-                onClick={requestCredential}
+                on:click={requestCredential}
             />
         </footer>
     </div>
