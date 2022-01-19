@@ -3,12 +3,13 @@
     import { loadingScreen } from "../lib/store";
     import { CredentialType } from "../models/types/CredentialType";
     import { ServiceFactory } from "../factories/serviceFactory";
-    import { flattenClaim, showAlert } from "../lib/ui/helpers";
+    import { flattenClaim, showAlert, handleOnce } from "../lib/ui/helpers";
     import Button from "../components/Button.svelte";
     import ObjectList from "../components/ObjectList.svelte";
 
     const credentialSubject = window.history.state.credentialSubject;
 
+    
     async function createCredential() {
         if (navigator.onLine === false) {
             await showAlert("Error", "You need Internet connectivity to create a Device Credential");
@@ -49,7 +50,7 @@
 <main>
     <div class="header-wrapper">
         <div class="options-wrapper">
-            <i on:click={goBack} class="icon-chevron" />
+            <i on:click={handleOnce(window.history.back)} class="icon-chevron" />
             <i on:click={onClickDev} class="icon-code" />
         </div>
         <header>

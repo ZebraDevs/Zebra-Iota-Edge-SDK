@@ -68,7 +68,7 @@
             loadingText={"Generating identity"}
             disabled={name.length === 0 || Boolean($loadingScreen)}
             label="Next"
-            onClick={save}
+            on:click={save}
         />
     </footer>
 </main>

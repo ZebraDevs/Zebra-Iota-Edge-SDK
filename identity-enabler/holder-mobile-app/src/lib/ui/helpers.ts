@@ -150,3 +150,28 @@ export function flattenClaim(object: Record<string, any>): { [key: string]: stri
         "OS Version": object.osVersion
     };
 }
+
+/*
+ * Ensure event is handled only once. Similar to using the
+ * "once" option: https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener
+ * except that the event listener is not removed and the handler could
+ * get called again if the previous call threw an error (allows user to retry).
+ * 
+ * @param handler The handler to ensure is called successfully once.
+ * @returns 
+ */
+ export function handleOnce(handler: svelte.JSX.MouseEventHandler<EventTarget>): svelte.JSX.MouseEventHandler<EventTarget> {
+    const callback = async (ev: MouseEvent) => {
+        ev.currentTarget.removeEventListener(ev.type, callback);
+
+        try {
+            await handler(ev);
+        } catch(e) {
+            console.error(e);
+            await showAlert("Error", e.message);
+            ev.currentTarget.addEventListener(ev.type, callback);
+        }
+    };
+
+    return callback;
+}

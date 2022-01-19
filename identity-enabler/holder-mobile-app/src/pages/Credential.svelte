@@ -3,7 +3,7 @@
     import Button from "../components/Button.svelte";
     import ObjectList from "../components/ObjectList.svelte";
     import { modalStatus } from "../lib/store";
-    import { flattenCredential, showAlert } from "../lib/ui/helpers";
+    import { flattenCredential, handleOnce, showAlert } from "../lib/ui/helpers";
     import { onMount } from "svelte";
     import { Plugins } from "@capacitor/core";
     import CredentialHeader from "../components/CredentialHeader.svelte";
@@ -34,6 +34,10 @@
         window.history.back();
     }
 
+    async function backButtonClick() {
+        window.history.back();
+    }
+
     function onClickDev() {
         navigate("/tutorial");
     }
@@ -44,7 +48,7 @@
 <main transition:fly={{ x: 500, duration: 500 }}>
     <div class="header-wrapper">
         <div class="options-wrapper">
-            <i on:click={goBack} class="icon-chevron" />
+            <i on:click={handleOnce(backButtonClick)} class="icon-chevron" />
             <i on:click={onClickDev} class="icon-code" />
         </div>
         <header>

@@ -33,7 +33,7 @@
         {/if}
     </section>
     <footer>
-        <Button label="Done" onClick={onDone} />
+        <Button label="Done" on:click={onDone} />
     </footer>
 </main>
 

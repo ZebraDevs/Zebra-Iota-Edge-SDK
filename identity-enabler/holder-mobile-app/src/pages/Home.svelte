@@ -132,6 +132,10 @@
     function scan() {
         navigate("/scan");
     }
+
+    function viewCredential(credential: unknown) {
+        navigate("/credential", { state: { credential } });
+    }
 </script>
 
 <main>
@@ -151,8 +155,8 @@
                 <div transition:slide class="list">
                     <ListItem
                         icon="credential"
-                        onClick={() => navigate("/credential", { state: { credential } })}
                         heading={credentialDisplayMap[credential.type[1]]}
+                        onClick={() => viewCredential(credential)}
                         subheading="Issued by {credential.issuer.name ??
                             shortenDID(credential.issuer.id ?? credential.issuer)}"
                     />
@@ -171,7 +175,7 @@
             {/if}
         </section>
         <footer>
-            <Button style="height: 55px; width: 55px; border-radius: 50%;" onClick={scan}>
+            <Button style="height: 55px; width: 55px; border-radius: 50%;" on:click={scan}>
                 <i class="icon-scan" />
             </Button>
         </footer>

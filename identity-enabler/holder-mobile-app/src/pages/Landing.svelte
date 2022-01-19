@@ -128,7 +128,7 @@
         {/each}
     </div>
     <footer class="footerContainer">
-        <Button label={info[$landingIndex].footer} onClick={nextLanding} />
+        <Button label={info[$landingIndex].footer} on:click={nextLanding} />
     </footer>
 </main>
 

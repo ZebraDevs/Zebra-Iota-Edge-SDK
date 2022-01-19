@@ -57,7 +57,7 @@
 <main>
     <header>
         <div class="options-wrapper">
-            <i on:click|once={() => window.history.back()} class="icon-chevron" />
+            <i on:click|once={() => window.history.back()} class="icon-chevron" />4
             <i on:click={onClickDev} class="icon-code" />
         </div>
         <CredentialHeader {credential} hideDetails={true} />
