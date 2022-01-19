@@ -31,6 +31,7 @@
         margin: 0;
         color: white;
         background-color: #1e22aa;
+        user-select: none;
     }
 
     button.disabled {
