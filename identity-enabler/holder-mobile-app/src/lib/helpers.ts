@@ -58,6 +58,7 @@ export type RandomUserData = {
     id: {
         value: string;
     };
+    gender: string;
 };
 
 /**
@@ -90,14 +91,10 @@ export function parse(data: string): any {
  *
  * @returns {Promise}
  */
-export function getRandomUserData(): Promise<RandomUserData> {
-    return fetch(RANDOM_USER_DATA_API_URL)
-        .then(response => response.json())
-        .then((result: RandomUserDataResponse) => {
-            const randomData = result.results[0];
-
-            return randomData;
-        });
+export async function getRandomUserData(): Promise<RandomUserData> {
+    const res = await fetch(RANDOM_USER_DATA_API_URL);
+    const userDataRes: RandomUserDataResponse = await res.json();
+    return userDataRes.results[0];
 }
 
 /**

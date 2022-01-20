@@ -5,11 +5,15 @@
     import { navigate } from "svelte-routing";
     import Button from "../components/Button.svelte";
     import ListItem from "../components/ListItem.svelte";
-    import { credentialPayload } from "../lib/credentialPayload";
+    import {
+        generateBloodCredential,
+        generateHealthCredential,
+        generatePersonalCredential
+    } from "../lib/credentialPayload";
     import { ServiceFactory } from "../factories/serviceFactory";
     import { CredentialType } from "../schemas";
     import { updateStorage, getFromStorage, account, resetAllStores, loadingScreen } from "../lib/store";
-    import { getRandomUserData, wait } from "../lib/helpers";
+    import { wait } from "../lib/helpers";
     import type { IdentityService } from "../services/identityService";
     import { shortenDID, showAlert } from "../lib/ui/helpers";
     import { BACK_BUTTON_EXIT_GRACE_PERIOD } from "../config";
@@ -65,31 +69,16 @@
             switch (credentialKey) {
                 case "health":
                     schema = CredentialType.HEALTH_TEST;
-                    payload = credentialPayload.health;
+                    payload = generateHealthCredential();
                     break;
                 case "blood":
                     schema = CredentialType.BLOOD_TEST;
-                    payload = credentialPayload.blood;
+                    payload = generateBloodCredential();
                     break;
                 case "personal":
                 default:
-                    const userData = await getRandomUserData();
                     schema = CredentialType.PERSONAL_DATA;
-                    payload = {
-                        UserPersonalData: {
-                            UserName: {
-                                FirstName: $account.name,
-                                LastName: userData.name.last
-                            },
-                            UserDOB: {
-                                "Date of Birth": new Date(userData.dob.date).toDateString()
-                            },
-                            Birthplace: userData.location.city,
-                            Nationality: userData.location.country,
-                            "Identity Card Number": userData.id.value,
-                            "Passport Number": Math.random().toString(36).substring(7).toUpperCase()
-                        }
-                    };
+                    payload = await generatePersonalCredential();
             }
 
             const credential = await identityService.createSignedCredential(
