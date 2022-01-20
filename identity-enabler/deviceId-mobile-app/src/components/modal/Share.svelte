@@ -8,17 +8,10 @@
     const { Share } = Plugins;
 
     export let vp;
-    let navigated = false;
 
     function share() {
-        if (navigated) {
-            return;
-        }
-
-        console.log("navigate!");
         close();
         navigate("/createPresentation", { state: { vp } });
-        navigated = true;
     }
 
     async function shareJSON() {
@@ -36,7 +29,7 @@
             <Button
                 style="background: white; color: #051923; display: flex; justify-content: flex-start; padding: 0; height: fit-content; font-weight: 600; font-size: 2.3vh; line-height: 3.4vh;"
                 label="Share as data matrix"
-                on:click={share}
+                onClick={share}
             >
                 <i class="icon-qr" />
             </Button>
@@ -44,7 +37,7 @@
             <Button
                 style="background: white; color: #051923; display: flex; justify-content: flex-start; padding: 0; height: fit-content; font-weight: 600; font-size: 2.3vh; line-height: 3.4vh;"
                 label="Share as JSON"
-                on:click={shareJSON}
+                onClick={shareJSON}
             >
                 <i class="icon-link" />
             </Button>

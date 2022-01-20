@@ -1,12 +1,35 @@
 <script>
+    import { showAlert } from "../lib/ui/helpers";
     import Spinner from "./Spinner.svelte";
 
     export let label;
+    export let onClick;
     export let disabled = false;
     export let loading = false;
+    let handling = false;
+
+    /**
+     * Disable button while listener is being executed to prevent duplicated events.
+     * @param args The event arguments to pass to the listener.
+     */
+    async function clickHandler(...args) {
+        handling = true;
+        try {
+            await onClick(...args);
+        } catch (e) {
+            console.error(e);
+            await showAlert("Error", e.message);
+        }
+        handling = false;
+    }
 </script>
 
-<button style={$$props.style} class:disabled on:click>
+<button
+    style={$$props.style}
+    class:disabled={disabled || handling}
+    disabled={disabled || handling}
+    on:click={clickHandler}
+>
     {#if loading}
         <Spinner />
     {:else}
@@ -34,7 +57,6 @@
     }
 
     button.disabled {
-        pointer-events: none;
         background-color: #c9efb7;
     }
 

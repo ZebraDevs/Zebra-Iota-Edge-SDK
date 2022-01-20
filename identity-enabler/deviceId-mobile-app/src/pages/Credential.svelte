@@ -10,7 +10,6 @@
     import { flattenCredential } from "../lib/ui/helpers";
 
     const { App } = Plugins;
-    let navigated = false;
 
     const vp = window.history.state.vp;
     const save = window?.history?.state?.save;
@@ -26,30 +25,20 @@
     }
 
     async function onSaveCredential() {
-        if (navigated) {
-            return;
-        }
-
         credentials.update(creds => {
             creds[vp.verifiableCredential.type[1]] = vp;
             return creds;
         });
         navigate("/home");
-        navigated = true;
     }
 
     function goBack() {
-        if (navigated) {
-            return;
-        }
-
         if ($modalStatus.active) {
             modalStatus.set({ active: false, type: null });
             return;
         }
 
         window.history.back();
-        navigated = true;
     }
 
     function onClickDev() {
@@ -60,7 +49,7 @@
 <main transition:fly={{ x: 500, duration: 500 }}>
     <div class="header-wrapper">
         <div class="options-wrapper">
-            <i on:click={goBack} class="icon-chevron" />
+            <i on:click|once={() => window.history.back()} class="icon-chevron" />
             <i on:click={onClickDev} class="icon-code" />
         </div>
         <header>

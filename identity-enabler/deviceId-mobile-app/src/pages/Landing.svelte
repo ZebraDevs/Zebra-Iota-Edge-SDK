@@ -16,7 +16,6 @@
 
     const { App, Toast } = Plugins;
     let exitOnBack = false;
-    let navigated = false;
 
     onMount(() => App.addListener("backButton", onBack).remove);
 
@@ -38,12 +37,7 @@
     }
 
     function onNext() {
-        if (navigated) {
-            return;
-        }
-
         navigate("/name");
-        navigated = true;
     }
 </script>
 
@@ -56,7 +50,7 @@
         <p class="info">{info.content}</p>
     </div>
     <footer class="footerContainer">
-        <Button label={info.footer} on:click={onNext} />
+        <Button label={info.footer} onClick={onNext} />
     </footer>
 </main>
 

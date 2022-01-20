@@ -11,7 +11,6 @@
     const { Keyboard } = Plugins;
     let name = "";
     let background;
-    let navigated = false;
 
     function handleOuterClick() {
         if (event.target === background) {
@@ -24,10 +23,6 @@
     }
 
     async function save() {
-        if (navigated) {
-            return;
-        }
-
         if (navigator.onLine === false) {
             await showAlert("Error", "You need Internet connectivity to generate a new IOTA Device Identity");
             return;
@@ -52,7 +47,6 @@
         hasSetupAccount.set(true);
         loadingScreen.set();
         navigate("/home");
-        navigated = true;
     }
 </script>
 
@@ -69,12 +63,7 @@
         </div>
     </div>
     <footer>
-        <Button
-            loadingText={"Generating identity"}
-            disabled={name.length === 0 || Boolean($loadingScreen)}
-            label="Next"
-            on:click={save}
-        />
+        <Button loadingText={"Generating identity"} disabled={name.length === 0} label="Next" onClick={save} />
     </footer>
 </main>
 

@@ -4,41 +4,23 @@
     import Button from "../components/Button.svelte";
     import { showAlert } from "../lib/ui/helpers";
 
-    const { App } = Plugins;
-    let navigated = false;
-
-    onMount(() => App.addListener("backButton", goBack).remove);
     async function scan() {
-        if (navigated) {
-            return;
-        }
-
         if (navigator.onLine === false) {
             await showAlert("Error", "You need Internet connectivity to verify a Device Credential");
             return;
         }
 
         navigate("/scan");
-        navigated = true;
     }
 
     function onClickDev() {
         navigate("/tutorial");
     }
-
-    function goBack() {
-        if (navigated) {
-            return;
-        }
-
-        window.history.back();
-        navigated = true;
-    }
 </script>
 
 <main transition:fly={{ x: 500, duration: 500 }}>
     <header>
-        <i on:click={goBack} class="icon-chevron" />
+        <i on:click|once={() => window.history.back()} class="icon-chevron" />
         <p>Request Device DID credential</p>
         <i on:click={onClickDev} class="icon-code" />
     </header>
@@ -49,7 +31,7 @@
     </section>
 
     <footer>
-        <Button style="height: 64px; width: 64px; border-radius: 50%;" on:click={scan}>
+        <Button style="height: 64px; width: 64px; border-radius: 50%;" onClick={scan}>
             <i class="icon-scan" />
         </Button>
     </footer>

@@ -42,10 +42,6 @@
         btnDisabled = false;
     }
 
-    function goBack() {
-        window.history.back();
-    }
-
     function onClickDev() {
         navigate("/tutorial");
     }
@@ -65,7 +61,7 @@
         <ObjectList entries={flattenClaim(credentialSubject)} />
     </section>
     <footer>
-        <Button label="Issue Device ID credential" disabled={btnDisabled} on:click={createCredential} />
+        <Button label="Issue Device ID credential" disabled={btnDisabled} onClick={createCredential} />
     </footer>
 </main>
 
