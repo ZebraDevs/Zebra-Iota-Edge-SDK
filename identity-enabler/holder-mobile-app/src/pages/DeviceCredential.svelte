@@ -8,15 +8,12 @@
     import ObjectList from "../components/ObjectList.svelte";
 
     const credentialSubject = window.history.state.credentialSubject;
-    let btnDisabled = false;
 
     async function createCredential() {
         if (navigator.onLine === false) {
             await showAlert("Error", "You need Internet connectivity to create a Device Credential");
             return;
         }
-
-        btnDisabled = true;
 
         loadingScreen.set("Generating Credential...");
         const identityService = ServiceFactory.get("identity");
@@ -38,8 +35,6 @@
             loadingScreen.set();
             await showAlert("Error", "Error creating credential. Please try again.");
         }
-
-        btnDisabled = false;
     }
 
     function onClickDev() {
@@ -61,7 +56,7 @@
         <ObjectList entries={flattenClaim(credentialSubject)} />
     </section>
     <footer>
-        <Button label="Issue Device ID credential" disabled={btnDisabled} onClick={createCredential} />
+        <Button label="Issue Device ID credential" onClick={createCredential} />
     </footer>
 </main>
 
