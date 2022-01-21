@@ -22,7 +22,7 @@
 
         try {
             const storedIdentity = await identityService.retrieveIdentity();
-            const { uuid, model, manufacturer, osVersion, operatingSystem } = await Device.getInfo();
+            const { uuid, model, manufacturer, osVersion } = await Device.getInfo();
             credentialSubject = {
                 device: {
                     "@context": ["https://schema.org", "https://smartdatamodels.org/context.jsonld"],
