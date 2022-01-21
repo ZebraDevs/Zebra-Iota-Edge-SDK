@@ -27,7 +27,7 @@
                 device: {
                     "@context": ["https://schema.org", "https://smartdatamodels.org/context.jsonld"],
                     type: ["Product", "Device"],
-                    id: uuid,
+                    id: `urn:uuid:${uuid}`,
                     name,
                     model: {
                         type: "DeviceModel",
