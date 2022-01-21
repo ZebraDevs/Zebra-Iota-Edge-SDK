@@ -2,6 +2,12 @@ import { get } from "svelte/store";
 import { getRandomUserData } from "./helpers";
 import { account } from "./store";
 
+/**
+ * Creates a schema.org `BloodTest` JSON-LD object.
+ * Some information omitted to reduce size of generated VP
+ * to fit in a DataMatrix.
+ * @returns The `BloodTest`.
+ */
 export function generateBloodCredential() {
     return {
         "@context": "https://schema.org",
@@ -24,6 +30,12 @@ export function generateBloodCredential() {
     };
 }
 
+/**
+ * Creates a schema.org `Person` JSON-LD object.
+ * Some information omitted to reduce size of generated VP
+ * to fit in a DataMatrix.
+ * @returns The `Person`.
+ */
 export async function generatePersonalCredential() {
     const { location, name, email, phone, gender, dob } = await getRandomUserData();
     return {
@@ -47,6 +59,12 @@ export async function generatePersonalCredential() {
     };
 }
 
+/**
+ * Creates a schema.org `MedicalTest` JSON-LD object.
+ * Some information omitted to reduce size of generated VP
+ * to fit in a DataMatrix.
+ * @returns The `MedicalTest`.
+ */
 export function generateHealthCredential() {
     return {
         "@context": "https://schema.org",
