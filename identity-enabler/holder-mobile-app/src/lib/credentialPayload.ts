@@ -4,16 +4,23 @@ import { account } from "./store";
 
 export function generateBloodCredential() {
     return {
-        "Test ID": "91736458",
-        "Test By": "Labor 28 GmbH",
-        "Test Timestamp": new Date(1621507920000).toDateString(),
-        "TSH (sensitive)": "3.36 mU/l",
-        "LDL Cholesterol": "168 mg/dl",
-        "Non-HDL Cholesterol": "175.8 mg/dl",
-        Triglyceride: "120 mg/dl",
-        "HbA 1c": "5.1 %",
-        "MCH (HbE)": "31.5 pg",
-        "Gamma-GT (G-GT)": "11 U/l"
+        "@context": "https://schema.org",
+        "@type": "BloodTest",
+        code: {
+            "@type": "MedicalCode",
+            codeValue: "26604007",
+            codingSystem: "http://snomed.info/sct"
+        },
+        description: "Complete blood count",
+        usedToDiagnose: {
+            "@type": "MedicalCondition",
+            code: {
+                "@type": "MedicalCode",
+                codeValue: "271737000",
+                codingSystem: "http://snomed.info/sct"
+            },
+            description: "Anemia"
+        }
     };
 }
 
@@ -42,15 +49,22 @@ export async function generatePersonalCredential() {
 
 export function generateHealthCredential() {
     return {
-        "Test ID": "01745562",
-        "Test By": "Lab services Ltd",
-        "Test Timestamp": new Date(1583407920000).toDateString(),
-        "Test Kit": "PowerChek MERS-CoV",
-        "Test Result": "Negative",
-        "Covid-19 Antibodies": 0,
-        "% supressor cell (T8)": "20 %",
-        "% B-cell": "12 %",
-        "NK cell activity": 45,
-        "Concanavalin A": "93 %"
+        "@context": "https://schema.org",
+        "@type": "MedicalTest",
+        code: {
+            "@type": "MedicalCode",
+            codeValue: "275926002",
+            codingSystem: "http://snomed.info/sct"
+        },
+        description: "Screening - health check",
+        signDetected: {
+            "@type": "MedicalSign",
+            code: {
+                "@type": "MedicalCode",
+                codeValue: "102512003",
+                codingSystem: "http://snomed.info/sct"
+            },
+            description: "Healthy adult"
+        }
     };
 }

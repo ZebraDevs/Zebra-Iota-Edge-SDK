@@ -76,9 +76,11 @@
                     payload = generateBloodCredential();
                     break;
                 case "personal":
-                default:
                     schema = CredentialType.PERSONAL_DATA;
                     payload = await generatePersonalCredential();
+                    break;
+                default:
+                    throw new Error(`Unrecognized credential type "${credentialKey}"`);
             }
 
             const credential = await identityService.createSignedCredential(
