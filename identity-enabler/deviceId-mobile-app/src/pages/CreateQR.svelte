@@ -22,15 +22,21 @@
 
         try {
             const storedIdentity = await identityService.retrieveIdentity();
-            const deviceInfo = await Device.getInfo();
+            const { uuid, model, manufacturer, osVersion, operatingSystem } = await Device.getInfo();
             credentialSubject = {
-                id: storedIdentity.doc.id,
-                deviceName: name,
-                uuid: deviceInfo.uuid,
-                manufacturer: deviceInfo.manufacturer,
-                model: deviceInfo.model,
-                operatingSystem: deviceInfo.operatingSystem,
-                osVersion: deviceInfo.osVersion
+                device: {
+                    "@context": ["https://schema.org", "https://smartdatamodels.org/context.jsonld"],
+                    type: ["Product", "Device"],
+                    id: uuid,
+                    name,
+                    model: {
+                        type: "DeviceModel",
+                        modelName: model,
+                        manufacturerName: manufacturer
+                    },
+                    osVersion
+                },
+                id: storedIdentity.doc.id
             };
             await createMatrix(JSON.stringify(credentialSubject));
         } catch (err) {
