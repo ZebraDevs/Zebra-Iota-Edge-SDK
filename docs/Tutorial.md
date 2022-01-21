@@ -54,7 +54,7 @@ async function createClient() {
 
 ## Create Identities
 
-Creating an identity involves generating a public-private key pair (`authKeyPair`) that gets used to control access to the DID document on the Tangle. Additionally, a separate key collection is created and added as a verification method for this identity so verifiers may authenticate the DIDs contained in VCs and VPs. The `client` parameter can be provided using `createClient` above.
+Creating an identity involves generating a public-private key pair (`authKeyPair`) that gets used to control access to the DID document on the Tangle. Additionally, a separate key collection is created and added as a verification method for this identity so verifiers may authenticate VCs issued. The `client` parameter can be provided using `createClient` above.
 
 ```js
 async function createIdentity(client) {
