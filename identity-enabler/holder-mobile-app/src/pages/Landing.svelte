@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import Button from "../components/Button.svelte";
     import Header from "../components/Header.svelte";
     import { landingIndex } from "../lib/store";
@@ -112,14 +112,12 @@
         {#each [$landingIndex] as count (count)}
             <div
                 class="content"
-                in:fly={mounted ? { ...getInAnimation(), duration: 400, opacity: 0 } : false}
+                in:fly={mounted ? { ...getInAnimation(), duration: 400, opacity: 0 } : undefined}
                 out:fly={{ ...getOutAnimation(), duration: 400, opacity: 0 }}
             >
                 <img src="/img/{info[$landingIndex].image}" alt={info[$landingIndex].image.replace(/\.svg$/, "")} />
                 <div class="dots">
-                    {#each Array(3)
-                        .fill()
-                        .map((_, i) => i) as idx}
+                    {#each [0, 1, 2] as idx}
                         <span class:active={idx === $landingIndex} />
                     {/each}
                 </div>

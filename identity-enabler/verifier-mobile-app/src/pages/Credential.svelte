@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import { fly } from "svelte/transition";
     import { Plugins } from "@capacitor/core";
     import { credentials } from "../lib/store";

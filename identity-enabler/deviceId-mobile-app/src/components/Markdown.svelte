@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import { beforeUpdate } from "svelte";
     import MarkdownIt from "markdown-it";
     import "highlight.js/styles/github.css";

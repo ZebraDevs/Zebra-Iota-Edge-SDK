@@ -1,10 +1,10 @@
-<script>
+<script lang="ts">
     import { Plugins } from "@capacitor/core";
     import { onMount } from "svelte";
     import { navigate } from "svelte-routing";
     import { slide } from "svelte/transition";
     import { credentials, resetAllStores } from "../lib/store";
-    import { isExpired } from "../lib/helpers";
+    import { isExpired, wait } from "../lib/helpers";
     import Button from "../components/Button.svelte";
     import ListItem from "../components/ListItem.svelte";
     import { showAlert, shortenDID } from "../lib/ui/helpers";
@@ -62,6 +62,7 @@
         });
         if (confirmRet.value) {
             resetAllStores();
+            localCredentials = [];
             navigate("/landing");
         }
     }

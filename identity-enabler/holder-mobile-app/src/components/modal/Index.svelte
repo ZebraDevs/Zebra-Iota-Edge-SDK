@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import { onDestroy, setContext as baseSetContext } from "svelte";
     import { fly } from "svelte/transition";
     import { modalStatus } from "../../lib/store";
