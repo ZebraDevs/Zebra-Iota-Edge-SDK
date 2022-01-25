@@ -120,7 +120,7 @@ async function createVerifiablePresentation(vc, holder) {
     const unsignedVp = new VerifiablePresentation(holder.doc, vc);
 
     // Sign the presentation with issuer's Merkle Key Collection method.
-    const signedVp = issuer.doc.signPresentation(unsignedVp, {
+    const signedVp = holder.doc.signPresentation(unsignedVp, {
         method: holder.method.id.toString(),
         public: holder.keys.public(0),
         private: holder.keys.private(0),
