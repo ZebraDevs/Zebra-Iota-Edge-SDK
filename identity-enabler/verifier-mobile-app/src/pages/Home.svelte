@@ -7,14 +7,12 @@
     import { isExpired } from "../lib/helpers";
     import Button from "../components/Button.svelte";
     import ListItem from "../components/ListItem.svelte";
-    import DevInfo from "./DevInfo.svelte";
     import { showAlert, shortenDID } from "../lib/ui/helpers";
     import { BACK_BUTTON_EXIT_GRACE_PERIOD } from "../config";
 
     const { App, Toast, Modals } = Plugins;
 
     let isEmpty = false;
-    let showTutorial = false;
     let localCredentials = {};
     let exitOnBack = false;
 
@@ -34,11 +32,6 @@
     }
 
     async function onBack() {
-        if (showTutorial) {
-            showTutorial = false;
-            return;
-        }
-
         if (exitOnBack) {
             // From the home screen, navigating back twice should exit the app
             App.exitApp();
@@ -56,7 +49,7 @@
     }
 
     function onClickDev() {
-        showTutorial = true;
+        navigate("/tutorial");
     }
 
     function onClickCredential(credential) {
@@ -90,44 +83,38 @@
 </script>
 
 <main>
-    {#if showTutorial}
-        <DevInfo page="Presentation" bind:showTutorial />
-    {/if}
-
-    {#if !showTutorial}
-        <header>
-            <div class="options-wrapper">
-                <i on:click={onClickReset} class="icon-reset" />
-                <p>SCANNED CREDENTIALS</p>
-                <i on:click={onClickDev} class="icon-code" />
+    <header>
+        <div class="options-wrapper">
+            <i on:click={onClickReset} class="icon-reset" />
+            <p>SCANNED CREDENTIALS</p>
+            <i on:click={onClickDev} class="icon-code" />
+        </div>
+    </header>
+    <section>
+        {#if isEmpty}
+            <div class="empty-wrapper">
+                <p>No credentials scanned</p>
             </div>
-        </header>
-        <section>
-            {#if isEmpty}
-                <div class="empty-wrapper">
-                    <p>No credentials scanned</p>
+        {:else}
+            {#each Object.values(localCredentials) as credential}
+                <div transition:slide class="list">
+                    <ListItem
+                        icon={isExpired(credential.issuanceDate) ? "cross" : "check"}
+                        iconColor="#1e22aa"
+                        onClick={() => onClickCredential(credential)}
+                        heading={credential.type[1]}
+                        subheading="Issued by {credential.issuer.name ??
+                            shortenDID(credential.issuer.id ?? credential.issuer)}"
+                    />
                 </div>
-            {:else}
-                {#each Object.values(localCredentials) as credential}
-                    <div transition:slide class="list">
-                        <ListItem
-                            icon={isExpired(credential.issuanceDate) ? "cross" : "check"}
-                            iconColor="#1e22aa"
-                            onClick={() => onClickCredential(credential)}
-                            heading={credential.type[1]}
-                            subheading="Issued by {credential.issuer.name ??
-                                shortenDID(credential.issuer.id ?? credential.issuer)}"
-                        />
-                    </div>
-                {/each}
-            {/if}
-        </section>
-        <footer>
-            <Button style="height: 64px; width: 64px; border-radius: 50%;" onClick={scan}>
-                <i class="icon-scan" />
-            </Button>
-        </footer>
-    {/if}
+            {/each}
+        {/if}
+    </section>
+    <footer>
+        <Button style="height: 64px; width: 64px; border-radius: 50%;" onClick={scan}>
+            <i class="icon-scan" />
+        </Button>
+    </footer>
 </main>
 
 <style>

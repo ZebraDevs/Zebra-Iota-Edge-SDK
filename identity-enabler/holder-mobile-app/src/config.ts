@@ -8,7 +8,7 @@ export const IOTA_PERMANODE_URL = "https://chrysalis-chronicle.iota.org/api/main
 
 export const RANDOM_USER_DATA_API_URL = "https://randomuser.me/api/?nat=us,au,ca,ie,gb";
 
-export const TUTORIAL_BASE_URL = "https://zebradevs.github.io/Zebra-Iota-Edge-SDK/docs";
+export const TUTORIAL_URL = "/docs/Tutorial.md";
 
 export const IDENTITY_WASM_PATH = "/wasm/identity_wasm_bg.wasm";
 

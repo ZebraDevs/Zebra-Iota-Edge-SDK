@@ -6,11 +6,9 @@
     import { modalStatus, credentials } from "../lib/store";
     import Button from "../components/Button.svelte";
     import ObjectList from "../components/ObjectList.svelte";
-    import DevInfo from "./DevInfo.svelte";
     import CredentialHeader from "../components/CredentialHeader.svelte";
 
     const { App } = Plugins;
-    let showTutorial = false;
 
     const vp = window.history.state.vp;
     const save = window?.history?.state?.save;
@@ -39,47 +37,36 @@
             return;
         }
 
-        if (showTutorial) {
-            showTutorial = false;
-            return;
-        }
-
         window.history.back();
     }
 
     function onClickDev() {
-        showTutorial = true;
+        navigate("/tutorial");
     }
 </script>
 
 <main transition:fly={{ x: 500, duration: 500 }}>
-    {#if showTutorial}
-        <DevInfo page="Credential" bind:showTutorial />
-    {/if}
-
-    {#if !showTutorial}
-        <div class="header-wrapper">
-            <div class="options-wrapper">
-                <i on:click={goBack} class="icon-chevron" />
-                <i on:click={onClickDev} class="icon-code" />
-            </div>
-            <header>
-                <CredentialHeader credential={vp.verifiableCredential} />
-            </header>
+    <div class="header-wrapper">
+        <div class="options-wrapper">
+            <i on:click={goBack} class="icon-chevron" />
+            <i on:click={onClickDev} class="icon-code" />
         </div>
-        <section>
-            <ObjectList object={vp.verifiableCredential.credentialSubject} />
-        </section>
-        <footer>
-            {#if save}
-                <Button label="Save credential" onClick={onSaveCredential} />
-            {:else}
-                <Button label="Share credential" onClick={share}>
-                    <i class="icon-share" />
-                </Button>
-            {/if}
-        </footer>
-    {/if}
+        <header>
+            <CredentialHeader credential={vp.verifiableCredential} />
+        </header>
+    </div>
+    <section>
+        <ObjectList object={vp.verifiableCredential.credentialSubject} />
+    </section>
+    <footer>
+        {#if save}
+            <Button label="Save credential" onClick={onSaveCredential} />
+        {:else}
+            <Button label="Share credential" onClick={share}>
+                <i class="icon-share" />
+            </Button>
+        {/if}
+    </footer>
 </main>
 
 <style>

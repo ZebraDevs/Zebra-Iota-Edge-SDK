@@ -1,14 +1,13 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import bwipjs from "bwip-js";
-    import DevInfo from "./DevInfo.svelte";
     import { loadingScreen, modalStatus } from "../lib/store";
     import { Plugins } from "@capacitor/core";
     import { showAlert, multiClick, getDateString, getTimeString } from "../lib/ui/helpers";
     import CredentialHeader from "../components/CredentialHeader.svelte";
+    import { navigate } from "svelte-routing";
 
     const { App } = Plugins;
-    let showTutorial = false;
 
     const vp = window.history.state.vp;
     const expiry = vp.verifiableCredential.expirationDate
@@ -44,16 +43,11 @@
             return;
         }
 
-        if (showTutorial) {
-            showTutorial = false;
-            return;
-        }
-
         window.history.back();
     }
 
     function onClickDev() {
-        showTutorial = true;
+        navigate("/tutorial");
     }
 
     function showJSON() {
@@ -66,10 +60,6 @@
 </script>
 
 <main>
-    {#if showTutorial}
-        <DevInfo page="Presentation" bind:showTutorial />
-    {/if}
-
     <header>
         <div class="options-wrapper">
             <i on:click={goBack} class="icon-chevron" />

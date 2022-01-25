@@ -4,15 +4,12 @@
     import { updateStorage } from "../lib/store";
     import Button from "../components/Button.svelte";
     import ObjectList from "../components/ObjectList.svelte";
-    import DevInfo from "./DevInfo.svelte";
     import { isExpired } from "../lib/helpers";
     import { navigate } from "svelte-routing";
-    import { onMount } from "svelte";
     import CredentialHeader from "../components/CredentialHeader.svelte";
 
-    const { App, Modals } = Plugins;
+    const { Modals } = Plugins;
 
-    let showTutorial = false;
     let credential = window.history.state.credential;
     const expired = isExpired(credential);
 
@@ -33,43 +30,26 @@
     }
 
     function onClickDev() {
-        showTutorial = true;
+        navigate("/tutorial");
     }
-
-    function onBack() {
-        if (showTutorial) {
-            showTutorial = false;
-            return;
-        }
-
-        window.history.back();
-    }
-
-    onMount(() => App.addListener("backButton", onBack).remove);
 </script>
 
 <main transition:fly={{ x: 500, duration: 500 }}>
-    {#if showTutorial}
-        <DevInfo page="Credential" bind:showTutorial />
-    {/if}
-
-    {#if !showTutorial}
-        <div class="header-wrapper" class:expired>
-            <div class="options-wrapper">
-                <i on:click={onDelete} class="icon-remove" />
-                <i on:click={onClickDev} class="icon-code" />
-            </div>
-            <header>
-                <CredentialHeader {credential} />
-            </header>
+    <div class="header-wrapper" class:expired>
+        <div class="options-wrapper">
+            <i on:click={onDelete} class="icon-remove" />
+            <i on:click={onClickDev} class="icon-code" />
         </div>
-        <section>
-            <ObjectList object={credential.credentialSubject} />
-        </section>
-        <footer>
-            <Button label="Done" onClick={onDone} />
-        </footer>
-    {/if}
+        <header>
+            <CredentialHeader {credential} />
+        </header>
+    </div>
+    <section>
+        <ObjectList object={credential.credentialSubject} />
+    </section>
+    <footer>
+        <Button label="Done" onClick={onDone} />
+    </footer>
 </main>
 
 <style>

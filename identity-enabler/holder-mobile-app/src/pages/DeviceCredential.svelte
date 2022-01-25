@@ -6,12 +6,6 @@
     import { showAlert } from "../lib/ui/helpers";
     import Button from "../components/Button.svelte";
     import ObjectList from "../components/ObjectList.svelte";
-    import DevInfo from "./DevInfo.svelte";
-    import { onMount } from "svelte";
-    import { Plugins } from "@capacitor/core";
-
-    const { App } = Plugins;
-    let showTutorial = false;
 
     const credentialSubject = window.history.state.credentialSubject;
 
@@ -44,43 +38,30 @@
     }
 
     function goBack() {
-        if (showTutorial) {
-            showTutorial = false;
-            return;
-        }
-
         window.history.back();
     }
 
     function onClickDev() {
-        showTutorial = true;
+        navigate("/tutorial");
     }
-
-    onMount(() => App.addListener("backButton", goBack).remove);
 </script>
 
 <main>
-    {#if showTutorial}
-        <DevInfo page="Credential" bind:showTutorial />
-    {/if}
-
-    {#if !showTutorial}
-        <div class="header-wrapper">
-            <div class="options-wrapper">
-                <i on:click={goBack} class="icon-chevron" />
-                <i on:click={onClickDev} class="icon-code" />
-            </div>
-            <header>
-                <p>Device Claims</p>
-            </header>
+    <div class="header-wrapper">
+        <div class="options-wrapper">
+            <i on:click={goBack} class="icon-chevron" />
+            <i on:click={onClickDev} class="icon-code" />
         </div>
-        <section>
-            <ObjectList object={credentialSubject} />
-        </section>
-        <footer>
-            <Button label="Issue Device ID credential" onClick={createCredential} />
-        </footer>
-    {/if}
+        <header>
+            <p>Device Claims</p>
+        </header>
+    </div>
+    <section>
+        <ObjectList object={credentialSubject} />
+    </section>
+    <footer>
+        <Button label="Issue Device ID credential" onClick={createCredential} />
+    </footer>
 </main>
 
 <style>
