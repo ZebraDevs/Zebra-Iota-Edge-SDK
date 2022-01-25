@@ -215,7 +215,7 @@
         background-position: top center;
         background-repeat: no-repeat;
         border-radius: 50%;
-        margin: -25px auto 0 auto;;
+        margin: -25px auto 0 auto;
         border: 15px solid rgba(165, 165, 165, 0.2);
     }
 
