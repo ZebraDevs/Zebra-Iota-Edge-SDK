@@ -30,24 +30,24 @@ export const getFromStorage = async key => {
     }
 };
 
-const hasSetupAccountInitialState = false;
+const hasSetupAccountInitialState = () => false;
 /**
  * Determines if user has completed onboarding
  */
-export const hasSetupAccount = persistent<boolean>("hasSetupAccount", hasSetupAccountInitialState);
+export const hasSetupAccount = persistent<boolean>("hasSetupAccount", hasSetupAccountInitialState());
 
-const credentialsInitialState = {
+const credentialsInitialState = () => ({
     personal: "",
     health: "",
     blood: ""
-};
+});
 export const credentials = persistent<{ personal: string; health: string; blood: string }>(
     "credentials",
-    credentialsInitialState
+    credentialsInitialState()
 );
 
-const accountInitialState = null;
-export const account = persistent<{ name: string } | null>("account", accountInitialState);
+const accountInitialState = () => null;
+export const account = persistent<{ name: string } | null>("account", accountInitialState());
 
 /**
  * Modal status
@@ -58,19 +58,19 @@ export type ModalStatus = {
     props?: any;
 };
 
-const modalStatusInitialState = { active: false, type: null, props: null };
-export const modalStatus = writable<ModalStatus>(modalStatusInitialState);
+const modalStatusInitialState = () => ({ active: false, type: null, props: null });
+export const modalStatus = writable<ModalStatus>(modalStatusInitialState());
 
-const landingIndexInitialState = 0;
-export const landingIndex = writable<number>(landingIndexInitialState);
+const landingIndexInitialState = () => 0;
+export const landingIndex = writable<number>(landingIndexInitialState());
 
 export const loadingScreen = writable<string | void>();
 
 export function resetAllStores() {
-    hasSetupAccount.set(hasSetupAccountInitialState);
-    credentials.set(credentialsInitialState);
-    account.set(accountInitialState);
-    modalStatus.set(modalStatusInitialState);
-    landingIndex.set(landingIndexInitialState);
+    hasSetupAccount.set(hasSetupAccountInitialState());
+    credentials.set(credentialsInitialState());
+    account.set(accountInitialState());
+    modalStatus.set(modalStatusInitialState());
+    landingIndex.set(landingIndexInitialState());
     loadingScreen.set();
 }
