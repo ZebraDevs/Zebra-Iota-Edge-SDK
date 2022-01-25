@@ -21,7 +21,7 @@
     }
 </script>
 
-<main transition:fly={{ x: 500, duration: 500 }}>
+<main in:fly={{ x: 500, duration: 500 }}>
     <header>
         <i on:click={goBack} class="icon-chevron" />
         <p>Request Device DID credential</p>

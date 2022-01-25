@@ -71,7 +71,7 @@
 </script>
 
 <main>
-    <div class="wrapper" transition:fly={{ x: 500, duration: 500 }}>
+    <div class="wrapper" in:fly={{ x: 500, duration: 500 }}>
         <header>
             <i on:click|once={() => window.history.back()} class="icon-chevron" />
             <p>Request Device DID credential</p>
