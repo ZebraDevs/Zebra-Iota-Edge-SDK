@@ -1,5 +1,6 @@
 <script>
     import { Plugins } from "@capacitor/core";
+    import {onMount} from "svelte";
     import { credentials } from "../lib/store";
     import Button from "../components/Button.svelte";
     import ObjectList from "../components/ObjectList.svelte";
@@ -9,7 +10,7 @@
     import { flattenCredential } from "../lib/ui/helpers";
     import PageTransition from "../components/PageTransition.svelte";
 
-    const { Modals } = Plugins;
+    const { Modals, App } = Plugins;
 
     let credential = window.history.state.credential;
     let expired = isExpired(credential);
