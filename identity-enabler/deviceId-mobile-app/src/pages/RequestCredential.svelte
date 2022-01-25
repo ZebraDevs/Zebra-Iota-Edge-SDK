@@ -1,5 +1,7 @@
 <script>
     import { navigate } from "svelte-routing";
+    import { onMount } from "svelte";
+    import { Plugins } from "@capacitor/core";
     import Button from "../components/Button.svelte";
     import { showAlert } from "../lib/ui/helpers";
     import PageTransition from "../components/PageTransition.svelte";
