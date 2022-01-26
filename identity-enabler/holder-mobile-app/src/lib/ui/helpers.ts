@@ -126,11 +126,11 @@ export function flattenCredential(object: Record<string, any>): [string, string]
         case CredentialType.DEVICE_ID:
             return [
                 ["Subject", sub.id],
-                ["Name", sub.device.name],
-                ["ID", sub.device.id],
-                ["Manufacturer", sub.device.model.manufacturerName],
-                ["Model", sub.device.model.modelName],
-                ["OS Version", sub.device.osVersion]
+                ["Name", sub.name],
+                ["Identifier", sub.identifier],
+                ["Manufacturer", sub.model.manufacturerName],
+                ["Model", sub.model.modelName],
+                ["OS Version", sub.osVersion]
             ];
         default:
             return Object.entries(flattenObj(sub));
@@ -146,7 +146,7 @@ export function flattenClaim(object: Record<string, any>): [string, string][] {
         return [];
     }
 
-    if (!object.device || !object.id) {
+    if (!Array.isArray(object.type) || object.type[0] !== "Product" || object.type[1] !== "Device") {
         // Currently only device claims recognized. Flatten if not a device claim.
         console.log(flattenObj(object));
         return Object.entries(flattenObj(object));
@@ -154,10 +154,10 @@ export function flattenClaim(object: Record<string, any>): [string, string][] {
 
     return [
         ["Subject", object.id],
-        ["Name", object.device.name],
-        ["ID", object.device.id],
-        ["Manufacturer", object.device.model.manufacturerName],
-        ["Model", object.device.model.modelName],
-        ["OS Version", object.device.osVersion]
+        ["Name", object.name],
+        ["Identifier", object.identifier],
+        ["Manufacturer", object.model.manufacturerName],
+        ["Model", object.model.modelName],
+        ["OS Version", object.osVersion]
     ];
 }

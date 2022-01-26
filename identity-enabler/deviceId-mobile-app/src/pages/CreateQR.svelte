@@ -24,19 +24,17 @@
             const storedIdentity = await identityService.retrieveIdentity();
             const { uuid, model, manufacturer, osVersion } = await Device.getInfo();
             credentialSubject = {
-                device: {
-                    "@context": ["https://schema.org", "https://smartdatamodels.org/context.jsonld"],
-                    type: ["Product", "Device"],
-                    id: `urn:uuid:${uuid}`,
-                    name,
-                    model: {
-                        type: "DeviceModel",
-                        modelName: model,
-                        manufacturerName: manufacturer
-                    },
-                    osVersion
+                id: storedIdentity.doc.id,
+                "@context": ["https://schema.org", "https://smartdatamodels.org/context.jsonld"],
+                type: ["Product", "Device"],
+                identifier: `urn:uuid:${uuid}`,
+                name,
+                model: {
+                    type: "DeviceModel",
+                    modelName: model,
+                    manufacturerName: manufacturer
                 },
-                id: storedIdentity.doc.id
+                osVersion
             };
             await createMatrix(JSON.stringify(credentialSubject));
         } catch (err) {

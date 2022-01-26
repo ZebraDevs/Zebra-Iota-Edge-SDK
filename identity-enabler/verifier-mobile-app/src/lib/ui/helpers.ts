@@ -99,11 +99,11 @@ export function flattenCredential(object: Record<string, any>): [string, string]
         case CredentialType.DEVICE_ID:
             return [
                 ["Subject", sub.id],
-                ["Name", sub.device.name],
-                ["ID", sub.device.id],
-                ["Manufacturer", sub.device.model.manufacturerName],
-                ["Model", sub.device.model.modelName],
-                ["OS Version", sub.device.osVersion]
+                ["Name", sub.name],
+                ["Identifier", sub.identifier],
+                ["Manufacturer", sub.model.manufacturerName],
+                ["Model", sub.model.modelName],
+                ["OS Version", sub.osVersion]
             ];
         default:
             return Object.entries(flattenObj(sub));
