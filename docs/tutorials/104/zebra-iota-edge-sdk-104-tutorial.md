@@ -72,11 +72,11 @@ adb shell am startservice -a org.iota.zebra.device_id.intent.action.SCAN -e com.
 
 Note: Also you should have previously defined a [DataWedge profile for the Holder Application](../101/zebra-iota-edge-sdk-102-tutorial.md#datawedge-profile).
 
-Additional information on how Zebra DataWedge can be integrated is found at the [introductory tutorial](../101/zebra-iota-edge-sdk-101-tutorial.md#Zebra-DataWedge-Integration).
+Additional information on how Zebra DataWedge can be integrated is found at the [introductory tutorial](../101/zebra-iota-edge-sdk-101-tutorial.md#zebra-datawedge-integration).
 
 ## Onboard a device
 
-The first step to onboard a device is to obtain a new DID document. This process is conducted through a wizard, and is similar to the one we already described for the [_Holder Application_](../102/zebra-iota-edge-sdk-102-tutorial.md#Create-an-Identity). See below.
+The first step to onboard a device is to obtain a new DID document. This process is conducted through a wizard, and is similar to the one we already described for the [_Holder Application_](../102/zebra-iota-edge-sdk-102-tutorial.md#create-an-identity). See below.
 
 <p align="center">
 <img style="float: right;" alt="Identity device 1" src="images/image21.png" width="30%"></img>
@@ -111,5 +111,4 @@ Once the new Credential is ready it is shared from the _Holder Application_ thro
 
 ### Show me the code
 
-The code that makes it possible the Device onboarding is a combination of the previous code we have shown in other parts of this tutorial, such as the [identity generation](../102/zebra-iota-edge-sdk-102-tutorial.md#show-me-the-code) or [credential issuance](../102/zebra-iota-edge-sdk-102-tutorial.md#show-me-the-code).
-
+The code that makes it possible the Device onboarding is a combination of the previous code we have shown in other parts of this tutorial, such as the [identity generation](../102/zebra-iota-edge-sdk-102-tutorial.md#show-me-the-code) or [credential issuance](../102/zebra-iota-edge-sdk-102-tutorial.md#show-me-the-code-1).

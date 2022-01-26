@@ -58,7 +58,7 @@ Afterwards you need to go to the Android Studio and compile, install and execute
 
 ## DataWedge profile
 
-In order to use the credential issuance part of this application (see [DeviceID tutorial](../104/zebra-iota-edge-sdk-104-tutorial-104.md#onboard-a-device)) you will need to set up a DataWedge profile bound to the `“org.iota.zebra.holder”` application as follows:
+In order to use the credential issuance part of this application (see [DeviceID tutorial](../104/zebra-iota-edge-sdk-104-tutorial.md#onboard-a-device)) you will need to set up a DataWedge profile bound to the `“org.iota.zebra.holder”` application as follows:
 
 <p align="center">
 <img style="float: right;" alt="Data Wedge Profile 1" src="images/image3.png" width="30%"></img>
@@ -72,7 +72,7 @@ Note: On a non DataWedge device you can simulate a DataWedge scanning through th
 adb shell am startservice -a org.iota.zebra.holder.intent.action.SCAN -e com.symbol.datawedge.source scanner -e com.symbol.datawedge.data_string <scanned_string>
 ```
 
-Additional information on how Zebra DataWedge can be integrated is found at the [introductory tutorial](../101/zebra-iota-edge-sdk-101-tutorial.md#Zebra-DataWedge-Integration).
+Additional information on how Zebra DataWedge can be integrated is found at the [introductory tutorial](../101/zebra-iota-edge-sdk-101-tutorial.md#zebra-datawedge-integration).
 
 ## Create an Identity
 

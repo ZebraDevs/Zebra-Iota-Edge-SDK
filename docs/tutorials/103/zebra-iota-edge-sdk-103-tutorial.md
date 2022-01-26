@@ -68,7 +68,7 @@ Note: On a non DataWedge device you can simulate a DataWedge scanning through th
 adb shell am startservice -a org.iota.zebra.verifier.intent.action.SCAN -e com.symbol.datawedge.source scanner -e com.symbol.datawedge.data_string <scanned_string>
 ```
 
-Additional information on how Zebra DataWedge can be integrated is found at the [introductory tutorial](../101/zebra-iota-edge-sdk-101-tutorial.md#Zebra-DataWedge-Integration).
+Additional information on how Zebra DataWedge can be integrated is found at the [introductory tutorial](../101/zebra-iota-edge-sdk-101-tutorial.md#zebra-datawedge-integration).
 
 ## Verify a Credential
 
