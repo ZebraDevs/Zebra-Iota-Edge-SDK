@@ -4,11 +4,11 @@
 
 All the scaffolding needed to create a solution for managing credentials on Android devices is packaged under the so-called _Holder Application_. This application also allows sharing credentials with interested parties by way of a scannable data matrix.
 
-The application guides the user to set up an Identity (a DID document) before associating Verifiable Credentials to this Identity. As this is just a reference application, the app self-signs the Verifiable Credentials, but ordinarily they would be signed by a third party such as a government in the case of personal details. An interested party can scan and verify the credential when presented in the form of a data matrix (see _[Verifier Application](#tutorial-part-2-verifying-credentials-verifier-application)_ section).
+The application guides the user to set up an Identity (a DID document) before associating Verifiable Credentials to this Identity. As this is just a reference application, the app self-signs the Verifiable Credentials, but ordinarily they would be signed by a third party such as a government in the case of personal details. An interested party can scan and verify the credential when presented in the form of a data matrix (see _[Verifier Tutorial](../103/zebra-iota-edge-sdk-103-tutorial.md)_ section).
 
-Note: The _Holder Application_ also includes partial functionality as an issuer of credentials (see [DeviceID Tutorial](../104/zebra-iota-edge-sdk-104-tutorial-104.md)).
+Note: The _Holder Application_ also includes partial functionality as an issuer of credentials (see [DeviceID Tutorial](../104/zebra-iota-edge-sdk-104-tutorial.md)).
 
-## How to run in a browser {#how-to-run-in-a-browser}
+## How to run in a browser
 
 Run the Holder application in your browser with the below commands:
 
@@ -48,11 +48,9 @@ Afterwards you need to go to the Android Studio and compile, install and execute
 
 In order to use the credential issuance part of this application (see [DeviceID tutorial](../104/zebra-iota-edge-sdk-104-tutorial-104.md#onboard-a-device)) you will need to set up a DataWedge profile bound to the `“org.iota.zebra.holder”` application as follows:
 
-![alt_text](images/image2.png "image_tooltip")
-
-![alt_text](images/image3.png "image_tooltip")
-
-![alt_text](images/image4.png "image_tooltip")
+<img style="float: right" alt="Data Wedge Profile" src="images/image3.png"></img>
+<img style="float: right" alt="Data Wedge Profile" src="images/image10.png"></img>
+<img style="float: right" alt="Data Wedge Profile" src="images/image1.png"></img>
 
 Note: On a non DataWedge device you can simulate a DataWedge scanning through the `adb` command line tool as follows:
 
