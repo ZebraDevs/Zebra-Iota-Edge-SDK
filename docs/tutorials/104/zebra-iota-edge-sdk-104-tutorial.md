@@ -12,7 +12,7 @@ Particularly, once a new Device Identity is available, the concerned device can 
 
 ## Prerequisites
 
-The prerequisites for running this tutorial are described on [part 1](../101/zebra-iota-edge-sdk-101.md#prerequisites) of this series.
+The prerequisites for running this tutorial are described on [part 1](../101/zebra-iota-edge-sdk-101-tutorial.md#prerequisites) of this series.
 
 ## Getting started
 
