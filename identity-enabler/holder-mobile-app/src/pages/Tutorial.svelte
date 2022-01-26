@@ -59,7 +59,9 @@
     header {
         font-family: "Proxima Nova", sans-serif;
         font-weight: 700;
-        font-size: 1.1em;
+        font-size: 1em;
+        text-transform: uppercase;
+        letter-spacing: 1px;
         color: #fff;
     }
 

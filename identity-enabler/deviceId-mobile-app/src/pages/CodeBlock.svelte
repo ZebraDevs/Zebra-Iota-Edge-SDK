@@ -29,6 +29,10 @@
         padding: 1.2rem;
     }
 
+    .icon-chevron {
+        color: white;
+    }
+
     .header-wrapper > .side {
         flex: 1;
     }

@@ -20,6 +20,7 @@
     import FullScreenLoader from "./components/FullScreenLoader.svelte";
     import { handleScannerData } from "./lib/scan";
     import Tutorial from "./pages/Tutorial.svelte";
+    import CodeBlock from "./pages/CodeBlock.svelte";
 
     let url = window.location.pathname;
     let displayHome = false;
@@ -90,6 +91,7 @@
             <Route path="/createPresentation" component={CreatePresentation} />
             <Route path="/invalid" component={InvalidCredential} />
             <Route path="/tutorial" component={Tutorial} />
+            <Route path="/code" component={CodeBlock} />
         </div>
     </Router>
     <Modal>
