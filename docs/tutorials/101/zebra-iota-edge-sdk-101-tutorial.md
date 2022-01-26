@@ -140,7 +140,6 @@ Under the[ identity-enabler](https://github.com/ZebraDevs/Zebra-Iota-Edge-SDK) f
 │   │   │   └── gradle
 │   │   └── src
 │   │   	├── modal
-│   │   	└── pages
 │   ├── holder-mobile-app
 │   │   ├── android
 │   │   │   ├── app
