@@ -31,6 +31,7 @@ cd Zebra-Iota-Edge-SDK/identity-enabler/deviceId-mobile-app
 npm install
 
 # Build and run
+npm run build:dev
 npm run start:dev
 
 # Open http://localhost:5002 in your browser
