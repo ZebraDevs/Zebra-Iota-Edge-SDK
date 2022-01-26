@@ -127,6 +127,7 @@ export function flattenCredential(object: Record<string, any>): [string, string]
             return [
                 ["Subject", sub.id],
                 ["Name", sub.device.name],
+                ["ID", sub.device.id],
                 ["Manufacturer", sub.device.model.manufacturerName],
                 ["Model", sub.device.model.modelName],
                 ["OS Version", sub.device.osVersion]
@@ -154,6 +155,7 @@ export function flattenClaim(object: Record<string, any>): [string, string][] {
     return [
         ["Subject", object.id],
         ["Name", object.device.name],
+        ["ID", sub.device.id],
         ["Manufacturer", object.device.model.manufacturerName],
         ["Model", object.device.model.modelName],
         ["OS Version", object.device.osVersion]
