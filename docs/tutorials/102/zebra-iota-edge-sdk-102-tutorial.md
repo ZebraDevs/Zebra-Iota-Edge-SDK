@@ -1,6 +1,6 @@
----
-title: Zebra-IOTA-Edge-SDK : Identity Enabler : 102 Tutorial <br> Managing credentials (Holder Application)
----
+# Zebra-IOTA-Edge-SDK : Identity Enabler : 102 Tutorial <br> Managing credentials (Holder Application)
+
+In this tutorial you will learn how to issue and present Verifiable Credentials through a blueprint application that incorporates the corresponding UI toolkit and libraries offered by the SDK for this purpose. 
 
 ## Introduction
 
