@@ -61,7 +61,7 @@ As the amount of stakeholders and their interrelationships can be huge, the only
 
     solution to these problems is the usage of decentralized identities. The Zebra-IOTA Edge SDK already provides application blueprints that can be extended to meet the scenarios described above.
 
-## DLT Technologies and IOTA {#dlt-technologies-and-iota}
+## DLT Technologies and IOTA
 
 A Ledger is an information store that keeps final and definitive (immutable) records of transactions. A Distributed Ledger is a type of ledger that is shared, replicated, and synchronized in a distributed and decentralized manner. A decentralised system is a system wherein control is shared among the persons or organizations participating in the operation of the system.
 
@@ -69,7 +69,7 @@ IOTA is an open source, scalable and permissionless DLT that enables sharing of 
 
 In contrast with traditional blockchain-based DLTs, IOTA is based on a Directed Acyclic Graph, the Tangle. [This video](https://www.youtube.com/watch?v=ivWqqfzunhI) explains how IOTA's Tangle works. [Here](https://wiki.iota.org) you can find a get started guide intended for IOTA's developers with additional references.
 
-## The IOTA Identity Framework {#the-iota-identity-framework}
+## The IOTA Identity Framework
 
 The IOTA Identity Framework is an implementation of the W3C Decentralized Identity standards leveraging IOTA Tangle. Such standards are composed of two different specifications:
 
@@ -87,7 +87,7 @@ The IOTA Identity framework handles all the interactions with the IOTA Tangle wh
 
 The IOTA Identity Framework is coded in [Rust](https://github.com/iotaledger/identity.rs) but has also defined WASM (Javascript) bindings which facilitate its usage to Mobile and Web Developers. In fact, the Zebra Edge SDK is using those bindings to implement the functionality described by this tutorial.
 
-## The Zebra-IOTA Edge SDK: Overview {#the-zebra-iota-edge-sdk-overview}
+## The Zebra-IOTA Edge SDK: Overview
 
 The Zebra-IOTA Edge SDK is composed of different open source modules (enablers) that facilitate the creation of applications that exploit IOTA’s DLT capabilities on edge devices, in particular Zebra Devices. The enabler described by this tutorial (_Identity Enabler_) is the one corresponding to decentralized identities. It is based on the IOTA Identity Framework and makes it easier to develop solutions on the edge that exploit the capabilities of decentralized identities for people, devices or organizations.
 
@@ -95,7 +95,7 @@ The Identity Enabler is composed of a set of **reference applications** that can
 
 The SDK uses Web Technologies for the user interface of the aforementioned reference applications. In particular, those applications are coded in [TypeScript](https://www.typescriptlang.org/), using the [Svelte framework](https://svelte.dev). To package the Web Applications as Android applications, the [Capacitor framework](https://capacitorjs.com/) is used. That means that you can run these applications in your favourite browser as Web Applications or in your Android device or emulator.
 
-## Tutorials
+## Executing the Tutorial
 
 ### Prerequisites
 
@@ -127,7 +127,7 @@ If you want to do a more exhaustive debugging you can use the adb command line t
 $ adb logcat | grep -F "`adb shell ps | grep org.iota.zebra | tr -s [:space:] ' ' | cut -d' ' -f2`"
 ```
 
-### Getting started {#getting-started}
+### Getting started
 
 Under the[ identity-enabler](https://github.com/ZebraDevs/Zebra-Iota-Edge-SDK) folder, there is one subfolder for each of the reference applications. For each application the `src` directory contains the `pages` and `modal` directories containing the application-specific Svelte page and modal window components. Additionally, each application has a `config.ts` file with settings and contains an Android application in the `android` directory.
 
@@ -161,6 +161,6 @@ The specific code that deals with the IOTA Identity framework is at the [Identit
 
 During the tutorial we will explain how the applications can make use of the [IOTA Identity](https://github.com/iotaledger/identity.rs) Framework to solve the decentralized identity functionalities. However, we will not explain the details concerning the implementation of the user interface through the Svelte Framework. Nonetheless, we can recommend this [Svelte tutorial](https://svelte.dev/tutorial/).
 
-Last but not least, the SDK solves the problem of bridging [Zebra DataWedge](https://techdocs.zebra.com/datawedge/11-1/guide/about/) and the Web Application code. The main idea is that there is a [DataWedge service](https://github.com/ZebraDevs/Zebra-Iota-Edge-SDK/blob/dev/identity-enabler/verifier-mobile-app/android/app/src/main/java/org/iota/zebra/verifier/datawedge/DataWedgeService.java)that is awakened whenever a new DataWedge intent is triggered (if properly configured through a DataWedge profile as previously explained). Afterwards, the Service triggers a data observation event (with the scanned string) to the [main Android Activity](https://github.com/ZebraDevs/Zebra-Iota-Edge-SDK/blob/dev/identity-enabler/verifier-mobile-app/android/app/src/main/java/org/iota/zebra/verifier/MainActivity.java#L64) which receives it and executes the [`onScan`](https://github.com/ZebraDevs/Zebra-Iota-Edge-SDK/blob/main/identity-enabler/verifier-mobile-app/src/App.svelte#L22) method at the Web View. Such a method will react to the scanned data accordingly. For those devices which do not incorporate a scanner with DataWedge capabilities, the scanning can proceed through the regular device’s camera (open through the [Media Device Web APIs](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia)) and the [https://github.com/zxing-js/library](https://github.com/zxing-js/library) library. For that purpose there is a Svelte [Scanner](https://github.com/ZebraDevs/Zebra-Iota-Edge-SDK/blob/main/identity-enabler/verifier-mobile-app/src/components/Scanner.svelte) component and a Svelte [Scan](https://github.com/ZebraDevs/Zebra-Iota-Edge-SDK/blob/main/identity-enabler/verifier-mobile-app/src/pages/Scan.svelte) page that can be easily reused.
+Last but not least, the SDK solves the problem of bridging [Zebra DataWedge](https://techdocs.zebra.com/datawedge/11-1/guide/about/) and the Web Application code. The main idea is that there is a [DataWedge service](https://github.com/ZebraDevs/Zebra-Iota-Edge-SDK/blob/dev/identity-enabler/verifier-mobile-app/android/app/src/main/java/org/iota/zebra/verifier/datawedge/DataWedgeService.java) that is awakened whenever a new DataWedge intent is triggered (if properly configured through a DataWedge profile as previously explained). Afterwards, the Service triggers a data observation event (with the scanned string) to the [main Android Activity](https://github.com/ZebraDevs/Zebra-Iota-Edge-SDK/blob/dev/identity-enabler/verifier-mobile-app/android/app/src/main/java/org/iota/zebra/verifier/MainActivity.java#L64) which receives it and executes the [`onScan`](https://github.com/ZebraDevs/Zebra-Iota-Edge-SDK/blob/main/identity-enabler/verifier-mobile-app/src/App.svelte#L22) method at the Web View. Such a method will react to the scanned data accordingly. For those devices which do not incorporate a scanner with DataWedge capabilities, the scanning can proceed through the regular device’s camera (open through the [Media Device Web APIs](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia)) and the [https://github.com/zxing-js/library](https://github.com/zxing-js/library) library. For that purpose there is a Svelte [Scanner](https://github.com/ZebraDevs/Zebra-Iota-Edge-SDK/blob/main/identity-enabler/verifier-mobile-app/src/components/Scanner.svelte) component and a Svelte [Scan](https://github.com/ZebraDevs/Zebra-Iota-Edge-SDK/blob/main/identity-enabler/verifier-mobile-app/src/pages/Scan.svelte) page that can be easily reused.
 
 ## Next Step
