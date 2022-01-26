@@ -6,7 +6,7 @@ Before reading this tutorial you should have first read the [Decentralized Ident
 
 ## Prerequisites
 
-The prerequisites for running this tutorial are described on [part 1](../101/zebra-iota-edge-sdk-101.md#prerequisites) of this series.
+The prerequisites for running this tutorial are described on [part 1](../101/zebra-iota-edge-sdk-101-tutorial.md#prerequisites) of this series.
 
 ## Getting started
 
