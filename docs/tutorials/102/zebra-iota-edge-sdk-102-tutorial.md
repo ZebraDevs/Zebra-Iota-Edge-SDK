@@ -14,7 +14,7 @@ Note: The _Holder Application_ also includes partial functionality as an issuer 
 
 ## Prerequisites
 
-The prerequisites for running this tutorial are described on [part 1](../101/zebra-iota-edge-sdk-101.md#prerequisites) of this series.
+The prerequisites for running this tutorial are described on [part 1](../101/zebra-iota-edge-sdk-101-tutorial.md#prerequisites) of this series.
 
 ## Getting started
 
