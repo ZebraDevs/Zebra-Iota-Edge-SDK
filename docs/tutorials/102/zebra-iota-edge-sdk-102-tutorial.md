@@ -235,7 +235,7 @@ Generating and signing a Verifiable Presentation is done using the following cod
     });
 ```
 
-Then, the generation of a data matrix code is done using the [https://github.com/metafloor/bwip-js](https://github.com/metafloor/bwip-js) library.
+Then, the generation of a data matrix code is done using the [bwip-js library](https://github.com/metafloor/bwip-js) library.
 
 ## Next Steps
 
