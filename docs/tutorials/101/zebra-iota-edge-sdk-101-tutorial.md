@@ -149,7 +149,6 @@ Under the[ identity-enabler](https://github.com/ZebraDevs/Zebra-Iota-Edge-SDK) f
 │   	  │   ├── app
 │   	  │   └── gradle
 │   	  └── src
-│       	└── pages
 ```
 
 The specific code that deals with the IOTA Identity framework is at the [IdentityService](https://github.com/ZebraDevs/Zebra-Iota-Edge-SDK/blob/dev/identity-enabler/verifier-mobile-app/src/services/identityService.ts) wrapper class. We will explain the specific details of that class under the corresponding application tutorial section. In addition there is a “show me the code” button on each application screen that you can use to find relevant code snippets in context.
