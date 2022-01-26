@@ -1,6 +1,6 @@
 # Zebra-IOTA-Edge-SDK : Identity Enabler : 102 Tutorial <br> Managing credentials (Holder Application)
 
-In this tutorial you will learn how to issue and present Verifiable Credentials through a blueprint application that incorporates the corresponding UI toolkit and libraries offered by the SDK for this purpose. 
+In this tutorial you will learn how to issue and present Verifiable Credentials through a blueprint application that showcases how to incorporate the corresponding UI toolkit and libraries offered by the SDK.
 
 ## Introduction
 
@@ -9,6 +9,14 @@ All the scaffolding needed to create a solution for managing credentials on Andr
 The application guides the user to set up an Identity (a DID document) before associating Verifiable Credentials to this Identity. As this is just a reference application, the app self-signs the Verifiable Credentials, but ordinarily they would be signed by a third party such as a government in the case of personal details. An interested party can scan and verify the credential when presented in the form of a data matrix (see _[Verifier Tutorial](../103/zebra-iota-edge-sdk-103-tutorial.md)_ section).
 
 Note: The _Holder Application_ also includes partial functionality as an issuer of credentials (see [DeviceID Tutorial](../104/zebra-iota-edge-sdk-104-tutorial.md)).
+
+## Prerequisites
+
+The prerequisites for running this tutorial are described on [part 1](../101/zebra-iota-edge-sdk-101.md#prerequisites) of this series.
+
+## Getting started
+
+An overview of the structure of the SDK are described on [part 1](../101/zebra-iota-edge-sdk-101.md#getting-started) of this series.
 
 ## How to run in a browser
 
@@ -218,4 +226,4 @@ Then, the generation of a data matrix code is done using the [https://github.com
 
 ## Next Steps
 
-If you want to know how to build an application capable of verifying credentials go the [103 Tutorial](../103/zebra-iota-edge-sdk-103-tutorial.md)
+If you want to know how to build an application capable of verifying credentials go the [103 Tutorial](../103/zebra-iota-edge-sdk-103-tutorial.md).

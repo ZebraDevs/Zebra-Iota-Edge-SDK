@@ -1,6 +1,6 @@
-# Zebra-IOTA-Edge-SDK : Identity Enabler : 101 Tutorial
+# Zebra-IOTA-Edge-SDK : Identity Enabler : 101 Tutorial <br> Understanding Decentralized Identities
 
-In this tutorial series you will learn how to use the **Identity Enabler** of the Zebra-IOTA Edge SDK to issue, verify and manage decentralized and interoperable identities for people, organizations and devices. If you are already familiar with the IOTA Tangle and / or the concepts behind Decentralized Identity you can jump directly to the [tutorial](#tutorial).
+In this tutorial series you will learn how to use the **Identity Enabler** of the Zebra-IOTA Edge SDK to issue, verify and manage decentralized and interoperable identities for people, organizations and devices. If you are already familiar with the IOTA Tangle and / or the concepts behind Decentralized Identity you can jump directly to the [tutorial introductions](#the-zebra-iota-edge-sdk-overview).
 
 ## Introduction to Digital Identities
 
@@ -95,7 +95,7 @@ The Identity Enabler is composed of a set of **reference applications** that can
 
 The SDK uses Web Technologies for the user interface of the aforementioned reference applications. In particular, those applications are coded in [TypeScript](https://www.typescriptlang.org/), using the [Svelte framework](https://svelte.dev). To package the Web Applications as Android applications, the [Capacitor framework](https://capacitorjs.com/) is used. That means that you can run these applications in your favourite browser as Web Applications or in your Android device or emulator.
 
-## Executing the Tutorial
+## Tutorial
 
 ### Prerequisites
 
@@ -124,7 +124,7 @@ If you are going to extend the reference applications, or develop your own appli
 If you want to do a more exhaustive debugging you can use the adb command line tool:
 
 ```
-$ adb logcat | grep -F "`adb shell ps | grep org.iota.zebra | tr -s [:space:] ' ' | cut -d' ' -f2`"
+adb logcat | grep -F "`adb shell ps | grep org.iota.zebra | tr -s [:space:] ' ' | cut -d' ' -f2`"
 ```
 
 ### Getting started
@@ -164,3 +164,6 @@ During the tutorial we will explain how the applications can make use of the [IO
 Last but not least, the SDK solves the problem of bridging [Zebra DataWedge](https://techdocs.zebra.com/datawedge/11-1/guide/about/) and the Web Application code. The main idea is that there is a [DataWedge service](https://github.com/ZebraDevs/Zebra-Iota-Edge-SDK/blob/dev/identity-enabler/verifier-mobile-app/android/app/src/main/java/org/iota/zebra/verifier/datawedge/DataWedgeService.java) that is awakened whenever a new DataWedge intent is triggered (if properly configured through a DataWedge profile as previously explained). Afterwards, the Service triggers a data observation event (with the scanned string) to the [main Android Activity](https://github.com/ZebraDevs/Zebra-Iota-Edge-SDK/blob/dev/identity-enabler/verifier-mobile-app/android/app/src/main/java/org/iota/zebra/verifier/MainActivity.java#L64) which receives it and executes the [`onScan`](https://github.com/ZebraDevs/Zebra-Iota-Edge-SDK/blob/main/identity-enabler/verifier-mobile-app/src/App.svelte#L22) method at the Web View. Such a method will react to the scanned data accordingly. For those devices which do not incorporate a scanner with DataWedge capabilities, the scanning can proceed through the regular device’s camera (open through the [Media Device Web APIs](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia)) and the [https://github.com/zxing-js/library](https://github.com/zxing-js/library) library. For that purpose there is a Svelte [Scanner](https://github.com/ZebraDevs/Zebra-Iota-Edge-SDK/blob/main/identity-enabler/verifier-mobile-app/src/components/Scanner.svelte) component and a Svelte [Scan](https://github.com/ZebraDevs/Zebra-Iota-Edge-SDK/blob/main/identity-enabler/verifier-mobile-app/src/pages/Scan.svelte) page that can be easily reused.
 
 ## Next Step
+
+If you want to know how you can generate and manage identities and credentials using the UI toolkit and libraries offered by 
+the SD, please continue the [102 Tutorial](../102/zebra-iota-edge-sdk-102-tutorial.md).
