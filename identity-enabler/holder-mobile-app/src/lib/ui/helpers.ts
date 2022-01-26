@@ -155,7 +155,7 @@ export function flattenClaim(object: Record<string, any>): [string, string][] {
     return [
         ["Subject", object.id],
         ["Name", object.device.name],
-        ["ID", sub.device.id],
+        ["ID", object.device.id],
         ["Manufacturer", object.device.model.manufacturerName],
         ["Model", object.device.model.modelName],
         ["OS Version", object.device.osVersion]
