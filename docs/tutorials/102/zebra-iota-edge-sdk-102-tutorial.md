@@ -48,7 +48,7 @@ Afterwards you need to go to the Android Studio and compile, install and execute
 
 In order to use the credential issuance part of this application (see [DeviceID tutorial](../104/zebra-iota-edge-sdk-104-tutorial-104.md#onboard-a-device)) you will need to set up a DataWedge profile bound to the `“org.iota.zebra.holder”` application as follows:
 
-<img style="float: right" alt="Data Wedge Profile" src="images/image3.png"></img>
+<img style="float: right" alt="Data Wedge Profile" src="images/image3.png" width="50%"></img>
 <img style="float: right" alt="Data Wedge Profile" src="images/image10.png"></img>
 <img style="float: right" alt="Data Wedge Profile" src="images/image1.png"></img>
 
