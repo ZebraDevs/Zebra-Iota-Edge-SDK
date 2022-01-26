@@ -6,50 +6,61 @@
     import { loadingScreen } from "../lib/store";
     import { showAlert } from "../lib/ui/helpers";
 
-    let code = "";
+    let markdown = "";
+    let title = "";
 
     onMount(async () => {
         loadingScreen.set("Loading...");
         try {
-            code = await getMarkdownContent(TUTORIAL_URL);
+            const tutorialMd: string = await getMarkdownContent(TUTORIAL_URL);
+            const endOfTitleIdx = tutorialMd.indexOf("\n");
+            title = tutorialMd.substring(2, endOfTitleIdx);
+            markdown = tutorialMd.substring(endOfTitleIdx + 1);
         } catch (err) {
             await showAlert("Error", `Error loading tutorial: ${err.message}`);
         }
         loadingScreen.set();
     });
-
-    function onBack() {
-        window.history.back();
-    }
 </script>
 
 <main>
     <div class="header-wrapper">
-        <i on:click={onBack} class="icon-chevron" />
+        <i on:click|once={() => window.history.back()} class="side icon-chevron" />
+        <header>{title}</header>
+        <div class="side" />
     </div>
     <section>
         <div class="highlightjs-component">
-            <Markdown markdown={code} language="javascript" />
+            <Markdown {markdown} language="javascript" />
         </div>
     </section>
 </main>
 
 <style>
     main {
-        height: 100%;
+        min-height: 100%;
         width: 100%;
-        display: flex;
-        flex-direction: column;
-        position: absolute;
-        z-index: 10;
     }
 
     .header-wrapper {
+        position: sticky;
+        top: 0;
         display: flex;
         justify-content: space-between;
         align-items: center;
         background: black;
         padding: 1.2rem;
+    }
+
+    .header-wrapper > .side {
+        flex: 1;
+    }
+
+    header {
+        font-family: "Proxima Nova", sans-serif;
+        font-weight: 700;
+        font-size: 1.1em;
+        color: #fff;
     }
 
     .highlightjs-component {

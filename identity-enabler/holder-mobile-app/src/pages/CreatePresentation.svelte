@@ -2,14 +2,12 @@
     import { onMount } from "svelte";
     import bwipjs from "bwip-js";
     import { ServiceFactory } from "../factories/serviceFactory";
-    import { loadingScreen, modalStatus } from "../lib/store";
-    import { Plugins } from "@capacitor/core";
+    import { loadingScreen } from "../lib/store";
     import { showAlert, multiClick, getTimeString, getDateString } from "../lib/ui/helpers";
     import type { IdentityService } from "../services/identityService";
     import CredentialHeader from "../components/CredentialHeader.svelte";
     import { navigate } from "svelte-routing";
 
-    const { App } = Plugins;
     let presentationJSON = "";
 
     const credential = window.history.state.credential;
@@ -27,7 +25,6 @@
         });
     }
 
-    onMount(() => App.addListener("backButton", goBack).remove);
     onMount(async () => {
         loadingScreen.set("Generating DataMatrix...");
 
@@ -47,32 +44,19 @@
         loadingScreen.set();
     });
 
-    function goBack() {
-        if ($modalStatus.active) {
-            modalStatus.set({ active: false, type: null });
-            return;
-        }
-
-        window.history.back();
-    }
-
     function onClickDev() {
         navigate("/tutorial");
     }
 
     function showJSON() {
-        modalStatus.set({
-            active: true,
-            type: "code",
-            props: { code: presentationJSON }
-        });
+        navigate("/code", { state: { code: presentationJSON } });
     }
 </script>
 
 <main>
     <header>
         <div class="options-wrapper">
-            <i on:click={goBack} class="icon-chevron" />
+            <i on:click|once={() => window.history.back()} class="icon-chevron" />
             <i on:click={onClickDev} class="icon-code" />
         </div>
         <CredentialHeader {credential} hideDetails={true} />
