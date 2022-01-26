@@ -64,49 +64,52 @@ Note: On a non DataWedge device you can simulate a DataWedge scanning through th
 adb shell am startservice -a org.iota.zebra.device_id.intent.action.SCAN -e com.symbol.datawedge.source scanner -e com.symbol.datawedge.data_string <scanned_string>
 ```
 
+<p align="center">
 <img style="float: right;" alt="Data Wedge Profile 1" src="images/image3.png" width="30%"></img>
 <img style="float: right;" alt="Data Wedge Profile 2" src="images/image18.png" width="30%"></img>
 <img style="float: right;" alt="Data Wedge Profile 3" src="images/image22.png" width="30%"></img>
+</p>
 
-Note: Also you should have previously defined a [DataWedge profile for the Holder Application](#datawedge-profile) as described before.
+Note: Also you should have previously defined a [DataWedge profile for the Holder Application](../101/zebra-iota-edge-sdk-102-tutorial.md#datawedge-profile).
+
+Additional information on how Zebra DataWedge can be integrated is found at the [introductory tutorial](../101/zebra-iota-edge-sdk-101-tutorial.md#Zebra-DataWedge-Integration).
 
 ## Onboard a device
 
-The first step to onboard a device is to obtain a new DID document. This process is conducted through a wizard, and is similar to the one we already described for the _Holder Application_. See below.
+The first step to onboard a device is to obtain a new DID document. This process is conducted through a wizard, and is similar to the one we already described for the [_Holder Application_](../102/zebra-iota-edge-sdk-102-tutorial.md#Create-an-Identity). See below.
 
+<p align="center">
 <img style="float: right;" alt="Identity device 1" src="images/image21.png" width="30%"></img>
 <img style="float: right;" alt="Identity device 2" src="images/image23.png" width="30%"></img>
 <img style="float: right;" alt="Identity device 3" src="images/image17.png" width="30%"></img>
+</p>
 
 After having obtained a new Decentralized Identity, which includes verification methods (i.e. public / private keys), the next step is to get a new Verifiable Credential that will contain all the claims associated with the device (serial number, manufacturer, etc.). Thus, it is first required that the device presents its claims to an issuer. In this case the issuer will be **the organization owning the device**. Such an organization will check for the ownership of the DID and the claims made. And, after a verification process, a new Verifiable Credential will be issued and signed. The issuer of such a Verifiable Credential will be the organization owning the device and the subject the device itself.
 
 In our blueprint application the process described above is conducted as shown below. From the _DeviceID Application_ it is requested a new DeviceID credential. For that purpose, the device generates a QR code that encodes all its claims.
 
+<p align="center">
 <img style="float: right;" alt="Request Credential 1" src="images/image16.png" width="30%" align="center"></img>
+</p>
 
-Afterwards, such QR code is scanned by the* Holder Application* that will verify the claims, the ownership of the DID and will finally issue a new credential.
+Afterwards, such QR code is scanned by the [*Holder Application*](../102/zebra-iota-edge-sdk-102-tutorial.md) that will verify the claims, the ownership of the DID and will finally issue a new credential.
 
+<p align="center">
 <img style="float: right;" alt="Device ID Credential" src="images/image8.png" width="30%"></img>
 <img style="float: right;" alt="Device ID Claims" src="images/image20.png" width="30%"></img>
+</p>
 
 Once the new Credential is ready it is shared from the _Holder Application_ through a scannable DataMatrix code and imported by the _DeviceID application_.
 
+<p align="center">
 <img style="float: right;" alt="Onboard device 1" src="images/image4.png" width="30%"></img>
 <img style="float: right;" alt="Onboard device 2" src="images/image12.png" width="30%"></img>
 <img style="float: right;" alt="Onboard device 3" src="images/image17.png" width="30%"></img>
+</p>
 
 **Important Note**: In this version of the SDK we are using the _Holder Application_ itself as _Issuer Application_. Thus, in the end the device’s Credential is signed with the identity we have previously generated at the _Holder Application_. However, in a real solution there should be a specific _Issuer Application_ for this purpose. In the next version of the SDK we plan to provide a new blueprint for an _Issuer Application_.
 
 ### Show me the code
 
-The code that makes it possible the Device onboarding is a combination of the previous code we have shown in other parts of this tutorial, such as the [identity generation](#show-me-the-code) or [credential issuance](#show-me-the-code).
+The code that makes it possible the Device onboarding is a combination of the previous code we have shown in other parts of this tutorial, such as the [identity generation](../102/zebra-iota-edge-sdk-102-tutorial.md#show-me-the-code) or [credential issuance](../102/zebra-iota-edge-sdk-102-tutorial.md#show-me-the-code).
 
-## Roadmap
-
-The IOTA Foundation and Zebra Technologies are working continuously to improve and extend the Zebra-IOTA Edge SDK.
-
-First of all, by Q2 2022 we plan to release an additional enabler to facilitate the development of applications on the edge based on [GS1 EPCIS 2.0](https://blog.iota.org/epcis-2-0-a-global-standard-to-build-trusted-and-decentralized-supply-chains-with-iota/). The overall goal of EPCIS is to enable disparate supply chain actors to create and share event visibility data (in the form of business events), both within and across enterprises. The **EPCIS Enabler**, in combination with the Identity Enabler, will allow anchoring these events directly from devices to the IOTA DLT. As a result, immutability and trust between actors will be guaranteed, enhancing supply chain digitisation on a decentralized basis.
-
-When it comes to the specific functions of the Identity Enabler, we plan to extend it with an _Issuer Application_ blueprint and to integrate other credential transport mechanisms such as **NFC**.
-
-Finally, on the business development side of things we invite Zebra ISVs to get in touch with us to start creating novel edge solutions along supply chains leveraging this SDK.
