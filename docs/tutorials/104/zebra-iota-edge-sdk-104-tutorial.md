@@ -71,7 +71,7 @@ adb shell am startservice -a org.iota.zebra.device_id.intent.action.SCAN -e com.
 <img style="float: right;" alt="Data Wedge Profile 3" src="images/image22.png" width="30%"></img>
 </p>
 
-Note: Also you should have previously defined a [DataWedge profile for the Holder Application](../101/zebra-iota-edge-sdk-102-tutorial.md#datawedge-profile).
+Note: Also you should have previously defined a [DataWedge profile for the Holder Application](../102/zebra-iota-edge-sdk-102-tutorial.md#datawedge-profile).
 
 Additional information on how Zebra DataWedge can be integrated is found at the [introductory tutorial](../101/zebra-iota-edge-sdk-101-tutorial.md#zebra-datawedge-integration).
 
