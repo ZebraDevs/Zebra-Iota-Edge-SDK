@@ -33,6 +33,7 @@ cd Zebra-Iota-Edge-SDK/identity-enabler/holder-mobile-app
 npm install
 
 # Build and run
+npm run build:dev
 npm run start:dev
 
 # Open http://localhost:5001 in your browser
