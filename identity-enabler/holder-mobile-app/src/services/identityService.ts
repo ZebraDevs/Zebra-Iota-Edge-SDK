@@ -1,6 +1,6 @@
 import Keychain from "../lib/keychain";
-import type { CredentialType } from "../schemas";
 import { generateRandomNumericString, parse } from "../lib/helpers";
+import type { CredentialType } from "../lib/helpers";
 import { account } from "../lib/store";
 import type { Identity, IdentityConfig } from "../models/types/identity";
 import * as IotaIdentity from "@iota/identity-wasm/web";

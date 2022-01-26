@@ -25,7 +25,7 @@
 
     async function onSaveCredential() {
         credentials.update(creds => {
-            creds[vp.verifiableCredential.type[1].split(/\b/)[0].toLowerCase()] = vp;
+            creds[vp.verifiableCredential.type[1]] = vp;
             return creds;
         });
         navigate("/home");

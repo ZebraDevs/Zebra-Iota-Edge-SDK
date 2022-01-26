@@ -24,7 +24,7 @@
         });
         if (confirmRet.value) {
             credentials.update(current => {
-                current[credential.type[1].split(/\b/)[0].toLowerCase()] = "";
+                current[credential.type[1]] = null;
                 return current;
             });
             // ensure impossible to navigate back to a deleted credential page

@@ -1,5 +1,5 @@
 import { Plugins } from "@capacitor/core";
-import { wait } from "../helpers";
+import { CredentialType, wait } from "../helpers";
 
 export async function showAlert(title: string, message: string) {
     const { Modals } = Plugins;
@@ -68,3 +68,10 @@ export function getTimeString(date: Date): string {
         minute: "2-digit"
     });
 }
+
+export const credentialDisplayMap = new Map<CredentialType, string>([
+    [CredentialType.PERSONAL_INFO, "Personal Information"],
+    [CredentialType.BLOOD_TEST, "Blood Test"],
+    [CredentialType.HEALTH_TEST, "Health Test"],
+    [CredentialType.DEVICE_ID, "Device ID"]
+]);
