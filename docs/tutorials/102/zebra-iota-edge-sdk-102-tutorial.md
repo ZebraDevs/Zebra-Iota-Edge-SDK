@@ -1,4 +1,6 @@
-# Zebra-IOTA-Edge-SDK : Identity Enabler : 102 Tutorial : Managing credentials (Holder Application)
+---
+title: Zebra-IOTA-Edge-SDK : Identity Enabler : 102 Tutorial <br> Managing credentials (Holder Application)
+---
 
 ## Introduction
 
@@ -48,9 +50,9 @@ Afterwards you need to go to the Android Studio and compile, install and execute
 
 In order to use the credential issuance part of this application (see [DeviceID tutorial](../104/zebra-iota-edge-sdk-104-tutorial-104.md#onboard-a-device)) you will need to set up a DataWedge profile bound to the `“org.iota.zebra.holder”` application as follows:
 
-<img style="float: right;" alt="Data Wedge Profile" src="images/image3.png" width="30%"></img>
-<img style="float: right;" alt="Data Wedge Profile" src="images/image10.png" width="30%"></img>
-<img style="float: right;" alt="Data Wedge Profile" src="images/image1.png" width="30%"></img>
+<img style="float: right;" alt="Data Wedge Profile 1" src="images/image3.png" width="30%"></img>
+<img style="float: right;" alt="Data Wedge Profile 2" src="images/image10.png" width="30%"></img>
+<img style="float: right;" alt="Data Wedge Profile 3" src="images/image1.png" width="30%"></img>
 
 Note: On a non DataWedge device you can simulate a DataWedge scanning through the `adb` command line tool as follows:
 
@@ -62,19 +64,11 @@ adb shell am startservice -a org.iota.zebra.holder.intent.action.SCAN -e com.sym
 
 Under the first time experience wizard, once you enter a name associated with your new Identity, (last step of the wizard) the application will create a new DID, anchoring it to the IOTA Tangle. The private key that allows control of such an Identity is securely stored on the device.
 
-<p id="gdcalert6" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image5.png). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert7">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
+<img style="float: right;" alt="Identity Creation 1" src="images/image9.png" width="30%"></img>
+<img style="float: right;" alt="Identity Creation 2" src="images/image6.png" width="30%"></img>
+<img style="float: right;" alt="Identity Creation 3" src="images/image26.png" width="30%"></img>
 
-![alt_text](images/image5.png "image_tooltip")
-
-<p id="gdcalert7" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image6.png). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert8">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-![alt_text](images/image6.png "image_tooltip")
-
-<p id="gdcalert8" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image7.png). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert9">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-![alt_text](images/image7.png "image_tooltip")
-
-#### Show me the code
+### Show me the code
 
 Below you can find the code that calls the IOTA Identity Framework and generates a new decentralized identity. As mentioned before, this code can be found under the [IdentityService](https://github.com/ZebraDevs/Zebra-Iota-Edge-SDK/blob/main/identity-enabler/holder-mobile-app/src/services/identityService.ts) class.
 
@@ -137,7 +131,7 @@ tcli did resolve –mainnet –did=did:iota:7mog3xHBBm6H5fHxRdMiaRMjDHaFZn1kQshd
 
 In addition, the private key materials associated with the identity are [securely stored](https://github.com/ZebraDevs/Zebra-Iota-Edge-SDK/blob/main/identity-enabler/holder-mobile-app/src/pages/Name.svelte#L49) on the device.
 
-### Self-issue a new credential {#self-issue-a-new-credential}
+## Self-issue a new credential {#self-issue-a-new-credential}
 
 Now that we have an anchored Identity, we can issue a new Credential containing claims about it. For demonstration purposes the _Holder Application_ is capable of self-issuing credentials, thus playing also the role of an Issuer. Please note that, indeed, **in a real use case there would be a separate issuer application and credentials will not be self-signed.**
 
@@ -147,56 +141,48 @@ Note: The user is both the subject and the holder of the identity and credential
 
 Note: At any point in time you can click on the button on top left of the main page of the application and restart the process of identity and credentials generation.
 
-<p id="gdcalert9" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image8.png). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert10">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
+<img style="float: right;" alt="Credential Issuance 1" src="images/image24.png" width="30%"></img>
+<img style="float: right;" alt="Credential Issuance 2" src="images/image14.png" width="30%"></img>
+<img style="float: right;" alt="Credential Issuance 3" src="images/image27.png" width="30%"></img>
 
-![alt_text](images/image8.png "image_tooltip")
-
-<p id="gdcalert10" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image9.png). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert11">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-![alt_text](images/image9.png "image_tooltip")
-
-<p id="gdcalert11" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image10.png). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert12">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-![alt_text](images/image10.png "image_tooltip")
-
-#### Show me the code
+### Show me the code
 
 The issuance of a new credential is performed using the IOTA Identity implementation of the W3C Verifiable Credentials standard. It means that credentials are represented using JSON-LD and can make use of standard vocabularies such as [schema.org](https://schema.org) for representing claims. The claims contained within a credential (the `data` field in the code below) are just randomly generated for educational purposes.
 
 The code below shows how this process can be implemented. The verification method used to generate our new credential is the one corresponding to the aforementioned Merkle keyset, concretely using the key at the index 0 of such keyset.
 
 ```typescript
-        const IssuerDidDoc = Document.fromJSON(JSON.parse(issuer.didDoc));
-        const IssuerKeys = KeyCollection.fromJSON(issuer.keys);
-        const IssuerDoc = Document.fromJSON(issuer.doc);
-        const IssuerMethod = VerificationMethod.fromJSON(issuer.method);
+    const IssuerDidDoc = Document.fromJSON(JSON.parse(issuer.didDoc));
+    const IssuerKeys = KeyCollection.fromJSON(issuer.keys);
+    const IssuerDoc = Document.fromJSON(issuer.doc);
+    const IssuerMethod = VerificationMethod.fromJSON(issuer.method);
 
-        // Prepare a credential subject
-        const credentialSubject = {
-            id: IssuerDidDoc.id.toString(),
-            ...data
-        };
+    // Prepare a credential subject
+    const credentialSubject = {
+        id: IssuerDidDoc.id.toString(),
+        ...data
+    };
 
-        // Issue an unsigned credential
-        const unsignedVc = VerifiableCredential.extend({
-            id: "http://example.com/credentials/3732",
-            type: schemaName,
-            issuer: IssuerDidDoc.id.toString(),
-            credentialSubject
-        });
+    // Issue an unsigned credential
+    const unsignedVc = VerifiableCredential.extend({
+        id: "http://example.com/credentials/3732",
+        type: schemaName,
+        issuer: IssuerDidDoc.id.toString(),
+        credentialSubject
+    });
 
-        // Sign the credential with User's Merkle Key Collection method
-        const signedVc = IssuerDoc.signCredential(unsignedVc, {
-            method: IssuerMethod.id.toString(),
-            public: IssuerKeys.public(0),
-            private: IssuerKeys.private(0),
-            proof: IssuerKeys.merkleProof(Digest.Sha256, 0)
-        });
+    // Sign the credential with User's Merkle Key Collection method
+    const signedVc = IssuerDoc.signCredential(unsignedVc, {
+        method: IssuerMethod.id.toString(),
+        public: IssuerKeys.public(0),
+        private: IssuerKeys.private(0),
+        proof: IssuerKeys.merkleProof(Digest.Sha256, 0)
+    });
 ```
 
 As a result, a new Verifiable Credential will be generated and stored on the device. An example that shows the structure of a Verifiable Credential can be found [here](https://www.w3.org/TR/vc-data-model/#example-a-simple-example-of-a-verifiable-credential). It is a standard JSON-LD document using the vocabulary and data model defined by the W3C standard, which includes fields devoted to the signature (proof) and related metadata.
 
-### Present a credential
+## Present a credential
 
 The last but not least functionality that any holder application should offer is the possibility to present a credential. The presentation of a credential consists of the generation of a new signed JSON-LD document (named as Verifiable Presentation) that wraps the original credential document together with a signature generated with a private key of the holder of the credential.
 
@@ -204,35 +190,32 @@ As a result the verifier can validate not only the credential itself, but also t
 
 Once a verifiable presentation has been generated it is encoded using a data matrix code. In our example we are using a 6 by 6 data matrix code that can later be scanned by the _Verifier Application_ (see below). If you double tap on the data matrix code you will be able to inspect the JSON-LD content that represents the credential presented.
 
-<p id="gdcalert12" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image11.png). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert13">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
+<img style="float: right;" alt="Credential Presentation 1" src="images/image15.png" width="30%"></img>
+<img style="float: right;" alt="Credential Presentation 2" src="images/image5.png" width="30%"></img>
 
-![alt_text](images/image11.png "image_tooltip")
-
-<p id="gdcalert13" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image12.png). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert14">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-![alt_text](images/image12.png "image_tooltip")
-
-#### Show me the code
+### Show me the code
 
 Generating and signing a Verifiable Presentation is done using the following code snippet
 
 ```typescript
-// Prepare presentation Data
-        const IssuerKeys = KeyCollection.fromJSON(issuer.keys);
-        const IssuerDoc = Document.fromJSON(issuer.doc);
-        const IssuerMethod = VerificationMethod.fromJSON(issuer.method);
+    // Prepare presentation Data
+    const IssuerKeys = KeyCollection.fromJSON(issuer.keys);
+    const IssuerDoc = Document.fromJSON(issuer.doc);
+    const IssuerMethod = VerificationMethod.fromJSON(issuer.method);
 
-       // Create a Verifiable Presentation from the Credential - signed by user's key
-        const unsignedVp = new VerifiablePresentation(IssuerDoc, signedVc);
+    // Create a Verifiable Presentation from the Credential - signed by user's key
+    const unsignedVp = new VerifiablePresentation(IssuerDoc, signedVc);
 
-        const signedVp = IssuerDoc.signPresentation(unsignedVp, {
-            method: IssuerMethod.id.toString(),
-            public: IssuerKeys.public(0),
-            private: IssuerKeys.private(0),
-            proof: IssuerKeys.merkleProof(Digest.Sha256, 0)
-        });
+    const signedVp = IssuerDoc.signPresentation(unsignedVp, {
+        method: IssuerMethod.id.toString(),
+        public: IssuerKeys.public(0),
+        private: IssuerKeys.private(0),
+        proof: IssuerKeys.merkleProof(Digest.Sha256, 0)
+    });
 ```
 
 Then, the generation of a data matrix code is done using the [https://github.com/metafloor/bwip-js](https://github.com/metafloor/bwip-js) library.
 
 ## Next Steps
+
+If you want to know how to build an application capable of verifying credentials go the [103 Tutorial](../103/zebra-iota-edge-sdk-103-tutorial.md)
