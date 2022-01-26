@@ -3,7 +3,7 @@
     import Button from "../components/Button.svelte";
     import ObjectList from "../components/ObjectList.svelte";
     import { modalStatus } from "../lib/store";
-    import { showAlert } from "../lib/ui/helpers";
+    import { flattenCredential, showAlert } from "../lib/ui/helpers";
     import { onMount } from "svelte";
     import { Plugins } from "@capacitor/core";
     import CredentialHeader from "../components/CredentialHeader.svelte";
@@ -52,7 +52,7 @@
         </header>
     </div>
     <section>
-        <ObjectList object={credential.credentialSubject} />
+        <ObjectList entries={flattenCredential(credential)} />
     </section>
     <footer>
         <Button label="Share credential" onClick={share}>

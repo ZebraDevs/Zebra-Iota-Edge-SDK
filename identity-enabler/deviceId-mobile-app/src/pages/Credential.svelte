@@ -7,6 +7,7 @@
     import Button from "../components/Button.svelte";
     import ObjectList from "../components/ObjectList.svelte";
     import CredentialHeader from "../components/CredentialHeader.svelte";
+    import { flattenCredential } from "../lib/ui/helpers";
 
     const { App } = Plugins;
 
@@ -56,7 +57,7 @@
         </header>
     </div>
     <section>
-        <ObjectList object={vp.verifiableCredential.credentialSubject} />
+        <ObjectList entries={flattenCredential(vp.verifiableCredential)} />
     </section>
     <footer>
         {#if save}

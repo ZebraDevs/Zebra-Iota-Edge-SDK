@@ -1,5 +1,5 @@
 import { Plugins } from "@capacitor/core";
-import { CredentialType, wait } from "../helpers";
+import { CredentialType, flattenObj, wait } from "../helpers";
 
 export async function showAlert(title: string, message: string) {
     const { Modals } = Plugins;
@@ -75,3 +75,87 @@ export const credentialDisplayMap = new Map<CredentialType, string>([
     [CredentialType.HEALTH_TEST, "Health Test"],
     [CredentialType.DEVICE_ID, "Device ID"]
 ]);
+
+/**
+ * Transforms a credential into a list of key-value entries for display.
+ * @param credential A VC object.
+ */
+export function flattenCredential(object: Record<string, any>): [string, string][] {
+    if (typeof object !== "object") {
+        return [];
+    }
+
+    if (!object.credentialSubject || !Array.isArray(object.type) || object.type[0] !== "VerifiableCredential") {
+        // Arbitrary objects get flattened
+        console.log(flattenObj(object));
+        return Object.entries(flattenObj(object));
+    }
+
+    const sub = object.credentialSubject;
+
+    switch (object.type[1]) {
+        case CredentialType.HEALTH_TEST:
+            return [
+                ["Subject", sub.id],
+                ["Test Description", sub.description],
+                ["Test Code", `${sub.code.codingSystem}|${sub.code.codeValue}`],
+                ["Result Description", sub.signDetected.description],
+                ["Result Code", `${sub.signDetected.code.codingSystem}|${sub.signDetected.code.codeValue}`]
+            ];
+        case CredentialType.BLOOD_TEST:
+            return [
+                ["Subject", sub.id],
+                ["Test Description", sub.description],
+                ["Test Code", `${sub.code.codingSystem}|${sub.code.codeValue}`],
+                ["Diagnosis Description", sub.usedToDiagnose.description],
+                ["Diagnosis Code", `${sub.usedToDiagnose.code.codingSystem}|${sub.usedToDiagnose.code.codeValue}`]
+            ];
+        case CredentialType.PERSONAL_INFO:
+            return [
+                ["Subject", sub.id],
+                ["Name", `${sub.givenName} "${sub.name}" ${sub.familyName}`],
+                ["Gender", `${sub.gender[0].toUpperCase()}${sub.gender.substring(1)}`],
+                ["Birth date", getDateString(new Date(sub.birthDate))],
+                [
+                    "Address",
+                    `${sub.address.streetAddress}\n${sub.address.addressLocality}\n${sub.address.addressRegion} ${sub.address.postalCode}\n${sub.address.addressCountry}`
+                ],
+                ["Email", sub.email],
+                ["Telephone", sub.telephone]
+            ];
+        case CredentialType.DEVICE_ID:
+            return [
+                ["Subject", sub.id],
+                ["Name", sub.device.name],
+                ["Manufacturer", sub.device.model.manufacturerName],
+                ["Model", sub.device.model.modelName],
+                ["OS Version", sub.device.osVersion]
+            ];
+        default:
+            return Object.entries(flattenObj(sub));
+    }
+}
+
+/**
+ * Transforms a claim into a list of key-value entries for display.
+ * @param claim An object.
+ */
+export function flattenClaim(object: Record<string, any>): [string, string][] {
+    if (typeof object !== "object") {
+        return [];
+    }
+
+    if (!object.device || !object.id) {
+        // Currently only device claims recognized. Flatten if not a device claim.
+        console.log(flattenObj(object));
+        return Object.entries(flattenObj(object));
+    }
+
+    return [
+        ["Subject", object.id],
+        ["Name", object.device.name],
+        ["Manufacturer", object.device.model.manufacturerName],
+        ["Model", object.device.model.modelName],
+        ["OS Version", object.device.osVersion]
+    ];
+}

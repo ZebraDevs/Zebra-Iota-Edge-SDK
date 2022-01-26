@@ -1,15 +1,14 @@
-<script>
+<script lang="ts">
     import { IOTA_IDENTITY_RESOLVER } from "../config";
-    import { flattenObj } from "../lib/helpers";
 
-    export let object;
+    export let entries: [string, string][];
 </script>
 
 <ul>
-    {#each Object.entries(flattenObj(object)) as entry}
+    {#each entries as entry}
         <li>
-            <p>{entry[0].split(".").pop()}</p>
-            {#if typeof entry[1] === "string" && entry[1].startsWith("did:iota:")}
+            <p>{entry[0]}</p>
+            {#if entry[1].startsWith("did:iota:")}
                 <a
                     class="cut-text"
                     href={`${IOTA_IDENTITY_RESOLVER}/${entry[1]}`}
@@ -25,12 +24,12 @@
 
 <style>
     ul {
-        background: #fff;
         margin: 3vh 0 11vh 0;
         padding: 0;
         box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
         list-style-type: none;
         text-align: left;
+        /* overflow: auto; */
         position: relative;
         z-index: 5;
         -webkit-overflow-scrolling: touch;
@@ -68,6 +67,7 @@
     }
 
     .cut-text {
+        white-space: pre-wrap;
         word-wrap: break-word;
     }
 </style>
