@@ -16,7 +16,7 @@ The prerequisites for running this tutorial are described on [part 1](../101/zeb
 
 ## Getting started
 
-An overview of the structure of the SDK is described on [part 1](../101/zebra-iota-edge-sdk-101.md#getting-started) of this series.
+An overview of the structure of the SDK is described on [part 1](../101/zebra-iota-edge-sdk-101-tutorial.md#getting-started) of this series.
 
 ## How to run in a browser
 
