@@ -8,7 +8,8 @@
     import type { IdentityService } from "../services/identityService";
     import { wait } from "../lib/helpers";
     import { BACK_BUTTON_EXIT_GRACE_PERIOD } from "../config";
-    import { credentialDisplayMap, shortenDID } from "../lib/ui/helpers";
+    import { shortenDID } from "../lib/ui/helpers";
+    import { credentialDisplayMap } from "../lib/ui/credentialDisplayMap";
 
     const { App, Toast, Modals } = Plugins;
 
@@ -86,7 +87,7 @@
                     <ListItem
                         icon="chip"
                         onClick={() => navigate("/credential", { state: { vp } })}
-                        heading={credentialDisplayMap.get(vp.verifiableCredential.type[1])}
+                        heading={credentialDisplayMap[vp.verifiableCredential.type[1]]}
                         subheading="Issued by {vp.verifiableCredential.issuer.name ??
                             shortenDID(vp.verifiableCredential.issuer.id ?? vp.verifiableCredential.issuer)}"
                     />

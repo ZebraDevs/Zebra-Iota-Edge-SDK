@@ -1,6 +1,7 @@
 <script lang="ts">
     import { IOTA_IDENTITY_RESOLVER } from "../config";
-    import { credentialDisplayMap, getDateString, getTimeString, shortenDID } from "../lib/ui/helpers";
+    import { credentialDisplayMap } from "../lib/ui/credentialDisplayMap";
+    import { getDateString, getTimeString, shortenDID } from "../lib/ui/helpers";
 
     export let credential;
     export let color = "white";
@@ -11,7 +12,7 @@
 
 <div id="wrapper" style="color: {color};">
     <i class="icon-credential" />
-    <h2>{credentialDisplayMap.get(credential.type[1])}</h2>
+    <h2>{credentialDisplayMap[credential.type[1]]}</h2>
     {#if !hideDetails}
         <p>
             <span>Issued by </span>

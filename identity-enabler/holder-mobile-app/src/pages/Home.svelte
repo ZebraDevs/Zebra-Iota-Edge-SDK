@@ -14,10 +14,11 @@
     import { account, resetAllStores, loadingScreen, credentials } from "../lib/store";
     import { wait } from "../lib/helpers";
     import type { IdentityService } from "../services/identityService";
-    import { credentialDisplayMap, shortenDID, showAlert } from "../lib/ui/helpers";
+    import { shortenDID, showAlert } from "../lib/ui/helpers";
     import { BACK_BUTTON_EXIT_GRACE_PERIOD } from "../config";
     import { get } from "svelte/store";
     import { CredentialType } from "../models/types/CredentialType";
+    import { credentialDisplayMap } from "../lib/ui/credentialDisplayMap";
 
     const { App, Toast, Modals } = Plugins;
 
@@ -151,7 +152,7 @@
                     <ListItem
                         icon="credential"
                         onClick={() => navigate("/credential", { state: { credential } })}
-                        heading={credentialDisplayMap.get(credential.type[1])}
+                        heading={credentialDisplayMap[credential.type[1]]}
                         subheading="Issued by {credential.issuer.name ??
                             shortenDID(credential.issuer.id ?? credential.issuer)}"
                     />

@@ -1,7 +1,7 @@
 <script>
     import { navigate } from "svelte-routing";
     import { loadingScreen } from "../lib/store";
-    import { CredentialType } from "../lib/helpers";
+    import { CredentialType } from "../models/types/CredentialType";
     import { ServiceFactory } from "../factories/serviceFactory";
     import { flattenClaim, showAlert } from "../lib/ui/helpers";
     import Button from "../components/Button.svelte";

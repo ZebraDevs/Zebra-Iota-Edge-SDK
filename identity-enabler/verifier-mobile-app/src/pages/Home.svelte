@@ -7,9 +7,10 @@
     import { isExpired } from "../lib/helpers";
     import Button from "../components/Button.svelte";
     import ListItem from "../components/ListItem.svelte";
-    import { showAlert, shortenDID, credentialDisplayMap } from "../lib/ui/helpers";
+    import { showAlert, shortenDID } from "../lib/ui/helpers";
     import { BACK_BUTTON_EXIT_GRACE_PERIOD } from "../config";
     import { get } from "svelte/store";
+    import { credentialDisplayMap } from "../lib/ui/credentialDisplayMap";
 
     const { App, Toast, Modals } = Plugins;
 
@@ -86,7 +87,7 @@
                         icon={isExpired(credential.issuanceDate) ? "cross" : "check"}
                         iconColor="#1e22aa"
                         onClick={() => onClickCredential(credential)}
-                        heading={credentialDisplayMap.get(credential.type[1])}
+                        heading={credentialDisplayMap[credential.type[1]]}
                         subheading="Issued by {credential.issuer.name ??
                             shortenDID(credential.issuer.id ?? credential.issuer)}"
                     />

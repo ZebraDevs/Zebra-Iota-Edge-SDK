@@ -43,13 +43,6 @@ export function getTimeString(date: Date): string {
     });
 }
 
-export const credentialDisplayMap = new Map<CredentialType, string>([
-    [CredentialType.PERSONAL_INFO, "Personal Information"],
-    [CredentialType.BLOOD_TEST, "Blood Test"],
-    [CredentialType.HEALTH_TEST, "Health Test"],
-    [CredentialType.DEVICE_ID, "Device ID"]
-]);
-
 /**
  * Transforms a credential into a list of key-value entries for display.
  * @param credential A VC object.
