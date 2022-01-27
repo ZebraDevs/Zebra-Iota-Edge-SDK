@@ -1,5 +1,6 @@
 import { writable } from "svelte/store";
-import { CredentialType, persistent } from "./helpers";
+import { CredentialType } from "../models/types/CredentialType";
+import { persistent } from "./helpers";
 
 const hasSetupAccountInitialState = () => false;
 /**

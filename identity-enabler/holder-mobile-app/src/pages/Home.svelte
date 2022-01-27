@@ -12,11 +12,12 @@
     } from "../lib/credentialPayload";
     import { ServiceFactory } from "../factories/serviceFactory";
     import { account, resetAllStores, loadingScreen, credentials } from "../lib/store";
-    import { CredentialType, wait } from "../lib/helpers";
+    import { wait } from "../lib/helpers";
     import type { IdentityService } from "../services/identityService";
     import { credentialDisplayMap, shortenDID, showAlert } from "../lib/ui/helpers";
     import { BACK_BUTTON_EXIT_GRACE_PERIOD } from "../config";
     import { get } from "svelte/store";
+    import { CredentialType } from "../models/types/CredentialType";
 
     const { App, Toast, Modals } = Plugins;
 

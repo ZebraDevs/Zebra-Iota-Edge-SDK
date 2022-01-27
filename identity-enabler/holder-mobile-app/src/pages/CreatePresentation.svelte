@@ -8,7 +8,7 @@
     import type { IdentityService } from "../services/identityService";
     import CredentialHeader from "../components/CredentialHeader.svelte";
     import { navigate } from "svelte-routing";
-    import { CredentialType } from "../lib/helpers";
+    import { CredentialType } from "../models/types/CredentialType";
 
     const { App } = Plugins;
     let presentationJSON = "";

@@ -1,5 +1,6 @@
 import { Plugins } from "@capacitor/core";
-import { CredentialType, flattenObj, wait } from "../helpers";
+import { CredentialType } from "../../models/types/CredentialType";
+import { flattenObj, wait } from "../helpers";
 
 export async function showAlert(title: string, message: string) {
     const { Modals } = Plugins;
