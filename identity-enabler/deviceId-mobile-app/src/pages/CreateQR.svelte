@@ -7,16 +7,15 @@
     import { ServiceFactory } from "../factories/serviceFactory";
     import Button from "../components/Button.svelte";
     import { showAlert, multiClick } from "../lib/ui/helpers";
-    import { loadingScreen, modalStatus } from "../lib/store";
+    import { loadingScreen } from "../lib/store";
     import type { IdentityService } from "../services/identityService";
 
-    const { App, Device } = Plugins;
+    const { Device } = Plugins;
 
     const identityService = ServiceFactory.get<IdentityService>("identity");
     const name = window.history.state.name;
     let credentialSubject;
 
-    onMount(() => App.addListener("backButton", goBack).remove);
     onMount(async () => {
         loadingScreen.set("Generating QR Code...");
 
@@ -60,32 +59,19 @@
         }
     }
 
-    function goBack() {
-        if ($modalStatus.active) {
-            modalStatus.set({ active: false, type: null });
-            return;
-        }
-
-        window.history.back();
-    }
-
     function requestCredential() {
         navigate("/requestcredential");
     }
 
     function showJSON() {
-        modalStatus.set({
-            active: true,
-            type: "code",
-            props: { code: JSON.stringify(credentialSubject, null, 2) }
-        });
+        navigate("/code", { state: { code: JSON.stringify(credentialSubject, null, 2) } });
     }
 </script>
 
 <main>
     <div class="wrapper" transition:fly={{ x: 500, duration: 500 }}>
         <header>
-            <i on:click={goBack} class="icon-chevron" />
+            <i on:click|once={() => window.history.back()} class="icon-chevron" />
             <p>Request Device DID credential</p>
         </header>
         <div class="subheader">
