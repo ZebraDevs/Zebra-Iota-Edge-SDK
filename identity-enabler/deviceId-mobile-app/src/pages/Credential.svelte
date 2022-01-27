@@ -3,7 +3,7 @@
     import { onMount } from "svelte";
     import { navigate } from "svelte-routing";
     import { fly } from "svelte/transition";
-    import { modalStatus, credentials, qrCodeDataUrl } from "../lib/store";
+    import { modalStatus, credentials, codeImageCache } from "../lib/store";
     import Button from "../components/Button.svelte";
     import ObjectList from "../components/ObjectList.svelte";
     import CredentialHeader from "../components/CredentialHeader.svelte";
@@ -30,7 +30,10 @@
             return creds;
         });
         // We no longer need the claims QR code.
-        qrCodeDataUrl.set();
+        codeImageCache.update(cache => {
+            delete cache.claims;
+            return cache;
+        });
         navigate("/home");
     }
 
@@ -48,7 +51,7 @@
     }
 </script>
 
-<main transition:fly={{ x: 500, duration: 500 }}>
+<main in:fly={{ x: 500, duration: 500 }}>
     <div class="header-wrapper">
         <div class="options-wrapper">
             <i on:click={goBack} class="icon-chevron" />

@@ -96,7 +96,7 @@
             class="bg"
             on:click={handleOuterClick}
             bind:this={background}
-            transition:currentTransitionBg={state.transitionBgProps}
+            in:currentTransitionBg={state.transitionBgProps}
             style={cssBg}
         >
             <div class="window-wrap" bind:this={wrap}>

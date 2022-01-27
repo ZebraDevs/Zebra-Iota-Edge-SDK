@@ -28,7 +28,8 @@ export const modalStatus = writable<ModalStatus>(modalStatusInitialState());
 
 export const loadingScreen = writable<string | void>();
 
-export const qrCodeDataUrl = persistent<string | void>("qrCodeDataUrl", undefined);
+const codeImageCacheInitialState = () => ({});
+export const codeImageCache = writable<Record<string, string>>(codeImageCacheInitialState());
 
 export function resetAllStores() {
     hasSetupAccount.set(hasSetupAccountInitialState());
@@ -36,5 +37,5 @@ export function resetAllStores() {
     account.set(accountInitialState());
     modalStatus.set(modalStatusInitialState());
     loadingScreen.set();
-    qrCodeDataUrl.set();
+    codeImageCache.set(codeImageCacheInitialState());
 }

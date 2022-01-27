@@ -7,7 +7,7 @@
     import { ServiceFactory } from "../factories/serviceFactory";
     import Button from "../components/Button.svelte";
     import { showAlert, multiClick } from "../lib/ui/helpers";
-    import { loadingScreen, qrCodeDataUrl } from "../lib/store";
+    import { codeImageCache, loadingScreen } from "../lib/store";
     import { get } from "svelte/store";
     import type { IdentityService } from "../services/identityService";
 
@@ -34,7 +34,10 @@
                 },
                 osVersion
             };
-            await createMatrix();
+
+            if (!get(codeImageCache).claims) {
+                await createMatrix();
+            }
         } catch (err) {
             console.error(err);
             await showAlert("Error", err.message);
@@ -42,13 +45,9 @@
     });
 
     async function createMatrix() {
-        const qr = get(qrCodeDataUrl);
-        if (qr) {
-            return;
-        }
-
         loadingScreen.set("Generating QR Code...");
         const canvas = document.createElement("canvas");
+
         bwipjs.toCanvas(canvas, {
             bcid: "qrcode",
             text: JSON.stringify(credentialSubject),
@@ -57,7 +56,11 @@
             backgroundcolor: "ffffff"
         });
 
-        qrCodeDataUrl.set(canvas.toDataURL("image/png"));
+        codeImageCache.update(cache => {
+            cache.claims = canvas.toDataURL("image/png");
+            return cache;
+        });
+
         loadingScreen.set();
     }
 
@@ -80,14 +83,8 @@
             <p>Share device claims with the Organization ID holder app</p>
         </div>
         <div class="qr-wrapper">
-            {#if $qrCodeDataUrl}
-                <img
-                    id="device-claims"
-                    alt="Device claims QR code"
-                    use:multiClick
-                    on:multiClick={showJSON}
-                    src={$qrCodeDataUrl}
-                />
+            {#if $codeImageCache.claims}
+                <img alt="Device claims QR code" use:multiClick on:multiClick={showJSON} src={$codeImageCache.claims} />
             {/if}
         </div>
         <div class="info">
