@@ -1,22 +1,22 @@
 <script lang="ts">
     import { IOTA_IDENTITY_RESOLVER } from "../config";
 
-    export let entries: [string, string][];
+    export let entries: { [key: string]: string };
 </script>
 
 <ul>
-    {#each entries as entry}
+    {#each Object.keys(entries) as entryKey}
         <li>
-            <p>{entry[0]}</p>
-            {#if entry[1].startsWith("did:iota:")}
+            <p>{entryKey}</p>
+            {#if entries[entryKey].startsWith("did:iota:")}
                 <a
                     class="cut-text"
-                    href={`${IOTA_IDENTITY_RESOLVER}/${entry[1]}`}
+                    href={`${IOTA_IDENTITY_RESOLVER}/${entries[entryKey]}`}
                     target="_blank"
-                    title="View in IOTA Explorer">{entry[1]}</a
+                    title="View in IOTA Explorer">{entries[entryKey]}</a
                 >
             {:else}
-                <span class="cut-text">{entry[1]}</span>
+                <span class="cut-text">{entries[entryKey]}</span>
             {/if}
         </li>
     {/each}

@@ -44,62 +44,58 @@ export function getTimeString(date: Date): string {
 }
 
 /**
- * Transforms a credential into a list of key-value entries for display.
- * @param credential A VC object.
+ * Transforms a credential into an object of key-value entries for display.
+ * @param object A VC object.
  */
-export function flattenCredential(object: Record<string, any>): [string, string][] {
+export function flattenCredential(object: Record<string, any>): { [key: string]: string } {
     if (typeof object !== "object") {
-        return [];
+        return {};
     }
 
-    if (!object.credentialSubject || !Array.isArray(object.type) || !object.type.length || !object.type.includes("VerifiableCredential")) {
+    const { credentialSubject, type } = object;
+
+    if (!credentialSubject || !Array.isArray(type) || !type.length || !type.includes("VerifiableCredential")) {
         // Arbitrary objects get flattened
-        console.log(flattenObj(object));
-        return Object.entries(flattenObj(object));
+        return flattenObj(object);
     }
 
-    const sub = object.credentialSubject;
-
-    switch (object.type[1]) {
+    switch (type[1]) {
         case CredentialType.HEALTH_TEST:
-            return [
-                ["Subject", sub.id],
-                ["Test Description", sub.description],
-                ["Test Code", `${sub.code.codingSystem}|${sub.code.codeValue}`],
-                ["Result Description", sub.signDetected.description],
-                ["Result Code", `${sub.signDetected.code.codingSystem}|${sub.signDetected.code.codeValue}`]
-            ];
+            return {
+                Subject: credentialSubject.id,
+                "Test Description": credentialSubject.description,
+                "Test Code": `${credentialSubject.code.codingSystem}|${credentialSubject.code.codeValue}`,
+                "Result Description": credentialSubject.signDetected.description,
+                "Result Code": `${credentialSubject.signDetected.code.codingSystem}|${credentialSubject.signDetected.code.codeValue}`
+            };
         case CredentialType.BLOOD_TEST:
-            return [
-                ["Subject", sub.id],
-                ["Test Description", sub.description],
-                ["Test Code", `${sub.code.codingSystem}|${sub.code.codeValue}`],
-                ["Diagnosis Description", sub.usedToDiagnose.description],
-                ["Diagnosis Code", `${sub.usedToDiagnose.code.codingSystem}|${sub.usedToDiagnose.code.codeValue}`]
-            ];
+            return {
+                Subject: credentialSubject.id,
+                "Test Description": credentialSubject.description,
+                "Test Code": `${credentialSubject.code.codingSystem}|${credentialSubject.code.codeValue}`,
+                "Diagnosis Description": credentialSubject.usedToDiagnose.description,
+                "Diagnosis Code": `${credentialSubject.usedToDiagnose.code.codingSystem}|${credentialSubject.usedToDiagnose.code.codeValue}`
+            };
         case CredentialType.PERSONAL_INFO:
-            return [
-                ["Subject", sub.id],
-                ["Name", `${sub.givenName} "${sub.name}" ${sub.familyName}`],
-                ["Gender", `${sub.gender[0].toUpperCase()}${sub.gender.substring(1)}`],
-                ["Birth date", getDateString(new Date(sub.birthDate))],
-                [
-                    "Address",
-                    `${sub.address.streetAddress}\n${sub.address.addressLocality}\n${sub.address.addressRegion} ${sub.address.postalCode}\n${sub.address.addressCountry}`
-                ],
-                ["Email", sub.email],
-                ["Telephone", sub.telephone]
-            ];
+            return {
+                Subject: credentialSubject.id,
+                Name: `${credentialSubject.givenName} "${credentialSubject.name}" ${credentialSubject.familyName}`,
+                Gender: `${credentialSubject.gender[0].toUpperCase()}${credentialSubject.gender.substring(1)}`,
+                "Birth date": getDateString(new Date(credentialSubject.birthDate)),
+                Address: `${credentialSubject.address.streetAddress}\n${credentialSubject.address.addressLocality}\n${credentialSubject.address.addressRegion} ${credentialSubject.address.postalCode}\n${credentialSubject.address.addressCountry}`,
+                Email: credentialSubject.email,
+                Telephone: credentialSubject.telephone
+            };
         case CredentialType.DEVICE_ID:
-            return [
-                ["Subject", sub.id],
-                ["Name", sub.name],
-                ["Identifier", sub.identifier],
-                ["Manufacturer", sub.model.manufacturerName],
-                ["Model", sub.model.modelName],
-                ["OS Version", sub.osVersion]
-            ];
+            return {
+                Subject: credentialSubject.id,
+                Name: credentialSubject.name,
+                Identifier: credentialSubject.identifier,
+                Manufacturer: credentialSubject.model.manufacturerName,
+                Model: credentialSubject.model.modelName,
+                "OS Version": credentialSubject.osVersion
+            };
         default:
-            return Object.entries(flattenObj(sub));
+            return flattenObj(credentialSubject);
     }
 }
