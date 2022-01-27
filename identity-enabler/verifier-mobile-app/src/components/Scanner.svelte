@@ -22,6 +22,7 @@
     const reader = new BrowserMultiFormatReader(formats);
     let error: Error | undefined;
     let videoEl: HTMLVideoElement;
+    let viewFinderEle: HTMLElement;
     let svgVisibility = "hidden";
 
     const capture = async (): Promise<void> => {
@@ -55,6 +56,11 @@
             throw new Error("Browser camera access not supported.");
         }
 
+        videoEl.addEventListener("loadedmetadata", (e) => {
+            videoEl.dataset.state = "visible";
+            viewFinderEle.dataset.state = "visible";
+        });
+
         videoEl.srcObject = await navigator.mediaDevices.getUserMedia({
             audio: false,
             video: {
@@ -74,8 +80,11 @@
 
         // Unmount function
         return () => {
-            if (videoEl.srcObject) {
-                (videoEl.srcObject as MediaStream).getTracks().forEach(track => track.stop());
+            if (videoEl && videoEl.srcObject) {
+                videoEl.pause();
+                const stream = videoEl.srcObject as MediaStream;
+                stream.getTracks().forEach(track => { track.stop(); stream.removeTrack(track); });
+                videoEl.srcObject = null;
             }
         };
     });
@@ -92,8 +101,8 @@
             style="--svg-visibility: {svgVisibility}"
         >
             <!-- svelte-ignore a11y-media-has-caption -->
-            <video id="video" bind:this={videoEl} playsinline />
-            <i class="icon-scan viewfinder" />
+            <video id="video" bind:this={videoEl} playsinline data-state="hidden" />
+            <i class="icon-scan viewfinder" bind:this={viewFinderEle} data-state="hidden" />
         </div>
     {/if}
 </main>
@@ -129,6 +138,14 @@
     video {
         width: 100%;
         height: auto;
+    }
+
+    video[data-state="hidden"] {
+        display: none;
+    }
+
+    .viewfinder[data-state="hidden"] {
+        display: none;
     }
 
     p {
