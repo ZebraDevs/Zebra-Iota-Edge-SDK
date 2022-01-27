@@ -66,9 +66,9 @@ adb shell am startservice -a org.iota.zebra.device_id.intent.action.SCAN -e com.
 ```
 
 <p align="center">
-<img style="float: right;" alt="Data Wedge Profile 1" src="images/image3.png" width="30%">
-<img style="float: right;" alt="Data Wedge Profile 2" src="images/image18.png" width="30%">
-<img style="float: right;" alt="Data Wedge Profile 3" src="images/image22.png" width="30%">
+<img alt="Data Wedge Profile 1" src="images/image3.png" width="30%">
+<img alt="Data Wedge Profile 2" src="images/image18.png" width="30%">
+<img alt="Data Wedge Profile 3" src="images/image22.png" width="30%">
 </p>
 
 Note: Also you should have previously defined a [DataWedge profile for the Holder Application](../102/zebra-iota-edge-sdk-102-tutorial.md#datawedge-profile).
