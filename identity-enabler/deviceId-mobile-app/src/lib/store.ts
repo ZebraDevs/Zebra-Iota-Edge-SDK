@@ -1,5 +1,6 @@
 import { writable } from "svelte/store";
 import { persistent } from "./helpers";
+import { CredentialType } from "../models/types/CredentialType";
 
 const hasSetupAccountInitialState = () => false;
 /**
@@ -7,8 +8,8 @@ const hasSetupAccountInitialState = () => false;
  */
 export const hasSetupAccount = persistent<boolean>("hasSetupAccount", hasSetupAccountInitialState());
 
-const credentialsInitialState = () => ({ device: "" });
-export const credentials = persistent<{ device: string }>("credentials", credentialsInitialState());
+const credentialsInitialState = () => ({ [CredentialType.DEVICE_ID]: null });
+export const credentials = persistent<Record<string, unknown | null>>("credentials", credentialsInitialState());
 
 const accountInitialState = () => null;
 export const account = persistent<{ name: string } | null>("account", accountInitialState());

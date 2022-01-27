@@ -1,34 +1,6 @@
 import { writable } from "svelte/store";
+import { CredentialType } from "../models/types/CredentialType";
 import { persistent } from "./helpers";
-
-export const updateStorage = async (key, value) => {
-    try {
-        let stored = {};
-        let updated = {};
-        if (localStorage.getItem(key)) {
-            stored = JSON.parse(await localStorage.getItem(key));
-            updated = { ...stored, ...value };
-        } else {
-            updated = [value];
-        }
-        await localStorage.setItem(key, JSON.stringify(updated));
-        return;
-    } catch (err) {
-        console.error(err);
-    }
-};
-
-export const getFromStorage = async key => {
-    try {
-        const json = localStorage.getItem(key);
-        if (json) {
-            return JSON.parse(json);
-        }
-        return null;
-    } catch (err) {
-        console.error(err);
-    }
-};
 
 const hasSetupAccountInitialState = () => false;
 /**
@@ -37,14 +9,11 @@ const hasSetupAccountInitialState = () => false;
 export const hasSetupAccount = persistent<boolean>("hasSetupAccount", hasSetupAccountInitialState());
 
 const credentialsInitialState = () => ({
-    personal: "",
-    health: "",
-    blood: ""
+    [CredentialType.PERSONAL_INFO]: null,
+    [CredentialType.HEALTH_TEST]: null,
+    [CredentialType.BLOOD_TEST]: null
 });
-export const credentials = persistent<{ personal: string; health: string; blood: string }>(
-    "credentials",
-    credentialsInitialState()
-);
+export const credentials = persistent<Record<string, unknown | null>>("credentials", credentialsInitialState());
 
 const accountInitialState = () => null;
 export const account = persistent<{ name: string } | null>("account", accountInitialState());

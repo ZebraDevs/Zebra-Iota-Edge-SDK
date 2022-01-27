@@ -1,9 +1,9 @@
 <script>
     import { navigate } from "svelte-routing";
     import { loadingScreen } from "../lib/store";
-    import { CredentialType } from "../schemas";
+    import { CredentialType } from "../models/types/CredentialType";
     import { ServiceFactory } from "../factories/serviceFactory";
-    import { showAlert } from "../lib/ui/helpers";
+    import { flattenClaim, showAlert } from "../lib/ui/helpers";
     import Button from "../components/Button.svelte";
     import ObjectList from "../components/ObjectList.svelte";
 
@@ -57,7 +57,7 @@
         </header>
     </div>
     <section>
-        <ObjectList object={credentialSubject} />
+        <ObjectList entries={flattenClaim(credentialSubject)} />
     </section>
     <footer>
         <Button label="Issue Device ID credential" onClick={createCredential} />

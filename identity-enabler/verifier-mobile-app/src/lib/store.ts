@@ -1,16 +1,14 @@
 import { writable } from "svelte/store";
+import { CredentialType } from "../models/types/CredentialType";
 import { persistent } from "./helpers";
 
 const credentialsInitialState = () => ({
-    personal: "",
-    health: "",
-    blood: "",
-    device: ""
+    [CredentialType.PERSONAL_INFO]: null,
+    [CredentialType.HEALTH_TEST]: null,
+    [CredentialType.BLOOD_TEST]: null,
+    [CredentialType.DEVICE_ID]: null
 });
-export const credentials = persistent<{ personal: string; health: string; blood: string; device: string }>(
-    "credentials",
-    credentialsInitialState()
-);
+export const credentials = persistent<Record<string, unknown | null>>("credentials", credentialsInitialState());
 
 export const loadingScreen = writable<string | void>();
 

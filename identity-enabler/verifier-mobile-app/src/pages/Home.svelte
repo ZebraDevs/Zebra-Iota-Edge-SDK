@@ -9,6 +9,8 @@
     import ListItem from "../components/ListItem.svelte";
     import { showAlert, shortenDID } from "../lib/ui/helpers";
     import { BACK_BUTTON_EXIT_GRACE_PERIOD } from "../config";
+    import { get } from "svelte/store";
+    import { credentialDisplayMap } from "../lib/ui/credentialDisplayMap";
 
     const { App, Toast, Modals } = Plugins;
 
@@ -16,8 +18,8 @@
     let exitOnBack = false;
 
     onMount(() => App.addListener("backButton", onBack).remove);
-    onMount(async () => {
-        localCredentials = Object.values($credentials).filter(data => Boolean(data));
+    onMount(() => {
+        localCredentials = Object.values(get(credentials)).filter(data => Boolean(data));
     });
 
     async function scan() {
@@ -85,7 +87,7 @@
                         icon={isExpired(credential.issuanceDate) ? "cross" : "check"}
                         iconColor="#1e22aa"
                         onClick={() => onClickCredential(credential)}
-                        heading={credential.type[1]}
+                        heading={credentialDisplayMap[credential.type[1]]}
                         subheading="Issued by {credential.issuer.name ??
                             shortenDID(credential.issuer.id ?? credential.issuer)}"
                     />

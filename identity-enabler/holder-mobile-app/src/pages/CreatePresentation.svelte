@@ -8,6 +8,7 @@
     import type { IdentityService } from "../services/identityService";
     import CredentialHeader from "../components/CredentialHeader.svelte";
     import { navigate } from "svelte-routing";
+    import { CredentialType } from "../models/types/CredentialType";
 
     const { App } = Plugins;
     let presentationJSON = "";
@@ -86,7 +87,7 @@
         {#if expiry}
             <p>Valid until {getDateString(expiry)} at {getTimeString(expiry)}</p>
         {/if}
-        {#if credential.type[1] === "Device ID"}
+        {#if credential.type[1] === CredentialType.DEVICE_ID}
             <p style="font-size: smaller;">Scan this DataMatrix with the Device ID app</p>
         {/if}
     </footer>

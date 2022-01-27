@@ -7,6 +7,7 @@
     import { isExpired } from "../lib/helpers";
     import { navigate } from "svelte-routing";
     import CredentialHeader from "../components/CredentialHeader.svelte";
+    import { flattenCredential } from "../lib/ui/helpers";
 
     const { Modals } = Plugins;
 
@@ -24,7 +25,7 @@
         });
         if (confirmRet.value) {
             credentials.update(current => {
-                current[credential.type[1].split(/\b/)[0].toLowerCase()] = "";
+                current[credential.type[1]] = null;
                 return current;
             });
             // ensure impossible to navigate back to a deleted credential page
@@ -48,7 +49,7 @@
         </header>
     </div>
     <section>
-        <ObjectList object={credential.credentialSubject} />
+        <ObjectList entries={flattenCredential(credential)} />
     </section>
     <footer>
         <Button label="Done" onClick={onDone} />

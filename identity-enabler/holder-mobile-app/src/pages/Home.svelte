@@ -5,14 +5,20 @@
     import { navigate } from "svelte-routing";
     import Button from "../components/Button.svelte";
     import ListItem from "../components/ListItem.svelte";
-    import { credentialPayload } from "../lib/credentialPayload";
+    import {
+        generateBloodCredential,
+        generateHealthCredential,
+        generatePersonalCredential
+    } from "../lib/credentialPayload";
     import { ServiceFactory } from "../factories/serviceFactory";
-    import { CredentialType } from "../schemas";
-    import { updateStorage, getFromStorage, account, resetAllStores, loadingScreen } from "../lib/store";
-    import { getRandomUserData, wait } from "../lib/helpers";
+    import { account, resetAllStores, loadingScreen, credentials } from "../lib/store";
+    import { wait } from "../lib/helpers";
     import type { IdentityService } from "../services/identityService";
     import { shortenDID, showAlert } from "../lib/ui/helpers";
     import { BACK_BUTTON_EXIT_GRACE_PERIOD } from "../config";
+    import { get } from "svelte/store";
+    import { CredentialType } from "../models/types/CredentialType";
+    import { credentialDisplayMap } from "../lib/ui/credentialDisplayMap";
 
     const { App, Toast, Modals } = Plugins;
 
@@ -22,8 +28,8 @@
     onMount(() => App.addListener("backButton", onBack).remove);
     onMount(async () => {
         try {
-            const creds = await getFromStorage("credentials");
-            localCredentials = Object.values(creds)?.filter(data => data) ?? [];
+            const creds = get(credentials);
+            localCredentials = Object.values(creds).filter(data => Boolean(data));
         } catch (err) {
             console.error(err);
         }
@@ -57,49 +63,38 @@
         try {
             const identityService = ServiceFactory.get<IdentityService>("identity");
             const storedIdentity = await identityService.retrieveIdentity();
-            const credentials = await getFromStorage("credentials");
-            const nonEmpty = Object.values(credentials)?.filter(data => data);
-            const credentialKey = Object.keys(credentials)?.[nonEmpty.length];
+            const creds = get(credentials);
+            const credentialToGenerate = Object.entries(creds).find(([_, val]) => !Boolean(val))[0];
             let schema;
             let payload = {};
-            switch (credentialKey) {
-                case "health":
+            switch (credentialToGenerate) {
+                case CredentialType.HEALTH_TEST:
                     schema = CredentialType.HEALTH_TEST;
-                    payload = credentialPayload.health;
+                    payload = generateHealthCredential();
                     break;
-                case "blood":
+                case CredentialType.BLOOD_TEST:
                     schema = CredentialType.BLOOD_TEST;
-                    payload = credentialPayload.blood;
+                    payload = generateBloodCredential();
                     break;
-                case "personal":
+                case CredentialType.PERSONAL_INFO:
+                    schema = CredentialType.PERSONAL_INFO;
+                    payload = await generatePersonalCredential();
+                    break;
                 default:
-                    const userData = await getRandomUserData();
-                    schema = CredentialType.PERSONAL_DATA;
-                    payload = {
-                        UserPersonalData: {
-                            UserName: {
-                                FirstName: $account.name,
-                                LastName: userData.name.last
-                            },
-                            UserDOB: {
-                                "Date of Birth": new Date(userData.dob.date).toDateString()
-                            },
-                            Birthplace: userData.location.city,
-                            Nationality: userData.location.country,
-                            "Identity Card Number": userData.id.value,
-                            "Passport Number": Math.random().toString(36).substring(7).toUpperCase()
-                        }
-                    };
+                    throw new Error(`Unrecognized credential type "${credentialToGenerate}"`);
             }
 
-            const credential = await identityService.createSignedCredential(
+            const generatedCredential = await identityService.createSignedCredential(
                 JSON.parse(storedIdentity.didDoc).id,
                 storedIdentity,
                 schema,
                 payload
             );
-            await updateStorage("credentials", { [credentialKey]: credential });
-            localCredentials = localCredentials.concat(credential);
+            credentials.update(current => {
+                current[credentialToGenerate] = generatedCredential;
+                return current;
+            });
+            localCredentials = localCredentials.concat(generatedCredential);
             loadingScreen.set();
         } catch (err) {
             console.error(err);
@@ -157,7 +152,7 @@
                     <ListItem
                         icon="credential"
                         onClick={() => navigate("/credential", { state: { credential } })}
-                        heading={credential.type[1]}
+                        heading={credentialDisplayMap[credential.type[1]]}
                         subheading="Issued by {credential.issuer.name ??
                             shortenDID(credential.issuer.id ?? credential.issuer)}"
                     />

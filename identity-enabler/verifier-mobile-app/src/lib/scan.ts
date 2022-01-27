@@ -65,7 +65,7 @@ export async function handleScannerData(decodedText: string): Promise<void> {
     }
 
     credentials.update(current => {
-        current[credential.type[1].split(/\b/)[0].toLowerCase()] = credential;
+        current[credential.type[1]] = credential;
         return current;
     });
     loadingScreen.set();
