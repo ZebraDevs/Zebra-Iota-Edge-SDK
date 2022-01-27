@@ -1,4 +1,6 @@
-# Zebra-IOTA-Edge-SDK : Identity Enabler : 104 Tutorial <br>Device onboarding
+# Zebra-IOTA-Edge-SDK : Identity Enabler : 104 Tutorial 
+
+<h2>Device onboarding</h2>
 
 In this tutorial you will learn how to use the **Identity Enabler** of the Zebra-IOTA Edge SDK to onboard supply chain devices.
 
