@@ -1,4 +1,6 @@
-# Zebra-IOTA-Edge-SDK : Identity Enabler : 103 Tutorial <br> Verifying Credentials
+# Zebra-IOTA-Edge-SDK : Identity Enabler : 103 Tutorial 
+
+<h2>Verifying Credentials</h2>
 
 In this tutorial you will learn how to use the **Identity Enabler** of the Zebra-IOTA Edge SDK verify interoperable identities for people, organizations or devices.
 
@@ -58,9 +60,9 @@ Afterwards you need to go to the Android Studio and compile, install and execute
 In order to run this application fully integrated with a Zebra Android scanning device you need to set up a DataWedge profile for the `“org.iota.zebra.verifier”` application as follows, or you can import it from [here](https://github.com/ZebraDevs/Zebra-Iota-Edge-SDK/blob/main/test/datawedge/datawedge.db).
 
 <p align="center">
-<img style="float: right;" alt="Data Wedge Profile 1" src="images/image3.png" width="30%"></img>
-<img style="float: right;" alt="Data Wedge Profile 2" src="images/image7.png" width="30%"></img>
-<img style="float: right;" alt="Data Wedge Profile 3" src="images/image19.png" width="30%"></img>
+<img alt="Data Wedge Profile 1" src="images/image3.png" width="30%"></img>
+<img alt="Data Wedge Profile 2" src="images/image7.png" width="30%"></img>
+<img alt="Data Wedge Profile 3" src="images/image19.png" width="30%"></img>
 </p>
 
 Note: On a non DataWedge device you can simulate a DataWedge scanning through the adb command line tool as follows:
@@ -80,9 +82,9 @@ You can see the steps from the application below. After scanning a Verifiable Pr
 Once the credential is deemed as valid it is shown and persisted on the inbox of the application (third capture below) for demonstration purposes. When implementing a concrete solution different actions could be taken when scanning a valid credential.
 
 <p align="center">
-<img style="float: right;" alt="Credential Verification 1" src="images/image11.png" width="30%"></img>
-<img style="float: right;" alt="Credential Verification 2" src="images/image13.png" width="30%"></img>
-<img style="float: right;" alt="Credential Verification 3" src="images/image25.png" width="30%"></img>
+<img alt="Credential Verification 1" src="images/image11.png" width="30%"></img>
+<img alt="Credential Verification 2" src="images/image13.png" width="30%"></img>
+<img alt="Credential Verification 3" src="images/image25.png" width="30%"></img>
 </p>
 
 ### Show me the code
