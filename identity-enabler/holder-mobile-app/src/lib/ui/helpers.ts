@@ -81,7 +81,7 @@ export function flattenCredential(object: Record<string, any>): { [key: string]:
 
     const { credentialSubject, type } = object;
 
-    if (!credentialSubject || !Array.isArray(type) || !type.length || !type.includes("VerifiableCredential")) {
+    if (!credentialSubject || !Array.isArray(type) || type.length < 2 || !type.includes("VerifiableCredential")) {
         // Arbitrary objects get flattened
         return flattenObj(object);
     }
