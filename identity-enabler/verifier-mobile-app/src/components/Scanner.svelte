@@ -56,7 +56,7 @@
             throw new Error("Browser camera access not supported.");
         }
 
-        videoEl.addEventListener("loadedmetadata", (e) => {
+        videoEl.addEventListener("loadedmetadata", e => {
             videoEl.dataset.state = "visible";
             viewFinderEle.dataset.state = "visible";
         });
@@ -83,7 +83,10 @@
             if (videoEl && videoEl.srcObject) {
                 videoEl.pause();
                 const stream = videoEl.srcObject as MediaStream;
-                stream.getTracks().forEach(track => { track.stop(); stream.removeTrack(track); });
+                stream.getTracks().forEach(track => {
+                    track.stop();
+                    stream.removeTrack(track);
+                });
                 videoEl.srcObject = null;
             }
         };
