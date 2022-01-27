@@ -52,7 +52,7 @@ export function flattenCredential(object: Record<string, any>): [string, string]
         return [];
     }
 
-    if (!object.credentialSubject || !Array.isArray(object.type) || !object.type.includes("VerifiableCredential")) {
+    if (!object.credentialSubject || !Array.isArray(object.type) || !object.type.length || !object.type.includes("VerifiableCredential")) {
         // Arbitrary objects get flattened
         console.log(flattenObj(object));
         return Object.entries(flattenObj(object));
