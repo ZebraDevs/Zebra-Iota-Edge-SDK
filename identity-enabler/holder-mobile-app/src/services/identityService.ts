@@ -1,11 +1,12 @@
 import Keychain from "../lib/keychain";
-import { generateRandomNumericString, parse } from "../lib/helpers";
+import { parse } from "../lib/helpers";
 import { account } from "../lib/store";
 import type { Identity, IdentityConfig } from "../models/types/identity";
 import * as IotaIdentity from "@iota/identity-wasm/web";
 import { CREDENTIAL_EXPIRY_DAYS, IDENTITY_WASM_PATH } from "../config";
 import { get } from "svelte/store";
 import type { CredentialType } from "../models/types/CredentialType";
+import * as uuid from "uuid";
 
 const {
     Client,
@@ -170,7 +171,7 @@ export class IdentityService {
         expiry.setDate(expiry.getDate() + CREDENTIAL_EXPIRY_DAYS);
         expiry.setHours(24, 0, 0, 0);
         const unsignedVc = VerifiableCredential.extend({
-            id: `http://example.org/zebra-iota-sdk/${generateRandomNumericString(4)}`,
+            id: `urn:uuid:${uuid.v4()}`,
             type: credentialType,
             issuer: {
                 id: IssuerDidDoc.id.toString(),

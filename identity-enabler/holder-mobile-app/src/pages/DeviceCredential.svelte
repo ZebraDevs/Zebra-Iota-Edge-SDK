@@ -1,4 +1,5 @@
 <script>
+    import { fly } from "svelte/transition";
     import { navigate } from "svelte-routing";
     import { loadingScreen } from "../lib/store";
     import { CredentialType } from "../models/types/CredentialType";
@@ -16,25 +17,31 @@
         }
 
         loadingScreen.set("Generating Credential...");
+
+        const subjectId = credentialSubject.id;
+        const claims = { ...credentialSubject };
+        delete claims.id;
+        let credential;
+
         const identityService = ServiceFactory.get("identity");
+        const storedIdentity = await identityService.retrieveIdentity();
 
         try {
-            const storedIdentity = await identityService.retrieveIdentity();
-            const subjectId = credentialSubject.id;
-            const claims = { ...credentialSubject };
-            delete claims.id;
-            const credential = await identityService.createSignedCredential(
+            credential = await identityService.createSignedCredential(
                 subjectId,
                 storedIdentity,
                 CredentialType.DEVICE_ID,
                 claims
             );
-            loadingScreen.set();
-            navigate("/createPresentation", { state: { credential } });
         } catch (err) {
             loadingScreen.set();
-            await showAlert("Error", "Error creating credential. Please try again.");
+            console.error(err);
+            await showAlert("Error", "Error creating credential");
+            return;
         }
+
+        loadingScreen.set();
+        navigate("/createPresentation", { state: { credential } });
     }
 
     function goBack() {
@@ -46,7 +53,7 @@
     }
 </script>
 
-<main>
+<main in:fly={{ x: 500, duration: 500 }}>
     <div class="header-wrapper">
         <div class="options-wrapper">
             <i on:click={goBack} class="icon-chevron" />

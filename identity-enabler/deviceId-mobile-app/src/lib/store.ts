@@ -29,7 +29,19 @@ export const modalStatus = writable<ModalStatus>(modalStatusInitialState());
 export const loadingScreen = writable<string | void>();
 
 const codeImageCacheInitialState = () => ({});
-export const codeImageCache = writable<Record<string, string>>(codeImageCacheInitialState());
+export const codeImageCache = writable<Record<string, { dataUrl: string; hits: number }>>(codeImageCacheInitialState());
+codeImageCache.subscribe(cache => {
+    // Apply an LFU eviction policy.
+    const keys = Object.keys(cache);
+    if (keys.length <= 10) {
+        return;
+    }
+
+    keys.sort((a: string, b: string) => cache[a].hits - cache[b].hits);
+
+    delete cache[keys[0]];
+    codeImageCache.set(cache);
+});
 
 export function resetAllStores() {
     hasSetupAccount.set(hasSetupAccountInitialState());

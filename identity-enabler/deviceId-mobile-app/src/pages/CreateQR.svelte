@@ -18,29 +18,34 @@
     let credentialSubject;
 
     onMount(async () => {
-        try {
-            const storedIdentity = await identityService.retrieveIdentity();
-            const { uuid, model, manufacturer, osVersion } = await Device.getInfo();
-            credentialSubject = {
-                id: storedIdentity.doc.id,
-                "@context": ["https://schema.org", "https://smartdatamodels.org/context.jsonld"],
-                type: ["Product", "Device"],
-                identifier: `urn:uuid:${uuid}`,
-                name,
-                model: {
-                    type: "DeviceModel",
-                    modelName: model,
-                    manufacturerName: manufacturer
-                },
-                osVersion
-            };
+        const storedIdentity = await identityService.retrieveIdentity();
+        const { uuid, model, manufacturer, osVersion } = await Device.getInfo();
+        credentialSubject = {
+            id: storedIdentity.doc.id,
+            "@context": ["https://schema.org", "https://smartdatamodels.org/context.jsonld"],
+            type: ["Product", "Device"],
+            identifier: `urn:uuid:${uuid}`,
+            name,
+            model: {
+                type: "DeviceModel",
+                modelName: model,
+                manufacturerName: manufacturer
+            },
+            osVersion
+        };
 
-            if (!get(codeImageCache).claims) {
-                await createMatrix();
-            }
+        if (get(codeImageCache).claims) {
+            return codeImageCache.update(cache => {
+                cache.claims.hits++;
+                return cache;
+            });
+        }
+
+        try {
+            await createMatrix();
         } catch (err) {
             console.error(err);
-            await showAlert("Error", err.message);
+            await showAlert("Error", "Error creating DataMatrix. Please try again.");
         }
     });
 
@@ -57,7 +62,10 @@
         });
 
         codeImageCache.update(cache => {
-            cache.claims = canvas.toDataURL("image/png");
+            cache.claims = {
+                dataUrl: canvas.toDataURL("image/png"),
+                hits: 0
+            };
             return cache;
         });
 
@@ -84,7 +92,12 @@
         </div>
         <div class="qr-wrapper">
             {#if $codeImageCache.claims}
-                <img alt="Device claims QR code" use:multiClick on:multiClick={showJSON} src={$codeImageCache.claims} />
+                <img
+                    alt="Device claims QR code"
+                    use:multiClick
+                    on:multiClick={showJSON}
+                    src={$codeImageCache.claims.dataUrl}
+                />
             {/if}
         </div>
         <div class="info">

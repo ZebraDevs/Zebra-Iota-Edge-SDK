@@ -31,7 +31,10 @@
         });
 
         codeImageCache.update(cache => {
-            cache[vp.verifiableCredential.id] = canvas.toDataURL("image/png");
+            cache[vp.verifiableCredential.id] = {
+                dataUrl: canvas.toDataURL("image/png"),
+                hits: 0
+            };
             return cache;
         });
 
@@ -39,13 +42,18 @@
     }
 
     onMount(async () => {
-        if (!get(codeImageCache)[vp.verifiableCredential.id]) {
-            try {
-                await createMatrix();
-            } catch (e) {
-                console.error(e);
-                await showAlert("Error", "Error creating DataMatrix. Please try again.");
-            }
+        if (get(codeImageCache)[vp.verifiableCredential.id]) {
+            return codeImageCache.update(cache => {
+                cache[vp.verifiableCredential.id].hits++;
+                return cache;
+            });
+        }
+
+        try {
+            await createMatrix();
+        } catch (e) {
+            console.error(e);
+            await showAlert("Error", "Error creating DataMatrix. Please try again.");
         }
     });
 
@@ -73,7 +81,7 @@
                 alt="Verifiable presentation"
                 use:multiClick
                 on:multiClick={showJSON}
-                src={$codeImageCache[vp.verifiableCredential.id]}
+                src={$codeImageCache[vp.verifiableCredential.id].dataUrl}
             />
         {/if}
     </div>
