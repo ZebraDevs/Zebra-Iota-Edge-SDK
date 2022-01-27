@@ -58,7 +58,7 @@ export default {
                 },
                 {
                     src: "../../docs/in-app-tutorial.md",
-                    dest: "public"
+                    dest: "public/docs"
                 }
             ]
         }),
