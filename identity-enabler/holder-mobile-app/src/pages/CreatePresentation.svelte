@@ -23,8 +23,6 @@
             return;
         }
 
-        loadingScreen.set("Generating DataMatrix...");
-
         const canvas = document.createElement("canvas");
 
         // Frees up the browser to serve the loading screen display
@@ -43,8 +41,6 @@
             cache[credential.type[1]] = canvas.toDataURL("image/png");
             return cache;
         });
-
-        loadingScreen.set();
     }
 
     onMount(async () => {
@@ -57,12 +53,16 @@
             return;
         }
 
+        loadingScreen.set("Generating DataMatrix...");
+
         try {
             await createMatrix();
         } catch (err) {
             console.error(err);
             await showAlert("Error", "Error creating DataMatrix. Please try again.");
         }
+
+        loadingScreen.set();
     });
 
     function onClickDev() {
