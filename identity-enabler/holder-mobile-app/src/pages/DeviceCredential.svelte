@@ -11,36 +11,42 @@
     const credentialSubject = window.history.state.credentialSubject;
 
     async function createCredential() {
+        const subjectId = credentialSubject.id;
+        const claims = { ...credentialSubject };
+        delete claims.id;
+
+        const identityService = ServiceFactory.get("identity");
+        const storedIdentity = await identityService.retrieveIdentity();
+        return await identityService.createSignedCredential(
+            subjectId,
+            storedIdentity,
+            CredentialType.DEVICE_ID,
+            claims
+        );
+    }
+
+    async function issueCredential() {
         if (navigator.onLine === false) {
             await showAlert("Error", "You need Internet connectivity to create a Device Credential");
             return;
         }
 
         loadingScreen.set("Generating Credential...");
-
-        const subjectId = credentialSubject.id;
-        const claims = { ...credentialSubject };
-        delete claims.id;
         let credential;
 
-        const identityService = ServiceFactory.get("identity");
-        const storedIdentity = await identityService.retrieveIdentity();
-
         try {
-            credential = await identityService.createSignedCredential(
-                subjectId,
-                storedIdentity,
-                CredentialType.DEVICE_ID,
-                claims
-            );
+            credential = await createCredential();
         } catch (err) {
-            loadingScreen.set();
             console.error(err);
             await showAlert("Error", "Error creating credential");
-            return;
         }
 
         loadingScreen.set();
+
+        if (!credential) {
+            return;
+        }
+
         navigate("/createPresentation", { state: { credential } });
     }
 
@@ -67,7 +73,7 @@
         <ObjectList entries={flattenClaim(credentialSubject)} />
     </section>
     <footer>
-        <Button label="Issue Device ID credential" onClick={createCredential} />
+        <Button label="Issue Device ID credential" onClick={issueCredential} />
     </footer>
 </main>
 
