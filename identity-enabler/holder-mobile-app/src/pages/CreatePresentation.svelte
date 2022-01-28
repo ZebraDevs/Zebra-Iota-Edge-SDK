@@ -2,8 +2,7 @@
     import { onMount } from "svelte";
     import bwipjs from "bwip-js";
     import { ServiceFactory } from "../factories/serviceFactory";
-    import { loadingScreen, modalStatus } from "../lib/store";
-    import { Plugins } from "@capacitor/core";
+    import { loadingScreen } from "../lib/store";
     import { showAlert, multiClick, getTimeString, getDateString } from "../lib/ui/helpers";
     import type { IdentityService } from "../services/identityService";
     import CredentialHeader from "../components/CredentialHeader.svelte";
