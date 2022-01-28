@@ -71,8 +71,6 @@
             cache.claims = canvas.toDataURL("image/png");
             return cache;
         });
-
-        loadingScreen.set();
     }
 
     function requestCredential() {
