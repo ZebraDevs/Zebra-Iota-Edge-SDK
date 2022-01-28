@@ -35,12 +35,16 @@
             osVersion
         };
 
+        loadingScreen.set("Generating QR Code...");
+
         try {
             await createQR();
         } catch (err) {
             console.error(err);
             await showAlert("Error", "Error creating DataMatrix. Please try again.");
         }
+
+        loadingScreen.set();
     });
 
     async function createQR() {
@@ -49,7 +53,6 @@
             return;
         }
 
-        loadingScreen.set("Generating QR Code...");
         const canvas = document.createElement("canvas");
 
         // Frees up the browser to serve the loading screen display
@@ -82,7 +85,7 @@
 </script>
 
 <main>
-    <div class="wrapper" in:fly={{ x: 500, duration: 500 }}>
+    <div class="wrapper" transition:fly={{ x: 500, duration: 500 }}>
         <header>
             <i on:click|once={() => window.history.back()} class="icon-chevron" />
             <p>Request Device DID credential</p>

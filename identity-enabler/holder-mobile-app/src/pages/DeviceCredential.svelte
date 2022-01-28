@@ -53,7 +53,7 @@
     }
 </script>
 
-<main in:fly={{ x: 500, duration: 500 }}>
+<main transition:fly={{ x: 500, duration: 500 }}>
     <div class="header-wrapper">
         <div class="options-wrapper">
             <i on:click={goBack} class="icon-chevron" />
