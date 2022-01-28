@@ -6,8 +6,15 @@
     import { flattenClaim, showAlert } from "../lib/ui/helpers";
     import Button from "../components/Button.svelte";
     import ObjectList from "../components/ObjectList.svelte";
+    import { onMount } from "svelte";
+    import { Plugins } from "@capacitor/core";
+    import PageTransition from "../components/PageTransition.svelte";
+
+    const { App } = Plugins;
+    let backwards = false;
 
     const credentialSubject = window.history.state.credentialSubject;
+    onMount(() => App.addListener("backButton", goBack).remove);
 
     async function createCredential() {
         if (navigator.onLine === false) {
@@ -38,6 +45,7 @@
     }
 
     function goBack() {
+        backwards = true;
         window.history.back();
     }
 
@@ -46,23 +54,25 @@
     }
 </script>
 
-<main>
-    <div class="header-wrapper">
-        <div class="options-wrapper">
-            <i on:click={goBack} class="icon-chevron" />
-            <i on:click={onClickDev} class="icon-code" />
+<PageTransition {backwards}>
+    <main>
+        <div class="header-wrapper">
+            <div class="options-wrapper">
+                <i on:click={goBack} class="icon-chevron" />
+                <i on:click={onClickDev} class="icon-code" />
+            </div>
+            <header>
+                <p>Device Claims</p>
+            </header>
         </div>
-        <header>
-            <p>Device Claims</p>
-        </header>
-    </div>
-    <section>
-        <ObjectList entries={flattenClaim(credentialSubject)} />
-    </section>
-    <footer>
-        <Button label="Issue Device ID credential" onClick={createCredential} />
-    </footer>
-</main>
+        <section>
+            <ObjectList entries={flattenClaim(credentialSubject)} />
+        </section>
+        <footer>
+            <Button label="Issue Device ID credential" onClick={createCredential} />
+        </footer>
+    </main>
+</PageTransition>
 
 <style>
     main {
@@ -113,7 +123,6 @@
 
     section {
         margin: 0 7vw;
-        z-index: 0;
     }
 
     footer {

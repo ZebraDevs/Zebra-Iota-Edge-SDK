@@ -1,7 +1,7 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import { fly } from "svelte/transition";
     import Button from "../components/Button.svelte";
+    import PageTransition from "../components/PageTransition.svelte";
     import { playAudio } from "../lib/ui/helpers";
     import type { IInvalidCredentialPageState } from "../models/types/IInvalidCredentialPageState";
 
@@ -18,23 +18,25 @@
         }
     });
 
-    function onDone() {
+    function goBack() {
         window.history.back();
     }
 </script>
 
-<main transition:fly={{ y: 200, duration: 500 }}>
-    <section>
-        <i class="icon-cross" />
-        <p>{state?.message ?? "Invalid credential"}</p>
-        {#if state?.detail}
-            <small>{state.detail}</small>
-        {/if}
-    </section>
-    <footer>
-        <Button label="Done" onClick={onDone} />
-    </footer>
-</main>
+<PageTransition backwards={true}>
+    <main>
+        <section>
+            <i class="icon-cross" />
+            <p>{state?.message ?? "Invalid credential"}</p>
+            {#if state?.detail}
+                <small>{state.detail}</small>
+            {/if}
+        </section>
+        <footer>
+            <Button label="Done" onClick={goBack} />
+        </footer>
+    </main>
+</PageTransition>
 
 <style>
     main {
@@ -48,7 +50,6 @@
     }
 
     section {
-        z-index: 2;
         height: 100%;
         width: 100%;
         display: flex;
@@ -58,7 +59,6 @@
     }
 
     section > p {
-        z-index: 2;
         position: relative;
         justify-content: center;
         align-items: center;
@@ -83,6 +83,6 @@
         position: fixed;
         width: 100%;
         bottom: 0;
-        z-index: 6;
+        z-index: 1;
     }
 </style>

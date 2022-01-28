@@ -1,6 +1,8 @@
 import { Plugins } from "@capacitor/core";
 import { CredentialType } from "../../models/types/CredentialType";
 import { flattenObj, wait } from "../helpers";
+import { fly } from "svelte/transition";
+import type { FlyParams } from "svelte/transition";
 
 export async function showAlert(title: string, message: string) {
     const { Modals } = Plugins;
@@ -148,5 +150,19 @@ export function flattenClaim(object: Record<string, any>): { [key: string]: stri
         Manufacturer: object.model.manufacturerName,
         Model: object.model.modelName,
         "OS Version": object.osVersion
+    };
+}
+
+/*
+ * Wraps fly transition to ensure element is on top during outro or intro.
+ *
+ * @param node
+ * @param opts
+ */
+export function flyOver(node: HTMLElement, opts: FlyParams) {
+    const flyReturn = fly(node, opts);
+    return {
+        ...flyReturn,
+        css: (t: number, u: number) => `${flyReturn.css(t, u)}; z-index: 6;` // 1 higher than PageTransition z-index
     };
 }

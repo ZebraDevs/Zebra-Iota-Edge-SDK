@@ -5,6 +5,7 @@
     import { TUTORIAL_URL } from "../config";
     import { loadingScreen } from "../lib/store";
     import { showAlert } from "../lib/ui/helpers";
+    import PageTransition from "../components/PageTransition.svelte";
 
     let markdown = "";
     let title = "";
@@ -23,18 +24,20 @@
     });
 </script>
 
-<main>
-    <div class="header-wrapper">
-        <i on:click|once={() => window.history.back()} class="side icon-chevron" />
-        <header>{title}</header>
-        <div class="side" />
-    </div>
-    <section>
-        <div class="highlightjs-component">
-            <Markdown {markdown} language="javascript" />
+<PageTransition backwards={true}>
+    <main>
+        <div class="header-wrapper">
+            <i on:click|once={() => window.history.back()} class="side icon-chevron" />
+            <header>{title}</header>
+            <div class="side" />
         </div>
-    </section>
-</main>
+        <section>
+            <div class="highlightjs-component">
+                <Markdown {markdown} language="javascript" />
+            </div>
+        </section>
+    </main>
+</PageTransition>
 
 <style>
     main {

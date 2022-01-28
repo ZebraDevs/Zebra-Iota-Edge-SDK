@@ -1,17 +1,21 @@
 <script lang="ts">
+    import PageTransition from "../components/PageTransition.svelte";
+
     const code: string = window.history.state.code;
 </script>
 
-<main>
-    <div class="header-wrapper">
-        <i on:click|once={() => window.history.back()} class="side icon-chevron" />
-        <header>Code</header>
-        <div class="side" />
-    </div>
-    <section>
-        <pre><code>{code}</code></pre>
-    </section>
-</main>
+<PageTransition backwards={true}>
+    <main>
+        <div class="header-wrapper">
+            <i on:click|once={() => window.history.back()} class="side icon-chevron" />
+            <header>Code</header>
+            <div class="side" />
+        </div>
+        <section>
+            <pre><code>{code}</code></pre>
+        </section>
+    </main>
+</PageTransition>
 
 <style>
     main {

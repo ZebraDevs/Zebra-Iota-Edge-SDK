@@ -2,17 +2,18 @@
     import { Plugins } from "@capacitor/core";
     import { onMount } from "svelte";
     import { navigate } from "svelte-routing";
-    import { fly } from "svelte/transition";
     import { modalStatus, credentials } from "../lib/store";
     import Button from "../components/Button.svelte";
     import ObjectList from "../components/ObjectList.svelte";
     import CredentialHeader from "../components/CredentialHeader.svelte";
     import { flattenCredential } from "../lib/ui/helpers";
+    import PageTransition from "../components/PageTransition.svelte";
 
     const { App } = Plugins;
 
     const vp = window.history.state.vp;
     const save = window?.history?.state?.save;
+    let backwards = false;
 
     onMount(() => App.addListener("backButton", goBack).remove);
 
@@ -38,6 +39,7 @@
             return;
         }
 
+        backwards = true;
         window.history.back();
     }
 
@@ -46,29 +48,31 @@
     }
 </script>
 
-<main transition:fly={{ x: 500, duration: 500 }}>
-    <div class="header-wrapper">
-        <div class="options-wrapper">
-            <i on:click={goBack} class="icon-chevron" />
-            <i on:click={onClickDev} class="icon-code" />
+<PageTransition {backwards}>
+    <main>
+        <div class="header-wrapper">
+            <div class="options-wrapper">
+                <i on:click={goBack} class="icon-chevron" />
+                <i on:click={onClickDev} class="icon-code" />
+            </div>
+            <header>
+                <CredentialHeader credential={vp.verifiableCredential} />
+            </header>
         </div>
-        <header>
-            <CredentialHeader credential={vp.verifiableCredential} />
-        </header>
-    </div>
-    <section>
-        <ObjectList entries={flattenCredential(vp.verifiableCredential)} />
-    </section>
-    <footer>
-        {#if save}
-            <Button label="Save credential" onClick={onSaveCredential} />
-        {:else}
-            <Button label="Share credential" onClick={share}>
-                <i class="icon-share" />
-            </Button>
-        {/if}
-    </footer>
-</main>
+        <section>
+            <ObjectList entries={flattenCredential(vp.verifiableCredential)} />
+        </section>
+        <footer>
+            {#if save}
+                <Button label="Save credential" onClick={onSaveCredential} />
+            {:else}
+                <Button label="Share credential" onClick={share}>
+                    <i class="icon-share" />
+                </Button>
+            {/if}
+        </footer>
+    </main>
+</PageTransition>
 
 <style>
     main {
@@ -93,14 +97,12 @@
     header {
         margin-left: auto;
         margin-right: auto;
-        z-index: 1;
         height: fit-content;
         margin-bottom: 0;
     }
 
     section {
         margin: 0 7vw;
-        z-index: 0;
     }
 
     footer {
@@ -115,6 +117,5 @@
         flex-direction: row;
         justify-content: space-between;
         margin: 3.5vh 3.5vh 0 3.5vh;
-        z-index: 3;
     }
 </style>

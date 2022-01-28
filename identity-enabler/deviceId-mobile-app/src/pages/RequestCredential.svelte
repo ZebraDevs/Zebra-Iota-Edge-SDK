@@ -1,9 +1,15 @@
 <script>
     import { navigate } from "svelte-routing";
-    import { fly } from "svelte/transition";
+    import { onMount } from "svelte";
+    import { Plugins } from "@capacitor/core";
     import Button from "../components/Button.svelte";
     import { showAlert } from "../lib/ui/helpers";
+    import PageTransition from "../components/PageTransition.svelte";
 
+    const { App } = Plugins;
+    let backwards = false;
+
+    onMount(() => App.addListener("backButton", goBack).remove);
     async function scan() {
         if (navigator.onLine === false) {
             await showAlert("Error", "You need Internet connectivity to verify a Device Credential");
@@ -17,28 +23,31 @@
     }
 
     function goBack() {
+        backwards = true;
         window.history.back();
     }
 </script>
 
-<main transition:fly={{ x: 500, duration: 500 }}>
-    <header>
-        <i on:click={goBack} class="icon-chevron" />
-        <p>Request Device DID credential</p>
-        <i on:click={onClickDev} class="icon-code" />
-    </header>
+<PageTransition {backwards}>
+    <main>
+        <header>
+            <i on:click={goBack} class="icon-chevron" />
+            <p>Request Device DID credential</p>
+            <i on:click={onClickDev} class="icon-code" />
+        </header>
 
-    <section>
-        <p class="subheader">Add Device DID credential</p>
-        <p class="description">Scan the Device Credential DataMatrix code generated in the Holder app</p>
-    </section>
+        <section>
+            <p class="subheader">Add Device DID credential</p>
+            <p class="description">Scan the Device Credential DataMatrix code generated in the Holder app</p>
+        </section>
 
-    <footer>
-        <Button style="height: 64px; width: 64px; border-radius: 50%;" onClick={scan}>
-            <i class="icon-scan" />
-        </Button>
-    </footer>
-</main>
+        <footer>
+            <Button style="height: 64px; width: 64px; border-radius: 50%;" onClick={scan}>
+                <i class="icon-scan" />
+            </Button>
+        </footer>
+    </main>
+</PageTransition>
 
 <style>
     main {
@@ -67,7 +76,6 @@
         font-weight: 600;
         font-size: 1.2em;
         margin: 0;
-        z-index: 1;
     }
 
     p.subheader {

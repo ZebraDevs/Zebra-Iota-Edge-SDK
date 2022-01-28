@@ -11,6 +11,7 @@
     import { BACK_BUTTON_EXIT_GRACE_PERIOD } from "../config";
     import { get } from "svelte/store";
     import { credentialDisplayMap } from "../lib/ui/credentialDisplayMap";
+    import PageTransition from "../components/PageTransition.svelte";
 
     const { App, Toast, Modals } = Plugins;
 
@@ -67,40 +68,42 @@
     }
 </script>
 
-<main>
-    <header>
-        <div class="options-wrapper">
-            <i on:click={onClickReset} class="icon-reset" />
-            <p>SCANNED CREDENTIALS</p>
-            <i on:click={onClickDev} class="icon-code" />
-        </div>
-    </header>
-    <section>
-        {#if localCredentials.length === 0}
-            <div class="empty-wrapper">
-                <p>No credentials scanned</p>
+<PageTransition>
+    <main>
+        <header>
+            <div class="options-wrapper">
+                <i on:click={onClickReset} class="icon-reset" />
+                <p>SCANNED CREDENTIALS</p>
+                <i on:click={onClickDev} class="icon-code" />
             </div>
-        {:else}
-            {#each localCredentials as credential}
-                <div transition:slide class="list">
-                    <ListItem
-                        icon={isExpired(credential.issuanceDate) ? "cross" : "check"}
-                        iconColor="#1e22aa"
-                        onClick={() => onClickCredential(credential)}
-                        heading={credentialDisplayMap[credential.type[1]]}
-                        subheading="Issued by {credential.issuer.name ??
-                            shortenDID(credential.issuer.id ?? credential.issuer)}"
-                    />
+        </header>
+        <section>
+            {#if localCredentials.length === 0}
+                <div class="empty-wrapper">
+                    <p>No credentials scanned</p>
                 </div>
-            {/each}
-        {/if}
-    </section>
-    <footer>
-        <Button style="height: 64px; width: 64px; border-radius: 50%;" onClick={scan}>
-            <i class="icon-scan" />
-        </Button>
-    </footer>
-</main>
+            {:else}
+                {#each localCredentials as credential}
+                    <div transition:slide|local class="list">
+                        <ListItem
+                            icon={isExpired(credential.issuanceDate) ? "cross" : "check"}
+                            iconColor="#1e22aa"
+                            onClick={() => onClickCredential(credential)}
+                            heading={credentialDisplayMap[credential.type[1]]}
+                            subheading="Issued by {credential.issuer.name ??
+                                shortenDID(credential.issuer.id ?? credential.issuer)}"
+                        />
+                    </div>
+                {/each}
+            {/if}
+        </section>
+        <footer>
+            <Button style="height: 64px; width: 64px; border-radius: 50%;" onClick={scan}>
+                <i class="icon-scan" />
+            </Button>
+        </footer>
+    </main>
+</PageTransition>
 
 <style>
     main {
@@ -108,7 +111,6 @@
         flex-direction: column;
         height: 100%;
         width: 100%;
-        z-index: 1;
     }
 
     header {
@@ -137,7 +139,6 @@
         line-height: 16px;
         color: #f8f8f8;
         margin: 0;
-        z-index: 1;
     }
 
     .options-wrapper {

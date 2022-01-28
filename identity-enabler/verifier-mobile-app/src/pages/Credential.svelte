@@ -1,6 +1,6 @@
 <script>
-    import { fly } from "svelte/transition";
     import { Plugins } from "@capacitor/core";
+    import { onMount } from "svelte";
     import { credentials } from "../lib/store";
     import Button from "../components/Button.svelte";
     import ObjectList from "../components/ObjectList.svelte";
@@ -8,11 +8,15 @@
     import { navigate } from "svelte-routing";
     import CredentialHeader from "../components/CredentialHeader.svelte";
     import { flattenCredential } from "../lib/ui/helpers";
+    import PageTransition from "../components/PageTransition.svelte";
 
-    const { Modals } = Plugins;
+    const { Modals, App } = Plugins;
 
     let credential = window.history.state.credential;
-    const expired = isExpired(credential);
+    let expired = isExpired(credential);
+    let backwards = false;
+
+    onMount(() => App.addListener("backButton", onBack).remove);
 
     function onDone() {
         navigate("/home");
@@ -36,25 +40,32 @@
     function onClickDev() {
         navigate("/tutorial");
     }
+
+    function onBack() {
+        backwards = true;
+        window.history.back();
+    }
 </script>
 
-<main transition:fly={{ x: 500, duration: 500 }}>
-    <div class="header-wrapper" class:expired>
-        <div class="options-wrapper">
-            <i on:click={onDelete} class="icon-remove" />
-            <i on:click={onClickDev} class="icon-code" />
+<PageTransition {backwards}>
+    <main>
+        <div class="header-wrapper" class:expired>
+            <div class="options-wrapper">
+                <i on:click={onDelete} class="icon-remove" />
+                <i on:click={onClickDev} class="icon-code" />
+            </div>
+            <header>
+                <CredentialHeader {credential} />
+            </header>
         </div>
-        <header>
-            <CredentialHeader {credential} />
-        </header>
-    </div>
-    <section>
-        <ObjectList entries={flattenCredential(credential)} />
-    </section>
-    <footer>
-        <Button label="Done" onClick={onDone} />
-    </footer>
-</main>
+        <section>
+            <ObjectList entries={flattenCredential(credential)} />
+        </section>
+        <footer>
+            <Button label="Done" onClick={onDone} />
+        </footer>
+    </main>
+</PageTransition>
 
 <style>
     main {
@@ -83,14 +94,12 @@
     header {
         margin-left: auto;
         margin-right: auto;
-        z-index: 1;
         height: fit-content;
         margin-bottom: 0;
     }
 
     section {
         margin: 0 7vw;
-        z-index: 0;
     }
 
     footer {
@@ -105,6 +114,5 @@
         flex-direction: row;
         justify-content: space-between;
         margin: 3.5vh 3.5vh 0 3.5vh;
-        z-index: 2;
     }
 </style>

@@ -8,8 +8,12 @@
     import CredentialHeader from "../components/CredentialHeader.svelte";
     import { navigate } from "svelte-routing";
     import { CredentialType } from "../models/types/CredentialType";
+    import PageTransition from "../components/PageTransition.svelte";
+    import { Plugins } from "@capacitor/core";
 
+    const { App } = Plugins;
     let presentationJSON = "";
+    let backwards = false;
 
     const credential = window.history.state.credential;
     const expiry = credential.expirationDate ? new Date(credential.expirationDate) : undefined;
@@ -26,6 +30,7 @@
         });
     }
 
+    onMount(() => App.addListener("backButton", goBack).remove);
     onMount(async () => {
         loadingScreen.set("Generating DataMatrix...");
 
@@ -45,6 +50,11 @@
         loadingScreen.set();
     });
 
+    function goBack() {
+        backwards = true;
+        window.history.back();
+    }
+
     function onClickDev() {
         navigate("/tutorial");
     }
@@ -54,28 +64,30 @@
     }
 </script>
 
-<main>
-    <header>
-        <div class="options-wrapper">
-            <i on:click|once={() => window.history.back()} class="icon-chevron" />
-            <i on:click={onClickDev} class="icon-code" />
+<PageTransition {backwards}>
+    <main>
+        <header>
+            <div class="options-wrapper">
+                <i on:click|once={goBack} class="icon-chevron" />
+                <i on:click={onClickDev} class="icon-code" />
+            </div>
+            <CredentialHeader {credential} hideDetails={true} />
+        </header>
+
+        <div class="presentation-wrapper">
+            <canvas id="presentation" use:multiClick on:multiClick={showJSON} />
         </div>
-        <CredentialHeader {credential} hideDetails={true} />
-    </header>
 
-    <div class="presentation-wrapper">
-        <canvas id="presentation" use:multiClick on:multiClick={showJSON} />
-    </div>
-
-    <footer class="footerContainer">
-        {#if expiry}
-            <p>Valid until {getDateString(expiry)} at {getTimeString(expiry)}</p>
-        {/if}
-        {#if credential.type[1] === CredentialType.DEVICE_ID}
-            <p style="font-size: smaller;">Scan this DataMatrix with the Device ID app</p>
-        {/if}
-    </footer>
-</main>
+        <footer class="footerContainer">
+            {#if expiry}
+                <p>Valid until {getDateString(expiry)} at {getTimeString(expiry)}</p>
+            {/if}
+            {#if credential.type[1] === CredentialType.DEVICE_ID}
+                <p style="font-size: smaller;">Scan this DataMatrix with the Device ID app</p>
+            {/if}
+        </footer>
+    </main>
+</PageTransition>
 
 <style>
     main {

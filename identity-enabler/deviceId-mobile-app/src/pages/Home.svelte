@@ -10,6 +10,7 @@
     import { BACK_BUTTON_EXIT_GRACE_PERIOD } from "../config";
     import { shortenDID } from "../lib/ui/helpers";
     import { credentialDisplayMap } from "../lib/ui/credentialDisplayMap";
+    import PageTransition from "../components/PageTransition.svelte";
 
     const { App, Toast, Modals } = Plugins;
 
@@ -69,44 +70,46 @@
     }
 </script>
 
-<main>
-    {#if $account}
-        <header>
-            <div class="options-wrapper">
-                <i on:click={onClickReset} class="icon-reset" />
-                <i on:click={onClickDev} class="icon-code" />
-            </div>
-            <div class="logo"><img src="/img/device.png" alt="logo" /></div>
-        </header>
-        <name-wrapper>
-            <p>Device {$account.name}</p>
-        </name-wrapper>
-        <section>
-            {#each localCredentials as vp}
-                <div class="list">
-                    <ListItem
-                        icon="chip"
-                        onClick={() => navigate("/credential", { state: { vp } })}
-                        heading={credentialDisplayMap[vp.verifiableCredential.type[1]]}
-                        subheading="Issued by {vp.verifiableCredential.issuer.name ??
-                            shortenDID(vp.verifiableCredential.issuer.id ?? vp.verifiableCredential.issuer)}"
-                    />
+<PageTransition>
+    <main>
+        {#if $account}
+            <header>
+                <div class="options-wrapper">
+                    <i on:click={onClickReset} class="icon-reset" />
+                    <i on:click={onClickDev} class="icon-code" />
                 </div>
-            {/each}
-            {#if localCredentials.length < 1}
-                <div class="list">
-                    <ListItem
-                        icon="add"
-                        iconColor="#78d64b"
-                        onClick={createQR}
-                        arrow={false}
-                        heading="Request Device ID credential"
-                    />
-                </div>
-            {/if}
-        </section>
-    {/if}
-</main>
+                <div class="logo"><img src="/img/device.png" alt="logo" /></div>
+            </header>
+            <name-wrapper>
+                <p>Device {$account.name}</p>
+            </name-wrapper>
+            <section>
+                {#each localCredentials as vp}
+                    <div class="list">
+                        <ListItem
+                            icon="chip"
+                            onClick={() => navigate("/credential", { state: { vp } })}
+                            heading={credentialDisplayMap[vp.verifiableCredential.type[1]]}
+                            subheading="Issued by {vp.verifiableCredential.issuer.name ??
+                                shortenDID(vp.verifiableCredential.issuer.id ?? vp.verifiableCredential.issuer)}"
+                        />
+                    </div>
+                {/each}
+                {#if localCredentials.length < 1}
+                    <div class="list">
+                        <ListItem
+                            icon="add"
+                            iconColor="#78d64b"
+                            onClick={createQR}
+                            arrow={false}
+                            heading="Request Device ID credential"
+                        />
+                    </div>
+                {/if}
+            </section>
+        {/if}
+    </main>
+</PageTransition>
 
 <style>
     main {

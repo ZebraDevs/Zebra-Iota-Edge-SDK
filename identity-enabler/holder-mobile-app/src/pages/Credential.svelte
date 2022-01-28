@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { fly } from "svelte/transition";
     import Button from "../components/Button.svelte";
     import ObjectList from "../components/ObjectList.svelte";
     import { modalStatus } from "../lib/store";
@@ -8,9 +7,11 @@
     import { Plugins } from "@capacitor/core";
     import CredentialHeader from "../components/CredentialHeader.svelte";
     import { navigate } from "svelte-routing";
+    import PageTransition from "../components/PageTransition.svelte";
 
     const { App } = Plugins;
     const credential = window.history.state.credential;
+    let backwards = false;
 
     async function share() {
         if (navigator.onLine === false) {
@@ -31,6 +32,7 @@
             return;
         }
 
+        backwards = true;
         window.history.back();
     }
 
@@ -41,25 +43,27 @@
     onMount(() => App.addListener("backButton", goBack).remove);
 </script>
 
-<main transition:fly={{ x: 500, duration: 500 }}>
-    <div class="header-wrapper">
-        <div class="options-wrapper">
-            <i on:click={goBack} class="icon-chevron" />
-            <i on:click={onClickDev} class="icon-code" />
+<PageTransition {backwards}>
+    <main>
+        <div class="header-wrapper">
+            <div class="options-wrapper">
+                <i on:click={goBack} class="icon-chevron" />
+                <i on:click={onClickDev} class="icon-code" />
+            </div>
+            <header>
+                <CredentialHeader {credential} />
+            </header>
         </div>
-        <header>
-            <CredentialHeader {credential} />
-        </header>
-    </div>
-    <section>
-        <ObjectList entries={flattenCredential(credential)} />
-    </section>
-    <footer>
-        <Button label="Share credential" onClick={share}>
-            <i class="icon-share" />
-        </Button>
-    </footer>
-</main>
+        <section>
+            <ObjectList entries={flattenCredential(credential)} />
+        </section>
+        <footer>
+            <Button label="Share credential" onClick={share}>
+                <i class="icon-share" />
+            </Button>
+        </footer>
+    </main>
+</PageTransition>
 
 <style>
     main {
@@ -84,14 +88,12 @@
     header {
         margin-left: auto;
         margin-right: auto;
-        z-index: 1;
         height: fit-content;
         margin-bottom: 0;
     }
 
     section {
         margin: 0 7vw;
-        z-index: 0;
     }
 
     footer {

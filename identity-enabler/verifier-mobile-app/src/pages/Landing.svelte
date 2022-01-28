@@ -4,6 +4,7 @@
     import { navigate } from "svelte-routing";
     import Button from "../components/Button.svelte";
     import Header from "../components/Header.svelte";
+    import PageTransition from "../components/PageTransition.svelte";
     import { BACK_BUTTON_EXIT_GRACE_PERIOD } from "../config";
     import { wait } from "../lib/helpers";
     import { firstLaunch } from "../lib/store";
@@ -36,17 +37,19 @@
     }
 </script>
 
-<main id="wrapper">
-    <div class="content">
-        <div>
-            <Header text="Scan, verify and store credentials" />
+<PageTransition>
+    <main id="wrapper">
+        <div class="content">
+            <div>
+                <Header text="Scan, verify and store credentials" />
+            </div>
+            <img src="/img/checklist.svg" alt="checklist" />
         </div>
-        <img src="/img/checklist.svg" alt="checklist" />
-    </div>
-    <footer class="footerContainer">
-        <Button label="Next" onClick={onNext} />
-    </footer>
-</main>
+        <footer class="footerContainer">
+            <Button label="Next" onClick={onNext} />
+        </footer>
+    </main>
+</PageTransition>
 
 <style>
     main {

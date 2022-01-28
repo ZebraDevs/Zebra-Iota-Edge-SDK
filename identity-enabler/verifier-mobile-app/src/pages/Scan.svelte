@@ -1,14 +1,19 @@
 <script lang="ts">
     import { navigate } from "svelte-routing";
-    import { fly } from "svelte/transition";
-    import { __ANDROID__ } from "../lib/platforms";
     import Scanner from "../components/Scanner.svelte";
     import { BarcodeFormat, BrowserMultiFormatReader, DecodeHintType } from "@zxing/library";
     import { handleScannerData } from "../lib/scan";
     import { playAudio } from "../lib/ui/helpers";
+    import PageTransition from "../components/PageTransition.svelte";
+    import { onMount } from "svelte";
+    import { Plugins } from "@capacitor/core";
 
     const formats = new Map().set(DecodeHintType.POSSIBLE_FORMATS, [BarcodeFormat.DATA_MATRIX, BarcodeFormat.QR_CODE]);
     const reader = new BrowserMultiFormatReader(formats);
+    let backwards = false;
+    const { App } = Plugins;
+
+    onMount(() => App.addListener("backButton", goBack).remove);
 
     // handles input button
     const imageSelected = (e: Event & { currentTarget: EventTarget & HTMLInputElement }) => {
@@ -37,23 +42,26 @@
     }
 
     function goBack() {
+        backwards = true;
         window.history.back();
     }
 </script>
 
-<main transition:fly={{ y: 200, duration: 500 }}>
-    <header>
-        <div class="options-wrapper">
-            <i on:click={() => history.back()} class="icon-chevron" />
-            <p>Scanner</p>
-            <label class="image-select">
-                <input type="file" accept="image/*" on:change={imageSelected} />
-                Browse
-            </label>
-        </div>
-    </header>
-    <Scanner on:message={message} />
-</main>
+<PageTransition {backwards}>
+    <main>
+        <header>
+            <div class="options-wrapper">
+                <i on:click={goBack} class="icon-chevron" />
+                <p>Scanner</p>
+                <label class="image-select">
+                    <input type="file" accept="image/*" on:change={imageSelected} />
+                    Browse
+                </label>
+            </div>
+        </header>
+        <Scanner on:message={message} />
+    </main>
+</PageTransition>
 
 <style>
     main {
@@ -75,7 +83,6 @@
         line-height: 16px;
         color: #f8f8f8;
         margin: 0;
-        z-index: 1;
     }
 
     .options-wrapper {

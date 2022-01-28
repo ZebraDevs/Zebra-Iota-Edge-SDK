@@ -118,7 +118,7 @@
 
     .bg {
         position: absolute;
-        z-index: 1000;
+        z-index: 6;
         bottom: 0;
         left: 0;
         right: 0;

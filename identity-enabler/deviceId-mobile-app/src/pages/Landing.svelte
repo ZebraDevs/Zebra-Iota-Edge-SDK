@@ -6,6 +6,7 @@
     import { navigate } from "svelte-routing";
     import { wait } from "../lib/helpers";
     import { BACK_BUTTON_EXIT_GRACE_PERIOD } from "../config";
+    import PageTransition from "../components/PageTransition.svelte";
 
     const info = {
         header: "Create and store device digital identity",
@@ -41,18 +42,20 @@
     }
 </script>
 
-<main id="wrapper">
-    <div class="content">
-        <div>
-            <Header text={info.header} />
+<PageTransition>
+    <main id="wrapper">
+        <div class="content">
+            <div>
+                <Header text={info.header} />
+            </div>
+            <img src="/img/{info.image}" alt="checklist" />
+            <p class="info">{info.content}</p>
         </div>
-        <img src="/img/{info.image}" alt="checklist" />
-        <p class="info">{info.content}</p>
-    </div>
-    <footer class="footerContainer">
-        <Button label={info.footer} onClick={onNext} />
-    </footer>
-</main>
+        <footer class="footerContainer">
+            <Button label={info.footer} onClick={onNext} />
+        </footer>
+    </main>
+</PageTransition>
 
 <style>
     main {
