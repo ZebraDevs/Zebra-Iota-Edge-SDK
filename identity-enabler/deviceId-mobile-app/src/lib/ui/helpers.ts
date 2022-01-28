@@ -136,10 +136,9 @@ export function flattenCredential(object: Record<string, any>): { [key: string]:
  * @param opts
  */
 export function flyOver(node: HTMLElement, opts: FlyParams) {
-    const z = +getComputedStyle(node).zIndex;
     const flyReturn = fly(node, opts);
     return {
         ...flyReturn,
-        css: (t: number, u: number) => `${flyReturn.css(t, u)}; z-index: ${z + 1};`
+        css: (t: number, u: number) => `${flyReturn.css(t, u)}; z-index: 6;` // 1 higher than PageTransition z-index
     };
 }
