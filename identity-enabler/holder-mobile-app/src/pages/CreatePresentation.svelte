@@ -9,7 +9,9 @@
     import { navigate } from "svelte-routing";
     import { CredentialType } from "../models/types/CredentialType";
     import PageTransition from "../components/PageTransition.svelte";
+    import { Plugins } from "@capacitor/core";
 
+    const { App } = Plugins;
     let presentationJSON = "";
     let backwards = false;
 
@@ -28,6 +30,7 @@
         });
     }
 
+    onMount(() => App.addListener("backButton", goBack).remove);
     onMount(async () => {
         loadingScreen.set("Generating DataMatrix...");
 

@@ -5,10 +5,15 @@
     import { handleScannerData } from "../lib/scan";
     import { navigate } from "svelte-routing";
     import PageTransition from "../components/PageTransition.svelte";
+    import { onMount } from "svelte";
+    import { Plugins } from "@capacitor/core";
 
     const formats = new Map().set(DecodeHintType.POSSIBLE_FORMATS, [BarcodeFormat.DATA_MATRIX, BarcodeFormat.QR_CODE]);
     const reader = new BrowserMultiFormatReader(formats);
+    const { App } = Plugins;
     let backwards = false;
+
+    onMount(() => App.addListener("backButton", goBack).remove);
 
     // handles input button
     const imageSelected = e => {
