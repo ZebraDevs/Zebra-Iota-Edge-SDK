@@ -2,7 +2,7 @@
 
 <p align="center">
  <a href="https://iota.stackexchange.com/" style="text-decoration:none;"><img src="https://img.shields.io/badge/StackExchange-9cf.svg?logo=stackexchange" alt="StackExchange"></a>
-    <a href="https://github.com/ZebraDevs/zebra-iota-edge-sdk/blob/master/LICENSE" style="text-decoration:none;"><img src="https://img.shields.io/github/license/ZebraDevs/Zebra-Iota-Edge-SDK" alt="MIT license"></a>
+    <a href="https://github.com/ZebraDevs/Zebra-Iota-Edge-SDK/blob/main/LICENSE" style="text-decoration:none;"><img src="https://img.shields.io/github/license/ZebraDevs/Zebra-Iota-Edge-SDK.svg" alt="MIT license"></a>
 </p>
       
 <p align="center">
