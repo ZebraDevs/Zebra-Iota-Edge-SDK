@@ -150,7 +150,7 @@ export function flattenClaim(object: Record<string, any>): { [key: string]: stri
         Manufacturer: object.model.manufacturerName,
         Model: object.model.modelName,
         "OS Version": object.osVersion
-    }
+    };
 }
 
 /*

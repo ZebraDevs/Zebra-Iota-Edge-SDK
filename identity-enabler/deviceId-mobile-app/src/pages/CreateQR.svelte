@@ -62,11 +62,6 @@
     }
 
     function goBack() {
-        if ($modalStatus.active) {
-            modalStatus.set({ active: false, type: null });
-            return;
-        }
-
         backwards = true;
         window.history.back();
     }
