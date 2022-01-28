@@ -41,7 +41,7 @@
             await createQR();
         } catch (err) {
             console.error(err);
-            await showAlert("Error", "Error creating DataMatrix. Please try again.");
+            await showAlert("Error", "Error creating QR code. Please try again.");
         }
 
         loadingScreen.set();
