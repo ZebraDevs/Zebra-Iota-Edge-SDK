@@ -2,41 +2,61 @@
     import { onMount } from "svelte";
     import bwipjs from "bwip-js";
     import { ServiceFactory } from "../factories/serviceFactory";
-    import { loadingScreen } from "../lib/store";
+    import { codeImageCache, loadingScreen } from "../lib/store";
     import { showAlert, multiClick, getTimeString, getDateString } from "../lib/ui/helpers";
     import type { IdentityService } from "../services/identityService";
     import CredentialHeader from "../components/CredentialHeader.svelte";
     import { navigate } from "svelte-routing";
     import { CredentialType } from "../models/types/CredentialType";
+    import { wait } from "../lib/helpers";
+    import { get } from "svelte/store";
 
-    let presentationJSON = "";
+    let vp: Record<string, any>;
 
     const credential = window.history.state.credential;
     const expiry = credential.expirationDate ? new Date(credential.expirationDate) : undefined;
     const identityService = ServiceFactory.get<IdentityService>("identity");
 
-    function createMatrix(content) {
-        // The return value is the canvas element
-        bwipjs.toCanvas("presentation", {
+    async function createMatrix() {
+        if (get(codeImageCache)[credential.type[1]]) {
+            // Previously created.
+            return;
+        }
+
+        const canvas = document.createElement("canvas");
+
+        // Frees up the browser to serve the loading screen display
+        // before the heavy toCanvas call.
+        await wait(0);
+
+        bwipjs.toCanvas(canvas, {
             bcid: "datamatrix",
-            text: content,
+            text: JSON.stringify(vp),
             scale: 3,
             padding: 20,
             backgroundcolor: "ffffff"
         });
+
+        codeImageCache.update(cache => {
+            cache[credential.type[1]] = canvas.toDataURL("image/png");
+            return cache;
+        });
     }
 
     onMount(async () => {
+        try {
+            const storedIdentity = await identityService.retrieveIdentity();
+            vp = await identityService.createVerifiablePresentation(storedIdentity, credential);
+        } catch (err) {
+            console.error(err);
+            await showAlert("Error", "Error creating Verifiable Presentation. Please try again.");
+            return;
+        }
+
         loadingScreen.set("Generating DataMatrix...");
 
         try {
-            const storedIdentity = await identityService.retrieveIdentity();
-            const verifiablePresentation = await identityService.createVerifiablePresentation(
-                storedIdentity,
-                credential
-            );
-            presentationJSON = JSON.stringify(verifiablePresentation, null, 2);
-            createMatrix(JSON.stringify(verifiablePresentation));
+            await createMatrix();
         } catch (err) {
             console.error(err);
             await showAlert("Error", "Error creating DataMatrix. Please try again.");
@@ -50,7 +70,7 @@
     }
 
     function showJSON() {
-        navigate("/code", { state: { code: presentationJSON } });
+        navigate("/code", { state: { code: JSON.stringify(vp, null, 2) } });
     }
 </script>
 
@@ -64,7 +84,14 @@
     </header>
 
     <div class="presentation-wrapper">
-        <canvas id="presentation" use:multiClick on:multiClick={showJSON} />
+        {#if vp && $codeImageCache[credential.type[1]]}
+            <img
+                alt="Verifiable presentation"
+                use:multiClick
+                on:multiClick={showJSON}
+                src={$codeImageCache[credential.type[1]]}
+            />
+        {/if}
     </div>
 
     <footer class="footerContainer">
@@ -88,7 +115,7 @@
         background: black;
     }
 
-    canvas {
+    .presentation-wrapper img {
         position: relative;
         width: 100%;
     }

@@ -28,10 +28,14 @@ export const modalStatus = writable<ModalStatus>(modalStatusInitialState());
 
 export const loadingScreen = writable<string | void>();
 
+const codeImageCacheInitialState = () => ({ [CredentialType.DEVICE_ID]: null, claims: null });
+export const codeImageCache = writable<Record<string, string | null>>(codeImageCacheInitialState());
+
 export function resetAllStores() {
     hasSetupAccount.set(hasSetupAccountInitialState());
     credentials.set(credentialsInitialState());
     account.set(accountInitialState());
     modalStatus.set(modalStatusInitialState());
     loadingScreen.set();
+    codeImageCache.set(codeImageCacheInitialState());
 }

@@ -1,4 +1,5 @@
 <script>
+    import { fly } from "svelte/transition";
     import { navigate } from "svelte-routing";
     import { loadingScreen } from "../lib/store";
     import { CredentialType } from "../models/types/CredentialType";
@@ -10,31 +11,43 @@
     const credentialSubject = window.history.state.credentialSubject;
 
     async function createCredential() {
+        const subjectId = credentialSubject.id;
+        const claims = { ...credentialSubject };
+        delete claims.id;
+
+        const identityService = ServiceFactory.get("identity");
+        const storedIdentity = await identityService.retrieveIdentity();
+        return await identityService.createSignedCredential(
+            subjectId,
+            storedIdentity,
+            CredentialType.DEVICE_ID,
+            claims
+        );
+    }
+
+    async function issueCredential() {
         if (navigator.onLine === false) {
             await showAlert("Error", "You need Internet connectivity to create a Device Credential");
             return;
         }
 
         loadingScreen.set("Generating Credential...");
-        const identityService = ServiceFactory.get("identity");
+        let credential;
 
         try {
-            const storedIdentity = await identityService.retrieveIdentity();
-            const subjectId = credentialSubject.id;
-            const claims = { ...credentialSubject };
-            delete claims.id;
-            const credential = await identityService.createSignedCredential(
-                subjectId,
-                storedIdentity,
-                CredentialType.DEVICE_ID,
-                claims
-            );
-            loadingScreen.set();
-            navigate("/createPresentation", { state: { credential } });
+            credential = await createCredential();
         } catch (err) {
-            loadingScreen.set();
-            await showAlert("Error", "Error creating credential. Please try again.");
+            console.error(err);
+            await showAlert("Error", "Error creating credential");
         }
+
+        loadingScreen.set();
+
+        if (!credential) {
+            return;
+        }
+
+        navigate("/createPresentation", { state: { credential } });
     }
 
     function goBack() {
@@ -46,7 +59,7 @@
     }
 </script>
 
-<main>
+<main transition:fly={{ x: 500, duration: 500 }}>
     <div class="header-wrapper">
         <div class="options-wrapper">
             <i on:click={goBack} class="icon-chevron" />
@@ -60,7 +73,7 @@
         <ObjectList entries={flattenClaim(credentialSubject)} />
     </section>
     <footer>
-        <Button label="Issue Device ID credential" onClick={createCredential} />
+        <Button label="Issue Device ID credential" onClick={issueCredential} />
     </footer>
 </main>
 

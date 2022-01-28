@@ -3,7 +3,7 @@
     import { onMount } from "svelte";
     import { navigate } from "svelte-routing";
     import { fly } from "svelte/transition";
-    import { modalStatus, credentials } from "../lib/store";
+    import { modalStatus, credentials, codeImageCache } from "../lib/store";
     import Button from "../components/Button.svelte";
     import ObjectList from "../components/ObjectList.svelte";
     import CredentialHeader from "../components/CredentialHeader.svelte";
@@ -28,6 +28,11 @@
         credentials.update(creds => {
             creds[vp.verifiableCredential.type[1]] = vp;
             return creds;
+        });
+        // We no longer need the claims QR code.
+        codeImageCache.update(cache => {
+            cache.claims = null;
+            return cache;
         });
         navigate("/home");
     }

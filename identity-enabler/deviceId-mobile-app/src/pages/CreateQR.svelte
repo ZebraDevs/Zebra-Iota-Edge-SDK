@@ -7,8 +7,10 @@
     import { ServiceFactory } from "../factories/serviceFactory";
     import Button from "../components/Button.svelte";
     import { showAlert, multiClick } from "../lib/ui/helpers";
-    import { loadingScreen } from "../lib/store";
+    import { codeImageCache, loadingScreen } from "../lib/store";
+    import { get } from "svelte/store";
     import type { IdentityService } from "../services/identityService";
+    import { wait } from "../lib/helpers";
 
     const { Device } = Plugins;
 
@@ -17,46 +19,58 @@
     let credentialSubject;
 
     onMount(async () => {
+        const storedIdentity = await identityService.retrieveIdentity();
+        const { uuid, model, manufacturer, osVersion } = await Device.getInfo();
+        credentialSubject = {
+            id: storedIdentity.doc.id,
+            "@context": ["https://schema.org", "https://smartdatamodels.org/context.jsonld"],
+            type: ["Product", "Device"],
+            identifier: `urn:uuid:${uuid}`,
+            name,
+            model: {
+                type: "DeviceModel",
+                modelName: model,
+                manufacturerName: manufacturer
+            },
+            osVersion
+        };
+
         loadingScreen.set("Generating QR Code...");
 
         try {
-            const storedIdentity = await identityService.retrieveIdentity();
-            const { uuid, model, manufacturer, osVersion } = await Device.getInfo();
-            credentialSubject = {
-                id: storedIdentity.doc.id,
-                "@context": ["https://schema.org", "https://smartdatamodels.org/context.jsonld"],
-                type: ["Product", "Device"],
-                identifier: `urn:uuid:${uuid}`,
-                name,
-                model: {
-                    type: "DeviceModel",
-                    modelName: model,
-                    manufacturerName: manufacturer
-                },
-                osVersion
-            };
-            await createMatrix(JSON.stringify(credentialSubject));
+            await createQR();
         } catch (err) {
             console.error(err);
-            await showAlert("Error", err.message);
+            await showAlert("Error", "Error creating QR code. Please try again.");
         }
 
         loadingScreen.set();
     });
 
-    async function createMatrix(content: string) {
-        try {
-            // The return value is the canvas element
-            bwipjs.toCanvas("device-claims", {
-                bcid: "qrcode",
-                text: content,
-                height: 50,
-                width: 50,
-                backgroundcolor: "ffffff"
-            });
-        } catch (e) {
-            console.error(e);
+    async function createQR() {
+        if (get(codeImageCache).claims) {
+            // Previously created.
+            return;
         }
+
+        const canvas = document.createElement("canvas");
+
+        // Frees up the browser to serve the loading screen display
+        // before the heavy toCanvas call.
+        await wait(0);
+
+        bwipjs.toCanvas(canvas, {
+            bcid: "qrcode",
+            text: JSON.stringify(credentialSubject),
+            height: 50,
+            width: 50,
+            backgroundcolor: "ffffff"
+        });
+
+        codeImageCache.update(cache => {
+            cache.claims = canvas.toDataURL("image/png");
+            return cache;
+        });
     }
 
     function requestCredential() {
@@ -78,7 +92,9 @@
             <p>Share device claims with the Organization ID holder app</p>
         </div>
         <div class="qr-wrapper">
-            <canvas id="device-claims" use:multiClick on:multiClick={showJSON} />
+            {#if $codeImageCache.claims}
+                <img alt="Device claims QR code" use:multiClick on:multiClick={showJSON} src={$codeImageCache.claims} />
+            {/if}
         </div>
         <div class="info">
             <pre>Scan this QR code with the Holder app

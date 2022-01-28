@@ -1,35 +1,54 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import bwipjs from "bwip-js";
-    import { loadingScreen } from "../lib/store";
+    import { codeImageCache, loadingScreen } from "../lib/store";
     import { showAlert, multiClick, getDateString, getTimeString } from "../lib/ui/helpers";
     import CredentialHeader from "../components/CredentialHeader.svelte";
     import { navigate } from "svelte-routing";
+    import { wait } from "../lib/helpers";
+    import { get } from "svelte/store";
 
     const vp = window.history.state.vp;
     const expiry = vp.verifiableCredential.expirationDate
         ? new Date(vp.verifiableCredential.expirationDate)
         : undefined;
 
-    function createMatrix() {
-        // The return value is the canvas element
-        bwipjs.toCanvas("presentation", {
+    async function createMatrix() {
+        if (get(codeImageCache)[vp.verifiableCredential.type[1]]) {
+            // Previously created.
+            return;
+        }
+
+        const canvas = document.createElement("canvas");
+
+        // Frees up the browser to serve the loading screen display
+        // before the heavy toCanvas call.
+        await wait(0);
+
+        bwipjs.toCanvas(canvas, {
             bcid: "datamatrix",
             text: JSON.stringify(vp),
             scale: 3,
             padding: 20,
             backgroundcolor: "ffffff"
         });
+
+        codeImageCache.update(cache => {
+            cache[vp.verifiableCredential.type[1]] = canvas.toDataURL("image/png");
+            return cache;
+        });
     }
 
     onMount(async () => {
         loadingScreen.set("Generating DataMatrix...");
+
         try {
-            createMatrix();
+            await createMatrix();
         } catch (e) {
             console.error(e);
             await showAlert("Error", "Error creating DataMatrix. Please try again.");
         }
+
         loadingScreen.set();
     });
 
@@ -52,7 +71,14 @@
     </header>
 
     <div class="presentation-wrapper">
-        <canvas id="presentation" use:multiClick on:multiClick={showJSON} />
+        {#if $codeImageCache[vp.verifiableCredential.type[1]]}
+            <img
+                alt="Verifiable presentation"
+                use:multiClick
+                on:multiClick={showJSON}
+                src={$codeImageCache[vp.verifiableCredential.type[1]]}
+            />
+        {/if}
     </div>
 
     <footer class="footerContainer">
@@ -73,7 +99,7 @@
         background: black;
     }
 
-    canvas {
+    .presentation-wrapper img {
         position: relative;
         width: 100%;
     }

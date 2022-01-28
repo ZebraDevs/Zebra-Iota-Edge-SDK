@@ -35,6 +35,13 @@ export const landingIndex = writable<number>(landingIndexInitialState());
 
 export const loadingScreen = writable<string | void>();
 
+const codeImageCacheInitialState = () => ({
+    [CredentialType.PERSONAL_INFO]: null,
+    [CredentialType.HEALTH_TEST]: null,
+    [CredentialType.BLOOD_TEST]: null
+});
+export const codeImageCache = writable<Record<string, string | null>>(codeImageCacheInitialState());
+
 export function resetAllStores() {
     hasSetupAccount.set(hasSetupAccountInitialState());
     credentials.set(credentialsInitialState());
@@ -42,4 +49,5 @@ export function resetAllStores() {
     modalStatus.set(modalStatusInitialState());
     landingIndex.set(landingIndexInitialState());
     loadingScreen.set();
+    codeImageCache.set(codeImageCacheInitialState());
 }
