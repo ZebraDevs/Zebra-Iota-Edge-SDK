@@ -35,20 +35,12 @@ export const landingIndex = writable<number>(landingIndexInitialState());
 
 export const loadingScreen = writable<string | void>();
 
-const codeImageCacheInitialState = () => ({});
-export const codeImageCache = writable<Record<string, { dataUrl: string; hits: number }>>(codeImageCacheInitialState());
-codeImageCache.subscribe(cache => {
-    // Apply an LFU eviction policy.
-    const keys = Object.keys(cache);
-    if (keys.length <= 10) {
-        return;
-    }
-
-    keys.sort((a: string, b: string) => cache[a].hits - cache[b].hits);
-
-    delete cache[keys[0]];
-    codeImageCache.set(cache);
+const codeImageCacheInitialState = () => ({
+    [CredentialType.PERSONAL_INFO]: null,
+    [CredentialType.HEALTH_TEST]: null,
+    [CredentialType.BLOOD_TEST]: null
 });
+export const codeImageCache = writable<Record<string, string | null>>(codeImageCacheInitialState());
 
 export function resetAllStores() {
     hasSetupAccount.set(hasSetupAccountInitialState());

@@ -10,6 +10,7 @@
     import { codeImageCache, loadingScreen } from "../lib/store";
     import { get } from "svelte/store";
     import type { IdentityService } from "../services/identityService";
+    import { wait } from "../lib/helpers";
 
     const { Device } = Plugins;
 
@@ -34,24 +35,26 @@
             osVersion
         };
 
-        if (get(codeImageCache).claims) {
-            return codeImageCache.update(cache => {
-                cache.claims.hits++;
-                return cache;
-            });
-        }
-
         try {
-            await createMatrix();
+            await createQR();
         } catch (err) {
             console.error(err);
             await showAlert("Error", "Error creating DataMatrix. Please try again.");
         }
     });
 
-    async function createMatrix() {
+    async function createQR() {
+        if (get(codeImageCache).claims) {
+            // Previously created.
+            return;
+        }
+
         loadingScreen.set("Generating QR Code...");
         const canvas = document.createElement("canvas");
+
+        // Frees up the browser to serve the loading screen display
+        // before the heavy toCanvas call.
+        await wait(0);
 
         bwipjs.toCanvas(canvas, {
             bcid: "qrcode",
@@ -62,10 +65,7 @@
         });
 
         codeImageCache.update(cache => {
-            cache.claims = {
-                dataUrl: canvas.toDataURL("image/png"),
-                hits: 0
-            };
+            cache.claims = canvas.toDataURL("image/png");
             return cache;
         });
 
@@ -92,12 +92,7 @@
         </div>
         <div class="qr-wrapper">
             {#if $codeImageCache.claims}
-                <img
-                    alt="Device claims QR code"
-                    use:multiClick
-                    on:multiClick={showJSON}
-                    src={$codeImageCache.claims.dataUrl}
-                />
+                <img alt="Device claims QR code" use:multiClick on:multiClick={showJSON} src={$codeImageCache.claims} />
             {/if}
         </div>
         <div class="info">

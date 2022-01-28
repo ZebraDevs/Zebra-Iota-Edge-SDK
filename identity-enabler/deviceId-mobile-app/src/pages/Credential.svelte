@@ -31,7 +31,7 @@
         });
         // We no longer need the claims QR code.
         codeImageCache.update(cache => {
-            delete cache.claims;
+            cache.claims = null;
             return cache;
         });
         navigate("/home");

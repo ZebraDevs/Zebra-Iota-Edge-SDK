@@ -18,6 +18,11 @@
     const identityService = ServiceFactory.get<IdentityService>("identity");
 
     async function createMatrix() {
+        if (get(codeImageCache)[credential.type[1]]) {
+            // Previously created.
+            return;
+        }
+
         loadingScreen.set("Generating DataMatrix...");
 
         const canvas = document.createElement("canvas");
@@ -35,10 +40,7 @@
         });
 
         codeImageCache.update(cache => {
-            cache[credential.id] = {
-                dataUrl: canvas.toDataURL("image/png"),
-                hits: 0
-            };
+            cache[credential.type[1]] = canvas.toDataURL("image/png");
             return cache;
         });
 
@@ -53,13 +55,6 @@
             console.error(err);
             await showAlert("Error", "Error creating Verifiable Presentation. Please try again.");
             return;
-        }
-
-        if (get(codeImageCache)[credential.id]) {
-            return codeImageCache.update(cache => {
-                cache[credential.id].hits++;
-                return cache;
-            });
         }
 
         try {
@@ -89,12 +84,12 @@
     </header>
 
     <div class="presentation-wrapper">
-        {#if vp && $codeImageCache[credential.id]}
+        {#if vp && $codeImageCache[credential.type[1]]}
             <img
                 alt="Verifiable presentation"
                 use:multiClick
                 on:multiClick={showJSON}
-                src={$codeImageCache[credential.id].dataUrl}
+                src={$codeImageCache[credential.type[1]]}
             />
         {/if}
     </div>

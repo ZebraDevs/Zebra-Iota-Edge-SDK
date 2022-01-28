@@ -14,6 +14,11 @@
         : undefined;
 
     async function createMatrix() {
+        if (get(codeImageCache)[vp.verifiableCredential.type[1]]) {
+            // Previously created.
+            return;
+        }
+
         loadingScreen.set("Generating DataMatrix...");
 
         const canvas = document.createElement("canvas");
@@ -31,10 +36,7 @@
         });
 
         codeImageCache.update(cache => {
-            cache[vp.verifiableCredential.id] = {
-                dataUrl: canvas.toDataURL("image/png"),
-                hits: 0
-            };
+            cache[vp.verifiableCredential.type[1]] = canvas.toDataURL("image/png");
             return cache;
         });
 
@@ -42,13 +44,6 @@
     }
 
     onMount(async () => {
-        if (get(codeImageCache)[vp.verifiableCredential.id]) {
-            return codeImageCache.update(cache => {
-                cache[vp.verifiableCredential.id].hits++;
-                return cache;
-            });
-        }
-
         try {
             await createMatrix();
         } catch (e) {
@@ -76,12 +71,12 @@
     </header>
 
     <div class="presentation-wrapper">
-        {#if $codeImageCache[vp.verifiableCredential.id]}
+        {#if $codeImageCache[vp.verifiableCredential.type[1]]}
             <img
                 alt="Verifiable presentation"
                 use:multiClick
                 on:multiClick={showJSON}
-                src={$codeImageCache[vp.verifiableCredential.id].dataUrl}
+                src={$codeImageCache[vp.verifiableCredential.type[1]]}
             />
         {/if}
     </div>
