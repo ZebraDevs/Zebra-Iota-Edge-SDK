@@ -17,7 +17,7 @@ Based on its [technical definition](https://www.justaskgemalto.com/en/what-is-di
 The details collected about an identity (for example name, email address, DoB, credit card number, vaccinations taken for personal identities) during the identity creation phase represent what are called the **identity claims**. An identity is associated with zero, one or multiple claims.
 
 <p align="center">
-  <img src="images/image2.png" width="50%" alt="Decentralized Identity Overview"/>
+  <img src="/img/101/image2.png" width="50%" alt="Decentralized Identity Overview"/>
 </p>
 
 Different roles can be distinguished (see figure above):
