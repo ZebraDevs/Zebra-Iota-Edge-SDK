@@ -64,9 +64,9 @@ Afterwards you need to go to the Android Studio and compile, install and execute
 In order to use the credential issuance part of this application (see [DeviceID tutorial](../104/zebra-iota-edge-sdk-104-tutorial.md#onboard-a-device)) you will need to set up a DataWedge profile bound to the `“org.iota.zebra.holder”` application as follows:
 
 <p align="center">
-<img alt="Data Wedge Profile 1" src="images/image3.png" width="30%">
-<img alt="Data Wedge Profile 2" src="images/image10.png" width="30%">
-<img alt="Data Wedge Profile 3" src="images/image1.png" width="30%">
+<img alt="Data Wedge Profile 1" src="images/image3.png" width="30%"/>
+<img alt="Data Wedge Profile 2" src="images/image10.png" width="30%"/>
+<img alt="Data Wedge Profile 3" src="images/image1.png" width="30%"/>
 </p>
 
 Note: On a non DataWedge device you can simulate a DataWedge scanning through the `adb` command line tool as follows:
@@ -82,9 +82,9 @@ Additional information on how Zebra DataWedge can be integrated is found at the 
 Under the first time experience wizard, once you enter a name associated with your new Identity, (last step of the wizard) the application will create a new DID, anchoring it to the IOTA Tangle. The private key that allows control of such an Identity is securely stored on the device.
 
 <p align="center">
-<img alt="Identity Creation 1" src="images/image9.png" width="30%">
-<img alt="Identity Creation 2" src="images/image6.png" width="30%">
-<img alt="Identity Creation 3" src="images/image26.png" width="30%">
+<img alt="Identity Creation 1" src="images/image9.png" width="30%"/>
+<img alt="Identity Creation 2" src="images/image6.png" width="30%"/>
+<img alt="Identity Creation 3" src="images/image26.png" width="30%"/>
 </p>
 
 ### Show me the code
@@ -161,9 +161,9 @@ Note: The user is both the subject and the holder of the identity and credential
 Note: At any point in time you can click on the button on top left of the main page of the application and restart the process of identity and credentials generation.
 
 <p align="center">
-<img alt="Credential Issuance 1" src="images/image24.png" width="30%">
-<img alt="Credential Issuance 2" src="images/image14.png" width="30%">
-<img alt="Credential Issuance 3" src="images/image27.png" width="30%">
+<img alt="Credential Issuance 1" src="images/image24.png" width="30%"/>
+<img alt="Credential Issuance 2" src="images/image14.png" width="30%"/>
+<img alt="Credential Issuance 3" src="images/image27.png" width="30%"/>
 </p>
 
 ### Show me the code
@@ -212,8 +212,8 @@ As a result the verifier can validate not only the credential itself, but also t
 Once a verifiable presentation has been generated it is encoded using a data matrix code. In our example we are using a 6 by 6 data matrix code that can later be scanned by the _Verifier Application_ (see below). If you double tap on the data matrix code you will be able to inspect the JSON-LD content that represents the credential presented.
 
 <p align="center">
-<img alt="Credential Presentation 1" src="images/image15.png" width="30%">
-<img alt="Credential Presentation 2" src="images/image5.png" width="30%">
+<img alt="Credential Presentation 1" src="images/image15.png" width="30%"/>
+<img alt="Credential Presentation 2" src="images/image5.png" width="30%"/>
 </p>
 
 ### Show me the code
