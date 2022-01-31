@@ -78,7 +78,7 @@
         <header>
             <div class="options-wrapper">
                 <i on:click={onClickReset} class="icon-reset" />
-                <i on:click={onClickDev} class="icon-code" />
+                <i on:click|once={onClickDev} class="icon-code" />
             </div>
             <div class="logo"><img src="/img/device.png" alt="logo" /></div>
         </header>

@@ -72,7 +72,7 @@
         <div class="options-wrapper">
             <i on:click={onClickReset} class="icon-reset" />
             <p>SCANNED CREDENTIALS</p>
-            <i on:click={onClickDev} class="icon-code" />
+            <i on:click|once={onClickDev} class="icon-code" />
         </div>
     </header>
     <section>

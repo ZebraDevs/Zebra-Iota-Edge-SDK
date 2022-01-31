@@ -22,7 +22,7 @@
     <header>
         <i on:click|once={() => window.history.back()} class="icon-chevron" />
         <p>Request Device DID credential</p>
-        <i on:click={onClickDev} class="icon-code" />
+        <i on:click|once={onClickDev} class="icon-code" />
     </header>
 
     <section>

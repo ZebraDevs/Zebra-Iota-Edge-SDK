@@ -42,7 +42,7 @@
     <div class="header-wrapper" class:expired>
         <div class="options-wrapper">
             <i on:click={onDelete} class="icon-remove" />
-            <i on:click={onClickDev} class="icon-code" />
+            <i on:click|once={onClickDev} class="icon-code" />
         </div>
         <header>
             <CredentialHeader {credential} />

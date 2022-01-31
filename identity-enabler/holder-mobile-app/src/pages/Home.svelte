@@ -143,7 +143,7 @@
         <header>
             <div class="options-wrapper">
                 <i on:click={onClickReset} class="icon-reset" />
-                <i on:click={onClickDev} class="icon-code" />
+                <i on:click|once={onClickDev} class="icon-code" />
             </div>
             <div class="avatar" />
         </header>
