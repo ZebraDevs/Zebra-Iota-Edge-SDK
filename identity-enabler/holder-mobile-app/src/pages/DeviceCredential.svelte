@@ -8,7 +8,6 @@
     import ObjectList from "../components/ObjectList.svelte";
     import type { IdentityService } from "../services/identityService";
 
-
     const credentialSubject = window.history.state.credentialSubject;
 
     async function createCredential() {
