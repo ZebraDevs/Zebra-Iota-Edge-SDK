@@ -150,25 +150,25 @@
         <name-wrapper>
             <p>{$account.name}</p>
         </name-wrapper>
-        <section>
+        <section on:click|once={e => console.log(e.target)}>
             {#each localCredentials as credential}
-                <div transition:slide class="list">
+                <div transition:slide|local class="list">
                     <ListItem
                         icon="credential"
                         heading={credentialDisplayMap[credential.type[1]]}
-                        onClick={() => viewCredential(credential)}
+                        on:click|once={() => viewCredential(credential)}
                         subheading="Issued by {credential.issuer.name ??
                             shortenDID(credential.issuer.id ?? credential.issuer)}"
                     />
                 </div>
             {/each}
             {#if localCredentials.length < 3}
-                <div transition:slide class="list">
+                <div transition:slide|local class="list">
                     <ListItem
                         icon="add"
                         iconColor="#00a7ff"
                         arrow={false}
-                        onClick={generateCredential}
+                        on:click={generateCredential}
                         heading="Add new credential"
                     />
                 </div>

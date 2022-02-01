@@ -82,11 +82,11 @@
             </div>
         {:else}
             {#each localCredentials as credential}
-                <div transition:slide class="list">
+                <div transition:slide|local class="list">
                     <ListItem
                         icon={isExpired(credential.issuanceDate) ? "cross" : "check"}
                         iconColor="#1e22aa"
-                        onClick={() => onClickCredential(credential)}
+                        on:click|once={() => onClickCredential(credential)}
                         heading={credentialDisplayMap[credential.type[1]]}
                         subheading="Issued by {credential.issuer.name ??
                             shortenDID(credential.issuer.id ?? credential.issuer)}"

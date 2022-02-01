@@ -91,7 +91,7 @@
                     <ListItem
                         icon="chip"
                         heading={credentialDisplayMap[vp.verifiableCredential.type[1]]}
-                        onClick={() => viewCredential(vp)}
+                        on:click|once={() => viewCredential(vp)}
                         subheading="Issued by {vp.verifiableCredential.issuer.name ??
                             shortenDID(vp.verifiableCredential.issuer.id ?? vp.verifiableCredential.issuer)}"
                     />
@@ -102,7 +102,7 @@
                     <ListItem
                         icon="add"
                         iconColor="#78d64b"
-                        onClick={createQR}
+                        on:click|once={createQR}
                         arrow={false}
                         heading="Request Device ID credential"
                     />

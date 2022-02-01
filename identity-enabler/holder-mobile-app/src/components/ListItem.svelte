@@ -1,32 +1,12 @@
 <script type="ts">
-    import { showAlert } from "../lib/ui/helpers";
-
-    export let onClick;
     export let heading: string;
     export let subheading: string | undefined = undefined;
     export let icon: string = "credential";
     export let iconColor: string = "black";
     export let arrow = true;
-
-    let handling = false;
-
-    /**
-     * Disable button while listener is being executed to prevent duplicated events.
-     * @param args The event arguments to pass to the listener.
-     */
-    async function clickHandler(...args) {
-        handling = true;
-        try {
-            await onClick(...args);
-        } catch (e) {
-            console.error(e);
-            await showAlert("Error", e.message);
-        }
-        handling = false;
-    }
 </script>
 
-<li on:click={clickHandler} style={handling ? "pointer-events: none" : ""}>
+<li on:click>
     <i class="icon-{icon}" style="color: {iconColor};" />
     <div class="text-container">
         <div class="overflow-container">
