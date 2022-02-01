@@ -62,7 +62,6 @@
         });
         if (confirmRet.value) {
             resetAllStores();
-            localCredentials = [];
             navigate("/landing");
         }
     }
