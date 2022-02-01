@@ -1,8 +1,8 @@
-<script>
+<script lang="ts">
     import { showAlert } from "../lib/ui/helpers";
     import Spinner from "./Spinner.svelte";
 
-    export let label;
+    export let label: string | undefined = undefined;
     export let onClick;
     export let disabled = false;
     export let loading = false;
@@ -10,15 +10,15 @@
 
     /**
      * Disable button while listener is being executed to prevent duplicated events.
-     * @param args The event arguments to pass to the listener.
+     * @param ev The event to pass to the listener.
      */
-    async function clickHandler(...args) {
+    async function clickHandler(ev: MouseEvent) {
         handling = true;
         try {
-            await onClick(...args);
-        } catch (e) {
-            console.error(e);
-            await showAlert("Error", e.message);
+            await onClick(ev);
+        } catch (err) {
+            console.error(err);
+            await showAlert("Error", err.message);
         }
         handling = false;
     }
@@ -26,6 +26,7 @@
 
 <button
     style={$$props.style}
+    type="button"
     class:disabled={disabled || handling}
     disabled={disabled || handling}
     on:click={clickHandler}

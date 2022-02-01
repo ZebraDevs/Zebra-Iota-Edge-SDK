@@ -6,19 +6,19 @@
     export let onClick;
     export let disabled = false;
     export let loading = false;
-    export let handling = false;
+    let handling = false;
 
     /**
      * Disable button while listener is being executed to prevent duplicated events.
-     * @param args The event arguments to pass to the listener.
+     * @param ev The event to pass to the listener.
      */
-    async function clickHandler(...args) {
+    async function clickHandler(ev: MouseEvent) {
         handling = true;
         try {
-            await onClick(...args);
-        } catch (e) {
-            console.error(e);
-            await showAlert("Error", e.message);
+            await onClick(ev);
+        } catch (err) {
+            console.error(err);
+            await showAlert("Error", err.message);
         }
         handling = false;
     }
