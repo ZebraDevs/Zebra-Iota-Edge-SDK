@@ -2,6 +2,10 @@
     "name": "@zebra-iota-edge-sdk/device-id",
     "version": "0.1.0",
     "license": "MIT",
+    "engines": {
+        "node": ">=14",
+        "npm": ">=7"
+    },
     "exports": {
         "./package.json": "./package.json"
     },
@@ -64,9 +68,6 @@
         "svelte-routing": "^1.6.0",
         "svelte-simple-modal": "^0.10.4",
         "uuid": "^8.3.2",
-        "ws": "^7.5.3"
-    },
-    "resolutions": {
         "ws": "^7.5.3"
     }
 }
