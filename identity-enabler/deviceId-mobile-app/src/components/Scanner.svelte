@@ -83,10 +83,10 @@
             if (videoEl && videoEl.srcObject) {
                 videoEl.pause();
                 const stream = videoEl.srcObject as MediaStream;
-                stream.getTracks().forEach(track => {
+                for (const track of stream.getTracks()) {
                     track.stop();
                     stream.removeTrack(track);
-                });
+                }
                 videoEl.srcObject = null;
             }
         };

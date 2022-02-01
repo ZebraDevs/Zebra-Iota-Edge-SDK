@@ -4,19 +4,19 @@ import { Plugins } from "@capacitor/core";
 const { SecureStoragePlugin } = Plugins;
 
 /**
- * Keychain adapter
+ * Keychain adapter.
  */
 export default {
-    get(key: string): Promise<{ value: string }> {
+    async get(key: string): Promise<{ value: string }> {
         return SecureStoragePlugin.get({ key });
     },
-    set(key: string, value: string): Promise<{ value: boolean }> {
+    async set(key: string, value: string): Promise<{ value: boolean }> {
         return SecureStoragePlugin.set({ key, value });
     },
-    remove(key: string): Promise<{ value: boolean }> {
+    async remove(key: string): Promise<{ value: boolean }> {
         return SecureStoragePlugin.remove({ key });
     },
-    clear(): Promise<{ value: boolean }> {
+    async clear(): Promise<{ value: boolean }> {
         return SecureStoragePlugin.clear();
     }
 };

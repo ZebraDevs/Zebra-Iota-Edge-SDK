@@ -23,7 +23,7 @@
     import CodeBlock from "./pages/CodeBlock.svelte";
     import { CredentialType } from "./models/types/CredentialType";
 
-    let url = window.location.pathname;
+    const url = window.location.pathname;
     let displayHome = false;
 
     /**

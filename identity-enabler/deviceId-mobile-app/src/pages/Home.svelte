@@ -47,7 +47,7 @@
     }
 
     async function onClickReset() {
-        let confirmRet = await Modals.confirm({
+        const confirmRet = await Modals.confirm({
             title: "Reset the app",
             message: "Are you sure you want to reset the app and delete all credentials?"
         });

@@ -6,6 +6,7 @@ export class ServiceFactory {
      * Store the service callbacks.
      */
     private static readonly _services: { [name: string]: () => any } = {};
+
     /**
      * Store the created instances.
      */

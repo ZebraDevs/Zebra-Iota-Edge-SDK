@@ -13,7 +13,7 @@
     const imageSelected = e => {
         const image = e.currentTarget.files[0];
         const fr = new FileReader();
-        fr.onload = async (e: ProgressEvent<FileReader>) => {
+        fr.addEventListener("load", async (e: ProgressEvent<FileReader>) => {
             let result;
             try {
                 result = await reader.decodeFromImageUrl(e.target.result as string);
@@ -24,7 +24,7 @@
             }
 
             await handleScannerData(result.getText(), "File");
-        };
+        });
         fr.readAsDataURL(image);
     };
 
@@ -42,7 +42,7 @@
             Browse
         </label>
     </header>
-    <Scanner on:message={async ev => await handleScannerData(ev.detail, "Camera")} />
+    <Scanner on:message={async ev => handleScannerData(ev.detail, "Camera")} />
 </main>
 
 <style>

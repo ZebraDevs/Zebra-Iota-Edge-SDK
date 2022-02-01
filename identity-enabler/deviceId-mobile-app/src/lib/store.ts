@@ -1,10 +1,10 @@
 import { writable } from "svelte/store";
-import { persistent } from "./helpers";
 import { CredentialType } from "../models/types/CredentialType";
+import { persistent } from "./helpers";
 
 const hasSetupAccountInitialState = () => false;
 /**
- * Determines if use has completed onboarding
+ * Determines if use has completed onboarding.
  */
 export const hasSetupAccount = persistent<boolean>("hasSetupAccount", hasSetupAccountInitialState());
 
@@ -15,7 +15,7 @@ const accountInitialState = () => null;
 export const account = persistent<{ name: string } | null>("account", accountInitialState());
 
 /**
- * Modal status
+ * Modal status.
  */
 export type ModalStatus = {
     active: boolean;

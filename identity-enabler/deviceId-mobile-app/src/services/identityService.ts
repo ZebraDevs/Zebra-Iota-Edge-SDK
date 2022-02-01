@@ -1,8 +1,8 @@
-import Keychain from "../lib/keychain";
-import { parse } from "../lib/helpers";
-import type { Identity, IdentityConfig } from "../models/types/identity";
 import * as IotaIdentity from "@iota/identity-wasm/web";
 import { IDENTITY_WASM_PATH } from "../config";
+import { parse } from "../lib/helpers";
+import Keychain from "../lib/keychain";
+import type { Identity, IdentityConfig } from "../models/types/identity";
 
 const {
     Client,
