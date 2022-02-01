@@ -9,9 +9,9 @@ export async function showAlert(title: string, message: string) {
 
 export async function playAudio(sound: string) {
     const audio = new Audio();
-    audio.onerror = () => {
+    audio.addEventListener("error", () => {
         console.error("Audio Play Error", audio.error);
-    };
+    });
 
     audio.src = `/audio/${sound}.wav`;
 
@@ -75,8 +75,10 @@ export function getTimeString(date: Date): string {
 /**
  * Transforms a credential into an object of key-value entries for display.
  * @param object A VC object.
+ * @returns Credential information as key-value hash.
  */
-export function flattenCredential(object: Record<string, any>): { [key: string]: string } {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function flattenCredential(object: any): { [key: string]: string } {
     if (typeof object !== "object") {
         return {};
     }
@@ -89,7 +91,7 @@ export function flattenCredential(object: Record<string, any>): { [key: string]:
     }
 
     switch (type[1]) {
-        case CredentialType.HEALTH_TEST:
+        case CredentialType.HealthTest:
             return {
                 Subject: credentialSubject.id,
                 "Test Description": credentialSubject.description,
@@ -97,7 +99,7 @@ export function flattenCredential(object: Record<string, any>): { [key: string]:
                 "Result Description": credentialSubject.signDetected.description,
                 "Result Code": `${credentialSubject.signDetected.code.codingSystem}|${credentialSubject.signDetected.code.codeValue}`
             };
-        case CredentialType.BLOOD_TEST:
+        case CredentialType.BloodTest:
             return {
                 Subject: credentialSubject.id,
                 "Test Description": credentialSubject.description,
@@ -105,7 +107,7 @@ export function flattenCredential(object: Record<string, any>): { [key: string]:
                 "Diagnosis Description": credentialSubject.usedToDiagnose.description,
                 "Diagnosis Code": `${credentialSubject.usedToDiagnose.code.codingSystem}|${credentialSubject.usedToDiagnose.code.codeValue}`
             };
-        case CredentialType.PERSONAL_INFO:
+        case CredentialType.PersonalInfo:
             return {
                 Subject: credentialSubject.id,
                 Name: `${credentialSubject.givenName} "${credentialSubject.name}" ${credentialSubject.familyName}`,
@@ -115,7 +117,7 @@ export function flattenCredential(object: Record<string, any>): { [key: string]:
                 Email: credentialSubject.email,
                 Telephone: credentialSubject.telephone
             };
-        case CredentialType.DEVICE_ID:
+        case CredentialType.DeviceID:
             return {
                 Subject: credentialSubject.id,
                 Name: credentialSubject.name,

@@ -15,11 +15,9 @@
 
     const dispatch = createEventDispatcher();
     const SAMPLING_FREQUENCY = 350;
-    const formats = new Map<DecodeHintType, any>().set(DecodeHintType.POSSIBLE_FORMATS, [
-        BarcodeFormat.DATA_MATRIX,
-        BarcodeFormat.QR_CODE
-    ]);
-    const reader = new BrowserMultiFormatReader(formats);
+    const reader = new BrowserMultiFormatReader(
+        new Map().set(DecodeHintType.POSSIBLE_FORMATS, [BarcodeFormat.DATA_MATRIX, BarcodeFormat.QR_CODE])
+    );
     let error: Error | undefined;
     let videoEl: HTMLVideoElement;
     let viewFinderEle: HTMLElement;
@@ -80,7 +78,7 @@
 
         // Unmount function
         return () => {
-            if (videoEl && videoEl.srcObject) {
+            if (videoEl?.srcObject) {
                 videoEl.pause();
                 const stream = videoEl.srcObject as MediaStream;
                 for (const track of stream.getTracks()) {

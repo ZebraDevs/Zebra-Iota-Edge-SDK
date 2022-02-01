@@ -31,7 +31,7 @@
      * @param decodedText The content supplied by DataWedge (Zebra Scanner)
      */
     async function onScan(decodedText: string) {
-        if (navigator.onLine === false) {
+        if (!navigator.onLine) {
             await showAlert("Error", "You need Internet connectivity to verify your credential");
             return;
         }
@@ -55,7 +55,7 @@
     }
 
     onMount(async () => {
-        (window as any).onScan = onScan;
+        window.onScan = onScan;
 
         if (!$hasSetupAccount) {
             return Keychain.clear();

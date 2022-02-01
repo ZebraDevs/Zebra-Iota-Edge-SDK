@@ -1,24 +1,13 @@
 import * as IotaIdentity from "@iota/identity-wasm/web";
 import { IDENTITY_WASM_PATH } from "../config";
-import { parse } from "../lib/helpers";
 import Keychain from "../lib/keychain";
 import type { Identity, IdentityConfig } from "../models/types/identity";
 
-const {
-    Client,
-    Config,
-    Digest,
-    Document,
-    KeyCollection,
-    KeyType,
-    KeyPair,
-    Network,
-    VerificationMethod,
-    VerifiablePresentation
-} = IotaIdentity;
+const { Client, Config, Digest, Document, KeyCollection, KeyType, KeyPair, Network, VerificationMethod } = IotaIdentity;
 
 export class IdentityService {
     private client?: IotaIdentity.Client;
+
     private readonly config: IdentityConfig;
 
     constructor(config: IdentityConfig) {
@@ -26,13 +15,11 @@ export class IdentityService {
     }
 
     /**
-     * Get or create the IOTA Identity client
+     * Get existing or create the IOTA Identity client.
      *
-     * @method getClient
-     *
-     * @returns {IotaIdentity.Client}
+     * @returns The client.
      */
-    getClient(): IotaIdentity.Client {
+    public getClient(): IotaIdentity.Client {
         // Client singleton
         if (!this.client) {
             const cfg = Config.fromNetwork(Network.try_from_name(this.config.network));
@@ -47,13 +34,11 @@ export class IdentityService {
     }
 
     /**
-     * Creates new identity
+     * Creates new identity.
      *
-     * @method createIdentity
-     *
-     * @returns {Promise}
+     * @returns A new identity.
      */
-    async createIdentity(): Promise<Identity> {
+    public async createIdentity(): Promise<Identity> {
         // Initialize the Library - Is cached after first initialization
         await IotaIdentity.init(IDENTITY_WASM_PATH);
         const client = this.getClient();
@@ -86,108 +71,41 @@ export class IdentityService {
     }
 
     /**
-     * Stores identity in keychain
+     * Stores identity in keychain.
      *
-     * @method storeIdentity
-     *
-     * @param {string} identifier
-     * @param {Identity} identity
-     *
-     * @returns {Promise}
+     * @param identifier Key from which to retrieve identity.
+     * @param identity The identity information to store.
+     * @returns Success/failure.
      */
-    storeIdentity(identifier: string, identity: Identity): Promise<{ value: boolean }> {
+    public async storeIdentity(identifier: string, identity: Identity): Promise<{ value: boolean }> {
         return Keychain.set(identifier, JSON.stringify(identity));
     }
 
     /**
-     * Stores identity in keychain
+     * Stores identity in keychain.
      *
-     * @method retrieveIdentity
-     *
-     * @param {string} identifier
-     *
-     * @returns {Promise}
+     * @param identifier Key from which to retrieve identity.
+     * @returns The identity information.
      */
-    retrieveIdentity(identifier = "did"): Promise<Identity> {
-        return Keychain.get(identifier)
-            .then(data => parse(data.value))
-            .catch(() => null);
+    public async retrieveIdentity(identifier = "did"): Promise<Identity> {
+        const result = await Keychain.get(identifier);
+        return JSON.parse(result.value) as Identity;
     }
 
     /**
-     * Clears identity and credentials stored in keychain
-     *
-     * @method clearIdentityAndCredentials
-     *
-     * @returns {Promise}
+     * Clears identity and credentials stored in keychain.
      */
-    async clearIdentityAndCredentials(): Promise<void> {
+    public async clearIdentityAndCredentials(): Promise<void> {
         const { value: success } = await Keychain.clear();
         if (!success) {
             throw new Error("Failed to clear secure storage");
         }
     }
 
-    /**
-     * Creates verifiable presentations for provided schema names
-     *
-     * @method createVerifiablePresentations
-     *
-     * @param {Identity} issuer
-     * @param {SchemaNamesWithCredentials} schemaNamesWithCredentials
-     * @param {string} challengeNonce
-     *
-     * @returns {Promise}
-     */
-    async createVerifiablePresentation(
-        issuer: Identity,
-        signedVc: IotaIdentity.VerifiableCredential
-    ): Promise<IotaIdentity.VerifiablePresentation> {
-        //Initialize the Library - Is cached after first initialization
-        await IotaIdentity.init(IDENTITY_WASM_PATH);
-
-        // Prepare presentation Data
-        const IssuerKeys = KeyCollection.fromJSON(issuer.keys);
-        const IssuerDoc = Document.fromJSON(issuer.doc);
-        const IssuerMethod = VerificationMethod.fromJSON(issuer.method);
-
-        // Create a Verifiable Presentation from the Credential - signed by user's key
-        const unsignedVp = new VerifiablePresentation(IssuerDoc, signedVc);
-
-        const signedVp = IssuerDoc.signPresentation(unsignedVp, {
-            method: IssuerMethod.id.toString(),
-            public: IssuerKeys.public(0),
-            private: IssuerKeys.private(0),
-            proof: IssuerKeys.merkleProof(Digest.Sha256, 0)
-        });
-
-        return signedVp.toJSON();
-    }
-
-    async verifyVerifiablePresentation(presentation: string): Promise<boolean> {
-        //Initialize the Library - Is cached after first initialization
+    public async verifyVerifiablePresentation(presentation: string): Promise<boolean> {
+        // Initialize the Library - Is cached after first initialization
         await IotaIdentity.init(IDENTITY_WASM_PATH);
         const result = await this.getClient().checkPresentation(presentation);
         return Boolean(result?.verified);
-    }
-
-    prepareCredentialForDisplay(credential: any): any {
-        // TODO: deep copy
-        const copy = { ...credential, credentialSubject: { ...credential.credentialSubject } };
-        // TODO: typing
-        if (copy.credentialSubject.DID) {
-            delete copy.credentialSubject.DID;
-        }
-        return copy;
-    }
-    preparePresentationForDisplay(presentation: any): any {
-        // TODO: deep copy
-        const copy = { ...presentation, verifiableCredential: presentation.verifiableCredential };
-
-        // removes DID entry of presentation array
-        copy.verifiableCredential = copy.verifiableCredential.filter(
-            credential => !(Object.keys(credential.credentialSubject).length === 1 && credential.credentialSubject)
-        );
-        return copy;
     }
 }
