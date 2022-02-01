@@ -8,7 +8,7 @@ const hasSetupAccountInitialState = () => false;
  */
 export const hasSetupAccount = persistent<boolean>("hasSetupAccount", hasSetupAccountInitialState());
 
-const credentialsInitialState = () => ({ [CredentialType.DEVICE_ID]: null });
+const credentialsInitialState = () => ({ [CredentialType.DeviceID]: null });
 export const credentials = persistent<Record<string, unknown | null>>("credentials", credentialsInitialState());
 
 const accountInitialState = () => null;
@@ -17,21 +17,21 @@ export const account = persistent<{ name: string } | null>("account", accountIni
 /**
  * Modal status.
  */
-export type ModalStatus = {
+export interface ModalStatus<T = unknown> {
     active: boolean;
     type: "share" | null;
-    props?: any;
-};
+    props?: T;
+}
 
 const modalStatusInitialState = () => ({ active: false, type: null, props: null });
 export const modalStatus = writable<ModalStatus>(modalStatusInitialState());
 
-export const loadingScreen = writable<string | void>();
+export const loadingScreen = writable<string | null>();
 
 export function resetAllStores() {
     hasSetupAccount.set(hasSetupAccountInitialState());
     credentials.set(credentialsInitialState());
     account.set(accountInitialState());
     modalStatus.set(modalStatusInitialState());
-    loadingScreen.set();
+    loadingScreen.set(null);
 }

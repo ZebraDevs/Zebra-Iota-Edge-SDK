@@ -1,7 +1,6 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import Markdown from "../components/Markdown.svelte";
-    import { getMarkdownContent } from "../lib/helpers";
     import { TUTORIAL_URL } from "../config";
     import { loadingScreen } from "../lib/store";
     import { showAlert } from "../lib/ui/helpers";
@@ -12,14 +11,15 @@
     onMount(async () => {
         loadingScreen.set("Loading...");
         try {
-            const tutorialMd: string = await getMarkdownContent(TUTORIAL_URL);
+            const response = await fetch(TUTORIAL_URL);
+            const tutorialMd = await response.text();
             const endOfTitleIdx = tutorialMd.indexOf("\n");
-            title = tutorialMd.substring(2, endOfTitleIdx);
+            title = tutorialMd.slice(2, endOfTitleIdx);
             markdown = tutorialMd.slice(Math.max(0, endOfTitleIdx + 1));
         } catch (err) {
             await showAlert("Error", `Error loading tutorial: ${err.message}`);
         }
-        loadingScreen.set();
+        loadingScreen.set(null);
     });
 </script>
 

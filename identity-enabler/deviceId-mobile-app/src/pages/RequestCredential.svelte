@@ -5,7 +5,7 @@
     import { showAlert } from "../lib/ui/helpers";
 
     async function scan() {
-        if (navigator.onLine === false) {
+        if (!navigator.onLine) {
             await showAlert("Error", "You need Internet connectivity to verify a Device Credential");
             return;
         }

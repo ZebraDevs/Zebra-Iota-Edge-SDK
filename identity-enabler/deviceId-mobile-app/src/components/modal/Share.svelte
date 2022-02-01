@@ -5,7 +5,6 @@
     import Button from "../Button.svelte";
 
     const { close } = getContext("simple-modal");
-    const { Share } = Plugins;
 
     export let vp;
 
@@ -15,7 +14,7 @@
     }
 
     async function shareJSON() {
-        await Share.share({
+        await Plugins.Share.share({
             title: "Verifiable Presentation",
             text: JSON.stringify(vp, null, 2)
         });
