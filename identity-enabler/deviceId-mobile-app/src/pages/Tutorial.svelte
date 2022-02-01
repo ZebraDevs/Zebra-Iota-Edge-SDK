@@ -15,7 +15,7 @@
             const tutorialMd: string = await getMarkdownContent(TUTORIAL_URL);
             const endOfTitleIdx = tutorialMd.indexOf("\n");
             title = tutorialMd.substring(2, endOfTitleIdx);
-            markdown = tutorialMd.substring(endOfTitleIdx + 1);
+            markdown = tutorialMd.slice(Math.max(0, endOfTitleIdx + 1));
         } catch (err) {
             await showAlert("Error", `Error loading tutorial: ${err.message}`);
         }

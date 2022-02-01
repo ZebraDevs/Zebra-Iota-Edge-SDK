@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import { writable, Writable } from "svelte/store";
+import { v4 as uuidv4 } from "uuid";
 
 interface ExtendedProofDocument {
     created: string;
@@ -73,13 +74,13 @@ export function convertByteArrayToHex(bytes: Uint8Array): string {
 export function isVerifiablePresentation(
     payload: VerifiablePresentationDataModel | unknown
 ): payload is VerifiablePresentationDataModel {
-    return !!(payload as VerifiablePresentationDataModel).verifiableCredential?.length;
+    return Boolean((payload as VerifiablePresentationDataModel).verifiableCredential?.length);
 }
 
 export function isVerifiableCredential(
     payload: VerifiableCredentialDataModel | unknown
 ): payload is VerifiableCredentialDataModel {
-    return !!(payload as VerifiableCredentialDataModel).credentialSubject;
+    return Boolean((payload as VerifiableCredentialDataModel).credentialSubject);
 }
 
 /**
@@ -140,7 +141,7 @@ export function generateRandomId(): string {
 export function flattenObj(ob) {
     // The object which contains the
     // final result
-    let result = {};
+    const result = {};
 
     // loop through the object "ob"
     for (const i in ob) {
@@ -151,7 +152,7 @@ export function flattenObj(ob) {
             const temp = flattenObj(ob[i]);
             for (const j in temp) {
                 // Store temp in result
-                result[i + "." + j] = temp[j];
+                result[`${i}.${j}`] = temp[j];
             }
         }
 

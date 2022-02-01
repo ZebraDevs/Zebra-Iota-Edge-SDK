@@ -21,17 +21,19 @@ export async function playAudio(sound: string) {
 /**
  * Shorten a DID for display.
  *
- * @param did DID
+ * @param did DID.
  * @returns Short DID with ellipsis.
  */
 export function shortenDID(did: string): string {
-    return `${did.substring(0, 15)}...${did.substring(did.length - 6)}`;
+    return `${did.slice(0, 15)}...${did.slice(Math.max(0, did.length - 6))}`;
 }
 
 /**
  * Dispatch a custom multiClick event on an element when user clicks element multiple times in succession.
  * @param node The node to which this is attached.
  * @param opts Parameters to configure the multiClick event.
+ * @param opts.numClicks Number of clicks before event is triggered.
+ * @param opts.maxDelay Max delay in milliseconds between clicks to be considered part of the multiClick event.
  */
 export function multiClick(node: HTMLElement, opts?: { numClicks?: number; maxDelay?: number }): void {
     let clicks = 0;
@@ -107,7 +109,7 @@ export function flattenCredential(object: Record<string, any>): { [key: string]:
             return {
                 Subject: credentialSubject.id,
                 Name: `${credentialSubject.givenName} "${credentialSubject.name}" ${credentialSubject.familyName}`,
-                Gender: `${credentialSubject.gender[0].toUpperCase()}${credentialSubject.gender.substring(1)}`,
+                Gender: `${credentialSubject.gender[0].toUpperCase()}${credentialSubject.gender.slice(1)}`,
                 "Birth date": getDateString(new Date(credentialSubject.birthDate)),
                 Address: `${credentialSubject.address.streetAddress}\n${credentialSubject.address.addressLocality}\n${credentialSubject.address.addressRegion} ${credentialSubject.address.postalCode}\n${credentialSubject.address.addressCountry}`,
                 Email: credentialSubject.email,

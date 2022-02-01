@@ -34,7 +34,7 @@
     let background;
     let wrap;
 
-    const camelCaseToDash = str => str.replace(/([a-zA-Z])(?=[A-Z])/g, "$1-").toLowerCase();
+    const camelCaseToDash = str => str.replace(/([A-Za-z])(?=[A-Z])/g, "$1-").toLowerCase();
 
     const toCssString = props =>
         Object.keys(props).reduce((str, key) => `${str}; ${camelCaseToDash(key)}: ${props[key]}`, "");

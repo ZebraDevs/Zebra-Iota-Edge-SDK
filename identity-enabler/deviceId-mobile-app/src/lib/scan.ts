@@ -1,11 +1,11 @@
+import { Plugins } from "@capacitor/core";
 import { navigate } from "svelte-routing";
 import { ServiceFactory } from "../factories/serviceFactory";
+import type { IInvalidCredentialPageState } from "../models/types/IInvalidCredentialPageState";
 import type { IdentityService } from "../services/identityService";
+import { isExpired } from "./helpers";
 import { loadingScreen } from "./store";
 import { playAudio } from "./ui/helpers";
-import { Plugins } from "@capacitor/core";
-import type { IInvalidCredentialPageState } from "../models/types/IInvalidCredentialPageState";
-import { isExpired } from "./helpers";
 
 /**
  * Handles data string captured by Camera, DataWedge or Image selection.

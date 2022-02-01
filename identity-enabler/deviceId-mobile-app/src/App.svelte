@@ -22,7 +22,7 @@
     import Tutorial from "./pages/Tutorial.svelte";
     import CodeBlock from "./pages/CodeBlock.svelte";
 
-    let url = window.location.pathname;
+    const url = window.location.pathname;
     let displayHome = false;
 
     /**
