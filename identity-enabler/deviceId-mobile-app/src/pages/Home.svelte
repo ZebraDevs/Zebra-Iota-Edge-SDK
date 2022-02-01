@@ -67,6 +67,10 @@
             navigate("/landing");
         }
     }
+
+    function viewCredential(vp: unknown) {
+        navigate("/credential", { state: { vp } });
+    }
 </script>
 
 <main>
@@ -74,7 +78,7 @@
         <header>
             <div class="options-wrapper">
                 <i on:click={onClickReset} class="icon-reset" />
-                <i on:click={onClickDev} class="icon-code" />
+                <i on:click|once={onClickDev} class="icon-code" />
             </div>
             <div class="logo"><img src="/img/device.png" alt="logo" /></div>
         </header>
@@ -86,8 +90,8 @@
                 <div class="list">
                     <ListItem
                         icon="chip"
-                        onClick={() => navigate("/credential", { state: { vp } })}
                         heading={credentialDisplayMap[vp.verifiableCredential.type[1]]}
+                        on:click|once={() => viewCredential(vp)}
                         subheading="Issued by {vp.verifiableCredential.issuer.name ??
                             shortenDID(vp.verifiableCredential.issuer.id ?? vp.verifiableCredential.issuer)}"
                     />
@@ -98,7 +102,7 @@
                     <ListItem
                         icon="add"
                         iconColor="#78d64b"
-                        onClick={createQR}
+                        on:click|once={createQR}
                         arrow={false}
                         heading="Request Device ID credential"
                     />

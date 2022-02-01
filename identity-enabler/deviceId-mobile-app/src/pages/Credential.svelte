@@ -49,8 +49,8 @@
 <main transition:fly={{ x: 500, duration: 500 }}>
     <div class="header-wrapper">
         <div class="options-wrapper">
-            <i on:click={goBack} class="icon-chevron" />
-            <i on:click={onClickDev} class="icon-code" />
+            <i on:click|once={() => window.history.back()} class="icon-chevron" />
+            <i on:click|once={onClickDev} class="icon-code" />
         </div>
         <header>
             <CredentialHeader credential={vp.verifiableCredential} />

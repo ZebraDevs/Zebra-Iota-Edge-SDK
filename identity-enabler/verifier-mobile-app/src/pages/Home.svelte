@@ -72,7 +72,7 @@
         <div class="options-wrapper">
             <i on:click={onClickReset} class="icon-reset" />
             <p>SCANNED CREDENTIALS</p>
-            <i on:click={onClickDev} class="icon-code" />
+            <i on:click|once={onClickDev} class="icon-code" />
         </div>
     </header>
     <section>
@@ -82,11 +82,11 @@
             </div>
         {:else}
             {#each localCredentials as credential}
-                <div transition:slide class="list">
+                <div transition:slide|local class="list">
                     <ListItem
                         icon={isExpired(credential.issuanceDate) ? "cross" : "check"}
                         iconColor="#1e22aa"
-                        onClick={() => onClickCredential(credential)}
+                        on:click|once={() => onClickCredential(credential)}
                         heading={credentialDisplayMap[credential.type[1]]}
                         subheading="Issued by {credential.issuer.name ??
                             shortenDID(credential.issuer.id ?? credential.issuer)}"

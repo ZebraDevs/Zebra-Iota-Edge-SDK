@@ -9,23 +9,20 @@
             await showAlert("Error", "You need Internet connectivity to verify a Device Credential");
             return;
         }
+
         navigate("/scan");
     }
 
     function onClickDev() {
         navigate("/tutorial");
     }
-
-    function goBack() {
-        window.history.back();
-    }
 </script>
 
 <main transition:fly={{ x: 500, duration: 500 }}>
     <header>
-        <i on:click={goBack} class="icon-chevron" />
+        <i on:click|once={() => window.history.back()} class="icon-chevron" />
         <p>Request Device DID credential</p>
-        <i on:click={onClickDev} class="icon-code" />
+        <i on:click|once={onClickDev} class="icon-code" />
     </header>
 
     <section>

@@ -28,16 +28,12 @@
         };
         fr.readAsDataURL(image);
     };
-
-    function goBack() {
-        window.history.back();
-    }
 </script>
 
 <main transition:fly={{ y: 200, duration: 500 }}>
     <header>
         <div class="options-wrapper">
-            <i on:click={goBack} class="icon-chevron" />
+            <i on:click|once={() => window.history.back()} class="icon-chevron" />
             <p>Scanner</p>
             <label class="image-select">
                 <input type="file" accept="image/*" on:change={e => imageSelected(e)} />

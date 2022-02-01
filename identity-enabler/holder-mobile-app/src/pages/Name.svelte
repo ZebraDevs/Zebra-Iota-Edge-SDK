@@ -64,12 +64,7 @@
         </div>
     </div>
     <footer>
-        <Button
-            loadingText={"Generating identity"}
-            disabled={name.length === 0 || Boolean($loadingScreen)}
-            label="Next"
-            onClick={save}
-        />
+        <Button loadingText={"Generating identity"} disabled={name.length === 0} label="Next" onClick={save} />
     </footer>
 </main>
 

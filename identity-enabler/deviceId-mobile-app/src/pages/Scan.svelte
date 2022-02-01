@@ -35,7 +35,7 @@
 
 <main transition:fly={{ y: 200, duration: 500 }}>
     <header>
-        <i on:click={goBack} class="icon-chevron" />
+        <i on:click|once={() => window.history.back()} class="icon-chevron" />
         <p>Scanner</p>
         <label class="image-select">
             <input type="file" accept="image/*" on:change={e => imageSelected(e)} />

@@ -37,10 +37,6 @@
         }
     }
 
-    function goBack() {
-        window.history.back();
-    }
-
     function onClickDev() {
         navigate("/tutorial");
     }
@@ -49,8 +45,8 @@
 <main>
     <div class="header-wrapper">
         <div class="options-wrapper">
-            <i on:click={goBack} class="icon-chevron" />
-            <i on:click={onClickDev} class="icon-code" />
+            <i on:click|once={() => window.history.back()} class="icon-chevron" />
+            <i on:click|once={onClickDev} class="icon-code" />
         </div>
         <header>
             <p>Device Claims</p>
