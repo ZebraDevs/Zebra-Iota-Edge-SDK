@@ -30,8 +30,12 @@ jobs:
           node-version: '14'
           cache: 'npm'
           cache-dependency-path: identity-enabler/holder-mobile-app/package-lock.json
-      - run: npm ci
-      - run: npm run build:lint
+      - name: Update NPM
+        run: npm install -g npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Run ESLint
+        run: npm run build:lint
 
   build:
     runs-on: ubuntu-latest
@@ -42,5 +46,9 @@ jobs:
           node-version: '14'
           cache: 'npm'
           cache-dependency-path: identity-enabler/holder-mobile-app/package-lock.json
-      - run: npm ci
-      - run: npm run build
+      - name: Update NPM
+        run: npm install -g npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Build
+        run: npm run build
