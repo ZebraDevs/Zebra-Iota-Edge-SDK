@@ -26,7 +26,6 @@ jobs:
         with:
           node-version: '14'
           cache: 'npm'
-          cache-dependency-path: identity-enabler/verifier-mobile-app/package-lock.json
       - name: Update NPM
         run: npm install -g npm
       - name: Install dependencies
