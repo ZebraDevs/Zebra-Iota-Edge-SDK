@@ -16,6 +16,9 @@ on:
       - 'identity-enabler/holder-mobile-app/**'
       - '!identity-enabler/holder-mobile-app/android/**'
 
+defaults:
+  run:
+    working-directory: identity-enabler/holder-mobile-app
 
 jobs:
   test:
@@ -27,7 +30,6 @@ jobs:
           node-version: '14'
           cache: 'npm'
           cache-dependency-path: identity-enabler/holder-mobile-app/package-lock.json
-      - run: cd identity-enabler/holder-mobile-app
       - run: npm ci
       - run: npm run build:lint
 
@@ -40,6 +42,5 @@ jobs:
           node-version: '14'
           cache: 'npm'
           cache-dependency-path: identity-enabler/holder-mobile-app/package-lock.json
-      - run: cd identity-enabler/holder-mobile-app
       - run: npm ci
       - run: npm run build
