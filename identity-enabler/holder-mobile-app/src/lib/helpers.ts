@@ -99,7 +99,7 @@ export function isVerifiableCredential(
  * @param saveTransformation A transformation to apply prior to every write.
  * @returns A writable Svelte store.
  */
-export function persistent<T>(key: string, initialValue: T, saveTransformation?: (value: T) => T): Writable<T> {
+ export function persistent<T>(key: string, initialValue: T, saveTransformation?: (value: T) => T): Writable<T> {
     let value = initialValue;
 
     try {
