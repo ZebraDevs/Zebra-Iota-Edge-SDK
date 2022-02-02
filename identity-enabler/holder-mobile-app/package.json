@@ -12,6 +12,7 @@
     "scripts": {
         "build": "rollup -c",
         "build:dev": "rollup -c -w",
+        "build:lint": "eslint src",
         "build:format": "prettier ./** --write",
         "start": "sirv public --single",
         "start:dev": "sirv public --single --dev --host --port 5001",
