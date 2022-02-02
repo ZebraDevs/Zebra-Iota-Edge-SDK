@@ -10,7 +10,7 @@
     let rendered = "";
 
     const md = new MarkdownIt({
-        highlight(str, lang) {
+        highlight(str: string, lang: string) {
             lang = language;
 
             if (lang && hljs.getLanguage(lang)) {

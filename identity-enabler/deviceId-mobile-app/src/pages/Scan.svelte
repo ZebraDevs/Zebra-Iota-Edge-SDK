@@ -2,6 +2,7 @@
     import { fly } from "svelte/transition";
     import Scanner from "../components/Scanner.svelte";
     import { BarcodeFormat, BrowserMultiFormatReader, DecodeHintType } from "@zxing/library";
+    import type { Result } from "@zxing/library";
     import { handleScannerData } from "../lib/scan";
     import { navigate } from "svelte-routing";
 
@@ -13,7 +14,7 @@
         const image = e.currentTarget.files[0];
         const fr = new FileReader();
         fr.addEventListener("load", async (e: ProgressEvent<FileReader>) => {
-            let result;
+            let result: Result;
             try {
                 result = await reader.decodeFromImageUrl(e.target.result as string);
             } catch (e) {
