@@ -16,10 +16,6 @@ on:
       - 'identity-enabler/deviceId-mobile-app/**'
       - '!identity-enabler/deviceId-mobile-app/android/**'
 
-defaults:
-  run:
-    working-directory: identity-enabler/deviceId-mobile-app
-
 jobs:
   lint:
     name: Lint
@@ -37,7 +33,6 @@ jobs:
         run: npm install
       - name: Run ESLint
         run: npm run build:lint
-
   test:
     name: Test
     runs-on: ubuntu-latest
@@ -47,7 +42,6 @@ jobs:
         with:
           node-version: '14'
           cache: 'npm'
-          cache-dependency-path: identity-enabler/deviceId-mobile-app/package-lock.json
       - name: Update NPM
         run: npm install -g npm
       - name: Install dependencies
@@ -59,7 +53,6 @@ jobs:
         with:
           name: test-results
           path: identity-enabler/deviceId-mobile-app/junit.xml
-
   build:
     name: Build
     runs-on: ubuntu-latest
@@ -69,7 +62,6 @@ jobs:
         with:
           node-version: '14'
           cache: 'npm'
-          cache-dependency-path: identity-enabler/deviceId-mobile-app/package-lock.json
       - name: Update NPM
         run: npm install -g npm
       - name: Install dependencies
