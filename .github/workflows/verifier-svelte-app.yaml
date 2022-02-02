@@ -39,6 +39,7 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
+    needs: test
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
@@ -52,3 +53,8 @@ jobs:
         run: npm ci
       - name: Build
         run: npm run build
+      - name: Upload built app
+        uses: actions/upload-artifact@v2
+        with:
+          name: verifier-dist
+          path: identity-enabler/verifier-mobile-app/public
