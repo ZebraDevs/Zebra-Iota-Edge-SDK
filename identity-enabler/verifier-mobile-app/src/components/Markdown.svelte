@@ -10,13 +10,13 @@
     let rendered = "";
 
     const md = new MarkdownIt({
-        highlight: function (str, lang) {
+        highlight(str: string, lang: string) {
             lang = language;
 
             if (lang && hljs.getLanguage(lang)) {
                 try {
                     return hljs.highlight(str, { language: lang }).value;
-                } catch (e) {
+                } catch {
                     // eslint-disable-next-line no-console
                     console.error("Failed to highlight string");
                 }

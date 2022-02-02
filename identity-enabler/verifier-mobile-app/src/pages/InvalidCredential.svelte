@@ -11,7 +11,7 @@
 
     onMount(() => {
         // We wait a little bit in order not to overlap the different aural feedback
-        setTimeout(async () => await playAudio("invalid"), PLAY_DELAY);
+        setTimeout(async () => playAudio("invalid"), PLAY_DELAY);
     });
 
     function onDone() {
@@ -28,7 +28,7 @@
         {/if}
     </section>
     <footer>
-        <Button label="Done" onClick={() => navigate("/home")} />
+        <Button label="Done" onClick={onDone} />
     </footer>
 </main>
 

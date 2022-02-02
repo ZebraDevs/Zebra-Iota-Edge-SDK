@@ -3,20 +3,20 @@ import { CredentialType } from "../models/types/CredentialType";
 import { persistent } from "./helpers";
 
 const credentialsInitialState = () => ({
-    [CredentialType.PERSONAL_INFO]: null,
-    [CredentialType.HEALTH_TEST]: null,
-    [CredentialType.BLOOD_TEST]: null,
-    [CredentialType.DEVICE_ID]: null
+    [CredentialType.PersonalInfo]: null,
+    [CredentialType.HealthTest]: null,
+    [CredentialType.BloodTest]: null,
+    [CredentialType.DeviceID]: null
 });
 export const credentials = persistent<Record<string, unknown | null>>("credentials", credentialsInitialState());
 
-export const loadingScreen = writable<string | void>();
+export const loadingScreen = writable<string | undefined>();
 
 const firstLaunchInitialState = () => true;
 export const firstLaunch = persistent<boolean>("firstLaunch", firstLaunchInitialState());
 
 export function resetAllStores() {
     credentials.set(credentialsInitialState());
-    loadingScreen.set();
+    loadingScreen.set(undefined);
     firstLaunch.set(firstLaunchInitialState());
 }
