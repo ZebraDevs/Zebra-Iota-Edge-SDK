@@ -1,5 +1,4 @@
-name: Holder Svelte App
-description: Test and build the Holder Svelte app
+name: Build & Test Holder Svelte App
 
 on:
   push:
