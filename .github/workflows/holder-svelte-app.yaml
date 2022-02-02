@@ -1,4 +1,4 @@
-name: Test & build Holder Svelte app
+name: Holder Svelte app
 
 on:
   push:
@@ -22,6 +22,7 @@ defaults:
 
 jobs:
   test:
+    name: Test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -38,6 +39,7 @@ jobs:
         run: npm run build:lint
 
   build:
+    name: Build
     runs-on: ubuntu-latest
     needs: test
     steps:
