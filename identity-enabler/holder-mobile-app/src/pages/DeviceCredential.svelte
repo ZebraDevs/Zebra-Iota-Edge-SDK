@@ -11,7 +11,7 @@
     const credentialSubject = window.history.state.credentialSubject;
 
     async function createCredential() {
-        if (navigator.onLine === false) {
+        if (!navigator.onLine) {
             await showAlert("Error", "You need Internet connectivity to create a Device Credential");
             return;
         }
@@ -27,13 +27,14 @@
             const credential = await identityService.createSignedCredential(
                 subjectId,
                 storedIdentity,
-                CredentialType.DEVICE_ID,
+                CredentialType.DeviceID,
                 claims
             );
-            loadingScreen.set();
-            navigate("/createPresentation", { state: { credential } });
+            loadingScreen.set(undefined);
+            navigate("/createPresentation", { state: { credential: credential.toJSON() } });
         } catch (err) {
-            loadingScreen.set();
+            console.error(err);
+            loadingScreen.set(undefined);
             await showAlert("Error", "Error creating credential. Please try again.");
         }
     }

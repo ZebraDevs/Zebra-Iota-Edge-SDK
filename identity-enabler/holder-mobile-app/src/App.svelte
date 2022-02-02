@@ -21,7 +21,7 @@
     import Tutorial from "./pages/Tutorial.svelte";
     import CodeBlock from "./pages/CodeBlock.svelte";
 
-    let url = window.location.pathname;
+    const url = window.location.pathname;
     let displayHome = false;
 
     /**
@@ -30,7 +30,7 @@
      * @param decodedText The content supplied by DataWedge (Zebra Scanner)
      */
     async function onScan(decodedText: string) {
-        if (navigator.onLine === false) {
+        if (!navigator.onLine) {
             await showAlert("Error", "You need Internet connectivity to issue a credential");
             return;
         }
@@ -49,7 +49,7 @@
     }
 
     onMount(async () => {
-        (window as any).onScan = onScan;
+        window.onScan = onScan;
 
         if (!$hasSetupAccount) {
             return Keychain.clear();
