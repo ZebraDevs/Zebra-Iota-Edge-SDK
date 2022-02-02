@@ -23,7 +23,7 @@
                 navigate("/invalid", { state: { message: "Failed to decode image", detail: e.message } });
                 return;
             }
-    
+
             await handleScannerData(result.getText(), "File");
         });
         fr.readAsDataURL(image);
