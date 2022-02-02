@@ -1,4 +1,4 @@
-name: Build & Test Device ID Svelte App
+name: Test & build Device ID Svelte app
 
 on:
   push:

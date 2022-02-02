@@ -1,4 +1,4 @@
-name: Build & Test Verifier Svelte App
+name: Test & build Verifier Svelte app
 
 on:
   push:
