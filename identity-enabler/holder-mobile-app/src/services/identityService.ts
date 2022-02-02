@@ -1,11 +1,11 @@
-import Keychain from "../lib/keychain";
-import { generateRandomNumericString, parse } from "../lib/helpers";
-import { account } from "../lib/store";
-import type { Identity, IdentityConfig } from "../models/types/identity";
 import * as IotaIdentity from "@iota/identity-wasm/web";
-import { CREDENTIAL_EXPIRY_DAYS, IDENTITY_WASM_PATH } from "../config";
 import { get } from "svelte/store";
+import { CREDENTIAL_EXPIRY_DAYS, IDENTITY_WASM_PATH } from "../config";
+import { generateRandomNumericString } from "../lib/helpers";
+import Keychain from "../lib/keychain";
+import { account } from "../lib/store";
 import type { CredentialType } from "../models/types/CredentialType";
+import type { Identity, IdentityConfig } from "../models/types/identity";
 
 const {
     Client,
@@ -23,6 +23,7 @@ const {
 
 export class IdentityService {
     private client?: IotaIdentity.Client;
+
     private readonly config: IdentityConfig;
 
     constructor(config: IdentityConfig) {
@@ -30,13 +31,11 @@ export class IdentityService {
     }
 
     /**
-     * Get or create the IOTA Identity client
+     * Get existing or create the IOTA Identity client.
      *
-     * @method getClient
-     *
-     * @returns {IotaIdentity.Client}
+     * @returns The client.
      */
-    getClient(): IotaIdentity.Client {
+     public getClient(): IotaIdentity.Client {
         // Client singleton
         if (!this.client) {
             const cfg = Config.fromNetwork(Network.try_from_name(this.config.network));
@@ -51,13 +50,11 @@ export class IdentityService {
     }
 
     /**
-     * Creates new identity
+     * Creates new identity.
      *
-     * @method createIdentity
-     *
-     * @returns {Promise}
+     * @returns A new identity.
      */
-    async createIdentity(): Promise<Identity> {
+     public async createIdentity(): Promise<Identity> {
         // Initialize the Library - Is cached after first initialization
         await IotaIdentity.init(IDENTITY_WASM_PATH);
         const client = this.getClient();
@@ -90,42 +87,31 @@ export class IdentityService {
     }
 
     /**
-     * Stores identity in keychain
+     * Stores identity in keychain.
      *
-     * @method storeIdentity
-     *
-     * @param {string} identifier
-     * @param {Identity} identity
-     *
-     * @returns {Promise}
+     * @param identifier Key from which to retrieve identity.
+     * @param identity The identity information to store.
+     * @returns Success/failure.
      */
-    storeIdentity(identifier: string, identity: Identity): Promise<{ value: boolean }> {
+     public async storeIdentity(identifier: string, identity: Identity): Promise<{ value: boolean }> {
         return Keychain.set(identifier, JSON.stringify(identity));
     }
 
     /**
-     * Stores identity in keychain
+     * Stores identity in keychain.
      *
-     * @method retrieveIdentity
-     *
-     * @param {string} identifier
-     *
-     * @returns {Promise}
+     * @param identifier Key from which to retrieve identity.
+     * @returns The identity information.
      */
-    retrieveIdentity(identifier = "did"): Promise<Identity> {
-        return Keychain.get(identifier)
-            .then(data => parse(data.value))
-            .catch(() => null);
+     public async retrieveIdentity(identifier = "did"): Promise<Identity> {
+        const result = await Keychain.get(identifier);
+        return JSON.parse(result.value) as Identity;
     }
 
     /**
-     * Clears identity and credentials stored in keychain
-     *
-     * @method clearIdentityAndCredentials
-     *
-     * @returns {Promise}
+     * Clears identity and credentials stored in keychain.
      */
-    async clearIdentityAndCredentials(): Promise<void> {
+     public async clearIdentityAndCredentials(): Promise<void> {
         const { value: success } = await Keychain.clear();
         if (!success) {
             throw new Error("Failed to clear secure storage");
@@ -133,31 +119,28 @@ export class IdentityService {
     }
 
     /**
-     * Creates a signed credential
+     * Creates a signed credential.
      *
-     * @method createSignedCredential
-     *
-     * @param {string} subjectId
-     * @param {Identity} issuer
-     * @param {CredentialType} credentialType
-     * @param {any} data
-     *
-     * @returns {Promise}
+     * @param subjectId DID of the subject.
+     * @param issuer Issuer identity information.
+     * @param credentialType The type of credential.
+     * @param data The claims to add to the credentialSubject.
+     * @returns The new Verifiable Credential.
      */
-    async createSignedCredential(
+    public async createSignedCredential(
         subjectId: string,
         issuer: Identity,
         credentialType: CredentialType,
-        data: any
+        data: Record<string, unknown>
     ): Promise<IotaIdentity.VerifiableCredential> {
         // Initialize the Library - Is cached after first initialization
         await IotaIdentity.init(IDENTITY_WASM_PATH);
 
         // Prepare credential Data
-        const IssuerDidDoc = Document.fromJSON(JSON.parse(issuer.didDoc));
-        const IssuerKeys = KeyCollection.fromJSON(issuer.keys);
-        const IssuerDoc = Document.fromJSON(issuer.doc);
-        const IssuerMethod = VerificationMethod.fromJSON(issuer.method);
+        const issuerDidDoc = Document.fromJSON(JSON.parse(issuer.didDoc));
+        const issuerKeys = KeyCollection.fromJSON(issuer.keys);
+        const issuerDoc = Document.fromJSON(issuer.doc);
+        const issuerMethod = VerificationMethod.fromJSON(issuer.method);
 
         // Prepare a credential subject
         const credentialSubject = {
@@ -173,7 +156,7 @@ export class IdentityService {
             id: `http://example.org/zebra-iota-sdk/${generateRandomNumericString(4)}`,
             type: credentialType,
             issuer: {
-                id: IssuerDidDoc.id.toString(),
+                id: issuerDidDoc.id.toString(),
                 name: get(account).name
             },
             credentialSubject,
@@ -181,11 +164,11 @@ export class IdentityService {
         });
 
         // Sign the credential with User's Merkle Key Collection method
-        const signedVc = IssuerDoc.signCredential(unsignedVc, {
-            method: IssuerMethod.id.toString(),
-            public: IssuerKeys.public(0),
-            private: IssuerKeys.private(0),
-            proof: IssuerKeys.merkleProof(Digest.Sha256, 0)
+        const signedVc = issuerDoc.signCredential(unsignedVc, {
+            method: issuerMethod.id.toString(),
+            public: issuerKeys.public(0),
+            private: issuerKeys.private(0),
+            proof: issuerKeys.merkleProof(Digest.Sha256, 0)
         });
 
         // Ensure the credential signature is valid
@@ -194,46 +177,42 @@ export class IdentityService {
         // Check the validation status of the Verifiable Credential
         const validation = await this.getClient().checkCredential(JSON.stringify(svcJson));
 
-        if (validation.verified && IssuerDoc.verifyData(signedVc)) {
-            return signedVc.toJSON();
-        } else {
-            return null;
+        if (!validation.verified || !issuerDoc.verifyData(signedVc)) {
+            throw new Error("Created credential was not valid.");
         }
+
+        return signedVc;
     }
 
     /**
-     * Creates verifiable presentations for provided schema names
+     * Creates verifiable presentation from a VC.
      *
-     * @method createVerifiablePresentations
-     *
-     * @param {Identity} issuer
-     * @param {SchemaNamesWithCredentials} schemaNamesWithCredentials
-     * @param {string} challengeNonce
-     *
-     * @returns {Promise}
+     * @param issuer Issuer identity information.
+     * @param signedVc The signed VC to encapsulate in a VP.
+     * @returns The Verifiable Presentation.
      */
-    async createVerifiablePresentation(
+    public async createVerifiablePresentation(
         issuer: Identity,
         signedVc: IotaIdentity.VerifiableCredential
     ): Promise<IotaIdentity.VerifiablePresentation> {
-        //Initialize the Library - Is cached after first initialization
+        // Initialize the Library - Is cached after first initialization
         await IotaIdentity.init(IDENTITY_WASM_PATH);
 
         // Prepare presentation Data
-        const IssuerKeys = KeyCollection.fromJSON(issuer.keys);
-        const IssuerDoc = Document.fromJSON(issuer.doc);
-        const IssuerMethod = VerificationMethod.fromJSON(issuer.method);
+        const issuerKeys = KeyCollection.fromJSON(issuer.keys);
+        const issuerDoc = Document.fromJSON(issuer.doc);
+        const issuerMethod = VerificationMethod.fromJSON(issuer.method);
 
         // Create a Verifiable Presentation from the Credential - signed by user's key
-        const unsignedVp = new VerifiablePresentation(IssuerDoc, signedVc);
+        const unsignedVp = new VerifiablePresentation(issuerDoc, signedVc);
 
-        const signedVp = IssuerDoc.signPresentation(unsignedVp, {
-            method: IssuerMethod.id.toString(),
-            public: IssuerKeys.public(0),
-            private: IssuerKeys.private(0),
-            proof: IssuerKeys.merkleProof(Digest.Sha256, 0)
+        const signedVp = issuerDoc.signPresentation(unsignedVp, {
+            method: issuerMethod.id.toString(),
+            public: issuerKeys.public(0),
+            private: issuerKeys.private(0),
+            proof: issuerKeys.merkleProof(Digest.Sha256, 0)
         });
 
-        return signedVp.toJSON();
+        return signedVp;
     }
 }

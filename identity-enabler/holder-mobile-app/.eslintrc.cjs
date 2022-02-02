@@ -85,7 +85,7 @@ module.exports = {
                 "jsdoc/require-file-overview": 0,
                 "jsdoc/require-hyphen-before-param-description": 0,
                 "jsdoc/require-jsdoc": [
-                    "error",
+                    "off",
                     {
                         publicOnly: true,
                         require: {
@@ -190,6 +190,11 @@ module.exports = {
                 modifiers: ["static", "private"],
                 leadingUnderscore: "require",
                 format: ["camelCase", "UPPER_CASE"]
+            },
+            {
+                selector: "variable",
+                modifiers: ["destructured"],
+                format: null
             }
         ],
         "@typescript-eslint/no-array-constructor": ["error"],
@@ -373,7 +378,7 @@ module.exports = {
         "no-compare-neg-zero": ["error"],
         "no-cond-assign": ["error"],
         "no-confusing-arrow": ["error"],
-        "no-console": ["error"],
+        "no-console": ["off"],
         "no-const-assign": ["off"],
         "no-constant-condition": ["error"],
         "no-constructor-return": ["error"],

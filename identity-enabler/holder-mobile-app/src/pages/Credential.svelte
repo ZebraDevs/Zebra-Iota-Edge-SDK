@@ -13,7 +13,7 @@
     const credential = window.history.state.credential;
 
     async function share() {
-        if (navigator.onLine === false) {
+        if (!navigator.onLine) {
             await showAlert("Error", "You need Internet connectivity to share a Credential");
             return;
         }

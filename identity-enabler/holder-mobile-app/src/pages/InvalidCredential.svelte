@@ -15,7 +15,7 @@
         if (delay < 0) {
             await playAudio("invalid");
         } else {
-            setTimeout(async () => await playAudio("invalid"), delay);
+            setTimeout(async () => playAudio("invalid"), delay);
         }
     });
 

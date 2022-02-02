@@ -9,8 +9,9 @@
         if (status.active) {
             switch (status.type) {
                 case "share":
-                    open(Share, { ...status.props });
+                    open(Share, { ...(status.props as { credential: unknown }) });
                     break;
+                default:
             }
         }
     });

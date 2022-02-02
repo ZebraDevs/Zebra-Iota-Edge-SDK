@@ -94,7 +94,7 @@
         mounted = true;
 
         if (window.matchMedia("(pointer: coarse)").matches) {
-            const hammer = new Hammer(document.getElementById("wrapper"));
+            const hammer = new Hammer(document.querySelector("#wrapper"));
             hammer.get("swipe").set({ direction: Hammer.DIRECTION_HORIZONTAL });
             hammer.on("swipeleft", () => nextLanding());
             hammer.on("swiperight", () => prevLanding());
