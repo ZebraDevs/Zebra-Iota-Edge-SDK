@@ -1,7 +1,6 @@
 <script lang="ts">
     import { navigate } from "svelte-routing";
     import { fly } from "svelte/transition";
-    import { __ANDROID__ } from "../lib/platforms";
     import Scanner from "../components/Scanner.svelte";
     import { BarcodeFormat, BrowserMultiFormatReader, DecodeHintType } from "@zxing/library";
     import { handleScannerData } from "../lib/scan";
@@ -15,7 +14,7 @@
         const image = e.currentTarget.files[0];
 
         const fr = new FileReader();
-        fr.onload = async (e: ProgressEvent<FileReader>) => {
+        fr.addEventListener("load", async (e: ProgressEvent<FileReader>) => {
             let result;
             try {
                 result = await reader.decodeFromImageUrl(e.target.result as string);
@@ -26,7 +25,7 @@
             }
 
             await handleScannerData(result.getText());
-        };
+        });
         fr.readAsDataURL(image);
     };
 
@@ -44,7 +43,7 @@
 <main transition:fly={{ y: 200, duration: 500 }}>
     <header>
         <div class="options-wrapper">
-            <i on:click={() => history.back()} class="icon-chevron" />
+            <i on:click={goBack} class="icon-chevron" />
             <p>Scanner</p>
             <label class="image-select">
                 <input type="file" accept="image/*" on:change={imageSelected} />
