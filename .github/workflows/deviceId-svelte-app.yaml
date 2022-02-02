@@ -58,5 +58,5 @@ jobs:
       - name: Upload built app
         uses: actions/upload-artifact@v2
         with:
-          name: deviceId-dist
+          name: public
           path: identity-enabler/deviceId-mobile-app/public
