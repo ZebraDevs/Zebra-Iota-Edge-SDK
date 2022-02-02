@@ -10,7 +10,6 @@
     import type { IdentityService } from "../services/identityService";
     import { __WEB__ } from "$lib/platforms";
 
-
     let name = "";
     let background;
 

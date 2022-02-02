@@ -99,7 +99,7 @@ export function isVerifiableCredential(
  * @param saveTransformation A transformation to apply prior to every write.
  * @returns A writable Svelte store.
  */
- export function persistent<T>(key: string, initialValue: T, saveTransformation?: (value: T) => T): Writable<T> {
+export function persistent<T>(key: string, initialValue: T, saveTransformation?: (value: T) => T): Writable<T> {
     let value = initialValue;
 
     try {
@@ -150,7 +150,7 @@ export function flattenObj(ob) {
  * @param milliseconds Milliseconds to wait.
  * @returns Promise that resolves after the wait duration.
  */
- export async function wait(milliseconds: number): Promise<void> {
+export async function wait(milliseconds: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, milliseconds));
 }
 

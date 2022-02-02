@@ -35,7 +35,7 @@ export class IdentityService {
      *
      * @returns The client.
      */
-     public getClient(): IotaIdentity.Client {
+    public getClient(): IotaIdentity.Client {
         // Client singleton
         if (!this.client) {
             const cfg = Config.fromNetwork(Network.try_from_name(this.config.network));
@@ -54,7 +54,7 @@ export class IdentityService {
      *
      * @returns A new identity.
      */
-     public async createIdentity(): Promise<Identity> {
+    public async createIdentity(): Promise<Identity> {
         // Initialize the Library - Is cached after first initialization
         await IotaIdentity.init(IDENTITY_WASM_PATH);
         const client = this.getClient();
@@ -93,7 +93,7 @@ export class IdentityService {
      * @param identity The identity information to store.
      * @returns Success/failure.
      */
-     public async storeIdentity(identifier: string, identity: Identity): Promise<{ value: boolean }> {
+    public async storeIdentity(identifier: string, identity: Identity): Promise<{ value: boolean }> {
         return Keychain.set(identifier, JSON.stringify(identity));
     }
 
@@ -103,7 +103,7 @@ export class IdentityService {
      * @param identifier Key from which to retrieve identity.
      * @returns The identity information.
      */
-     public async retrieveIdentity(identifier = "did"): Promise<Identity> {
+    public async retrieveIdentity(identifier = "did"): Promise<Identity> {
         const result = await Keychain.get(identifier);
         return JSON.parse(result.value) as Identity;
     }
@@ -111,7 +111,7 @@ export class IdentityService {
     /**
      * Clears identity and credentials stored in keychain.
      */
-     public async clearIdentityAndCredentials(): Promise<void> {
+    public async clearIdentityAndCredentials(): Promise<void> {
         const { value: success } = await Keychain.clear();
         if (!success) {
             throw new Error("Failed to clear secure storage");

@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { Capacitor } from "@capacitor/core";
 
-
 /** Platform (web, ios, android). */
 export const platform = Capacitor.getPlatform();
 
