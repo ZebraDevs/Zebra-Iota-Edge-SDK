@@ -10,5 +10,5 @@ const config: IdentityConfig = {
 };
 
 export default () => {
-    ServiceFactory.register("identity", () => new IdentityService(config));
+    ServiceFactory.register<IdentityService>("identity", () => new IdentityService(config));
 };

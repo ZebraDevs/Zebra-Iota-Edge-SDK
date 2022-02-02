@@ -17,7 +17,7 @@ export class ServiceFactory {
      * @param name The name of the service.
      * @param instanceCallback The callback to create an instance.
      */
-    public static register(name: string, instanceCallback: () => unknown): void {
+    public static register<T>(name: string, instanceCallback: () => T): void {
         this._services[name] = instanceCallback;
         if (this._instances[name]) {
             delete this._instances[name];
