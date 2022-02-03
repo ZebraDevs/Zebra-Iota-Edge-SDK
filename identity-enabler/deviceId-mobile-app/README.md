@@ -15,7 +15,7 @@ This is a project template for [Svelte](https://svelte.dev) + [CapacitorJS](http
 Install the dependencies...
 
 ```sh
-npm ci
+npm install
 ```
 
 ### Run local dev server (no capacitor)
