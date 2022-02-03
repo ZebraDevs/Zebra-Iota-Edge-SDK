@@ -5,3 +5,5 @@ public
 # Capacitor config
 capacitor.config.json
 android/app/src/main/assets/capacitor.config.json
+
+/coverage
