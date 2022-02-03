@@ -37,6 +37,8 @@ jobs:
         run: npm ci
       - name: Run ESLint
         run: npm run build:lint
+      - name: Run Jest
+        run: npm run test
 
   build:
     name: Build
