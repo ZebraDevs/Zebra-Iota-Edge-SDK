@@ -1,3 +1,6 @@
+import type { IBloodCredential } from "src/models/types/IBloodCredential";
+import type { IHealthCredential } from "src/models/types/IHealthCredential";
+import type { IPersonalCredential } from "src/models/types/IPersonalCredential";
 import { get } from "svelte/store";
 import { getRandomUserData } from "./helpers";
 import { account } from "./store";
@@ -8,7 +11,7 @@ import { account } from "./store";
  * to fit in a DataMatrix.
  * @returns The `BloodTest`.
  */
-export function generateBloodCredential() {
+export function generateBloodCredential(): IBloodCredential {
     return {
         "@context": "https://schema.org",
         type: "BloodTest",
@@ -36,7 +39,7 @@ export function generateBloodCredential() {
  * to fit in a DataMatrix.
  * @returns The `Person`.
  */
-export async function generatePersonalCredential() {
+export async function generatePersonalCredential(): Promise<IPersonalCredential> {
     const { location, name, email, phone, gender, dob } = await getRandomUserData();
     return {
         "@context": "https://schema.org",
@@ -65,7 +68,7 @@ export async function generatePersonalCredential() {
  * to fit in a DataMatrix.
  * @returns The `MedicalTest`.
  */
-export function generateHealthCredential() {
+export function generateHealthCredential(): IHealthCredential {
     return {
         "@context": "https://schema.org",
         type: "MedicalTest",

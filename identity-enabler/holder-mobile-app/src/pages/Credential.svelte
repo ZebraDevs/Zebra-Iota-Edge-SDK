@@ -8,9 +8,10 @@
     import { Plugins } from "@capacitor/core";
     import CredentialHeader from "../components/CredentialHeader.svelte";
     import { navigate } from "svelte-routing";
+    import type { IVerifiableCredential } from "src/models/types/IVerifiableCredential";
 
     const { App } = Plugins;
-    const credential = window.history.state.credential;
+    const credential: IVerifiableCredential = window.history.state.credential;
 
     async function share() {
         if (navigator.onLine === false) {

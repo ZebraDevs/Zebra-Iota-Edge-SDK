@@ -1,5 +1,6 @@
 import { navigate } from "svelte-routing";
 import type { IInvalidCredentialPageState } from "../models/types/IInvalidCredentialPageState";
+import { isCredentialSubject } from "./helpers";
 import { loadingScreen } from "./store";
 import { playAudio } from "./ui/helpers";
 
@@ -23,7 +24,7 @@ export async function handleScannerData(decodedText: string, method: "Camera" | 
         scanSoundStart = Date.now();
     }
 
-    let credentialSubject;
+    let credentialSubject: unknown;
 
     try {
         credentialSubject = JSON.parse(decodedText);
@@ -33,13 +34,13 @@ export async function handleScannerData(decodedText: string, method: "Camera" | 
         return;
     }
 
-    if (typeof credentialSubject !== "object") {
-        handleInvalid({ message: "No data", scanSoundStart });
+    if (!isCredentialSubject(credentialSubject)) {
+        handleInvalid({ message: "Invalid claims", scanSoundStart });
         return;
     }
 
-    if (typeof credentialSubject.id !== "string" || !credentialSubject.id.startsWith("did:iota:")) {
-        handleInvalid({ message: "Missing subject ID", scanSoundStart });
+    if (!credentialSubject.id.startsWith("did:iota:")) {
+        handleInvalid({ message: "Invalid subject ID", scanSoundStart });
         return;
     }
 

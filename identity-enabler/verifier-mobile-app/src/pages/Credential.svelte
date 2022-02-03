@@ -8,10 +8,11 @@
     import { navigate } from "svelte-routing";
     import CredentialHeader from "../components/CredentialHeader.svelte";
     import { flattenCredential } from "../lib/ui/helpers";
+    import type { IVerifiableCredential } from "src/models/types/IVerifiableCredential";
 
     const { Modals } = Plugins;
 
-    let credential = window.history.state.credential;
+    let credential: IVerifiableCredential = window.history.state.credential;
     const expired = isExpired(credential);
 
     function onDone() {

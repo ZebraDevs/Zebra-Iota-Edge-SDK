@@ -5,8 +5,9 @@
     import { showAlert, multiClick, getDateString, getTimeString } from "../lib/ui/helpers";
     import CredentialHeader from "../components/CredentialHeader.svelte";
     import { navigate } from "svelte-routing";
+    import type { IVerifiablePresentation } from "src/models/types/IVerifiablePresentation";
 
-    const vp = window.history.state.vp;
+    const vp: IVerifiablePresentation = window.history.state.vp;
     const expiry = vp.verifiableCredential.expirationDate
         ? new Date(vp.verifiableCredential.expirationDate)
         : undefined;

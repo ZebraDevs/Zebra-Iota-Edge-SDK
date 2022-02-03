@@ -6,11 +6,12 @@
     import { ServiceFactory } from "../../factories/serviceFactory";
     import { showAlert } from "../../lib/ui/helpers";
     import type { IdentityService } from "../../services/identityService";
+    import type { IVerifiableCredential } from "src/models/types/IVerifiableCredential";
 
     const { close } = getContext("simple-modal");
     const { Share } = Plugins;
 
-    export let credential;
+    export let credential: IVerifiableCredential;
     const identityService = ServiceFactory.get<IdentityService>("identity");
 
     function share() {
@@ -25,7 +26,7 @@
                 storedIdentity,
                 credential
             );
-            const presentationJSON = JSON.stringify(verifiablePresentation, null, 2);
+            const presentationJSON = JSON.stringify(verifiablePresentation.toJSON(), null, 2);
 
             await Share.share({
                 title: "Verifiable Presentation",

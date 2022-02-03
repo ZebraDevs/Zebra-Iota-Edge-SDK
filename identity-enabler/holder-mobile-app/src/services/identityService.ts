@@ -6,6 +6,7 @@ import * as IotaIdentity from "@iota/identity-wasm/web";
 import { CREDENTIAL_EXPIRY_DAYS, IDENTITY_WASM_PATH } from "../config";
 import { get } from "svelte/store";
 import type { CredentialType } from "../models/types/CredentialType";
+import type { IVerifiableCredential } from "src/models/types/IVerifiableCredential";
 
 const {
     Client,
@@ -194,11 +195,11 @@ export class IdentityService {
         // Check the validation status of the Verifiable Credential
         const validation = await this.getClient().checkCredential(JSON.stringify(svcJson));
 
-        if (validation.verified && IssuerDoc.verifyData(signedVc)) {
-            return signedVc.toJSON();
-        } else {
-            return null;
+        if (!validation.verified || !IssuerDoc.verifyData(signedVc)) {
+            throw new Error("Created credential is invalid.");
         }
+
+        return signedVc;
     }
 
     /**
@@ -214,7 +215,7 @@ export class IdentityService {
      */
     async createVerifiablePresentation(
         issuer: Identity,
-        signedVc: IotaIdentity.VerifiableCredential
+        signedVc: IVerifiableCredential
     ): Promise<IotaIdentity.VerifiablePresentation> {
         //Initialize the Library - Is cached after first initialization
         await IotaIdentity.init(IDENTITY_WASM_PATH);
@@ -234,6 +235,6 @@ export class IdentityService {
             proof: IssuerKeys.merkleProof(Digest.Sha256, 0)
         });
 
-        return signedVp.toJSON();
+        return signedVp;
     }
 }

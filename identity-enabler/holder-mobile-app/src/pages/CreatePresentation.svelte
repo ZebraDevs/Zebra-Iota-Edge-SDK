@@ -8,10 +8,11 @@
     import CredentialHeader from "../components/CredentialHeader.svelte";
     import { navigate } from "svelte-routing";
     import { CredentialType } from "../models/types/CredentialType";
+    import type { IVerifiableCredential } from "src/models/types/IVerifiableCredential";
 
     let presentationJSON = "";
 
-    const credential = window.history.state.credential;
+    const credential: IVerifiableCredential = window.history.state.credential;
     const expiry = credential.expirationDate ? new Date(credential.expirationDate) : undefined;
     const identityService = ServiceFactory.get<IdentityService>("identity");
 
@@ -35,8 +36,8 @@
                 storedIdentity,
                 credential
             );
-            presentationJSON = JSON.stringify(verifiablePresentation, null, 2);
-            createMatrix(JSON.stringify(verifiablePresentation));
+            presentationJSON = JSON.stringify(verifiablePresentation.toJSON(), null, 2);
+            createMatrix(JSON.stringify(verifiablePresentation.toJSON()));
         } catch (err) {
             console.error(err);
             await showAlert("Error", "Error creating DataMatrix. Please try again.");

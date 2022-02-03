@@ -8,10 +8,11 @@
     import ObjectList from "../components/ObjectList.svelte";
     import CredentialHeader from "../components/CredentialHeader.svelte";
     import { flattenCredential } from "../lib/ui/helpers";
+    import type { IVerifiablePresentation } from "src/models/types/IVerifiablePresentation";
 
     const { App } = Plugins;
 
-    const vp = window.history.state.vp;
+    const vp: IVerifiablePresentation = window.history.state.vp;
     const save = window?.history?.state?.save;
 
     onMount(() => App.addListener("backButton", goBack).remove);

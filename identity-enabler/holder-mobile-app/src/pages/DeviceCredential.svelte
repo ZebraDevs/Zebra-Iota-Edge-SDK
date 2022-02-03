@@ -7,8 +7,10 @@
     import Button from "../components/Button.svelte";
     import ObjectList from "../components/ObjectList.svelte";
     import type { IdentityService } from "../services/identityService";
+    import type { ICredentialSubject } from "src/models/types/ICredentialSubject";
+    import type { IDeviceCredential } from "src/models/types/IDeviceCredential";
 
-    const credentialSubject = window.history.state.credentialSubject;
+    const credentialSubject: ICredentialSubject & IDeviceCredential = window.history.state.credentialSubject;
 
     async function createCredential() {
         if (navigator.onLine === false) {
@@ -31,7 +33,7 @@
                 claims
             );
             loadingScreen.set();
-            navigate("/createPresentation", { state: { credential } });
+            navigate("/createPresentation", { state: { credential: credential.toJSON() } });
         } catch (err) {
             loadingScreen.set();
             await showAlert("Error", "Error creating credential. Please try again.");

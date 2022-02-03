@@ -9,21 +9,23 @@
     import { showAlert, multiClick } from "../lib/ui/helpers";
     import { loadingScreen } from "../lib/store";
     import type { IdentityService } from "../services/identityService";
+    import type { IDeviceCredential } from "src/models/types/IDeviceCredential";
+    import type { ICredentialSubject } from "src/models/types/ICredentialSubject";
 
     const { Device } = Plugins;
 
     const identityService = ServiceFactory.get<IdentityService>("identity");
     const name = window.history.state.name;
-    let credentialSubject;
+    let credentialSubject: ICredentialSubject & IDeviceCredential;
 
     onMount(async () => {
         loadingScreen.set("Generating QR Code...");
 
         try {
-            const storedIdentity = await identityService.retrieveIdentity();
+            const { didDoc } = await identityService.retrieveIdentity();
             const { uuid, model, manufacturer, osVersion } = await Device.getInfo();
             credentialSubject = {
-                id: storedIdentity.doc.id,
+                id: JSON.parse(didDoc).id,
                 "@context": ["https://schema.org", "https://smartdatamodels.org/context.jsonld"],
                 type: ["Product", "Device"],
                 identifier: `urn:uuid:${uuid}`,

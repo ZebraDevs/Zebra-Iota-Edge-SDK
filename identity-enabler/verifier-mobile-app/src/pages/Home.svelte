@@ -11,10 +11,11 @@
     import { BACK_BUTTON_EXIT_GRACE_PERIOD } from "../config";
     import { get } from "svelte/store";
     import { credentialDisplayMap } from "../lib/ui/credentialDisplayMap";
+    import type { IVerifiableCredential } from "src/models/types/IVerifiableCredential";
 
     const { App, Toast, Modals } = Plugins;
 
-    let localCredentials = [];
+    let localCredentials: IVerifiableCredential[] = [];
     let exitOnBack = false;
 
     onMount(() => App.addListener("backButton", onBack).remove);
@@ -51,7 +52,7 @@
         navigate("/tutorial");
     }
 
-    function onClickCredential(credential) {
+    function onClickCredential(credential: IVerifiableCredential) {
         navigate("/credential", { state: { credential } });
     }
 
@@ -84,12 +85,13 @@
             {#each localCredentials as credential}
                 <div transition:slide class="list">
                     <ListItem
-                        icon={isExpired(credential.issuanceDate) ? "cross" : "check"}
+                        icon={isExpired(credential) ? "cross" : "check"}
                         iconColor="#1e22aa"
                         onClick={() => onClickCredential(credential)}
                         heading={credentialDisplayMap[credential.type[1]]}
-                        subheading="Issued by {credential.issuer.name ??
-                            shortenDID(credential.issuer.id ?? credential.issuer)}"
+                        subheading="Issued by {typeof credential.issuer === 'string'
+                            ? shortenDID(credential.issuer)
+                            : credential.issuer.name ?? shortenDID(credential.issuer.id)}"
                     />
                 </div>
             {/each}

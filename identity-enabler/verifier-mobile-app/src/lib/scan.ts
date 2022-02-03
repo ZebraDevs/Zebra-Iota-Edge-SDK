@@ -3,7 +3,7 @@ import { navigate } from "svelte-routing";
 import { ServiceFactory } from "../factories/serviceFactory";
 import type { IInvalidCredentialPageState } from "../models/types/IInvalidCredentialPageState";
 import type { IdentityService } from "../services/identityService";
-import { isExpired } from "./helpers";
+import { isExpired, isVerifiablePresentation } from "./helpers";
 import { loadingScreen, credentials } from "./store";
 import { playAudio } from "./ui/helpers";
 
@@ -15,7 +15,7 @@ import { playAudio } from "./ui/helpers";
  */
 export async function handleScannerData(decodedText: string): Promise<void> {
     loadingScreen.set("Validating Credential...");
-    let vp;
+    let vp: unknown;
 
     try {
         vp = JSON.parse(decodedText);
@@ -25,19 +25,8 @@ export async function handleScannerData(decodedText: string): Promise<void> {
         return;
     }
 
-    if (typeof vp !== "object") {
-        handleInvalid({ message: "No data" });
-        return;
-    }
-
-    if (!vp.verifiableCredential) {
-        handleInvalid({ message: "Missing verifiable credential" });
-        return;
-    }
-
-    const credentialSubjectId = vp.verifiableCredential.credentialSubject?.id;
-    if (!credentialSubjectId) {
-        handleInvalid({ message: "Missing credential subject" });
+    if (!isVerifiablePresentation(vp)) {
+        handleInvalid({ message: "Invalid verifiable presentation" });
         return;
     }
 
