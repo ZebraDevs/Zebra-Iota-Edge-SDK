@@ -1,13 +1,14 @@
-<script>
+<script lang="ts">
     import { getContext } from "svelte";
     import { navigate } from "svelte-routing";
     import { Plugins } from "@capacitor/core";
     import Button from "../Button.svelte";
+    import type { IVerifiablePresentation } from "src/models/types/IVerifiablePresentation";
 
     const { close } = getContext("simple-modal");
     const { Share } = Plugins;
 
-    export let vp;
+    export let vp: IVerifiablePresentation;
 
     function share() {
         navigate("/createPresentation", { state: { vp } });

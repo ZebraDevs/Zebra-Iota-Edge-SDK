@@ -19,10 +19,11 @@
     import { get } from "svelte/store";
     import { CredentialType } from "../models/types/CredentialType";
     import { credentialDisplayMap } from "../lib/ui/credentialDisplayMap";
+    import type { IVerifiableCredential } from "src/models/types/IVerifiableCredential";
 
     const { App, Toast, Modals } = Plugins;
 
-    let localCredentials = [];
+    let localCredentials: IVerifiableCredential[] = [];
     let exitOnBack = false;
 
     onMount(() => App.addListener("backButton", onBack).remove);
@@ -64,8 +65,8 @@
             const identityService = ServiceFactory.get<IdentityService>("identity");
             const storedIdentity = await identityService.retrieveIdentity();
             const creds = get(credentials);
-            const credentialToGenerate = Object.entries(creds).find(([_, val]) => !Boolean(val))[0];
-            let schema;
+            const credentialToGenerate = Object.entries(creds).find(([_, val]) => !val)[0];
+            let schema: CredentialType;
             let payload = {};
             switch (credentialToGenerate) {
                 case CredentialType.HEALTH_TEST:
@@ -91,10 +92,10 @@
                 payload
             );
             credentials.update(current => {
-                current[credentialToGenerate] = generatedCredential;
+                current[credentialToGenerate] = generatedCredential.toJSON();
                 return current;
             });
-            localCredentials = localCredentials.concat(generatedCredential);
+            localCredentials = localCredentials.concat(generatedCredential.toJSON());
             loadingScreen.set();
         } catch (err) {
             console.error(err);
@@ -153,8 +154,9 @@
                         icon="credential"
                         onClick={() => navigate("/credential", { state: { credential } })}
                         heading={credentialDisplayMap[credential.type[1]]}
-                        subheading="Issued by {credential.issuer.name ??
-                            shortenDID(credential.issuer.id ?? credential.issuer)}"
+                        subheading="Issued by {typeof credential.issuer === 'string'
+                            ? shortenDID(credential.issuer)
+                            : credential.issuer.name ?? shortenDID(credential.issuer.id)}"
                     />
                 </div>
             {/each}

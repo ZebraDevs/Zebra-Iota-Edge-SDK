@@ -10,10 +10,11 @@
     import { BACK_BUTTON_EXIT_GRACE_PERIOD } from "../config";
     import { shortenDID } from "../lib/ui/helpers";
     import { credentialDisplayMap } from "../lib/ui/credentialDisplayMap";
+    import type { IVerifiablePresentation } from "src/models/types/IVerifiablePresentation";
 
     const { App, Toast, Modals } = Plugins;
 
-    let localCredentials = [];
+    let localCredentials: IVerifiablePresentation[] = [];
     let exitOnBack = false;
 
     onMount(() => App.addListener("backButton", onBack).remove);
@@ -88,8 +89,9 @@
                         icon="chip"
                         onClick={() => navigate("/credential", { state: { vp } })}
                         heading={credentialDisplayMap[vp.verifiableCredential.type[1]]}
-                        subheading="Issued by {vp.verifiableCredential.issuer.name ??
-                            shortenDID(vp.verifiableCredential.issuer.id ?? vp.verifiableCredential.issuer)}"
+                        subheading="Issued by {typeof vp.verifiableCredential.issuer === 'string'
+                            ? shortenDID(vp.verifiableCredential.issuer)
+                            : vp.verifiableCredential.issuer.name ?? shortenDID(vp.verifiableCredential.issuer.id)}"
                     />
                 </div>
             {/each}

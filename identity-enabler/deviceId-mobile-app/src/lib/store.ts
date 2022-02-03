@@ -1,6 +1,7 @@
 import { writable } from "svelte/store";
 import { persistent } from "./helpers";
 import { CredentialType } from "../models/types/CredentialType";
+import type { IVerifiablePresentation } from "src/models/types/IVerifiablePresentation";
 
 const hasSetupAccountInitialState = () => false;
 /**
@@ -9,7 +10,8 @@ const hasSetupAccountInitialState = () => false;
 export const hasSetupAccount = persistent<boolean>("hasSetupAccount", hasSetupAccountInitialState());
 
 const credentialsInitialState = () => ({ [CredentialType.DEVICE_ID]: null });
-export const credentials = persistent<Record<string, unknown | null>>("credentials", credentialsInitialState());
+type PersistedCredentials = Record<CredentialType.DEVICE_ID, IVerifiablePresentation | null>;
+export const credentials = persistent<PersistedCredentials>("credentials", credentialsInitialState());
 
 const accountInitialState = () => null;
 export const account = persistent<{ name: string } | null>("account", accountInitialState());

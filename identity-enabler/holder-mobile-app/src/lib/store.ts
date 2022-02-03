@@ -1,3 +1,4 @@
+import type { IVerifiableCredential } from "src/models/types/IVerifiableCredential";
 import { writable } from "svelte/store";
 import { CredentialType } from "../models/types/CredentialType";
 import { persistent } from "./helpers";
@@ -13,7 +14,8 @@ const credentialsInitialState = () => ({
     [CredentialType.HEALTH_TEST]: null,
     [CredentialType.BLOOD_TEST]: null
 });
-export const credentials = persistent<Record<string, unknown | null>>("credentials", credentialsInitialState());
+type PersistedCredentials = Record<Exclude<CredentialType, CredentialType.DEVICE_ID>, IVerifiableCredential | null>;
+export const credentials = persistent<PersistedCredentials>("credentials", credentialsInitialState());
 
 const accountInitialState = () => null;
 export const account = persistent<{ name: string } | null>("account", accountInitialState());

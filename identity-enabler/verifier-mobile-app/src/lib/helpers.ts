@@ -1,34 +1,9 @@
+import { CredentialType } from "src/models/types/CredentialType";
+import type { ICredentialSubject } from "src/models/types/ICredentialSubject";
+import type { IProof } from "src/models/types/IProof";
+import type { IVerifiableCredential } from "src/models/types/IVerifiableCredential";
+import type { IVerifiablePresentation } from "src/models/types/IVerifiablePresentation";
 import { writable, Writable } from "svelte/store";
-
-interface ExtendedProofDocument {
-    created: string;
-    creator: string;
-    nonce: string;
-    type: string;
-    verificationMethod: string;
-}
-
-interface ProofDataModel {
-    proof?: ExtendedProofDocument;
-}
-
-interface CredentialDataModel {
-    "@context": string[];
-    type: string[];
-    issuer: string;
-    issuanceDate: string;
-    credentialSubject: object;
-}
-
-interface PresentationDataModel {
-    "@context": string[];
-    type: string[];
-    holder?: string;
-    verifiableCredential: VerifiableCredentialDataModel[];
-}
-
-type VerifiableCredentialDataModel = CredentialDataModel & ProofDataModel;
-type VerifiablePresentationDataModel = PresentationDataModel & ProofDataModel;
 
 /**
  * Parses serialised data
@@ -46,16 +21,75 @@ export function parse(data: string): any {
     }
 }
 
-export function isVerifiablePresentation(
-    payload: VerifiablePresentationDataModel | unknown
-): payload is VerifiablePresentationDataModel {
-    return !!(payload as VerifiablePresentationDataModel).verifiableCredential?.length;
+/**
+ * Check whether an unknown value meets the proof format used in the identity enabler apps.
+ *
+ * @param payload The value to validate.
+ * @returns Boolean type guard.
+ */
+export function isProof(payload: unknown): payload is IProof {
+    const p = payload as IProof;
+
+    return (
+        typeof p === "object" &&
+        typeof p.signatureValue === "string" &&
+        typeof p.type === "string" &&
+        typeof p.verificationMethod === "string"
+    );
 }
 
-export function isVerifiableCredential(
-    payload: VerifiableCredentialDataModel | unknown
-): payload is VerifiableCredentialDataModel {
-    return !!(payload as VerifiableCredentialDataModel).credentialSubject;
+/**
+ * Check whether an unknown value meets the VP format used in the identity enabler apps.
+ *
+ * @param payload The value to validate.
+ * @returns Boolean type guard.
+ */
+export function isVerifiablePresentation(payload: unknown): payload is IVerifiablePresentation {
+    const vp = payload as IVerifiablePresentation;
+
+    return (
+        typeof vp === "object" &&
+        vp.type === "VerifiablePresentation" &&
+        isVerifiableCredential(vp.verifiableCredential) &&
+        isProof(vp.proof) &&
+        typeof vp.holder === "string"
+    );
+}
+
+/**
+ * Check whether an unknown value meets the VC format used in the identity enabler apps.
+ *
+ * @param payload The value to validate.
+ * @returns Boolean type guard.
+ */
+export function isVerifiableCredential(payload: unknown): payload is IVerifiableCredential {
+    const vc = payload as IVerifiableCredential;
+
+    return (
+        typeof vc === "object" &&
+        isProof(vc.proof) &&
+        Array.isArray(vc.type) &&
+        vc.type.length === 2 &&
+        vc.type[0] === "VerifiableCredential" &&
+        Object.values(CredentialType).includes(vc.type[1]) &&
+        isCredentialSubject(vc.credentialSubject) &&
+        typeof vc.issuanceDate === "string" &&
+        typeof vc.expirationDate === "string" &&
+        (typeof vc.issuer === "string" ||
+            (typeof vc.issuer === "object" && typeof vc.issuer.id === "string" && typeof vc.issuer.name === "string"))
+    );
+}
+
+/**
+ * Check whether an unknown value meets the credentialSubject format used in the identity enabler apps.
+ *
+ * @param payload The value to validate.
+ * @returns Boolean type guard.
+ */
+export function isCredentialSubject(payload: unknown): payload is ICredentialSubject {
+    const cs = payload as ICredentialSubject;
+
+    return typeof cs === "object" && typeof cs.id === "string";
 }
 
 /**
@@ -132,7 +166,7 @@ export async function getMarkdownContent(url): Promise<any> {
 /**
  * check if Credential is expired
  */
-export function isExpired(credential: { expirationDate?: string }): boolean {
+export function isExpired(credential: IVerifiableCredential): boolean {
     if (!credential.expirationDate) {
         return false;
     }
@@ -149,6 +183,6 @@ export function isExpired(credential: { expirationDate?: string }): boolean {
  *
  * @returns {void}
  */
-export function wait(milliseconds: number) {
+export async function wait(milliseconds: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, milliseconds));
 }

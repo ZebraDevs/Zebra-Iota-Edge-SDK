@@ -1,16 +1,18 @@
-<script>
+<script lang="ts">
     import { getContext } from "svelte";
     import { navigate } from "svelte-routing";
     import { Plugins } from "@capacitor/core";
     import Button from "../Button.svelte";
     import { ServiceFactory } from "../../factories/serviceFactory";
     import { showAlert } from "../../lib/ui/helpers";
+    import type { IdentityService } from "../../services/identityService";
+    import type { IVerifiableCredential } from "src/models/types/IVerifiableCredential";
 
     const { close } = getContext("simple-modal");
     const { Share } = Plugins;
 
-    export let credential;
-    const identityService = ServiceFactory.get("identity");
+    export let credential: IVerifiableCredential;
+    const identityService = ServiceFactory.get<IdentityService>("identity");
 
     function share() {
         close();
@@ -24,7 +26,7 @@
                 storedIdentity,
                 credential
             );
-            const presentationJSON = JSON.stringify(verifiablePresentation, null, 2);
+            const presentationJSON = JSON.stringify(verifiablePresentation.toJSON(), null, 2);
 
             await Share.share({
                 title: "Verifiable Presentation",

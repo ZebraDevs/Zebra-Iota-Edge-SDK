@@ -5,7 +5,7 @@ import { loadingScreen } from "./store";
 import { playAudio } from "./ui/helpers";
 import { Plugins } from "@capacitor/core";
 import type { IInvalidCredentialPageState } from "../models/types/IInvalidCredentialPageState";
-import { isExpired } from "./helpers";
+import { isExpired, isVerifiablePresentation } from "./helpers";
 
 /**
  * Handles data string captured by Camera, DataWedge or Image selection.
@@ -23,7 +23,7 @@ export async function handleScannerData(decodedText: string, method: "Camera" | 
         scanSoundStart = Date.now();
     }
 
-    let vp;
+    let vp: unknown;
     try {
         vp = JSON.parse(decodedText);
     } catch (e) {
@@ -32,26 +32,15 @@ export async function handleScannerData(decodedText: string, method: "Camera" | 
         return;
     }
 
-    if (typeof vp !== "object") {
-        handleInvalid({ message: "No data", scanSoundStart });
-        return;
-    }
-
-    if (!vp.verifiableCredential) {
-        handleInvalid({ message: "Missing verifiable credential", scanSoundStart });
-        return;
-    }
-
-    const credentialSubjectId = vp.verifiableCredential.credentialSubject?.id;
-    if (!credentialSubjectId) {
-        handleInvalid({ message: "Missing credential subject", scanSoundStart });
+    if (!isVerifiablePresentation(vp)) {
+        handleInvalid({ message: "Invalid verifiable presentation", scanSoundStart });
         return;
     }
 
     const identityService = ServiceFactory.get<IdentityService>("identity");
     const identity = await identityService.retrieveIdentity();
     const id = JSON.parse(identity.didDoc).id;
-    if (id !== credentialSubjectId) {
+    if (id !== vp.verifiableCredential.credentialSubject.id) {
         // check that this VP/VC is for the current device
         handleInvalid({ message: "Incorrect credential subject", scanSoundStart });
         return;

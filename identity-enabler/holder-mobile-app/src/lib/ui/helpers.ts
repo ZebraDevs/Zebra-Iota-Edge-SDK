@@ -1,4 +1,10 @@
 import { Plugins } from "@capacitor/core";
+import type { IBloodCredential } from "src/models/types/IBloodCredential";
+import type { ICredentialSubject } from "src/models/types/ICredentialSubject";
+import type { IDeviceCredential } from "src/models/types/IDeviceCredential";
+import type { IHealthCredential } from "src/models/types/IHealthCredential";
+import type { IPersonalCredential } from "src/models/types/IPersonalCredential";
+import type { IVerifiableCredential } from "src/models/types/IVerifiableCredential";
 import { CredentialType } from "../../models/types/CredentialType";
 import { flattenObj, wait } from "../helpers";
 
@@ -72,22 +78,12 @@ export function getTimeString(date: Date): string {
 
 /**
  * Transforms a credential into an object of key-value entries for display.
- * @param object A VC object.
+ * @param vc A VC object.
  */
-export function flattenCredential(object: Record<string, any>): { [key: string]: string } {
-    if (typeof object !== "object") {
-        return {};
-    }
-
-    const { credentialSubject, type } = object;
-
-    if (!credentialSubject || !Array.isArray(type) || type.length < 2 || !type.includes("VerifiableCredential")) {
-        // Arbitrary objects get flattened
-        return flattenObj(object);
-    }
-
-    switch (type[1]) {
-        case CredentialType.HEALTH_TEST:
+export function flattenCredential(vc: IVerifiableCredential): { [key: string]: string } {
+    switch (vc.type[1]) {
+        case CredentialType.HEALTH_TEST: {
+            const credentialSubject = vc.credentialSubject as ICredentialSubject & IHealthCredential;
             return {
                 Subject: credentialSubject.id,
                 "Test Description": credentialSubject.description,
@@ -95,7 +91,9 @@ export function flattenCredential(object: Record<string, any>): { [key: string]:
                 "Result Description": credentialSubject.signDetected.description,
                 "Result Code": `${credentialSubject.signDetected.code.codingSystem}|${credentialSubject.signDetected.code.codeValue}`
             };
-        case CredentialType.BLOOD_TEST:
+        }
+        case CredentialType.BLOOD_TEST: {
+            const credentialSubject = vc.credentialSubject as ICredentialSubject & IBloodCredential;
             return {
                 Subject: credentialSubject.id,
                 "Test Description": credentialSubject.description,
@@ -103,7 +101,9 @@ export function flattenCredential(object: Record<string, any>): { [key: string]:
                 "Diagnosis Description": credentialSubject.usedToDiagnose.description,
                 "Diagnosis Code": `${credentialSubject.usedToDiagnose.code.codingSystem}|${credentialSubject.usedToDiagnose.code.codeValue}`
             };
-        case CredentialType.PERSONAL_INFO:
+        }
+        case CredentialType.PERSONAL_INFO: {
+            const credentialSubject = vc.credentialSubject as ICredentialSubject & IPersonalCredential;
             return {
                 Subject: credentialSubject.id,
                 Name: `${credentialSubject.givenName} "${credentialSubject.name}" ${credentialSubject.familyName}`,
@@ -113,7 +113,9 @@ export function flattenCredential(object: Record<string, any>): { [key: string]:
                 Email: credentialSubject.email,
                 Telephone: credentialSubject.telephone
             };
-        case CredentialType.DEVICE_ID:
+        }
+        case CredentialType.DEVICE_ID: {
+            const credentialSubject = vc.credentialSubject as ICredentialSubject & IDeviceCredential;
             return {
                 Subject: credentialSubject.id,
                 Name: credentialSubject.name,
@@ -122,8 +124,9 @@ export function flattenCredential(object: Record<string, any>): { [key: string]:
                 Model: credentialSubject.model.modelName,
                 "OS Version": credentialSubject.osVersion
             };
+        }
         default:
-            return flattenObj(credentialSubject);
+            return flattenObj(vc.credentialSubject);
     }
 }
 
@@ -131,22 +134,13 @@ export function flattenCredential(object: Record<string, any>): { [key: string]:
  * Transforms a claim into an object of key-value entries for display.
  * @param object An object.
  */
-export function flattenClaim(object: Record<string, any>): { [key: string]: string } {
-    if (typeof object !== "object") {
-        return {};
-    }
-
-    if (!Array.isArray(object.type) || object.type[0] !== "Product" || object.type[1] !== "Device") {
-        // Currently only device claims recognized. Flatten if not a device claim.
-        return flattenObj(object);
-    }
-
+export function flattenClaim(claim: ICredentialSubject & IDeviceCredential): { [key: string]: string } {
     return {
-        Subject: object.id,
-        Name: object.name,
-        Identifier: object.identifier,
-        Manufacturer: object.model.manufacturerName,
-        Model: object.model.modelName,
-        "OS Version": object.osVersion
+        Subject: claim.id,
+        Name: claim.name,
+        Identifier: claim.identifier,
+        Manufacturer: claim.model.manufacturerName,
+        Model: claim.model.modelName,
+        "OS Version": claim.osVersion
     };
 }

@@ -1,7 +1,7 @@
-<script>
+<script lang="ts">
     export let value;
     export let placeholder;
-    export let disabled;
+    export let disabled: boolean = false;
 </script>
 
 <input {disabled} type="text" {placeholder} bind:value />
