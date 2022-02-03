@@ -32,6 +32,7 @@ jobs:
         run: npm install
       - name: Run ESLint
         run: npm run build:lint
+
   test:
     name: Test
     runs-on: ubuntu-latest
