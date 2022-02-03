@@ -21,6 +21,7 @@
     import { handleScannerData } from "./lib/scan";
     import Tutorial from "./pages/Tutorial.svelte";
     import CodeBlock from "./pages/CodeBlock.svelte";
+    import { CredentialType } from "./models/types/CredentialType";
 
     let url = window.location.pathname;
     let displayHome = false;
@@ -41,7 +42,7 @@
             return;
         }
 
-        if ($credentials.device) {
+        if ($credentials[CredentialType.DEVICE_ID]) {
             await showAlert("Error", "You already have a credential");
             return;
         }
