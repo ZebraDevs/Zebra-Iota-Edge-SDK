@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import Spinner from "./Spinner.svelte";
 
     export let label;

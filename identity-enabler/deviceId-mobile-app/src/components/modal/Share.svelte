@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import { getContext } from "svelte";
     import { navigate } from "svelte-routing";
     import { Plugins } from "@capacitor/core";

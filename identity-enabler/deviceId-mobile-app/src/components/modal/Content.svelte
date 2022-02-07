@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import { onDestroy, getContext } from "svelte";
     import { modalStatus } from "../../lib/store";
     import Share from "./Share.svelte";

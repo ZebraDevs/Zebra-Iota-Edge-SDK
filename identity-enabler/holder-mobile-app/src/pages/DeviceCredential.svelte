@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import { navigate } from "svelte-routing";
     import { loadingScreen } from "../lib/store";
     import { CredentialType } from "../models/types/CredentialType";
@@ -6,6 +6,7 @@
     import { flattenClaim, showAlert } from "../lib/ui/helpers";
     import Button from "../components/Button.svelte";
     import ObjectList from "../components/ObjectList.svelte";
+    import type { IdentityService } from "../services/identityService";
 
     const credentialSubject = window.history.state.credentialSubject;
 
@@ -16,7 +17,7 @@
         }
 
         loadingScreen.set("Generating Credential...");
-        const identityService = ServiceFactory.get("identity");
+        const identityService = ServiceFactory.get<IdentityService>("identity");
 
         try {
             const storedIdentity = await identityService.retrieveIdentity();

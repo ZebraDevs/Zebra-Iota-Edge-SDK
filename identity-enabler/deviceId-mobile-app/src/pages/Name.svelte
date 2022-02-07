@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import { Plugins } from "@capacitor/core";
     import { navigate } from "svelte-routing";
     import Button from "../components/Button.svelte";
@@ -7,16 +7,16 @@
     import { ServiceFactory } from "../factories/serviceFactory";
     import { account, hasSetupAccount, loadingScreen } from "../lib/store";
     import { showAlert } from "../lib/ui/helpers";
+    import type { IdentityService } from "../services/identityService";
 
     const { Keyboard } = Plugins;
     let name = "";
     let background;
 
-    function handleOuterClick() {
+    function handleOuterClick(event: MouseEvent) {
         if (event.target === background) {
             event.preventDefault();
-
-            if (document.activeElement) {
+            if (document.activeElement instanceof HTMLElement) {
                 document.activeElement.blur();
             }
         }
@@ -30,7 +30,7 @@
 
         Keyboard.hide();
         loadingScreen.set("Creating Identity...");
-        const identityService = ServiceFactory.get("identity");
+        const identityService = ServiceFactory.get<IdentityService>("identity");
         let identity;
 
         try {

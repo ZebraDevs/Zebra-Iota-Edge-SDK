@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import { Plugins } from "@capacitor/core";
     import { onMount } from "svelte";
     import Button from "../components/Button.svelte";
