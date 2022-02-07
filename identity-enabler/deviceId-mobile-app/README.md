@@ -48,4 +48,6 @@ This will run the capacitor/svelte project with a web view pointing to your work
 
 **Remember to remove the `server.url` in `capacitor.config.json`**
 
-`npm run build`
+```sh
+npm run build
+```
