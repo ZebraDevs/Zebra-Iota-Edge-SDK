@@ -43,12 +43,12 @@ export async function handleScannerData(decodedText: string, method: "Camera" | 
         return;
     }
 
-    loadingScreen.set();
-    setTimeout(async () => await playAudio("valid"), PLAY_DELAY);
+    loadingScreen.set("");
+    setTimeout(async () => playAudio("valid"), PLAY_DELAY);
     navigate("/devicecredential", { state: { credentialSubject } });
 }
 
 function handleInvalid(state?: IInvalidCredentialPageState): void {
-    loadingScreen.set();
+    loadingScreen.set("");
     navigate("/invalid", { state });
 }

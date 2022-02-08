@@ -35,14 +35,14 @@
                 storedIdentity,
                 credential
             );
-            presentationJSON = JSON.stringify(verifiablePresentation, null, 2);
-            createMatrix(JSON.stringify(verifiablePresentation));
+            presentationJSON = JSON.stringify(verifiablePresentation.toJSON(), null, 2);
+            createMatrix(JSON.stringify(verifiablePresentation.toJSON()));
         } catch (err) {
             console.error(err);
             await showAlert("Error", "Error creating DataMatrix. Please try again.");
         }
 
-        loadingScreen.set();
+        loadingScreen.set("");
     });
 
     function onClickDev() {
@@ -71,7 +71,7 @@
         {#if expiry}
             <p>Valid until {getDateString(expiry)} at {getTimeString(expiry)}</p>
         {/if}
-        {#if credential.type[1] === CredentialType.DEVICE_ID}
+        {#if credential.type[1] === CredentialType.DeviceID}
             <p style="font-size: smaller;">Scan this DataMatrix with the Device ID app</p>
         {/if}
     </footer>

@@ -11,7 +11,7 @@
 
     const { Modals } = Plugins;
 
-    let credential = window.history.state.credential;
+    const credential = window.history.state.credential;
     const expired = isExpired(credential);
 
     function onDone() {
@@ -19,7 +19,7 @@
     }
 
     async function onDelete() {
-        let confirmRet = await Modals.confirm({
+        const confirmRet = await Modals.confirm({
             title: "Delete credential",
             message: "Are you sure you want to delete the credential?"
         });

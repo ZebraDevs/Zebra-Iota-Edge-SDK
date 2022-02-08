@@ -68,17 +68,18 @@ export async function handleScannerData(decodedText: string): Promise<void> {
         current[credential.type[1]] = credential;
         return current;
     });
-    loadingScreen.set();
+    loadingScreen.set("");
     const { Toast } = Plugins;
     await Toast.show({
         text: "Credential verified!",
         position: "center"
     });
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     playAudio("valid");
     navigate("/credential", { state: { credential } });
 }
 
 function handleInvalid(state?: IInvalidCredentialPageState): void {
-    loadingScreen.set();
+    loadingScreen.set("");
     navigate("/invalid", { state });
 }

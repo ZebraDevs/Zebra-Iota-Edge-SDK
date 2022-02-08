@@ -51,7 +51,7 @@ export async function generatePersonalCredential() {
             addressLocality: location.city,
             addressCountry: location.country,
             addressRegion: location.state,
-            postalCode: location.postcode + "",
+            postalCode: String(location.postcode),
             streetAddress: `${location.street.number} ${location.street.name}`
         },
         email,

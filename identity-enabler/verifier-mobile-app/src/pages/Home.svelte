@@ -23,6 +23,7 @@
     });
 
     async function scan() {
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-boolean-literal-compare
         if (navigator.onLine === false) {
             await showAlert("Error", "You need Internet connectivity for verifying credentials");
             return;
@@ -56,7 +57,7 @@
     }
 
     async function onClickReset() {
-        let confirmRet = await Modals.confirm({
+        const confirmRet = await Modals.confirm({
             title: "Reset the app",
             message: "Are you sure you want to reset the app and delete all credentials?"
         });

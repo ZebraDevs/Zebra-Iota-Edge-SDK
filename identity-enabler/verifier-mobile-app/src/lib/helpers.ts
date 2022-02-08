@@ -30,50 +30,25 @@ interface PresentationDataModel {
 type VerifiableCredentialDataModel = CredentialDataModel & ProofDataModel;
 type VerifiablePresentationDataModel = PresentationDataModel & ProofDataModel;
 
-/**
- * Parses serialised data
- *
- * @method parse
- *
- * @param {string} data
- * @returns {object}
- */
-export function parse(data: string): any {
-    try {
-        return JSON.parse(data);
-    } catch (e) {
-        return null;
-    }
-}
-
 export function isVerifiablePresentation(
     payload: VerifiablePresentationDataModel | unknown
 ): payload is VerifiablePresentationDataModel {
-    return !!(payload as VerifiablePresentationDataModel).verifiableCredential?.length;
+    return Boolean((payload as VerifiablePresentationDataModel).verifiableCredential?.length);
 }
 
 export function isVerifiableCredential(
     payload: VerifiableCredentialDataModel | unknown
 ): payload is VerifiableCredentialDataModel {
-    return !!(payload as VerifiableCredentialDataModel).credentialSubject;
+    return Boolean((payload as VerifiableCredentialDataModel).credentialSubject);
 }
 
 /**
- * Synchronous timeout
+ * Persist a writable Svelte store to local storage.
  *
- * @method delay
- *
- * @param {number} ms
- *
- * @returns {void}
- */
-export function delay(ms: number): void {
-    const startPoint = new Date().getTime();
-    while (new Date().getTime() - startPoint <= ms);
-}
-
-/**
- * Persist a writable Svelte store to local storage
+ * @param key The key at which to store the value.
+ * @param initialValue The initial value of the store.
+ * @param saveTransformation A transformation to apply prior to every write.
+ * @returns A writable Svelte store.
  */
 export function persistent<T>(key: string, initialValue: T, saveTransformation?: (value: T) => T): Writable<T> {
     let value = initialValue;
@@ -99,7 +74,7 @@ export function persistent<T>(key: string, initialValue: T, saveTransformation?:
 export function flattenObj(ob) {
     // The object which contains the
     // final result
-    let result = {};
+    const result = {};
 
     // loop through the object "ob"
     for (const i in ob) {
@@ -110,12 +85,10 @@ export function flattenObj(ob) {
             const temp = flattenObj(ob[i]);
             for (const j in temp) {
                 // Store temp in result
-                result[i + "." + j] = temp[j];
+                result[`${i}.${j}`] = temp[j];
             }
-        }
-
-        // Else store ob[i] in result directly
-        else {
+        } else {
+            // Else store ob[i] in result directly
             result[i] = ob[i];
         }
     }
@@ -123,14 +96,12 @@ export function flattenObj(ob) {
 }
 
 /**
- * fetch markdown text
- */
-export async function getMarkdownContent(url): Promise<any> {
-    return fetch(url).then(res => res.text());
-}
-
-/**
- * check if Credential is expired
+ * Check if Credential is expired. Credential is not expired if the VC contains
+ * no expirationDate.
+ *
+ * @param credential The VC to check.
+ * @param credential.expirationDate Expiration date of the VC, if present.
+ * @returns True if credential is expired. False otherwise.
  */
 export function isExpired(credential: { expirationDate?: string }): boolean {
     if (!credential.expirationDate) {
@@ -141,14 +112,11 @@ export function isExpired(credential: { expirationDate?: string }): boolean {
 }
 
 /**
- * Waits for a certain number of milliseconds
+ * Waits for a certain number of milliseconds.
  *
- * @method delay
- *
- * @param {number} milliseconds
- *
- * @returns {void}
+ * @param milliseconds Milliseconds to wait.
+ * @returns Promise that resolves after the wait duration.
  */
-export function wait(milliseconds: number) {
+export async function wait(milliseconds: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, milliseconds));
 }

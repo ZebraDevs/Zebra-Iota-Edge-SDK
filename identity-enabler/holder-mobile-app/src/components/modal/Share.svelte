@@ -25,7 +25,7 @@
                 storedIdentity,
                 credential
             );
-            const presentationJSON = JSON.stringify(verifiablePresentation, null, 2);
+            const presentationJSON = JSON.stringify(verifiablePresentation.toJSON(), null, 2);
 
             await Share.share({
                 title: "Verifiable Presentation",

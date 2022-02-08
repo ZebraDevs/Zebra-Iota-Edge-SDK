@@ -30,7 +30,7 @@
             console.error(e);
             await showAlert("Error", "Error creating DataMatrix. Please try again.");
         }
-        loadingScreen.set();
+        loadingScreen.set("");
     });
 
     function onClickDev() {

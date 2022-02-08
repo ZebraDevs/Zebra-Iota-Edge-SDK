@@ -28,16 +28,21 @@
     };
     let state = { ...defaultState };
 
-    let Component = null;
+    let component = null;
     let props = null;
 
     let background;
     let wrap;
 
-    const camelCaseToDash = str => str.replace(/([a-zA-Z])(?=[A-Z])/g, "$1-").toLowerCase();
+    const camelCaseToDash = (str: string) => str.replace(/([A-Za-z])(?=[A-Z])/g, "$1-").toLowerCase();
 
-    const toCssString = props =>
-        Object.keys(props).reduce((str, key) => `${str}; ${camelCaseToDash(key)}: ${props[key]}`, "");
+    const toCssString = (props: Record<string, string | number>) => {
+        const str = [];
+        for (const key of Object.keys(props)) {
+            str.push(`${camelCaseToDash(key)}: ${props[key]};`);
+        }
+        return str.join("");
+    };
 
     $: cssBg = toCssString(state.styleBg);
     $: cssWindow = toCssString(state.styleWindow);
@@ -46,13 +51,13 @@
     $: currentTransitionWindow = state.transitionWindow;
 
     const open = (NewComponent, newProps = {}, options = {}) => {
-        Component = NewComponent;
+        component = NewComponent;
         props = newProps;
         state = { ...defaultState, ...options };
     };
 
     const close = () => {
-        Component = null;
+        component = null;
         props = null;
 
         // Reset modal status in store
@@ -60,7 +65,7 @@
     };
 
     const handleKeyup = ({ key }) => {
-        if (state.closeOnEsc && Component && key === "Escape") {
+        if (state.closeOnEsc && component && key === "Escape") {
             event.preventDefault();
             close();
         }
@@ -79,7 +84,7 @@
         if (
             !status.active &&
             // Also check if any component instance is active
-            Component
+            component
         ) {
             close();
         }
@@ -91,7 +96,7 @@
 <svelte:window on:keyup={handleKeyup} />
 
 <div>
-    {#if Component}
+    {#if component}
         <div
             class="bg"
             on:click={handleOuterClick}
@@ -102,7 +107,7 @@
             <div class="window-wrap" bind:this={wrap}>
                 <div class="window" in:currentTransitionWindow={state.transitionWindowProps} style={cssWindow}>
                     <div class="content" style={cssContent}>
-                        <svelte:component this={Component} {...props} />
+                        <svelte:component this={component} {...props} />
                     </div>
                 </div>
             </div>

@@ -12,7 +12,7 @@
     import Landing from "./pages/Landing.svelte";
     import Tutorial from "./pages/Tutorial.svelte";
 
-    let url = window.location.pathname;
+    const url = window.location.pathname;
 
     /**
      * Function executed when a Zebra DataWedge scanning event happens
@@ -20,6 +20,7 @@
      * @param decodedText The content supplied by DataWedge (Zebra Scanner)
      */
     async function onScan(decodedText: string) {
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-boolean-literal-compare
         if (navigator.onLine === false) {
             await showAlert("Error", "You need Internet connectivity to verify a credential");
             return;
@@ -34,7 +35,7 @@
     }
 
     onMount(() => {
-        (window as any).onScan = onScan;
+        window.onScan = onScan;
     });
 </script>
 

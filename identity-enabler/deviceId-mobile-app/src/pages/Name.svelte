@@ -8,8 +8,8 @@
     import { account, hasSetupAccount, loadingScreen } from "../lib/store";
     import { showAlert } from "../lib/ui/helpers";
     import type { IdentityService } from "../services/identityService";
+    import { __WEB__ } from "$lib/platforms";
 
-    const { Keyboard } = Plugins;
     let name = "";
     let background;
 
@@ -23,12 +23,16 @@
     }
 
     async function save() {
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-boolean-literal-compare
         if (navigator.onLine === false) {
             await showAlert("Error", "You need Internet connectivity to generate a new IOTA Device Identity");
             return;
         }
 
-        Keyboard.hide();
+        if (!__WEB__) {
+            await Plugins.Keyboard.hide();
+        }
+
         loadingScreen.set("Creating Identity...");
         const identityService = ServiceFactory.get<IdentityService>("identity");
         let identity;
@@ -37,7 +41,7 @@
             identity = await identityService.createIdentity();
         } catch (err) {
             console.error(err);
-            loadingScreen.set();
+            loadingScreen.set("");
             await showAlert("Error", `Error creating identity: ${err.message}`);
             return;
         }
@@ -45,7 +49,7 @@
         await identityService.storeIdentity("did", identity);
         account.set({ name });
         hasSetupAccount.set(true);
-        loadingScreen.set();
+        loadingScreen.set("");
         navigate("/home");
     }
 </script>

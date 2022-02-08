@@ -32,9 +32,9 @@ type VerifiableCredentialDataModel = CredentialDataModel & ProofDataModel;
 type VerifiablePresentationDataModel = PresentationDataModel & ProofDataModel;
 
 /**
- * Random user data
+ * Random user data.
  */
-export type RandomUserData = {
+export interface RandomUserData {
     location: {
         street: {
             number: number;
@@ -59,37 +59,19 @@ export type RandomUserData = {
         value: string;
     };
     gender: string;
-};
-
-/**
- * Random user data response
- */
-export type RandomUserDataResponse = {
-    results: RandomUserData[];
-};
-
-/**
- * Parses serialised data
- *
- * @method parse
- *
- * @param {string} data
- * @returns {object}
- */
-export function parse(data: string): any {
-    try {
-        return JSON.parse(data);
-    } catch (e) {
-        return null;
-    }
 }
 
 /**
- * Gets random user data
+ * Random user data response.
+ */
+export interface RandomUserDataResponse {
+    results: RandomUserData[];
+}
+
+/**
+ * Gets random user data.
  *
- * @method getRandomUserData
- *
- * @returns {Promise}
+ * @returns Random user data.
  */
 export async function getRandomUserData(): Promise<RandomUserData> {
     const res = await fetch(RANDOM_USER_DATA_API_URL);
@@ -97,70 +79,25 @@ export async function getRandomUserData(): Promise<RandomUserData> {
     return userDataRes.results[0];
 }
 
-/**
- * Converts byte array to hex
- *
- * @method convertByteArrayToHex
- *
- * @param {Uint8Array} bytes
- *
- * @return {string}
- */
-export function convertByteArrayToHex(bytes: Uint8Array): string {
-    const hex = [];
-
-    /* eslint-disable no-plusplus,no-bitwise */
-    for (let i = 0; i < bytes.length; i++) {
-        const current = bytes[i] < 0 ? bytes[i] + 256 : bytes[i];
-        hex.push((current >>> 4).toString(16));
-        hex.push((current & 0xf).toString(16));
-    }
-
-    /* eslint-enable no-plusplus,no-bitwise */
-    return hex.join("");
-}
-
 export function isVerifiablePresentation(
     payload: VerifiablePresentationDataModel | unknown
 ): payload is VerifiablePresentationDataModel {
-    return !!(payload as VerifiablePresentationDataModel).verifiableCredential?.length;
+    return Boolean((payload as VerifiablePresentationDataModel).verifiableCredential?.length);
 }
 
 export function isVerifiableCredential(
     payload: VerifiableCredentialDataModel | unknown
 ): payload is VerifiableCredentialDataModel {
-    return !!(payload as VerifiableCredentialDataModel).credentialSubject;
+    return Boolean((payload as VerifiableCredentialDataModel).credentialSubject);
 }
 
 /**
- * Updates application path
+ * Persist a writable Svelte store to local storage.
  *
- * @method goto
- *
- * @param {string} path
- *
- * @returns {void}
- */
-export function goto(path: string, params?: { [key: string]: string }): void {
-    window.location.hash = `${path}${params ? `?${new URLSearchParams(params).toString()}` : ""}`;
-}
-
-/**
- * Synchronous timeout
- *
- * @method delay
- *
- * @param {number} ms
- *
- * @returns {void}
- */
-export function delay(ms: number): void {
-    const startPoint = new Date().getTime();
-    while (new Date().getTime() - startPoint <= ms);
-}
-
-/**
- * Persist a writable Svelte store to local storage
+ * @param key The key at which to store the value.
+ * @param initialValue The initial value of the store.
+ * @param saveTransformation A transformation to apply prior to every write.
+ * @returns A writable Svelte store.
  */
 export function persistent<T>(key: string, initialValue: T, saveTransformation?: (value: T) => T): Writable<T> {
     let value = initialValue;
@@ -186,7 +123,7 @@ export function persistent<T>(key: string, initialValue: T, saveTransformation?:
 export function flattenObj(ob) {
     // The object which contains the
     // final result
-    let result = {};
+    const result = {};
 
     // loop through the object "ob"
     for (const i in ob) {
@@ -197,32 +134,23 @@ export function flattenObj(ob) {
             const temp = flattenObj(ob[i]);
             for (const j in temp) {
                 // Store temp in result
-                result[i + "." + j] = temp[j];
+                result[`${i}.${j}`] = temp[j];
             }
-        }
-
-        // Else store ob[i] in result directly
-        else {
+        } else {
+            // Else store ob[i] in result directly
             result[i] = ob[i];
         }
     }
     return result;
 }
 
-export async function getMarkdownContent(url): Promise<any> {
-    return fetch(url).then(res => res.text());
-}
-
 /**
- * Waits for a certain number of milliseconds
+ * Waits for a certain number of milliseconds.
  *
- * @method delay
- *
- * @param {number} milliseconds
- *
- * @returns {void}
+ * @param milliseconds Milliseconds to wait.
+ * @returns Promise that resolves after the wait duration.
  */
-export function wait(milliseconds: number) {
+export async function wait(milliseconds: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, milliseconds));
 }
 

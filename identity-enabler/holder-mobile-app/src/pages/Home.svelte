@@ -53,6 +53,7 @@
     }
 
     async function generateCredential() {
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-boolean-literal-compare
         if (navigator.onLine === false) {
             await showAlert("Error", "You need Internet connectivity to generate a new Credential");
             return;
@@ -64,20 +65,20 @@
             const identityService = ServiceFactory.get<IdentityService>("identity");
             const storedIdentity = await identityService.retrieveIdentity();
             const creds = get(credentials);
-            const credentialToGenerate = Object.entries(creds).find(([_, val]) => !Boolean(val))[0];
+            const credentialToGenerate = Object.entries(creds).find(([_, val]) => !val)[0];
             let schema;
             let payload = {};
             switch (credentialToGenerate) {
-                case CredentialType.HEALTH_TEST:
-                    schema = CredentialType.HEALTH_TEST;
+                case CredentialType.HealthTest:
+                    schema = CredentialType.HealthTest;
                     payload = generateHealthCredential();
                     break;
-                case CredentialType.BLOOD_TEST:
-                    schema = CredentialType.BLOOD_TEST;
+                case CredentialType.BloodTest:
+                    schema = CredentialType.BloodTest;
                     payload = generateBloodCredential();
                     break;
-                case CredentialType.PERSONAL_INFO:
-                    schema = CredentialType.PERSONAL_INFO;
+                case CredentialType.PersonalInfo:
+                    schema = CredentialType.PersonalInfo;
                     payload = await generatePersonalCredential();
                     break;
                 default:
@@ -91,14 +92,14 @@
                 payload
             );
             credentials.update(current => {
-                current[credentialToGenerate] = generatedCredential;
+                current[credentialToGenerate] = generatedCredential.toJSON();
                 return current;
             });
-            localCredentials = localCredentials.concat(generatedCredential);
-            loadingScreen.set();
+            localCredentials = localCredentials.concat(generatedCredential.toJSON());
+            loadingScreen.set("");
         } catch (err) {
             console.error(err);
-            loadingScreen.set();
+            loadingScreen.set("");
             await showAlert("Error", err.name);
         }
     }
@@ -108,7 +109,7 @@
     }
 
     async function onClickReset() {
-        let confirmRet = await Modals.confirm({
+        const confirmRet = await Modals.confirm({
             title: "Reset the app",
             message: "Are you sure you want to reset the app and delete all credentials?"
         });

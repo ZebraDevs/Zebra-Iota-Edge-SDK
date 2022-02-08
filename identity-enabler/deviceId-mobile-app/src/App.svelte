@@ -23,7 +23,7 @@
     import CodeBlock from "./pages/CodeBlock.svelte";
     import { CredentialType } from "./models/types/CredentialType";
 
-    let url = window.location.pathname;
+    const url = window.location.pathname;
     let displayHome = false;
 
     /**
@@ -32,6 +32,7 @@
      * @param decodedText The content supplied by DataWedge (Zebra Scanner)
      */
     async function onScan(decodedText: string) {
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-boolean-literal-compare
         if (navigator.onLine === false) {
             await showAlert("Error", "You need Internet connectivity to verify your credential");
             return;
@@ -56,7 +57,7 @@
     }
 
     onMount(async () => {
-        (window as any).onScan = onScan;
+        window.onScan = onScan;
 
         if (!$hasSetupAccount) {
             return Keychain.clear();
