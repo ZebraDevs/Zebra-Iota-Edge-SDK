@@ -40,7 +40,7 @@
             identity = await identityService.createIdentity();
         } catch (err) {
             console.error(err);
-            loadingScreen.set(undefined);
+            loadingScreen.set(null);
             await showAlert("Error", `Error creating identity: ${err.message}`);
             return;
         }
@@ -48,7 +48,7 @@
         await identityService.storeIdentity("did", identity);
         account.set({ name });
         hasSetupAccount.set(true);
-        loadingScreen.set(undefined);
+        loadingScreen.set(null);
         navigate("/home");
     }
 </script>

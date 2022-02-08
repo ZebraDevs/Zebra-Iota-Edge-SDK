@@ -33,7 +33,7 @@ export const modalStatus = writable<ModalStatus<unknown>>(modalStatusInitialStat
 const landingIndexInitialState = () => 0;
 export const landingIndex = writable<number>(landingIndexInitialState());
 
-export const loadingScreen = writable<string | undefined>();
+export const loadingScreen = writable<string | null>();
 
 export function resetAllStores() {
     hasSetupAccount.set(hasSetupAccountInitialState());
@@ -41,5 +41,5 @@ export function resetAllStores() {
     account.set(accountInitialState());
     modalStatus.set(modalStatusInitialState());
     landingIndex.set(landingIndexInitialState());
-    loadingScreen.set(undefined);
+    loadingScreen.set(null);
 }

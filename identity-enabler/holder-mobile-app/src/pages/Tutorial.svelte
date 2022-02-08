@@ -19,7 +19,7 @@
         } catch (err) {
             await showAlert("Error", `Error loading tutorial: ${err.message}`);
         }
-        loadingScreen.set(undefined);
+        loadingScreen.set(null);
     });
 </script>
 

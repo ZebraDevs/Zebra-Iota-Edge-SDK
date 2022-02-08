@@ -42,7 +42,7 @@
             await showAlert("Error", "Error creating DataMatrix. Please try again.");
         }
 
-        loadingScreen.set(undefined);
+        loadingScreen.set(null);
     });
 
     function onClickDev() {

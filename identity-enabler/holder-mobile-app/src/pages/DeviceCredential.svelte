@@ -30,11 +30,11 @@
                 CredentialType.DeviceID,
                 claims
             );
-            loadingScreen.set(undefined);
+            loadingScreen.set(null);
             navigate("/createPresentation", { state: { credential: credential.toJSON() } });
         } catch (err) {
             console.error(err);
-            loadingScreen.set(undefined);
+            loadingScreen.set(null);
             await showAlert("Error", "Error creating credential. Please try again.");
         }
     }
