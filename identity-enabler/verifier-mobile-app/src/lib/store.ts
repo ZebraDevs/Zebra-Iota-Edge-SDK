@@ -10,13 +10,13 @@ const credentialsInitialState = () => ({
 });
 export const credentials = persistent<Record<string, unknown | null>>("credentials", credentialsInitialState());
 
-export const loadingScreen = writable<string | null>();
+export const loadingScreen = writable<string>();
 
 const firstLaunchInitialState = () => true;
 export const firstLaunch = persistent<boolean>("firstLaunch", firstLaunchInitialState());
 
 export function resetAllStores() {
     credentials.set(credentialsInitialState());
-    loadingScreen.set(null);
+    loadingScreen.set("");
     firstLaunch.set(firstLaunchInitialState());
 }

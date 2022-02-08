@@ -41,7 +41,7 @@
             await showAlert("Error", err.message);
         }
 
-        loadingScreen.set(null);
+        loadingScreen.set("");
     });
 
     async function createMatrix(content: string) {

@@ -68,7 +68,7 @@ export async function handleScannerData(decodedText: string): Promise<void> {
         current[credential.type[1]] = credential;
         return current;
     });
-    loadingScreen.set(null);
+    loadingScreen.set("");
     const { Toast } = Plugins;
     await Toast.show({
         text: "Credential verified!",
@@ -80,6 +80,6 @@ export async function handleScannerData(decodedText: string): Promise<void> {
 }
 
 function handleInvalid(state?: IInvalidCredentialPageState): void {
-    loadingScreen.set(null);
+    loadingScreen.set("");
     navigate("/invalid", { state });
 }

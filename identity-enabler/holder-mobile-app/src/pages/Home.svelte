@@ -96,10 +96,10 @@
                 return current;
             });
             localCredentials = localCredentials.concat(generatedCredential.toJSON());
-            loadingScreen.set(null);
+            loadingScreen.set("");
         } catch (err) {
             console.error(err);
-            loadingScreen.set(null);
+            loadingScreen.set("");
             await showAlert("Error", err.name);
         }
     }

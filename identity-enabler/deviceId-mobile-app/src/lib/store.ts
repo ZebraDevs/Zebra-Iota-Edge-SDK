@@ -26,12 +26,12 @@ export interface ModalStatus<T = unknown> {
 const modalStatusInitialState = () => ({ active: false, type: null, props: null });
 export const modalStatus = writable<ModalStatus>(modalStatusInitialState());
 
-export const loadingScreen = writable<string | null>();
+export const loadingScreen = writable<string>();
 
 export function resetAllStores() {
     hasSetupAccount.set(hasSetupAccountInitialState());
     credentials.set(credentialsInitialState());
     account.set(accountInitialState());
     modalStatus.set(modalStatusInitialState());
-    loadingScreen.set(null);
+    loadingScreen.set("");
 }

@@ -77,7 +77,7 @@ export async function handleScannerData(decodedText: string, method: "Camera" | 
         return;
     }
 
-    loadingScreen.set(null);
+    loadingScreen.set("");
     await playAudio("valid");
     await Plugins.Toast.show({
         text: "Credential verified!",
@@ -87,6 +87,6 @@ export async function handleScannerData(decodedText: string, method: "Camera" | 
 }
 
 function handleInvalid(state?: IInvalidCredentialPageState): void {
-    loadingScreen.set(null);
+    loadingScreen.set("");
     navigate("/invalid", { state });
 }
