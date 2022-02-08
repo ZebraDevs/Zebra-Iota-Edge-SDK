@@ -43,7 +43,7 @@
             return;
         }
 
-        if ($credentials[CredentialType.DEVICE_ID]) {
+        if ($credentials[CredentialType.DeviceID]) {
             await showAlert("Error", "You already have a credential");
             return;
         }
