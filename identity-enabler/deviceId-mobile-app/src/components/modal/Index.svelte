@@ -37,11 +37,11 @@
     const camelCaseToDash = (str: string) => str.replace(/([A-Za-z])(?=[A-Z])/g, "$1-").toLowerCase();
 
     const toCssString = (props: Record<string, string | number>) => {
-        let str = "";
+        const str = [];
         for (const key of Object.keys(props)) {
-            str += `${camelCaseToDash(key)}: ${props[key]};`;
+            str.push(`${camelCaseToDash(key)}: ${props[key]};`);
         }
-        return str;
+        return str.join("");
     };
 
     $: cssBg = toCssString(state.styleBg);
