@@ -14,14 +14,15 @@ This is a project template for [Svelte](https://svelte.dev) + [CapacitorJS](http
 
 Install the dependencies...
 
-```bash
-yarn
+```sh
+npm install
 ```
 
 ### Run local dev server (no capacitor)
 
-```bash
-yarn local
+```sh
+npm run build:dev
+npm run start:dev
 ```
 
 ### Develop on your device with livereload (hot reload)
@@ -34,8 +35,8 @@ Tip: Remember you will need the `http://` before the server ip.
 
 Back in the root folder:
 
-```bash
-yarn dev
+```sh
+npm run android
 ```
 
 This will run the capacitor/svelte project with a web view pointing to your workstation's IP.
@@ -43,8 +44,10 @@ This will run the capacitor/svelte project with a web view pointing to your work
 * You need to have an emulator/device connected to adb
 * Your device has to be connected to the same wifi network as your workstation.
 
-### To build a production application:
+### To build a production application
 
 **Remember to remove the `server.url` in `capacitor.config.json`**
 
-`yarn build`
+```sh
+npm run build
+```

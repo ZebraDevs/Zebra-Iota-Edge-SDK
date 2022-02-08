@@ -110,7 +110,7 @@ The SDK uses Web Technologies for the user interface of the aforementioned refer
 In order to follow this tutorial series and experiment with the Zebra Edge SDK Identity Enabler you would need the following software artefacts installed on your local development environment:
 
 - [Node.js](https://nodejs.org/en/download/)
-- [Npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) or yarn package managers
+- [Npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) package manager
 - [Android Studio](https://developer.android.com/studio)
 - Android development tools: [adb](https://developer.android.com/studio/command-line/adb) command line tool, Android emulator ([AVD](https://developer.android.com/studio/run/managing-avds))
 - Ideally a Zebra Android device equipped with camera/scanning capabilities and the [DataWedge](https://techdocs.zebra.com/datawedge/11-1/guide/about/) connector. This tutorial has been developed using the [TC21](https://www.zebra.com/gb/en/products/mobile-computers/handheld/tc21-tc26.html) device executing Android 10. It also has been tested with an old regular Android 5.1.1 device.
