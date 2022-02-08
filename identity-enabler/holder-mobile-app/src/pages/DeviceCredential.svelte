@@ -11,7 +11,8 @@
     const credentialSubject = window.history.state.credentialSubject;
 
     async function createCredential() {
-        if (!navigator.onLine) {
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-boolean-literal-compare
+        if (navigator.onLine === false) {
             await showAlert("Error", "You need Internet connectivity to create a Device Credential");
             return;
         }
