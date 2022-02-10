@@ -137,7 +137,7 @@ adb logcat | grep -F "`adb shell ps | grep org.iota.zebra | tr -s [:space:] ' ' 
 
 ### Getting started
 
-Under the[ identity-enabler](https://github.com/ZebraDevs/Zebra-Iota-Edge-SDK) folder, there is one subfolder for each of the reference applications. For each application the `src` directory contains the application source code and static web assets. Additionally, each application has a `config.ts` file with settings and contains an Android application in the `android` directory.
+The repository is set up as a monorepo using npm workspaces. Under the [identity-enabler](https://github.com/ZebraDevs/Zebra-Iota-Edge-SDK) folder, there is one subfolder for each of the reference applications. For each application the `src` directory contains the application source code and static web assets. Additionally, each application has a `config.ts` file with settings and contains an Android application in the `android` directory. The `packages` directory contains libraries shared by the applications, currently only the `common` package.
 
 ```
 .
@@ -153,10 +153,12 @@ Under the[ identity-enabler](https://github.com/ZebraDevs/Zebra-Iota-Edge-SDK) f
 │   │   │   └── gradle
 │   │   └── src
 │   └── verifier-mobile-app
-│   	  ├── android
-│   	  │   ├── app
-│   	  │   └── gradle
-│   	  └── src
+│       ├── android
+│       │   ├── app
+│       │   └── gradle
+│       └── src
+├── packages
+│   └── common
 ```
 
 The specific code that deals with the IOTA Identity framework is at the [IdentityService](https://github.com/ZebraDevs/Zebra-Iota-Edge-SDK/blob/dev/identity-enabler/verifier-mobile-app/src/services/identityService.ts) wrapper class. We will explain the specific details of that class under the corresponding application tutorial section. In addition there is a “show me the code” button on each application screen that you can use to find relevant code snippets in context.

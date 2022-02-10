@@ -31,7 +31,8 @@ jobs:
       - name: Install dependencies
         run: npm install
       - name: Run ESLint
-        run: npm run build:lint
+        run: npm run build:lint -w identity-enabler/verifier-mobile-app
+
   test:
     name: Test
     runs-on: ubuntu-latest
@@ -46,7 +47,7 @@ jobs:
       - name: Install dependencies
         run: npm install
       - name: Run Jest
-        run: npm run test:ci
+        run: npm run test:ci -w identity-enabler/verifier-mobile-app
       - uses: actions/upload-artifact@v2
         if: success() || failure()
         with:
@@ -66,7 +67,7 @@ jobs:
       - name: Install dependencies
         run: npm install
       - name: Build
-        run: npm run build
+        run: npm run build -w identity-enabler/verifier-mobile-app
       - name: Upload public directory
         uses: actions/upload-artifact@v2
         with:

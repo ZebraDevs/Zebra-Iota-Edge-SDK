@@ -1,0 +1,17 @@
+{
+    "include": ["src/**/*"],
+    "exclude": ["node_modules/*", "dist/*"],
+    "compilerOptions": {
+        "target": "es2015",
+        "module": "es2015",
+        "lib": ["ES2020", "DOM"],
+        "sourceMap": true,
+        "strict": true,
+        "moduleResolution": "node",
+        "types": ["svelte"],
+        "allowSyntheticDefaultImports": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true
+    }
+}
