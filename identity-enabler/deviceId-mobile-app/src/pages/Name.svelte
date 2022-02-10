@@ -2,7 +2,7 @@
     import { Plugins } from "@capacitor/core";
     import { navigate } from "svelte-routing";
     import Button from "../components/Button.svelte";
-    import TextField from "@zebra-iota-edge-sdk/common";
+    import { TextField } from "@zebra-iota-edge-sdk/common";
     import Header from "../components/Header.svelte";
     import { ServiceFactory } from "../factories/serviceFactory";
     import { account, hasSetupAccount, loadingScreen } from "../lib/store";
