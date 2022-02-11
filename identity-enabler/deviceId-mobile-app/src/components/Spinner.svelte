@@ -8,6 +8,13 @@
 </div>
 
 <style>
+    .spinner-wrapper {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+    }
+
     .lds-ring {
         display: inline-block;
         position: relative;

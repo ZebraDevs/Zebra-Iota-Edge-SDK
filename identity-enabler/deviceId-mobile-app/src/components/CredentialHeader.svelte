@@ -32,7 +32,6 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        padding: 0 2rem;
         font-family: "Proxima Nova", sans-serif;
     }
 
@@ -43,12 +42,13 @@
 
     h2 {
         margin: 0;
-        font-size: 1.4em;
     }
 
     p {
+        margin-bottom: 0;
         line-height: 1.5em;
         font-size: smaller;
+        text-align: center;
     }
 
     p .emphasis {

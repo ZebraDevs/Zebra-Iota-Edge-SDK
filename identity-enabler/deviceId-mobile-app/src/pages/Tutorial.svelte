@@ -4,6 +4,7 @@
     import { TUTORIAL_URL } from "../config";
     import { loadingScreen } from "../lib/store";
     import { showAlert } from "../lib/ui/helpers";
+    import Layout from "../components/Layout.svelte";
 
     let markdown = "";
     let title = "";
@@ -23,50 +24,43 @@
     });
 </script>
 
-<main>
-    <div class="header-wrapper">
-        <i on:click|once={() => window.history.back()} class="side icon-chevron" />
-        <header>{title}</header>
-        <div class="side" />
+<Layout>
+    <div slot="header">
+        <div class="options-wrapper">
+            <i on:click|once={() => window.history.back()} class="side icon-chevron" />
+            <h2>{title}</h2>
+            <div class="side" />
+        </div>
     </div>
-    <section>
+
+    <section slot="content">
         <div class="highlightjs-component">
             <Markdown {markdown} language="javascript" />
         </div>
     </section>
-</main>
+</Layout>
 
 <style>
-    main {
-        min-height: 100%;
-        width: 100%;
-    }
-
-    .header-wrapper {
-        position: sticky;
-        top: 0;
+    .options-wrapper {
+        background-color: black;
+        color: white;
         display: flex;
+        flex-direction: row;
         justify-content: space-between;
-        align-items: center;
-        background: black;
-        padding: 1.2rem;
+        padding: 1.5rem;
     }
 
     .icon-chevron {
         color: white;
     }
 
-    .header-wrapper > .side {
-        flex: 1;
+    h2 {
+        margin: 0;
+        align-self: center;
     }
 
-    header {
-        font-family: "Proxima Nova", sans-serif;
-        font-weight: 700;
-        font-size: 1em;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        color: #fff;
+    .options-wrapper > .side {
+        flex: 1;
     }
 
     .highlightjs-component {

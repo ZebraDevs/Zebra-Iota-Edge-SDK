@@ -1,130 +1,54 @@
 html,
 body {
-    position: relative;
     width: 100%;
     height: 100%;
+    box-sizing: border-box;
 }
 
 body {
-    color: #333;
+    color: black;
     margin: 0;
-    box-sizing: border-box;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue",
         sans-serif;
 }
 
-a {
-    color: rgb(0, 100, 200);
-    text-decoration: none;
+/*
+  Variables
+*/
+:root {
+    --primary-100: #78d64b;
+    --primary: var(--primary-100);
+    --primary-60: #aee693;
+    --primary-40: #c9efb7;
+    --primary-20: #e4f7db;
+
+    --black-80: #333;
+    --black-60: #666;
+    --black-40: #999;
+    --black-20: #ccc;
+    --black-10: #eee;
 }
 
-a:hover {
-    text-decoration: underline;
+/*
+  Utilities
+*/
+.rotate-180 {
+    transform: rotate(180deg);
 }
 
-a:visited {
-    color: rgb(0, 80, 160);
-}
-
-label {
-    display: block;
-}
-
-input,
-button,
-select,
-textarea {
-    font-family: inherit;
-    font-size: inherit;
-    -webkit-padding: 0.4em 0;
-    padding: 0.4em;
-    margin: 0 0 0.5em 0;
-    box-sizing: border-box;
-    border: unset;
-    border-radius: 2px;
-}
-
-input:disabled {
-    color: #ccc;
-}
-
-button {
-    color: #333;
-    background-color: #f4f4f4;
-    outline: none;
-}
-
-button:disabled {
-    color: #999;
-}
-
-button:not(:disabled):active {
-    background-color: #ddd;
-}
-
-button:focus {
-    border-color: #666;
-}
-
+/*
+  Typography
+*/
 h1 {
-    color: #ff3e00;
-    text-transform: uppercase;
-    font-weight: 100;
-    text-align: center;
+    font-family: "Proxima Nova", sans-serif;
+    font-weight: 700;
+    font-size: 1.5em;
 }
 
-.controls {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-.spinner-wrapper {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-}
-
-.lds-ring {
-    display: inline-block;
-    position: relative;
-    width: 8vw;
-    height: 8vw;
-    width: 28px;
-    height: 28px;
-}
-.lds-ring div {
-    box-sizing: border-box;
-    display: block;
-    position: absolute;
-    width: 8vw;
-    height: 8vw;
-    width: 28px;
-    height: 28px;
-    margin: 0 auto;
-    border: 3px solid rgb(10, 49, 206);
-    border-radius: 50%;
-    animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-    border-color: rgb(17, 14, 219) transparent transparent transparent;
-}
-.lds-ring div:nth-child(1) {
-    animation-delay: -0.45s;
-}
-.lds-ring div:nth-child(2) {
-    animation-delay: -0.3s;
-}
-.lds-ring div:nth-child(3) {
-    animation-delay: -0.15s;
-}
-@keyframes lds-ring {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
+h2 {
+    font-family: "Proxima Nova", sans-serif;
+    font-weight: 700;
+    font-size: 1.2em;
 }
 
 i {
@@ -132,8 +56,9 @@ i {
     color: black;
 }
 
-.rotate-180 {
-    transform: rotate(180deg);
+a {
+    color: unset;
+    text-decoration: none;
 }
 
 /* 
