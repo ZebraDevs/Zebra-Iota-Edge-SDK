@@ -32,6 +32,12 @@ export default {
                     rename: "public"
                 },
                 {
+                    //  WASM from NPM workspace installation
+                    src: "../../node_modules/@iota/identity-wasm/web/identity_wasm_bg.wasm",
+                    dest: "public/wasm"
+                },
+                {
+                    // WASM from local installation (if any) will overwrite WASM from workspace installation
                     src: "node_modules/@iota/identity-wasm/web/identity_wasm_bg.wasm",
                     dest: "public/wasm"
                 },
