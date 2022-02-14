@@ -1,10 +1,10 @@
 <script lang="ts">
-    import Layout from "../components/Layout.svelte";
+    import { Page } from "@zebra-iota-edge-sdk/common";
 
     const code: string = window.history.state.code;
 </script>
 
-<Layout>
+<Page theme="dark">
     <div slot="header" class="options-wrapper">
         <i on:click|once={() => window.history.back()} class="side icon-chevron" />
         <h2>Code</h2>
@@ -13,20 +13,14 @@
     <section slot="content">
         <pre><code>{code}</code></pre>
     </section>
-</Layout>
+</Page>
 
 <style>
     .options-wrapper {
-        background-color: black;
-        color: white;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
         padding: 1.5rem;
-    }
-
-    .icon-chevron {
-        color: white;
     }
 
     h2 {
@@ -41,12 +35,13 @@
 
     section {
         height: 100%;
+        background-color: white;
     }
 
     pre {
+        color: black;
         overflow: auto;
         margin: 0;
-        background-color: #eee;
         padding: 1rem;
     }
 </style>

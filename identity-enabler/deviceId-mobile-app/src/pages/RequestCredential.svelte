@@ -1,5 +1,5 @@
 <script lang="ts">
-    import Layout from "../components/Layout.svelte";
+    import { Page } from "@zebra-iota-edge-sdk/common";
     import { navigate } from "svelte-routing";
     import Button from "../components/Button.svelte";
     import { showAlert } from "../lib/ui/helpers";
@@ -22,7 +22,7 @@
     }
 </script>
 
-<Layout>
+<Page>
     <div slot="header" class="options-wrapper">
         <i on:click={goBack} class="icon-chevron" />
         <h2>Request Device DID credential</h2>
@@ -39,11 +39,10 @@
             <i class="icon-scan" />
         </Button>
     </div>
-</Layout>
+</Page>
 
 <style>
     .options-wrapper {
-        background-color: var(--primary-60);
         display: flex;
         flex-direction: row;
         justify-content: space-between;
@@ -67,7 +66,7 @@
     p.description {
         font-family: "Proxima Nova", sans-serif;
         font-size: 0.9em;
-        color: #6f7a8d;
+        color: var(--black-60);
     }
 
     div[slot="footer"] {

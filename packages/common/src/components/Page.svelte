@@ -4,7 +4,7 @@
     export let theme: "light" | "dark" = "light";
 </script>
 
-<div class="layout-wrapper {theme}" in:fly={{ x: 500, duration: 500 }} on:click>
+<div class="page-wrapper {theme}" in:fly={{ x: 500, duration: 500 }} on:click>
     {#if $$slots.header}
         <header>
             <slot name="header" />
@@ -21,20 +21,12 @@
 </div>
 
 <style>
-    .layout-wrapper {
+    .page-wrapper {
         height: 100%;
         width: 100%;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-    }
-
-    .layout-wrapper.light {
-        background-color: white;
-    }
-
-    .layout-wrapper.dark {
-        background-color: black;
     }
 
     main {

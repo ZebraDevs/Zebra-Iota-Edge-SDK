@@ -6,7 +6,6 @@ body {
 }
 
 body {
-    color: black;
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue",
         sans-serif;
@@ -60,7 +59,6 @@ h2 {
 
 i {
     font-size: 1.75em;
-    color: black;
 }
 
 a {
@@ -74,4 +72,33 @@ a {
 a[target="_blank"]:after {
     content: " \2197";
     font-size: 0.9em;
+}
+
+/*
+ Theme
+*/
+.page-wrapper {
+    color: black;
+    background-color: white;
+}
+
+.page-wrapper > header {
+    background-color: var(--primary-60);
+}
+
+button {
+    background-color: var(--primary);
+}
+
+button.disabled {
+    background-color: var(--primary-40);
+}
+
+.page-wrapper.dark {
+    color: white;
+    background-color: black;
+}
+
+.page-wrapper.dark > header {
+    background-color: unset;
 }

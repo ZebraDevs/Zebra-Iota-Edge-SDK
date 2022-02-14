@@ -9,7 +9,7 @@
     import { showAlert } from "../lib/ui/helpers";
     import type { IdentityService } from "../services/identityService";
     import { __WEB__ } from "$lib/platforms";
-    import Layout from "../components/Layout.svelte";
+    import { Page } from "@zebra-iota-edge-sdk/common";
 
     let name = "";
 
@@ -45,7 +45,7 @@
     }
 </script>
 
-<Layout>
+<Page>
     <div slot="content" class="content">
         <div>
             <Header text="Set the name of the device" />
@@ -60,7 +60,7 @@
     <svelte:fragment slot="footer">
         <Button disabled={name.length === 0 || Boolean($loadingScreen)} label="Next" onClick={save} />
     </svelte:fragment>
-</Layout>
+</Page>
 
 <style>
     .content {

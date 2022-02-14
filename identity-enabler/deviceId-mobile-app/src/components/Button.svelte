@@ -29,14 +29,11 @@
         font-weight: 700;
         cursor: pointer;
         margin: 0;
-        color: black;
-        background-color: #78d64b;
         border: none;
     }
 
     button.disabled {
         pointer-events: none;
-        background-color: #c9efb7;
     }
 
     button :global(img) {

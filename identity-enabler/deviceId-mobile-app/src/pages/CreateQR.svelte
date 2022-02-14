@@ -8,7 +8,7 @@
     import { showAlert, multiClick } from "../lib/ui/helpers";
     import { loadingScreen } from "../lib/store";
     import type { IdentityService } from "../services/identityService";
-    import Layout from "../components/Layout.svelte";
+    import { Page } from "@zebra-iota-edge-sdk/common";
 
     const { Device } = Plugins;
 
@@ -68,7 +68,7 @@
     }
 </script>
 
-<Layout>
+<Page>
     <div slot="header" class="options-wrapper">
         <i on:click|once={() => window.history.back()} class="icon-chevron" />
         <h2>Request Device DID credential</h2>
@@ -91,11 +91,10 @@
     <svelte:fragment slot="footer">
         <Button label="Next" onClick={requestCredential} />
     </svelte:fragment>
-</Layout>
+</Page>
 
 <style>
     .options-wrapper {
-        background-color: var(--primary-60);
         display: flex;
         flex-direction: row;
         justify-content: space-between;
@@ -133,7 +132,7 @@
         font-weight: 400;
         font-size: 2.08vh;
         line-height: 3.3vh;
-        color: #6f7a8d;
+        color: var(--black-60);
         text-align: center;
         padding: 0px 3vw;
         white-space: pre-line;
@@ -148,6 +147,5 @@
         margin: 6.5vh 3.6vh !important;
         white-space: pre-line;
         text-align: center;
-        color: #051923;
     }
 </style>

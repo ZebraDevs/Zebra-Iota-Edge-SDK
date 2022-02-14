@@ -10,7 +10,7 @@
     import { BACK_BUTTON_EXIT_GRACE_PERIOD } from "../config";
     import { shortenDID } from "../lib/ui/helpers";
     import { credentialDisplayMap } from "../lib/ui/credentialDisplayMap";
-    import Layout from "../components/Layout.svelte";
+    import { Page } from "@zebra-iota-edge-sdk/common";
 
     const { App, Toast, Modals } = Plugins;
 
@@ -70,16 +70,18 @@
     }
 </script>
 
-<Layout>
+<Page>
     <div slot="header">
         <div class="options-wrapper">
             <i on:click={onClickReset} class="icon-reset" />
             <i on:click={onClickDev} class="icon-code" />
         </div>
-        <div class="logo">
-            <i class="icon-chip" />
+        <div class="overlay">
+            <div class="logo">
+                <i class="icon-chip" />
+            </div>
+            <h1>Device {$account.name}</h1>
         </div>
-        <h1>Device {$account.name}</h1>
     </div>
 
     <section slot="content">
@@ -108,14 +110,19 @@
             {/if}
         {/if}
     </section>
-</Layout>
+</Page>
 
 <style>
     .options-wrapper {
-        background-color: var(--primary-60);
         display: flex;
         flex-direction: row;
         justify-content: space-between;
+        padding: 1.5rem;
+    }
+
+    .overlay {
+        position: absolute;
+        width: 100%;
     }
 
     .logo {
@@ -140,8 +147,8 @@
         text-align: center;
     }
 
-    .options-wrapper,
     section {
         padding: 1.5rem;
+        margin-top: 90px;
     }
 </style>

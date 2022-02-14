@@ -1,5 +1,5 @@
 <script lang="ts">
-    import Layout from "../components/Layout.svelte";
+    import { Page } from "@zebra-iota-edge-sdk/common";
     import { onMount } from "svelte";
     import Button from "../components/Button.svelte";
     import { playAudio } from "../lib/ui/helpers";
@@ -23,7 +23,7 @@
     }
 </script>
 
-<Layout theme="dark">
+<Page theme="dark">
     <section slot="content">
         <i class="icon-cross" />
         <p>{state?.message ?? "Invalid credential"}</p>
@@ -34,7 +34,7 @@
     <svelte:fragment slot="footer">
         <Button label="Done" onClick={onDone} />
     </svelte:fragment>
-</Layout>
+</Page>
 
 <style>
     section {
@@ -49,16 +49,14 @@
         font-family: "Proxima Nova", sans-serif;
         font-weight: 600;
         font-size: 1.1em;
-        color: #fff;
         text-transform: uppercase;
     }
 
     section > small {
-        color: #bbb;
+        color: var(--black-20);
     }
 
     .icon-cross {
         font-size: 64px;
-        color: white;
     }
 </style>

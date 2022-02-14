@@ -7,7 +7,7 @@
     import ObjectList from "../components/ObjectList.svelte";
     import CredentialHeader from "../components/CredentialHeader.svelte";
     import { flattenCredential } from "../lib/ui/helpers";
-    import Layout from "../components/Layout.svelte";
+    import { Page } from "@zebra-iota-edge-sdk/common";
 
     const { App } = Plugins;
 
@@ -46,7 +46,7 @@
     }
 </script>
 
-<Layout>
+<Page>
     <div slot="header" class="options-wrapper">
         <i on:click={goBack} class="icon-chevron" />
         <CredentialHeader credential={vp.verifiableCredential} />
@@ -66,11 +66,10 @@
             </Button>
         {/if}
     </svelte:fragment>
-</Layout>
+</Page>
 
 <style>
     .options-wrapper {
-        background-color: var(--primary-60);
         display: flex;
         flex-direction: row;
         justify-content: space-between;

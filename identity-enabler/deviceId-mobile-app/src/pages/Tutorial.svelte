@@ -4,7 +4,7 @@
     import { TUTORIAL_URL } from "../config";
     import { loadingScreen } from "../lib/store";
     import { showAlert } from "../lib/ui/helpers";
-    import Layout from "../components/Layout.svelte";
+    import { Page } from "@zebra-iota-edge-sdk/common";
 
     let markdown = "";
     let title = "";
@@ -24,7 +24,7 @@
     });
 </script>
 
-<Layout>
+<Page theme="dark">
     <div slot="header" class="options-wrapper">
         <i on:click|once={() => window.history.back()} class="side icon-chevron" />
         <h2>{title}</h2>
@@ -36,20 +36,14 @@
             <Markdown {markdown} language="javascript" />
         </div>
     </section>
-</Layout>
+</Page>
 
 <style>
     .options-wrapper {
-        background-color: black;
-        color: white;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
         padding: 1.5rem;
-    }
-
-    .icon-chevron {
-        color: white;
     }
 
     h2 {
@@ -63,11 +57,9 @@
     }
 
     .highlightjs-component {
-        overflow-wrap: break-word;
-        word-wrap: break-word;
-        overflow-x: auto;
-        border-radius: 4px;
-        background-color: #eee;
+        overflow: auto;
+        background-color: white;
+        color: black;
         padding: 1rem;
     }
 </style>

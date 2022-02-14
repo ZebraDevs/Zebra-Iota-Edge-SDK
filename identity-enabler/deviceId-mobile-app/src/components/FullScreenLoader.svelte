@@ -14,7 +14,7 @@
 <style>
     main {
         position: absolute;
-        background: #aee693;
+        background: var(--primary-60);
         height: 100%;
         width: 100%;
         z-index: 10;

@@ -5,7 +5,7 @@
     import { showAlert, multiClick, getDateString, getTimeString } from "../lib/ui/helpers";
     import CredentialHeader from "../components/CredentialHeader.svelte";
     import { navigate } from "svelte-routing";
-    import Layout from "../components/Layout.svelte";
+    import { Page } from "@zebra-iota-edge-sdk/common";
 
     const vp = window.history.state.vp;
     const expiry = vp.verifiableCredential.expirationDate
@@ -43,7 +43,7 @@
     }
 </script>
 
-<Layout theme="dark">
+<Page theme="dark">
     <div slot="header" class="options-wrapper">
         <i on:click|once={() => window.history.back()} class="icon-chevron" />
         <CredentialHeader credential={vp.verifiableCredential} hideDetails={true} color="white" />
@@ -57,7 +57,7 @@
             <p>Valid until {getDateString(expiry)} at {getTimeString(expiry)}</p>
         {/if}
     </footer>
-</Layout>
+</Page>
 
 <style>
     .options-wrapper {
@@ -65,10 +65,6 @@
         flex-direction: row;
         justify-content: space-between;
         padding: 1.5rem;
-    }
-
-    .options-wrapper > i {
-        color: white;
     }
 
     canvas {
@@ -82,7 +78,6 @@
     }
 
     footer > p {
-        color: #fff;
         margin: 0;
         font-family: "Proxima Nova", sans-serif;
         font-weight: 500;

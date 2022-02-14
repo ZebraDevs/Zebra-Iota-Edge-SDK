@@ -4,7 +4,7 @@
     import type { Result } from "@zxing/library";
     import { handleScannerData } from "../lib/scan";
     import { navigate } from "svelte-routing";
-    import Layout from "../components/Layout.svelte";
+    import { Page } from "@zebra-iota-edge-sdk/common";
 
     const formats = new Map().set(DecodeHintType.POSSIBLE_FORMATS, [BarcodeFormat.DATA_MATRIX, BarcodeFormat.QR_CODE]);
     const reader = new BrowserMultiFormatReader(formats);
@@ -34,7 +34,7 @@
     }
 </script>
 
-<Layout>
+<Page>
     <div slot="header" class="options-wrapper">
         <i on:click={goBack} class="icon-chevron" />
         <h2>Scanner</h2>
@@ -47,11 +47,10 @@
     <svelte:fragment slot="content">
         <Scanner on:message={async ev => handleScannerData(ev.detail, "Camera")} />
     </svelte:fragment>
-</Layout>
+</Page>
 
 <style>
     .options-wrapper {
-        background-color: var(--primary-60);
         display: flex;
         flex-direction: row;
         justify-content: space-between;
@@ -72,8 +71,8 @@
         font-weight: 600;
         font-size: 14px;
         line-height: 16px;
-        border: 1px solid #9d9d9d;
-        background-color: #78d64b;
+        border: 1px solid var(--black-40);
+        background-color: var(--primary);
         padding: 6px 12px;
         border-radius: 4px;
         cursor: pointer;
