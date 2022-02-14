@@ -4,15 +4,15 @@
 
 In this tutorial you will learn how to use the **Identity Enabler** of the Zebra-IOTA Edge SDK verify interoperable identities for people, organizations or devices.
 
-Before reading this tutorial you should have first read the [Decentralized Identity introduction tutorial](../101/zebra-iota-edge-sdk-101-tutorial.md) and the [identity management and Holder Application tutorial](../102/zebra-iota-edge-sdk-102-tutorial.md).
+Before reading this tutorial you should have first read the [Decentralized Identity introduction tutorial](../zebra-iota-edge-sdk/zebra-iota-edge-sdk-101-tutorial.md) and the [identity management and Holder Application tutorial](../zebra-iota-edge-sdk/zebra-iota-edge-sdk-102-tutorial.md).
 
 ## Prerequisites
 
-The prerequisites for running this tutorial are described on [part 1](../101/zebra-iota-edge-sdk-101-tutorial.md#prerequisites) of this series.
+The prerequisites for running this tutorial are described on [part 1](../zebra-iota-edge-sdk/zebra-iota-edge-sdk-101-tutorial.md#prerequisites) of this series.
 
 ## Getting started
 
-An overview of the structure of the SDK is described on [part 1](../101/zebra-iota-edge-sdk-101-tutorial.md#getting-started) of this series.
+An overview of the structure of the SDK is described on [part 1](../zebra-iota-edge-sdk/zebra-iota-edge-sdk-101-tutorial.md#getting-started) of this series.
 
 ## Introduction
 
@@ -60,9 +60,9 @@ Afterwards you need to go to the Android Studio and compile, install and execute
 In order to run this application fully integrated with a Zebra Android scanning device you need to set up a DataWedge profile for the `“org.iota.zebra.verifier”` application as follows, or you can import it from [here](https://github.com/ZebraDevs/Zebra-Iota-Edge-SDK/blob/main/test/datawedge/datawedge.db).
 
 <p align="center">
-<img alt="Data Wedge Profile 1" src="/img/103/image3.png" width="30%"/>
-<img alt="Data Wedge Profile 2" src="/img/103/image7.png" width="30%"/>
-<img alt="Data Wedge Profile 3" src="/img/103/image19.png" width="30%"/>
+<img alt="Data Wedge Profile 1" src="/img/zebra-iota-edge-sdk/103/image3.png" width="30%"/>
+<img alt="Data Wedge Profile 2" src="/img/zebra-iota-edge-sdk/103/image7.png" width="30%"/>
+<img alt="Data Wedge Profile 3" src="/img/zebra-iota-edge-sdk/103/image19.png" width="30%"/>
 </p>
 
 Note: On a non DataWedge device you can simulate a DataWedge scanning through the adb command line tool as follows:
@@ -71,7 +71,7 @@ Note: On a non DataWedge device you can simulate a DataWedge scanning through th
 adb shell am startservice -a org.iota.zebra.verifier.intent.action.SCAN -e com.symbol.datawedge.source scanner -e com.symbol.datawedge.data_string <scanned_string>
 ```
 
-Additional information on how Zebra DataWedge can be integrated is found at the [introductory tutorial](../101/zebra-iota-edge-sdk-101-tutorial.md#zebra-datawedge-integration).
+Additional information on how Zebra DataWedge can be integrated is found at the [introductory tutorial](../zebra-iota-edge-sdk/zebra-iota-edge-sdk-101-tutorial.md#zebra-datawedge-integration).
 
 ## Verify a Credential
 
@@ -82,9 +82,9 @@ You can see the steps from the application below. After scanning a Verifiable Pr
 Once the credential is deemed as valid it is shown and persisted on the inbox of the application (third capture below) for demonstration purposes. When implementing a concrete solution different actions could be taken when scanning a valid credential.
 
 <p align="center">
-<img alt="Credential Verification 1" src="/img/103/image11.png" width="30%"/>
-<img alt="Credential Verification 2" src="/img/103/image13.png" width="30%"/>
-<img alt="Credential Verification 3" src="/img/103/image25.png" width="30%"/>
+<img alt="Credential Verification 1" src="/img/zebra-iota-edge-sdk/103/image11.png" width="30%"/>
+<img alt="Credential Verification 2" src="/img/zebra-iota-edge-sdk/103/image13.png" width="30%"/>
+<img alt="Credential Verification 3" src="/img/zebra-iota-edge-sdk/103/image25.png" width="30%"/>
 </p>
 
 ### Show me the code
@@ -100,4 +100,4 @@ return result?.verified;
 
 ## Next Steps
 
-If you want to learn how you can onboard supply chain devices with their own decentralized identity go to the [104 Tutorial](../104/zebra-iota-edge-sdk-104-tutorial.md).
+If you want to learn how you can onboard supply chain devices with their own decentralized identity go to the [104 Tutorial](../zebra-iota-edge-sdk/zebra-iota-edge-sdk-104-tutorial.md).

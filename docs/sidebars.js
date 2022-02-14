@@ -11,9 +11,27 @@
 
 module.exports = {
     docs: [
-        "tutorials/101/zebra-iota-edge-sdk-101-tutorial",
-        "tutorials/102/zebra-iota-edge-sdk-102-tutorial",
-        "tutorials/103/zebra-iota-edge-sdk-103-tutorial",
-        "tutorials/104/zebra-iota-edge-sdk-104-tutorial",
+        {
+            type: 'category',
+            label: 'Zebra IOTA Edge SDK',
+            collapsed: false,
+            items: [
+                'tutorials/zebra-iota-edge-sdk/zebra-iota-edge-sdk-101-tutorial',
+                'tutorials/zebra-iota-edge-sdk/zebra-iota-edge-sdk-102-tutorial',
+                'tutorials/zebra-iota-edge-sdk/zebra-iota-edge-sdk-103-tutorial',
+                'tutorials/zebra-iota-edge-sdk/zebra-iota-edge-sdk-104-tutorial',
+            ],
+        },
+        {
+            type: 'category',
+            label: 'Track And Trace Ledger API',
+            collapsed: false,
+            items: [
+                'tutorials/track-trace-ledger-api/track-trace-ledger-api-tutorial-101',
+                'tutorials/track-trace-ledger-api/track-trace-ledger-api-tutorial-102',
+                'tutorials/track-trace-ledger-api/track-trace-ledger-api-tutorial-103',
+                'tutorials/track-trace-ledger-api/track-trace-ledger-api-tutorial-201',
+            ],
+        },
     ],
 };

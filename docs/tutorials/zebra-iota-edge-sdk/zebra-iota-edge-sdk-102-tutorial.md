@@ -4,23 +4,23 @@
 
 In this tutorial you will learn how to issue and present Verifiable Credentials through a blueprint application that showcases how to incorporate the corresponding UI toolkit and libraries offered by the SDK.
 
-Before reading this tutorial we recommend that you read the [first part](../101/zebra-iota-edge-sdk-101-tutorial.md) of this series, especially if you are not familiar with decentralized identities or IOTA.
+Before reading this tutorial we recommend that you read the [first part](../zebra-iota-edge-sdk/zebra-iota-edge-sdk-101-tutorial.md) of this series, especially if you are not familiar with decentralized identities or IOTA.
 
 ## Introduction
 
 All the scaffolding needed to create a solution for managing credentials on Android devices is packaged under the so-called _Holder Application_. This application also allows sharing credentials with interested parties by way of a scannable data matrix.
 
-The application guides the user to set up an Identity (a DID document) before associating Verifiable Credentials to this Identity. As this is just a reference application, the app self-signs the Verifiable Credentials, but ordinarily they would be signed by a third party such as a government in the case of personal details. An interested party can scan and verify the credential when presented in the form of a data matrix (see _[103 Tutorial](../103/zebra-iota-edge-sdk-103-tutorial.md)_).
+The application guides the user to set up an Identity (a DID document) before associating Verifiable Credentials to this Identity. As this is just a reference application, the app self-signs the Verifiable Credentials, but ordinarily they would be signed by a third party such as a government in the case of personal details. An interested party can scan and verify the credential when presented in the form of a data matrix (see _[103 Tutorial](../zebra-iota-edge-sdk/zebra-iota-edge-sdk-103-tutorial.md)_).
 
-Note: The _Holder Application_ also includes partial functionality as an issuer of credentials (see [104 Tutorial](../104/zebra-iota-edge-sdk-104-tutorial.md)).
+Note: The _Holder Application_ also includes partial functionality as an issuer of credentials (see [104 Tutorial](../zebra-iota-edge-sdk/zebra-iota-edge-sdk-104-tutorial.md)).
 
 ## Prerequisites
 
-The prerequisites for running this tutorial are described on [part 1](../101/zebra-iota-edge-sdk-101-tutorial.md#prerequisites) of this series.
+The prerequisites for running this tutorial are described on [part 1](../zebra-iota-edge-sdk/zebra-iota-edge-sdk-101-tutorial.md#prerequisites) of this series.
 
 ## Getting started
 
-An overview of the structure of the SDK are described on [part 1](../101/zebra-iota-edge-sdk-101-tutorial.md#getting-started) of this series.
+An overview of the structure of the SDK are described on [part 1](../zebra-iota-edge-sdk/zebra-iota-edge-sdk-101-tutorial.md#getting-started) of this series.
 
 ## How to run in a browser
 
@@ -61,12 +61,12 @@ Afterwards you need to go to the Android Studio and compile, install and execute
 
 ## DataWedge profile
 
-In order to use the credential issuance part of this application (see [DeviceID tutorial](../104/zebra-iota-edge-sdk-104-tutorial.md#onboard-a-device)) you will need to set up a DataWedge profile bound to the `“org.iota.zebra.holder”` application as follows:
+In order to use the credential issuance part of this application (see [DeviceID tutorial](../zebra-iota-edge-sdk/zebra-iota-edge-sdk-104-tutorial.md#onboard-a-device)) you will need to set up a DataWedge profile bound to the `“org.iota.zebra.holder”` application as follows:
 
 <p align="center">
-<img alt="Data Wedge Profile 1" src="/img/102/image3.png" width="30%"/>
-<img alt="Data Wedge Profile 2" src="/img/102/image10.png" width="30%"/>
-<img alt="Data Wedge Profile 3" src="/img/102/image1.png" width="30%"/>
+<img alt="Data Wedge Profile 1" src="/img/zebra-iota-edge-sdk/102/image3.png" width="30%"/>
+<img alt="Data Wedge Profile 2" src="/img/zebra-iota-edge-sdk/102/image10.png" width="30%"/>
+<img alt="Data Wedge Profile 3" src="/img/zebra-iota-edge-sdk/102/image1.png" width="30%"/>
 </p>
 
 Note: On a non DataWedge device you can simulate a DataWedge scanning through the `adb` command line tool as follows:
@@ -75,16 +75,16 @@ Note: On a non DataWedge device you can simulate a DataWedge scanning through th
 adb shell am startservice -a org.iota.zebra.holder.intent.action.SCAN -e com.symbol.datawedge.source scanner -e com.symbol.datawedge.data_string <scanned_string>
 ```
 
-Additional information on how Zebra DataWedge can be integrated is found at the [introductory tutorial](../101/zebra-iota-edge-sdk-101-tutorial.md#zebra-datawedge-integration).
+Additional information on how Zebra DataWedge can be integrated is found at the [introductory tutorial](../zebra-iota-edge-sdk/zebra-iota-edge-sdk-101-tutorial.md#zebra-datawedge-integration).
 
 ## Create an Identity
 
 Under the first time experience wizard, once you enter a name associated with your new Identity, (last step of the wizard) the application will create a new DID, anchoring it to the IOTA Tangle. The private key that allows control of such an Identity is securely stored on the device.
 
 <p align="center">
-<img alt="Identity Creation 1" src="/img/102/image9.png" width="30%"/>
-<img alt="Identity Creation 2" src="/img/102/image6.png" width="30%"/>
-<img alt="Identity Creation 3" src="/img/102/image26.png" width="30%"/>
+<img alt="Identity Creation 1" src="/img/zebra-iota-edge-sdk/102/image9.png" width="30%"/>
+<img alt="Identity Creation 2" src="/img/zebra-iota-edge-sdk/102/image6.png" width="30%"/>
+<img alt="Identity Creation 3" src="/img/zebra-iota-edge-sdk/102/image26.png" width="30%"/>
 </p>
 
 ### Show me the code
@@ -161,9 +161,9 @@ Note: The user is both the subject and the holder of the identity and credential
 Note: At any point in time you can click on the button on top left of the main page of the application and restart the process of identity and credentials generation.
 
 <p align="center">
-<img alt="Credential Issuance 1" src="/img/102/image24.png" width="30%"/>
-<img alt="Credential Issuance 2" src="/img/102/image14.png" width="30%"/>
-<img alt="Credential Issuance 3" src="/img/102/image27.png" width="30%"/>
+<img alt="Credential Issuance 1" src="/img/zebra-iota-edge-sdk/102/image24.png" width="30%"/>
+<img alt="Credential Issuance 2" src="/img/zebra-iota-edge-sdk/102/image14.png" width="30%"/>
+<img alt="Credential Issuance 3" src="/img/zebra-iota-edge-sdk/102/image27.png" width="30%"/>
 </p>
 
 ### Show me the code
@@ -212,8 +212,8 @@ As a result the verifier can validate not only the credential itself, but also t
 Once a verifiable presentation has been generated it is encoded using a data matrix code. In our example we are using a 6 by 6 data matrix code that can later be scanned by the _Verifier Application_ (see below). If you double tap on the data matrix code you will be able to inspect the JSON-LD content that represents the credential presented.
 
 <p align="center">
-<img alt="Credential Presentation 1" src="/img/102/image15.png" width="30%"/>
-<img alt="Credential Presentation 2" src="/img/102/image5.png" width="30%"/>
+<img alt="Credential Presentation 1" src="/img/zebra-iota-edge-sdk/102/image15.png" width="30%"/>
+<img alt="Credential Presentation 2" src="/img/zebra-iota-edge-sdk/102/image5.png" width="30%"/>
 </p>
 
 ### Show me the code
@@ -241,4 +241,4 @@ Then, the generation of a data matrix code is done using the [bwip-js library](h
 
 ## Next Steps
 
-If you want to know how to build an application capable of verifying credentials go the [103 Tutorial](../103/zebra-iota-edge-sdk-103-tutorial.md).
+If you want to know how to build an application capable of verifying credentials go the [103 Tutorial](../zebra-iota-edge-sdk/zebra-iota-edge-sdk-103-tutorial.md).

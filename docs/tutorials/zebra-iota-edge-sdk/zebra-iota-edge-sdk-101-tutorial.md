@@ -6,9 +6,9 @@ In this tutorial series you will learn how to use the **Identity Enabler** of th
 
 Other parts in this series are:
 
-* [102 - Managing Credentials](../102/zebra-iota-edge-sdk-102-tutorial.md)
-* [103 - Verifying Credentials](../103/zebra-iota-edge-sdk-103-tutorial.md)
-* [104 - Device onboarding](../104/zebra-iota-edge-sdk-104-tutorial.md)
+* [102 - Managing Credentials](../zebra-iota-edge-sdk/zebra-iota-edge-sdk-102-tutorial.md)
+* [103 - Verifying Credentials](../zebra-iota-edge-sdk/zebra-iota-edge-sdk-103-tutorial.md)
+* [104 - Device onboarding](../zebra-iota-edge-sdk/zebra-iota-edge-sdk-104-tutorial.md)
 
 ## Introduction to Digital Identities
 
@@ -17,7 +17,7 @@ Based on its [technical definition](https://www.justaskgemalto.com/en/what-is-di
 The details collected about an identity (for example name, email address, DoB, credit card number, vaccinations taken for personal identities) during the identity creation phase represent what are called the **identity claims**. An identity is associated with zero, one or multiple claims.
 
 <p align="center">
-  <img src="/img/101/image2.png" width="50%" alt="Decentralized Identity Overview"/>
+  <img src="/img/zebra-iota-edge-sdk/101/image2.png" width="50%" alt="Decentralized Identity Overview"/>
 </p>
 
 Different roles can be distinguished (see figure above):
