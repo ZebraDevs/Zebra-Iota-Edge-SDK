@@ -25,12 +25,13 @@
         align-items: center;
         width: 100%;
         height: 3.5em;
-        font-size: 4vw;
+        font-size: 0.85em;
         font-weight: 700;
         cursor: pointer;
         margin: 0;
         color: black;
         background-color: #78d64b;
+        border: none;
     }
 
     button.disabled {

@@ -1,49 +1,46 @@
 <script lang="ts">
+    import Layout from "../components/Layout.svelte";
+
     const code: string = window.history.state.code;
 </script>
 
-<main>
-    <div class="header-wrapper">
+<Layout>
+    <div slot="header" class="options-wrapper">
         <i on:click|once={() => window.history.back()} class="side icon-chevron" />
-        <header>Code</header>
+        <h2>Code</h2>
         <div class="side" />
     </div>
-    <section>
+    <section slot="content">
         <pre><code>{code}</code></pre>
     </section>
-</main>
+</Layout>
 
 <style>
-    main {
-        min-height: 100%;
-        width: 100%;
-    }
-
-    .header-wrapper {
-        position: sticky;
-        top: 0;
+    .options-wrapper {
+        background-color: black;
+        color: white;
         display: flex;
+        flex-direction: row;
         justify-content: space-between;
-        align-items: center;
-        background: black;
-        padding: 1.2rem;
+        padding: 1.5rem;
     }
 
     .icon-chevron {
         color: white;
     }
 
-    .header-wrapper > .side {
+    h2 {
+        margin: 0;
+        align-self: center;
+        text-transform: uppercase;
+    }
+
+    .options-wrapper > .side {
         flex: 1;
     }
 
-    header {
-        font-family: "Proxima Nova", sans-serif;
-        font-weight: 700;
-        font-size: 1em;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        color: #fff;
+    section {
+        height: 100%;
     }
 
     pre {

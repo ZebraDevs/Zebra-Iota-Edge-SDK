@@ -1,10 +1,10 @@
 <script lang="ts">
-    import { fly } from "svelte/transition";
     import Scanner from "../components/Scanner.svelte";
     import { BarcodeFormat, BrowserMultiFormatReader, DecodeHintType } from "@zxing/library";
     import type { Result } from "@zxing/library";
     import { handleScannerData } from "../lib/scan";
     import { navigate } from "svelte-routing";
+    import Layout from "../components/Layout.svelte";
 
     const formats = new Map().set(DecodeHintType.POSSIBLE_FORMATS, [BarcodeFormat.DATA_MATRIX, BarcodeFormat.QR_CODE]);
     const reader = new BrowserMultiFormatReader(formats);
@@ -34,38 +34,33 @@
     }
 </script>
 
-<main transition:fly={{ y: 200, duration: 500 }}>
-    <header>
+<Layout>
+    <div slot="header" class="options-wrapper">
         <i on:click={goBack} class="icon-chevron" />
-        <p>Scanner</p>
+        <h2>Scanner</h2>
         <label class="image-select">
             <input type="file" accept="image/*" on:change={e => imageSelected(e)} />
             Browse
         </label>
-    </header>
-    <Scanner on:message={async ev => handleScannerData(ev.detail, "Camera")} />
-</main>
+    </div>
+
+    <svelte:fragment slot="content">
+        <Scanner on:message={async ev => handleScannerData(ev.detail, "Camera")} />
+    </svelte:fragment>
+</Layout>
 
 <style>
-    main {
-        height: 100%;
-        overflow: hidden;
-    }
-
-    header {
-        background-color: #aee693;
+    .options-wrapper {
+        background-color: var(--primary-60);
         display: flex;
-        align-items: center;
+        flex-direction: row;
         justify-content: space-between;
-        height: 72px;
-        padding: 0 2.6vh;
+        padding: 1.5rem;
     }
 
-    header > p {
-        font-family: "Proxima Nova", sans-serif;
-        font-weight: 600;
-        font-size: 1.2em;
-        margin: 0;
+    h2 {
+        margin: 0 0.5rem;
+        align-self: center;
     }
 
     input[type="file"] {

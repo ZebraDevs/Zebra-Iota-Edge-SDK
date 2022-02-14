@@ -5,6 +5,7 @@
     import { showAlert, multiClick, getDateString, getTimeString } from "../lib/ui/helpers";
     import CredentialHeader from "../components/CredentialHeader.svelte";
     import { navigate } from "svelte-routing";
+    import Layout from "../components/Layout.svelte";
 
     const vp = window.history.state.vp;
     const expiry = vp.verifiableCredential.expirationDate
@@ -42,56 +43,37 @@
     }
 </script>
 
-<main>
-    <header>
-        <div class="options-wrapper">
-            <i on:click|once={() => window.history.back()} class="icon-chevron" />
-            <i on:click={onClickDev} class="icon-code" />
-        </div>
+<Layout theme="dark">
+    <div slot="header" class="options-wrapper">
+        <i on:click|once={() => window.history.back()} class="icon-chevron" />
         <CredentialHeader credential={vp.verifiableCredential} hideDetails={true} color="white" />
-    </header>
-
-    <div class="presentation-wrapper">
-        <canvas id="presentation" use:multiClick on:multiClick={showJSON} />
+        <i on:click={onClickDev} class="icon-code" />
     </div>
 
-    <footer class="footerContainer">
+    <canvas slot="content" id="presentation" use:multiClick on:multiClick={showJSON} />
+
+    <footer slot="footer" class="footerContainer">
         {#if expiry}
             <p>Valid until {getDateString(expiry)} at {getTimeString(expiry)}</p>
         {/if}
     </footer>
-</main>
+</Layout>
 
 <style>
-    main {
+    .options-wrapper {
         display: flex;
-        flex-direction: column;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
-        position: relative;
-        height: 100%;
-        background: black;
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 1.5rem;
+    }
+
+    .options-wrapper > i {
+        color: white;
     }
 
     canvas {
         position: relative;
         width: 100%;
-    }
-
-    header {
-        margin-bottom: 1.5rem;
-        display: flex;
-        flex-direction: column;
-        align-items: stretch;
-        text-align: center;
-    }
-
-    .presentation-wrapper {
-        background: white;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
     }
 
     footer {
@@ -105,17 +87,5 @@
         font-family: "Proxima Nova", sans-serif;
         font-weight: 500;
         font-size: 1.2em;
-    }
-
-    .options-wrapper {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        margin: 3.5vh 3.5vh 0 3.5vh;
-        position: relative;
-    }
-
-    .options-wrapper > i {
-        color: white;
     }
 </style>

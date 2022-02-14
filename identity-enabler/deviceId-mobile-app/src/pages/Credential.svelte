@@ -47,25 +47,25 @@
 </script>
 
 <Layout>
-    <div slot="header">
-        <div class="options-wrapper">
-            <i on:click={goBack} class="icon-chevron" />
-            <CredentialHeader credential={vp.verifiableCredential} />
-            <i on:click={onClickDev} class="icon-code" />
-        </div>
+    <div slot="header" class="options-wrapper">
+        <i on:click={goBack} class="icon-chevron" />
+        <CredentialHeader credential={vp.verifiableCredential} />
+        <i on:click={onClickDev} class="icon-code" />
     </div>
 
     <section slot="content">
         <ObjectList entries={flattenCredential(vp.verifiableCredential)} />
     </section>
 
-    {#if save}
-        <Button slot="footer" label="Save credential" onClick={onSaveCredential} />
-    {:else}
-        <Button slot="footer" label="Share credential" onClick={share}>
-            <i class="icon-share" />
-        </Button>
-    {/if}
+    <svelte:fragment slot="footer">
+        {#if save}
+            <Button label="Save credential" onClick={onSaveCredential} />
+        {:else}
+            <Button label="Share credential" onClick={share}>
+                <i class="icon-share" />
+            </Button>
+        {/if}
+    </svelte:fragment>
 </Layout>
 
 <style>
@@ -74,6 +74,10 @@
         display: flex;
         flex-direction: row;
         justify-content: space-between;
+    }
+
+    .options-wrapper,
+    section {
         padding: 1.5rem;
     }
 </style>

@@ -1,7 +1,6 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import { navigate } from "svelte-routing";
-    import { fly } from "svelte/transition";
     import { Plugins } from "@capacitor/core";
     import bwipjs from "bwip-js";
     import { ServiceFactory } from "../factories/serviceFactory";
@@ -9,6 +8,7 @@
     import { showAlert, multiClick } from "../lib/ui/helpers";
     import { loadingScreen } from "../lib/store";
     import type { IdentityService } from "../services/identityService";
+    import Layout from "../components/Layout.svelte";
 
     const { Device } = Plugins;
 
@@ -68,12 +68,14 @@
     }
 </script>
 
-<main>
-    <div class="wrapper" transition:fly={{ x: 500, duration: 500 }}>
-        <header>
-            <i on:click|once={() => window.history.back()} class="icon-chevron" />
-            <p>Request Device DID credential</p>
-        </header>
+<Layout>
+    <div slot="header" class="options-wrapper">
+        <i on:click|once={() => window.history.back()} class="icon-chevron" />
+        <h2>Request Device DID credential</h2>
+        <div class="side" />
+    </div>
+
+    <div slot="content" class="wrapper">
         <div class="subheader">
             <p>Share device claims with the Organization ID holder app</p>
         </div>
@@ -84,42 +86,34 @@
             <pre>Scan this QR code with the Holder app
                 to continue</pre>
         </div>
-        <footer>
-            <Button
-                style="height: 64px;"
-                loadingText={"Generating identity"}
-                label="Next"
-                onClick={requestCredential}
-            />
-        </footer>
     </div>
-</main>
+
+    <svelte:fragment slot="footer">
+        <Button label="Next" onClick={requestCredential} />
+    </svelte:fragment>
+</Layout>
 
 <style>
-    main {
-        height: 100%;
-        flex-direction: column;
+    .options-wrapper {
+        background-color: var(--primary-60);
         display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 1.5rem;
+    }
+
+    h2 {
+        margin: 0 0.5rem;
+        align-self: center;
+    }
+
+    .options-wrapper > .side {
         flex: 1;
     }
 
-    header {
-        background-color: #aee693;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 72px;
-        padding: 0 2.6vh;
-    }
-
-    header > p {
-        flex-grow: 1;
+    .wrapper {
         text-align: center;
-        white-space: nowrap;
-        font-family: "Proxima Nova", sans-serif;
-        font-weight: 600;
-        font-size: 1.2em;
-        margin: 0;
+        padding: 1.5rem;
     }
 
     .qr-wrapper {
@@ -131,16 +125,6 @@
         justify-content: center;
         width: 100%;
         margin: 7vh 0 9vh 0;
-    }
-
-    .wrapper {
-        text-align: center;
-    }
-
-    @media (min-width: 640px) {
-        main {
-            max-width: none;
-        }
     }
 
     .info > pre {
@@ -165,11 +149,5 @@
         white-space: pre-line;
         text-align: center;
         color: #051923;
-    }
-
-    footer {
-        width: 100%;
-        position: absolute;
-        bottom: 0;
     }
 </style>

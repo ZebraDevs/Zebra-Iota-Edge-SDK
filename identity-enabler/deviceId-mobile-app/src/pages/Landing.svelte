@@ -6,6 +6,7 @@
     import { navigate } from "svelte-routing";
     import { wait } from "../lib/helpers";
     import { BACK_BUTTON_EXIT_GRACE_PERIOD } from "../config";
+    import Layout from "../components/Layout.svelte";
 
     const info = {
         header: "Create and store device digital identity",
@@ -41,31 +42,24 @@
     }
 </script>
 
-<main id="wrapper">
-    <div class="content">
+<Layout>
+    <div slot="content" class="content">
         <div>
             <Header text={info.header} />
         </div>
         <img src="/img/{info.image}" alt="checklist" />
         <p class="info">{info.content}</p>
     </div>
-    <footer class="footerContainer">
+    <svelte:fragment slot="footer">
         <Button label={info.footer} onClick={onNext} />
-    </footer>
-</main>
+    </svelte:fragment>
+</Layout>
 
 <style>
-    main {
-        height: 100%;
-    }
-
     .content {
         display: flex;
         flex-direction: column;
         align-items: center;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
-        padding-bottom: 3.5em;
     }
 
     .content > * {
@@ -86,11 +80,5 @@
     img {
         mix-blend-mode: multiply;
         max-height: 150px;
-    }
-
-    footer {
-        position: fixed;
-        bottom: 0;
-        width: 100%;
     }
 </style>

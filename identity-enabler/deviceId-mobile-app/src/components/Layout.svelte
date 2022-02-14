@@ -1,8 +1,10 @@
 <script lang="ts">
     import { fly } from "svelte/transition";
+
+    export let theme: "light" | "dark" = "light";
 </script>
 
-<div class="layout-wrapper" in:fly={{ x: 500, duration: 500 }}>
+<div class="layout-wrapper {theme}" in:fly={{ x: 500, duration: 500 }} on:click>
     {#if $$slots.header}
         <header>
             <slot name="header" />
@@ -27,8 +29,12 @@
         justify-content: space-between;
     }
 
-    .layout-wrapper > main {
-        padding: 1.5rem;
+    .layout-wrapper.light {
+        background-color: white;
+    }
+
+    .layout-wrapper.dark {
+        background-color: black;
     }
 
     main {

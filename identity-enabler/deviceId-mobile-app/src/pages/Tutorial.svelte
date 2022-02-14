@@ -25,12 +25,10 @@
 </script>
 
 <Layout>
-    <div slot="header">
-        <div class="options-wrapper">
-            <i on:click|once={() => window.history.back()} class="side icon-chevron" />
-            <h2>{title}</h2>
-            <div class="side" />
-        </div>
+    <div slot="header" class="options-wrapper">
+        <i on:click|once={() => window.history.back()} class="side icon-chevron" />
+        <h2>{title}</h2>
+        <div class="side" />
     </div>
 
     <section slot="content">
@@ -57,6 +55,7 @@
     h2 {
         margin: 0;
         align-self: center;
+        text-transform: uppercase;
     }
 
     .options-wrapper > .side {

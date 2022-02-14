@@ -116,7 +116,6 @@
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        padding: 1.5rem;
     }
 
     .logo {
@@ -139,5 +138,10 @@
     h1 {
         margin: 1rem 0 0 0;
         text-align: center;
+    }
+
+    .options-wrapper,
+    section {
+        padding: 1.5rem;
     }
 </style>

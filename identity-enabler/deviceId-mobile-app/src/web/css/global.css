@@ -30,6 +30,13 @@ body {
 }
 
 /*
+  Forms
+*/
+input {
+    padding: 0.5rem;
+}
+
+/*
   Utilities
 */
 .rotate-180 {
@@ -48,7 +55,7 @@ h1 {
 h2 {
     font-family: "Proxima Nova", sans-serif;
     font-weight: 700;
-    font-size: 1.2em;
+    font-size: 1.1em;
 }
 
 i {
