@@ -18,8 +18,6 @@
     .lds-ring {
         display: inline-block;
         position: relative;
-        width: 8vw;
-        height: 8vw;
         width: 28px;
         height: 28px;
     }
@@ -27,8 +25,6 @@
         box-sizing: border-box;
         display: block;
         position: absolute;
-        width: 8vw;
-        height: 8vw;
         width: 28px;
         height: 28px;
         border: 3px solid black;

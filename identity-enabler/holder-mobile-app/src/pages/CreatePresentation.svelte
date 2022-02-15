@@ -8,6 +8,7 @@
     import CredentialHeader from "../components/CredentialHeader.svelte";
     import { navigate } from "svelte-routing";
     import { CredentialType } from "../models/types/CredentialType";
+    import { Page } from "@zebra-iota-edge-sdk/common";
 
     let presentationJSON = "";
 
@@ -54,38 +55,31 @@
     }
 </script>
 
-<main>
-    <header>
-        <div class="options-wrapper">
-            <i on:click|once={() => window.history.back()} class="icon-chevron" />
-            <i on:click={onClickDev} class="icon-code" />
-        </div>
+<Page theme="dark">
+    <div slot="header" class="options-wrapper">
+        <i on:click|once={() => window.history.back()} class="icon-chevron" />
         <CredentialHeader {credential} hideDetails={true} />
-    </header>
-
-    <div class="presentation-wrapper">
-        <canvas id="presentation" use:multiClick on:multiClick={showJSON} />
+        <i on:click={onClickDev} class="icon-code" />
     </div>
 
-    <footer class="footerContainer">
+    <canvas slot="content" id="presentation" use:multiClick on:multiClick={showJSON} />
+
+    <div slot="footer">
         {#if expiry}
             <p>Valid until {getDateString(expiry)} at {getTimeString(expiry)}</p>
         {/if}
         {#if credential.type[1] === CredentialType.DeviceID}
             <p style="font-size: smaller;">Scan this DataMatrix with the Device ID app</p>
         {/if}
-    </footer>
-</main>
+    </div>
+</Page>
 
 <style>
-    main {
+    .options-wrapper {
         display: flex;
-        flex-direction: column;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
-        position: relative;
-        height: 100%;
-        background: black;
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 1.5rem;
     }
 
     canvas {
@@ -93,39 +87,14 @@
         width: 100%;
     }
 
-    header {
-        margin-bottom: 1.5rem;
-        display: flex;
-        flex-direction: column;
-        align-items: stretch;
-        text-align: center;
-    }
-
-    .presentation-wrapper {
-        background: white;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-    }
-
-    footer {
+    div[slot="footer"] {
         padding: 1.5rem;
         text-align: center;
     }
 
-    footer > p {
-        color: #fff;
-        font-family: "Proxima Nova", sans-serif;
+    div[slot="footer"] > p {
+        margin: 0;
         font-weight: 500;
         font-size: 1.2em;
-    }
-
-    .options-wrapper {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        margin: 3.5vh 3.5vh 0 3.5vh;
-        position: relative;
     }
 </style>

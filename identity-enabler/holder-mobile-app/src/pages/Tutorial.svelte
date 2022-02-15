@@ -4,6 +4,7 @@
     import { TUTORIAL_URL } from "../config";
     import { loadingScreen } from "../lib/store";
     import { showAlert } from "../lib/ui/helpers";
+    import { Page } from "@zebra-iota-edge-sdk/common";
 
     let markdown = "";
     let title = "";
@@ -23,54 +24,42 @@
     });
 </script>
 
-<main>
-    <div class="header-wrapper">
+<Page theme="dark">
+    <div slot="header" class="options-wrapper">
         <i on:click|once={() => window.history.back()} class="side icon-chevron" />
-        <header>{title}</header>
+        <h2>{title}</h2>
         <div class="side" />
     </div>
-    <section>
+
+    <section slot="content">
         <div class="highlightjs-component">
             <Markdown {markdown} language="javascript" />
         </div>
     </section>
-</main>
+</Page>
 
 <style>
-    main {
-        min-height: 100%;
-        width: 100%;
-    }
-
-    .header-wrapper {
-        position: sticky;
-        top: 0;
+    .options-wrapper {
         display: flex;
+        flex-direction: row;
         justify-content: space-between;
-        align-items: center;
-        background: black;
-        padding: 1.2rem;
+        padding: 1.5rem;
     }
 
-    .header-wrapper > .side {
+    h2 {
+        margin: 0;
+        align-self: center;
+        text-transform: uppercase;
+    }
+
+    .options-wrapper > .side {
         flex: 1;
     }
 
-    header {
-        font-family: "Proxima Nova", sans-serif;
-        font-weight: 700;
-        font-size: 1em;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        color: #fff;
-    }
-
     .highlightjs-component {
-        overflow-wrap: break-word;
-        word-wrap: break-word;
-        overflow-x: auto;
-        border-radius: 4px;
-        background-color: #eee;
+        overflow: auto;
+        background-color: white;
+        color: black;
         padding: 1rem;
     }
 </style>

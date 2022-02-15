@@ -9,6 +9,7 @@
     import { Plugins } from "@capacitor/core";
     import { wait } from "../lib/helpers";
     import { BACK_BUTTON_EXIT_GRACE_PERIOD } from "../config";
+    import { Page } from "@zebra-iota-edge-sdk/common";
 
     const { App, Toast } = Plugins;
     let mounted;
@@ -94,7 +95,7 @@
         mounted = true;
 
         if (window.matchMedia("(pointer: coarse)").matches) {
-            const hammer = new Hammer(document.querySelector("#wrapper"));
+            const hammer = new Hammer(document.querySelector(".content"));
             hammer.get("swipe").set({ direction: Hammer.DIRECTION_HORIZONTAL });
             hammer.on("swipeleft", () => nextLanding());
             hammer.on("swiperight", () => prevLanding());
@@ -104,50 +105,59 @@
     });
 </script>
 
-<main id="wrapper">
-    <div class="headerContainer">
-        <Header text={info[$landingIndex].header} />
-    </div>
-    <div class="contentContainer">
-        {#each [$landingIndex] as count (count)}
-            <div
-                class="content"
-                in:fly={mounted ? { ...getInAnimation(), duration: 400, opacity: 0 } : undefined}
-                out:fly={{ ...getOutAnimation(), duration: 400, opacity: 0 }}
-            >
-                <img src="/img/{info[$landingIndex].image}" alt={info[$landingIndex].image.replace(/\.svg$/, "")} />
-                <div class="dots">
-                    {#each [0, 1, 2] as idx}
-                        <span class:active={idx === $landingIndex} />
-                    {/each}
+<Page>
+    <div slot="content" class="content">
+        <div>
+            <Header text={info[$landingIndex].header} />
+        </div>
+        <div class="contentContainer">
+            {#each [$landingIndex] as count (count)}
+                <div
+                    class="content"
+                    in:fly={mounted ? { ...getInAnimation(), duration: 400, opacity: 0 } : undefined}
+                    out:fly={{ ...getOutAnimation(), duration: 400, opacity: 0 }}
+                >
+                    <img src="/img/{info[$landingIndex].image}" alt={info[$landingIndex].image.replace(/\.svg$/, "")} />
+                    <div class="dots">
+                        {#each [0, 1, 2] as idx}
+                            <span class:active={idx === $landingIndex} />
+                        {/each}
+                    </div>
+                    <p class="info">{info[$landingIndex].content}</p>
                 </div>
-                <p class="info">{info[$landingIndex].content}</p>
-            </div>
-        {/each}
+            {/each}
+        </div>
     </div>
-    <footer class="footerContainer">
+    <svelte:fragment slot="footer">
         <Button label={info[$landingIndex].footer} onClick={nextLanding} />
-    </footer>
-</main>
+    </svelte:fragment>
+</Page>
 
 <style>
-    main {
-        height: 100%;
-        flex-direction: column;
-        display: flex;
-        align-items: center;
-    }
-
     .content {
-        text-align: center;
+        display: flex;
+        flex-direction: column;
         align-items: center;
-        width: 100%;
-        padding: 0 3.4vh;
     }
 
-    .content > img {
+    .content > * {
+        margin: 3vh 0;
+    }
+
+    .info {
+        line-height: 1.5em;
+        color: var(--black-60);
+        text-align: center;
+        padding: 0 8vw;
+    }
+
+    img {
         mix-blend-mode: multiply;
         max-height: 150px;
+    }
+
+    .contentContainer {
+        display: flex;
     }
 
     .dots {
@@ -159,7 +169,7 @@
     .dots > span {
         height: 0.7em;
         width: 0.7em;
-        background-color: #c4d0e3;
+        background-color: var(--black-20);
         border-radius: 50%;
         display: inline-block;
         margin-right: 0.7rem;
@@ -168,33 +178,6 @@
     .dots > span.active {
         height: 0.75em;
         width: 0.75em;
-        background: #00a7ff;
-    }
-
-    .info {
-        font-family: "Proxima Nova", sans-serif;
-        font-style: normal;
-        font-weight: normal;
-        font-size: 0.9em;
-        line-height: 1.5em;
-        color: #6f7a8d;
-        text-align: center;
-        padding: 0px 3vw;
-    }
-
-    .headerContainer {
-        display: flex;
-        padding: 3vh 0;
-    }
-
-    .contentContainer {
-        display: flex;
-        padding-bottom: 3.5em;
-    }
-
-    .footerContainer {
-        position: fixed;
-        bottom: 0;
-        width: 100%;
+        background: var(--primary-60);
     }
 </style>

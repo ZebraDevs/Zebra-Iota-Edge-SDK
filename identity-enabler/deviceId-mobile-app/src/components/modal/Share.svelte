@@ -9,8 +9,8 @@
     export let vp;
 
     function share() {
-        navigate("/createPresentation", { state: { vp } });
         close();
+        navigate("/createPresentation", { state: { vp } });
     }
 
     async function shareJSON() {

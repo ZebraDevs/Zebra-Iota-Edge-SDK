@@ -96,6 +96,3 @@
 <Modal>
     <Content />
 </Modal>
-
-<style>
-</style>

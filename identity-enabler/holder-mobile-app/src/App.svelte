@@ -65,41 +65,26 @@
     });
 </script>
 
-<main>
-    {#if $loadingScreen}
-        <FullScreenLoader label={$loadingScreen} />
+{#if $loadingScreen}
+    <FullScreenLoader label={$loadingScreen} />
+{/if}
+<Router {url}>
+    {#if !$hasSetupAccount}
+        <Route path="/" component={Landing} />
+    {:else if displayHome}
+        <Route path="/" component={Home} />
     {/if}
-    <Router {url}>
-        <div>
-            {#if !$hasSetupAccount}
-                <Route path="/" component={Landing} />
-            {:else if displayHome}
-                <Route path="/" component={Home} />
-            {/if}
-            <Route path="/home" component={Home} />
-            <Route path="/landing" component={Landing} />
-            <Route path="/name" component={Name} />
-            <Route path="/credential" component={Credential} />
-            <Route path="/devicecredential" component={DeviceCredential} />
-            <Route path="/scan" component={Scan} />
-            <Route path="/createPresentation" component={CreatePresentation} />
-            <Route path="/invalid" component={InvalidCredential} />
-            <Route path="/tutorial" component={Tutorial} />
-            <Route path="/code" component={CodeBlock} />
-        </div>
-    </Router>
-    <Modal>
-        <Content />
-    </Modal>
-</main>
-
-<style>
-    main {
-        background-color: white;
-    }
-
-    main,
-    div {
-        height: 100%;
-    }
-</style>
+    <Route path="/home" component={Home} />
+    <Route path="/landing" component={Landing} />
+    <Route path="/name" component={Name} />
+    <Route path="/credential" component={Credential} />
+    <Route path="/devicecredential" component={DeviceCredential} />
+    <Route path="/scan" component={Scan} />
+    <Route path="/createPresentation" component={CreatePresentation} />
+    <Route path="/invalid" component={InvalidCredential} />
+    <Route path="/tutorial" component={Tutorial} />
+    <Route path="/code" component={CodeBlock} />
+</Router>
+<Modal>
+    <Content />
+</Modal>
