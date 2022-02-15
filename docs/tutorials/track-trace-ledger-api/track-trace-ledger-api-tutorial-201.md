@@ -12,7 +12,7 @@ Business Events are complementary to Device Events, already introduced by the [1
 
 Typically, one or more Device Events (for instance RFID Read Device Events) yield to a Business Event. The transformation from a Device Event to a Business Event needs contextual or situational information that might depend on each application. Particularly, Business Events need *Reference ("Master") Data* to refer to. *Reference Data* can represent business locations, read points, devices, product classes, etc. In contrast to event visibility data, that is continuously generated, additions or changes to Reference Data happen sporadically.
 
-![Common Record of Truth](/img/track-trace-ledger-api/tangle-supply-chain-common-record-of-truth.png "Common Record of Truth")
+![Common Record of Truth](https://github.com/ZebraDevs/Zebra-Iota-Edge-SDK/blob/main/docs/static/img/track-trace-ledger-api/tangle-supply-chain-common-record-of-truth.png?raw=true "Common Record of Truth")
 
 ## Use Case
 
