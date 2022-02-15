@@ -1,4 +1,4 @@
-# IOTA Track & Trace Ledger APIs 102 Tutorial : 
+# IOTA Track & Trace Ledger APIs 102 Tutorial : Device Events Recorded on the Tangle.
 
 ## Introduction
 

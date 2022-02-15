@@ -16,10 +16,26 @@ module.exports = {
             label: 'Zebra IOTA Edge SDK',
             collapsed: false,
             items: [
-                'tutorials/zebra-iota-edge-sdk/zebra-iota-edge-sdk-101-tutorial',
-                'tutorials/zebra-iota-edge-sdk/zebra-iota-edge-sdk-102-tutorial',
-                'tutorials/zebra-iota-edge-sdk/zebra-iota-edge-sdk-103-tutorial',
-                'tutorials/zebra-iota-edge-sdk/zebra-iota-edge-sdk-104-tutorial',
+                {
+                    type: 'doc',
+                    label: '101: Understanding Decentralized Identities',
+                    id: 'tutorials/zebra-iota-edge-sdk/zebra-iota-edge-sdk-101-tutorial'
+                },
+                {
+                    type: 'doc',
+                    label: '102: Managing credentials (Holder Application)',
+                    id: 'tutorials/zebra-iota-edge-sdk/zebra-iota-edge-sdk-102-tutorial'
+                },
+                {
+                    type: 'doc',
+                    label: '103: Verifying Credentials',
+                    id: 'tutorials/zebra-iota-edge-sdk/zebra-iota-edge-sdk-103-tutorial'
+                },
+                {
+                    type: 'doc',
+                    label: '104: Device Onboarding',
+                    id: 'tutorials/zebra-iota-edge-sdk/zebra-iota-edge-sdk-104-tutorial'
+                },
             ],
         },
         {
@@ -27,10 +43,26 @@ module.exports = {
             label: 'Track And Trace Ledger API',
             collapsed: false,
             items: [
-                'tutorials/track-trace-ledger-api/track-trace-ledger-api-tutorial-101',
-                'tutorials/track-trace-ledger-api/track-trace-ledger-api-tutorial-102',
-                'tutorials/track-trace-ledger-api/track-trace-ledger-api-tutorial-103',
-                'tutorials/track-trace-ledger-api/track-trace-ledger-api-tutorial-201',
+                {
+                    type: 'doc',
+                    label: '101: Device Events',
+                    id: 'tutorials/track-trace-ledger-api/track-trace-ledger-api-tutorial-101',
+                },
+                {
+                    type: 'doc',
+                    label: '102:  Device Events Recorded On the Tangle',
+                    id: 'tutorials/track-trace-ledger-api/track-trace-ledger-api-tutorial-102',
+                },
+                {
+                    type: 'doc',
+                    label: '103: Digital Identity',
+                    id: 'tutorials/track-trace-ledger-api/track-trace-ledger-api-tutorial-103',
+                },
+                {
+                    type: 'doc',
+                    label: '201: Business Events',
+                    id: 'tutorials/track-trace-ledger-api/track-trace-ledger-api-tutorial-201',
+                },
             ],
         },
     ],
