@@ -67,10 +67,7 @@
     }
 
     .image-select {
-        font-family: "Proxima Nova", sans-serif;
-        font-weight: 600;
-        font-size: 14px;
-        line-height: 16px;
+        font-size: small;
         border: 1px solid var(--black-40);
         background-color: var(--primary);
         padding: 6px 12px;

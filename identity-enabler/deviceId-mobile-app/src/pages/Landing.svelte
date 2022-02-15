@@ -67,10 +67,6 @@
     }
 
     .info {
-        font-family: "Proxima Nova", sans-serif;
-        font-style: normal;
-        font-weight: 400;
-        font-size: 0.9em;
         line-height: 1.5em;
         color: var(--black-60);
         text-align: center;

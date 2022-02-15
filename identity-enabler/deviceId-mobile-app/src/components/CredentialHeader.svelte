@@ -32,7 +32,6 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        font-family: "Proxima Nova", sans-serif;
     }
 
     .icon-credential {

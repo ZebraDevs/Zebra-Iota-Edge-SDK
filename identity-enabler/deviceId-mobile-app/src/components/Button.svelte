@@ -24,21 +24,13 @@
         justify-content: center;
         align-items: center;
         width: 100%;
-        height: 3.5em;
-        font-size: 0.85em;
-        font-weight: 700;
-        cursor: pointer;
+        height: 4.5em;
+        font-weight: bold;
         margin: 0;
         border: none;
     }
 
     button.disabled {
         pointer-events: none;
-    }
-
-    button :global(img) {
-        margin-right: 12px;
-        width: 3vh;
-        height: 3vh;
     }
 </style>

@@ -46,7 +46,6 @@
     }
 
     section > p {
-        font-family: "Proxima Nova", sans-serif;
         font-weight: 600;
         font-size: 1.1em;
         text-transform: uppercase;

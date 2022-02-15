@@ -75,18 +75,11 @@
         <div class="side" />
     </div>
 
-    <div slot="content" class="wrapper">
-        <div class="subheader">
-            <p>Share device claims with the Organization ID holder app</p>
-        </div>
-        <div class="qr-wrapper">
-            <canvas id="device-claims" use:multiClick on:multiClick={showJSON} />
-        </div>
-        <div class="info">
-            <pre>Scan this QR code with the Holder app
-                to continue</pre>
-        </div>
-    </div>
+    <section slot="content" class="wrapper">
+        <h1>Share device claims with the Organization ID holder app</h1>
+        <canvas id="device-claims" use:multiClick on:multiClick={showJSON} />
+        <p class="description">Scan this QR code with the Holder app to continue</p>
+    </section>
 
     <svelte:fragment slot="footer">
         <Button label="Next" onClick={requestCredential} />
@@ -115,37 +108,11 @@
         padding: 1.5rem;
     }
 
-    .qr-wrapper {
-        height: fit-content;
-        position: relative;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        margin: 7vh 0 9vh 0;
+    canvas {
+        margin: 1rem 0;
     }
 
-    .info > pre {
-        font-family: "Proxima Nova", sans-serif;
-        font-style: normal;
-        font-weight: 400;
-        font-size: 2.08vh;
-        line-height: 3.3vh;
+    p.description {
         color: var(--black-60);
-        text-align: center;
-        padding: 0px 3vw;
-        white-space: pre-line;
-        margin-top: 8.2vh;
-    }
-
-    .subheader > p {
-        font-family: "Proxima Nova", sans-serif;
-        font-weight: 700;
-        font-size: 2.6vh;
-        line-height: 3.2vh;
-        margin: 6.5vh 3.6vh !important;
-        white-space: pre-line;
-        text-align: center;
     }
 </style>

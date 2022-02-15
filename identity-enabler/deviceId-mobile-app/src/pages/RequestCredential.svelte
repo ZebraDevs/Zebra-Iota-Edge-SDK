@@ -64,8 +64,6 @@
     }
 
     p.description {
-        font-family: "Proxima Nova", sans-serif;
-        font-size: 0.9em;
         color: var(--black-60);
     }
 

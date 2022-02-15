@@ -139,7 +139,7 @@
     }
 
     .logo > .icon-chip {
-        font-size: 3.1em;
+        font-size: 55px;
     }
 
     h1 {

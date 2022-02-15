@@ -52,11 +52,11 @@
 
     <canvas slot="content" id="presentation" use:multiClick on:multiClick={showJSON} />
 
-    <footer slot="footer" class="footerContainer">
+    <div slot="footer">
         {#if expiry}
             <p>Valid until {getDateString(expiry)} at {getTimeString(expiry)}</p>
         {/if}
-    </footer>
+    </div>
 </Page>
 
 <style>
@@ -72,14 +72,13 @@
         width: 100%;
     }
 
-    footer {
+    div[slot="footer"] {
         padding: 1.5rem;
         text-align: center;
     }
 
-    footer > p {
+    div[slot="footer"] > p {
         margin: 0;
-        font-family: "Proxima Nova", sans-serif;
         font-weight: 500;
         font-size: 1.2em;
     }

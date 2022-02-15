@@ -7,7 +7,7 @@
 <ul>
     {#each Object.keys(entries) as entryKey}
         <li>
-            <p>{entryKey}</p>
+            <h5 class="key">{entryKey}</h5>
             {#if entries[entryKey].startsWith("did:iota:")}
                 <a
                     class="cut-text"
@@ -16,7 +16,7 @@
                     title="View in IOTA Explorer">{entries[entryKey]}</a
                 >
             {:else}
-                <span class="cut-text">{entries[entryKey]}</span>
+                <p class="cut-text">{entries[entryKey]}</p>
             {/if}
         </li>
     {/each}
@@ -43,24 +43,15 @@
         border-bottom: 1px solid var(--black-10);
     }
 
-    li > p {
-        font-family: "Proxima Nova", sans-serif;
-        font-weight: 400;
-        font-size: 0.7em;
+    li > h5 {
         letter-spacing: 0.03em;
         text-transform: uppercase;
-        color: var(--black-40);
-        margin-top: 0;
-    }
-
-    li > span,
-    li > a {
-        font-family: "Proxima Nova", sans-serif;
-        font-weight: 600;
-        font-size: 0.9em;
+        margin: 0 0 0.25rem 0;
     }
 
     .cut-text {
+        margin: 0;
+        font-weight: bold;
         white-space: pre-wrap;
         word-wrap: break-word;
     }
