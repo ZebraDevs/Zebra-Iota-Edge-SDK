@@ -6,9 +6,9 @@ In this tutorial series you will learn how to use the **Identity Enabler** of th
 
 Other parts in this series are:
 
-* [102 - Managing Credentials](../102/zebra-iota-edge-sdk-102-tutorial.md)
-* [103 - Verifying Credentials](../103/zebra-iota-edge-sdk-103-tutorial.md)
-* [104 - Device onboarding](../104/zebra-iota-edge-sdk-104-tutorial.md)
+* [102 - Managing Credentials](../zebra-iota-edge-sdk/zebra-iota-edge-sdk-102-tutorial.md)
+* [103 - Verifying Credentials](../zebra-iota-edge-sdk/zebra-iota-edge-sdk-103-tutorial.md)
+* [104 - Device onboarding](../zebra-iota-edge-sdk/zebra-iota-edge-sdk-104-tutorial.md)
 
 ## Introduction to Digital Identities
 
@@ -17,7 +17,7 @@ Based on its [technical definition](https://www.justaskgemalto.com/en/what-is-di
 The details collected about an identity (for example name, email address, DoB, credit card number, vaccinations taken for personal identities) during the identity creation phase represent what are called the **identity claims**. An identity is associated with zero, one or multiple claims.
 
 <p align="center">
-  <img src="images/image2.png" width="50%" alt="Decentralized Identity Overview">
+  <img src="/img/zebra-iota-edge-sdk/101/image2.png" width="50%" alt="Decentralized Identity Overview"/>
 </p>
 
 Different roles can be distinguished (see figure above):
@@ -117,9 +117,9 @@ In order to follow this tutorial series and experiment with the Zebra Edge SDK I
 - The codebase has been tested using the Android System Webview runtimes corresponding to versions 95 (on the Android 5.1.1) and 96 (TC21).
 - DataWedge profiles for the different applications. They can be downloaded from [here](https://github.com/ZebraDevs/Zebra-Iota-Edge-SDK/blob/main/test/datawedge/datawedge.db) and then imported into your own Zebra device. The profile for each application shall be configured as follows:
   - Intent Output: Enabled
-  - Intent Action: `org.iota.zebra.&lt;verifier|holder|device_id>.intent.action.SCAN`
+  - Intent Action: `org.iota.zebra.<verifier|holder|device_id>.intent.action.SCAN`
   - Intent category: `org.iota.zebra.intent.category.DATAWEDGE`
-  - Intent delivery: Send via \*\*<code>startService</code></strong>
+  - Intent delivery: Send via **`startService`**
 
 In the case of the TC21 device we deliberately updated the Android System Webview runtime to version 96. Despite being restricted from Google Play, we managed to install it manually through this [portal](https://www.apkmirror.com/apk/google-inc/android-system-webview/android-system-webview-96-0-4664-104-release/android-system-webview-96-0-4664-104-4-android-apk-download/) (please note that **64 bit** **ARM** versions should be downloaded).
 
