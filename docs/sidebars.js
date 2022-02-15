@@ -50,7 +50,7 @@ module.exports = {
                 },
                 {
                     type: 'doc',
-                    label: '102:  Device Events Recorded On the Tangle',
+                    label: '102: Consuming Events',
                     id: 'tutorials/track-trace-ledger-api/track-trace-ledger-api-tutorial-102',
                 },
                 {
