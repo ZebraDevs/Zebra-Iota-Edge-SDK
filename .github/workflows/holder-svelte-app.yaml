@@ -50,6 +50,8 @@ jobs:
           cache-dependency-path: identity-enabler/holder-mobile-app/package-lock.json
       - name: Update NPM
         run: npm install -g npm
+      - name: Install dependencies
+        run: npm install
       - name: Run Jest
         run: npm run test:ci
       - uses: actions/upload-artifact@v2
