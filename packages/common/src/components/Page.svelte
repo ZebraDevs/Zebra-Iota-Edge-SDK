@@ -4,7 +4,7 @@
     export let theme: "light" | "dark" = "light";
 </script>
 
-<div class="page-wrapper {theme}" in:fly={{ x: 500, duration: 500 }} on:click>
+<div class="page-wrapper {theme}" in:fly={{ x: 500, duration: 500 }}>
     {#if $$slots.header}
         <header>
             <slot name="header" />

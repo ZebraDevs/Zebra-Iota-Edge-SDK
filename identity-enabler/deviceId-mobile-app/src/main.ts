@@ -4,10 +4,7 @@ import init from "./lib/init";
 init();
 
 const app = new App({
-    target: document.body,
-    props: {
-        name: "zebra"
-    }
+    target: document.body
 });
 
 export default app;
