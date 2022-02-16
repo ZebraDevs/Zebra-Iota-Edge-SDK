@@ -58,7 +58,7 @@ jobs:
         if: success() || failure()
         with:
           name: test-results
-          path: jest-junit.xml
+          path: identity-enabler/deviceId-mobile-app/junit.xml
 
   build:
     name: Build
