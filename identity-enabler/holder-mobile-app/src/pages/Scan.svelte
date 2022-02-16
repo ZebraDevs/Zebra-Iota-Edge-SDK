@@ -14,6 +14,7 @@
         const image = e.currentTarget.files[0];
 
         const fr = new FileReader();
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-arguments
         fr.addEventListener("load", async (e: ProgressEvent<FileReader>) => {
             let result: Result;
             try {
