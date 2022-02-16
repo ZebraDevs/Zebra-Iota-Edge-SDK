@@ -35,7 +35,6 @@
     }
 
     .icon-credential {
-        color: inherit;
         font-size: 64px;
     }
 
@@ -53,13 +52,5 @@
     p .emphasis {
         font-weight: bold;
         padding: 0 0.1rem;
-    }
-
-    a {
-        color: inherit;
-    }
-
-    a:visited {
-        color: unset;
     }
 </style>

@@ -1,9 +1,9 @@
 <script lang="ts">
-    import { Page } from "@zebra-iota-edge-sdk/common";
     import { onMount } from "svelte";
     import Button from "../components/Button.svelte";
     import { playAudio } from "../lib/ui/helpers";
     import type { IInvalidCredentialPageState } from "../models/types/IInvalidCredentialPageState";
+    import { Page } from "@zebra-iota-edge-sdk/common";
 
     const PLAY_DELAY = 400;
     const state: IInvalidCredentialPageState | null = window.history?.state;
@@ -43,6 +43,8 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        padding: 1.5rem;
+        text-align: center;
     }
 
     section > p {

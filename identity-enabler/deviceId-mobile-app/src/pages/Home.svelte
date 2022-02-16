@@ -151,4 +151,8 @@
         padding: 1.5rem;
         margin-top: 90px;
     }
+
+    .list {
+        margin-bottom: 0.75rem;
+    }
 </style>

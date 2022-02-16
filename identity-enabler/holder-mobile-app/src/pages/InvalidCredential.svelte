@@ -44,6 +44,8 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        padding: 1.5rem;
+        text-align: center;
     }
 
     section > p {
