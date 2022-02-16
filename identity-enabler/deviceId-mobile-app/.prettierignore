@@ -11,3 +11,4 @@ src/web/fonts/**
 *.md
 *.html
 package-lock.json
+coverage/**

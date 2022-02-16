@@ -1,0 +1,79 @@
+name: Holder Svelte app
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+    paths: 
+      - 'identity-enabler/holder-mobile-app/**'
+      - '!identity-enabler/holder-mobile-app/android/**'
+  pull_request:
+    branches:
+      - main
+      - dev
+    paths: 
+      - 'identity-enabler/holder-mobile-app/**'
+      - '!identity-enabler/holder-mobile-app/android/**'
+
+defaults:
+  run:
+    working-directory: identity-enabler/holder-mobile-app
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+          cache: 'npm'
+          cache-dependency-path: identity-enabler/holder-mobile-app/package-lock.json
+      - name: Update NPM
+        run: npm install -g npm
+      - name: Install dependencies
+        run: npm install
+      - name: Run ESLint
+        run: npm run build:lint
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+          cache: 'npm'
+          cache-dependency-path: identity-enabler/holder-mobile-app/package-lock.json
+      - name: Update NPM
+        run: npm install -g npm
+      - name: Run Jest
+        uses: ArtiomTr/jest-coverage-report-action@v2
+        with:
+          working-directory: identity-enabler/holder-mobile-app
+          test-script: npm run test:ci
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+          cache: 'npm'
+          cache-dependency-path: identity-enabler/holder-mobile-app/package-lock.json
+      - name: Update NPM
+        run: npm install -g npm
+      - name: Install dependencies
+        run: npm install
+      - name: Build
+        run: npm run build
+      - name: Upload public directory
+        uses: actions/upload-artifact@v2
+        with:
+          name: public
+          path: identity-enabler/holder-mobile-app/public
