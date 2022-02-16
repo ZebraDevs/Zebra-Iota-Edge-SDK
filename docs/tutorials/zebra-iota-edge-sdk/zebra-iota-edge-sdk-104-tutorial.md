@@ -10,7 +10,7 @@ Before reading this tutorial you should have first read the [Decentralized Ident
 
 The _DeviceID_ _Application_ provides a blueprint of how devices can be onboarded to participate in supply chain processes by obtaining a new decentralized identity verified by the organization owning the device. This process is aimed at improving auditability, data provenance and traceability all the way from device events to business events.
 
-Particularly, once a new Device Identity is available, the concerned device can start reporting authenticated [scan events](../track-trace-ledger-api/track-trace-ledger-api-tutorial-101.md) (after having been previously registered to the [Track & Trace Ledger APIs](../track-trace-ledger-api//track-trace-ledger-api-tutorial-103.md)) that can be immutably recorded on the IOTA Tangle. Those events could later be transformed into [EPCIS 2.0 events](../track-trace-ledger-api/track-trace-ledger-api-tutorial-201.md).
+Particularly, once a new Device Identity is available, the concerned device can start reporting authenticated [scan events](../track-trace-ledger-api/track-trace-ledger-api-tutorial-101.md) (after having been previously registered to the [Track & Trace Ledger APIs](../track-trace-ledger-api/track-trace-ledger-api-tutorial-103.md)) that can be immutably recorded on the IOTA Tangle. Those events could later be transformed into [EPCIS 2.0 events](../track-trace-ledger-api/track-trace-ledger-api-tutorial-201.md).
 
 ## Prerequisites
 
