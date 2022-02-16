@@ -106,7 +106,7 @@
 </script>
 
 <Page>
-    <div slot="content" class="content">
+    <section slot="content" class="content">
         <div>
             <Header text={info[$landingIndex].header} />
         </div>
@@ -127,7 +127,7 @@
                 </div>
             {/each}
         </div>
-    </div>
+    </section>
     <svelte:fragment slot="footer">
         <Button label={info[$landingIndex].footer} onClick={nextLanding} />
     </svelte:fragment>
@@ -138,6 +138,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        height: 100%;
     }
 
     .content > * {

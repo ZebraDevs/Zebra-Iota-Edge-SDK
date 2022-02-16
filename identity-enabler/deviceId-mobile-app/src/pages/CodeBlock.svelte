@@ -36,11 +36,11 @@
     section {
         height: 100%;
         background-color: white;
+        overflow: auto;
     }
 
     pre {
         color: black;
-        overflow: auto;
         margin: 0;
         padding: 1rem;
     }
