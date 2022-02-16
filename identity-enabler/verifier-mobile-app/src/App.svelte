@@ -39,34 +39,19 @@
     });
 </script>
 
-<main>
-    {#if $loadingScreen}
-        <FullScreenLoader label={$loadingScreen} />
+{#if $loadingScreen}
+    <FullScreenLoader label={$loadingScreen} />
+{/if}
+<Router {url}>
+    {#if $firstLaunch}
+        <Route path="/" component={Landing} />
+    {:else}
+        <Route path="/" component={Home} />
     {/if}
-    <Router {url}>
-        <div>
-            {#if $firstLaunch}
-                <Route path="/" component={Landing} />
-            {:else}
-                <Route path="/" component={Home} />
-            {/if}
-            <Route path="/landing" component={Landing} />
-            <Route path="/home" component={Home} />
-            <Route path="/invalid" component={InvalidCredential} />
-            <Route path="/scan" component={Scan} />
-            <Route path="/credential" component={Credential} />
-            <Route path="/tutorial" component={Tutorial} />
-        </div>
-    </Router>
-</main>
-
-<style>
-    main {
-        background-color: white;
-    }
-
-    main,
-    div {
-        height: 100%;
-    }
-</style>
+    <Route path="/landing" component={Landing} />
+    <Route path="/home" component={Home} />
+    <Route path="/invalid" component={InvalidCredential} />
+    <Route path="/scan" component={Scan} />
+    <Route path="/credential" component={Credential} />
+    <Route path="/tutorial" component={Tutorial} />
+</Router>

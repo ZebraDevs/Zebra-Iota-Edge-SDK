@@ -11,11 +11,11 @@
     <i class="icon-{icon}" style="color: {iconColor};" />
     <div class="text-container">
         <div class="overflow-container">
-            <h5>{heading}</h5>
+            <h3>{heading}</h3>
         </div>
         {#if subheading}
             <div class="overflow-container">
-                <h6>{subheading}</h6>
+                <h5>{subheading}</h5>
             </div>
         {/if}
     </div>
@@ -55,20 +55,13 @@
         text-overflow: ellipsis;
     }
 
-    h5 {
+    h3 {
         display: inline;
-        font-family: "Proxima Nova", sans-serif;
-        font-weight: 600;
-        font-size: 1em;
         margin: 0;
     }
 
-    h6 {
+    h5 {
         display: inline;
-        font-family: "Proxima Nova", sans-serif;
-        font-weight: 600;
-        font-size: 0.75em;
         margin: 0;
-        color: #8593ac;
     }
 </style>

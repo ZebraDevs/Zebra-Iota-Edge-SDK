@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { createEventDispatcher, onMount } from "svelte";
+    import { createEventDispatcher, onMount, onDestroy } from "svelte";
     import {
         BrowserMultiFormatReader,
         BarcodeFormat,
@@ -18,7 +18,6 @@
     const reader = new BrowserMultiFormatReader(
         new Map().set(DecodeHintType.POSSIBLE_FORMATS, [BarcodeFormat.DATA_MATRIX, BarcodeFormat.QR_CODE])
     );
-    let error: Error | undefined;
     let videoEl: HTMLVideoElement;
     let viewFinderEle: HTMLElement;
     let svgVisibility = "hidden";
@@ -68,59 +67,41 @@
         svgVisibility = "visible";
     };
 
-    onMount(() => {
-        initialise()
-            .then(capture)
-            .catch((e: Error) => {
-                console.error(e);
-                error = e;
-            });
+    onMount(async () => {
+        try {
+            await initialise();
+            await capture();
+        } catch (e) {
+            console.error(e);
+            await showAlert("Error", e.message);
+        }
+    });
 
-        // Unmount function
-        return () => {
-            if (videoEl?.srcObject) {
-                videoEl.pause();
-                const stream = videoEl.srcObject as MediaStream;
-                for (const track of stream.getTracks()) {
-                    track.stop();
-                    stream.removeTrack(track);
-                }
-                videoEl.srcObject = null;
+    onDestroy(() => {
+        if (videoEl?.srcObject) {
+            videoEl.pause();
+            const stream = videoEl.srcObject as MediaStream;
+            for (const track of stream.getTracks()) {
+                track.stop();
+                stream.removeTrack(track);
             }
-        };
+            videoEl.srcObject = null;
+        }
     });
 </script>
 
-<main class:error={Boolean(error)}>
-    {#if error}
-        <p>{error.message || error}</p>
-    {:else}
-        <div
-            class="video-container"
-            class:video-container-web={__WEB__}
-            class:video-container-android={__ANDROID__}
-            style="--svg-visibility: {svgVisibility}"
-        >
-            <!-- svelte-ignore a11y-media-has-caption -->
-            <video id="video" bind:this={videoEl} playsinline data-state="hidden" />
-            <i class="icon-scan viewfinder" bind:this={viewFinderEle} data-state="hidden" />
-        </div>
-    {/if}
-</main>
+<div
+    class="video-container"
+    class:video-container-web={__WEB__}
+    class:video-container-android={__ANDROID__}
+    style="--svg-visibility: {svgVisibility}"
+>
+    <!-- svelte-ignore a11y-media-has-caption -->
+    <video id="video" bind:this={videoEl} playsinline data-state="hidden" />
+    <i class="icon-scan viewfinder" bind:this={viewFinderEle} data-state="hidden" />
+</div>
 
 <style>
-    main {
-        height: 92.4vh;
-        flex-direction: column;
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-    }
-
-    main.error {
-        background: var(--bg);
-    }
-
     .viewfinder {
         color: rgba(255, 255, 255, 0.8);
         visibility: var(--svg-visibility);
@@ -147,14 +128,5 @@
 
     .viewfinder[data-state="hidden"] {
         display: none;
-    }
-
-    p {
-        text-align: center;
-        vertical-align: middle;
-        line-height: 85vh;
-        font-family: "Proxima Nova", sans-serif;
-        font-size: 6vw;
-        color: #131f37;
     }
 </style>

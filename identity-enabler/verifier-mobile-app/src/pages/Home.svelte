@@ -11,6 +11,7 @@
     import { BACK_BUTTON_EXIT_GRACE_PERIOD } from "../config";
     import { get } from "svelte/store";
     import { credentialDisplayMap } from "../lib/ui/credentialDisplayMap";
+    import { Page } from "@zebra-iota-edge-sdk/common";
 
     const { App, Toast, Modals } = Plugins;
 
@@ -68,22 +69,19 @@
     }
 </script>
 
-<main>
-    <header>
-        <div class="options-wrapper">
-            <i on:click={onClickReset} class="icon-reset" />
-            <p>SCANNED CREDENTIALS</p>
-            <i on:click={onClickDev} class="icon-code" />
-        </div>
-    </header>
-    <section>
+<Page>
+    <div slot="header" class="options-wrapper">
+        <i on:click={onClickReset} class="icon-reset" />
+        <h3>SCANNED CREDENTIALS</h3>
+        <i on:click={onClickDev} class="icon-code" />
+    </div>
+
+    <section slot="content">
         {#if localCredentials.length === 0}
-            <div class="empty-wrapper">
-                <p>No credentials scanned</p>
-            </div>
+            <p>No credentials scanned</p>
         {:else}
             {#each localCredentials as credential}
-                <div transition:slide class="list">
+                <div transition:slide|local class="list">
                     <ListItem
                         icon={isExpired(credential.issuanceDate) ? "cross" : "check"}
                         iconColor="#1e22aa"
@@ -96,80 +94,42 @@
             {/each}
         {/if}
     </section>
-    <footer>
+
+    <div slot="footer">
         <Button style="height: 64px; width: 64px; border-radius: 50%;" onClick={scan}>
             <i class="icon-scan" />
         </Button>
-    </footer>
-</main>
+    </div>
+</Page>
 
 <style>
-    main {
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-        width: 100%;
-        z-index: 1;
-    }
-
-    header {
-        display: flex;
-        flex-direction: column;
-        height: 72px;
-        background-color: #6165e3;
-    }
-
-    section {
-        flex: 1;
-        align-content: space-between;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
-        margin: 2rem 1.5rem;
-    }
-
-    .list {
-        margin-bottom: 2vh;
-    }
-
-    .options-wrapper > p {
-        font-family: "Proxima Nova", sans-serif;
-        font-weight: 600;
-        font-size: 14px;
-        line-height: 16px;
-        color: #f8f8f8;
-        margin: 0;
-        z-index: 1;
-    }
-
     .options-wrapper {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        align-items: center;
-        margin: 3.5vh;
+        padding: 1.5rem;
     }
 
-    .empty-wrapper {
-        height: 100%;
-        width: 100%;
+    h3 {
+        margin: 0;
+        align-self: center;
+    }
+
+    p {
+        text-align: center;
+    }
+
+    section {
+        padding: 1.5rem;
+    }
+
+    .list {
+        margin-bottom: 0.75rem;
+    }
+
+    div[slot="footer"] {
         display: flex;
         justify-content: center;
-        align-items: center;
-    }
-
-    .empty-wrapper > p {
-        font-family: "Proxima Nova", sans-serif;
-        font-size: 14px;
-        color: #767676;
-    }
-
-    footer {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-        bottom: 0;
-        padding-bottom: 4.1vh;
-        z-index: 1;
+        padding: 1.5rem;
     }
 </style>
