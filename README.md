@@ -9,6 +9,7 @@
   <a href="#about">About</a> ◈
   <a href="#prerequisites">Prerequisites</a> ◈
   <a href="#getting-started">Getting started</a> ◈
+  <a href="#tutorial">Tutorial</a> ◈
   <a href="#supporting-the-project">Supporting the project</a> ◈
   <a href="#joining-the-discussion">Joining the discussion</a>
 </p>
@@ -63,7 +64,11 @@ npm run start:dev
 
 Then open your browser on `http://localhost:5001` for the Holder App, `http://localhost:5002` for the Verifier App, and `http://localhost:5003` for the Device ID App.
 
-The applications are optimized for working with the native scanning capabilities of Zebra devices (Camera Scanner or 2D Barcode Scanner). However you can also use a regular Android's device camera or PC camera provided it has a good resolution. 
+The applications are optimized for working with the native scanning capabilities of Zebra devices (Camera Scanner or 2D Barcode Scanner). However you can also use a regular Android's device camera or PC camera provided it has a good resolution.
+
+## Tutorial
+
+To gain a better understanding, an in depth tutorial is available on the [IOTA Wiki](https://wiki.iota.org/zebra-iota-edge-sdk/tutorials/zebra-iota-edge-sdk/zebra-iota-edge-sdk-101-tutorial).
 
 ## Supporting the project
 
