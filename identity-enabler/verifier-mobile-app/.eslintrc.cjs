@@ -22,7 +22,7 @@ module.exports = {
             mode: "typescript"
         }
     },
-    ignorePatterns: ["*.cjs", "svelte.config.js", "*.d.ts"],
+    ignorePatterns: ["*.cjs", "svelte.config.js", "jest.config.js", "*.d.ts"],
     overrides: [
         {
             files: ["*.svelte"],

@@ -50,11 +50,15 @@ jobs:
           cache-dependency-path: identity-enabler/deviceId-mobile-app/package-lock.json
       - name: Update NPM
         run: npm install -g npm
+      - name: Install dependencies
+        run: npm install
       - name: Run Jest
-        uses: ArtiomTr/jest-coverage-report-action@v2
+        run: npm run test:ci
+      - uses: actions/upload-artifact@v2
+        if: success() || failure()
         with:
-          working-directory: identity-enabler/deviceId-mobile-app
-          test-script: npm run test:ci
+          name: test-results
+          path: identity-enabler/deviceId-mobile-app/junit.xml
 
   build:
     name: Build

@@ -13,7 +13,7 @@
         "test": "jest --silent",
         "test:watch": "npm run test -- --watchAll",
         "test:coverage": "jest --coverage --silent",
-        "test:ci": "npm run test:coverage -- --ci --testLocationInResults --json --outputFile=\"report.json\"",
+        "test:ci": "npm run test -- --ci --testLocationInResults --reporters=default --reporters=jest-junit",
         "build": "rollup -c",
         "build:dev": "rollup -c -w",
         "build:lint": "eslint src",
@@ -47,6 +47,7 @@
         "eslint-plugin-unicorn": "40.1.0",
         "jest": "^27.4.7",
         "jest-css-modules-transform": "^4.3.0",
+        "jest-junit": "^13.0.0",
         "npm-run-all": "^4.1.5",
         "prettier": "^2.2.1",
         "prettier-plugin-svelte": "^2.3.0",
@@ -82,36 +83,5 @@
         "svelte-simple-modal": "^0.10.4",
         "uuid": "^8.3.2",
         "ws": "^7.5.3"
-    },
-    "jest": {
-        "transform": {
-            "^.+\\.svelte$": [
-                "svelte-jester",
-                {
-                    "preprocess": "./svelte.config.test.cjs"
-                }
-            ],
-            "^.+\\.js$": "babel-jest",
-            "^.+\\.ts$": "ts-jest",
-            ".+\\.(css|styl|less|sass|scss)$": "jest-css-modules-transform"
-        },
-        "transformIgnorePatterns": [
-            "node_modules/(?!(svelte-routing|capacitor-secure-storage-plugin|highlight.js)/)"
-        ],
-        "moduleFileExtensions": [
-            "js",
-            "ts",
-            "svelte"
-        ],
-        "moduleNameMapper": {
-            "^\\$lib(.*)$": "<rootDir>/src/lib$1"
-        },
-        "setupFilesAfterEnv": [
-            "@testing-library/jest-dom/extend-expect"
-        ],
-        "collectCoverageFrom": [
-            "src/**/*.{ts,tsx,svelte,js,jsx}"
-        ],
-        "testEnvironment": "jsdom"
     }
 }
