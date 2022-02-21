@@ -46,6 +46,8 @@ jobs:
         run: npm install -g npm
       - name: Install dependencies
         run: npm install
+      - name: Build common
+        run: npm run build -w packages/common
       - name: Run Jest
         run: npm run test:ci -w identity-enabler/verifier-mobile-app
       - uses: actions/upload-artifact@v2
@@ -67,6 +69,8 @@ jobs:
         run: npm install -g npm
       - name: Install dependencies
         run: npm install
+      - name: Build common
+        run: npm run build -w packages/common
       - name: Build
         run: npm run build -w identity-enabler/verifier-mobile-app
       - name: Upload public directory
