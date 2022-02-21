@@ -53,6 +53,7 @@ jobs:
         with:
           name: test-results
           path: identity-enabler/verifier-mobile-app/junit.xml
+  
   build:
     name: Build
     runs-on: ubuntu-latest

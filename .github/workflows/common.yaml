@@ -42,10 +42,15 @@ jobs:
           cache: 'npm'
       - name: Update NPM
         run: npm install -g npm
+      - name: Install dependencies
+        run: npm install
       - name: Run Jest
-        uses: ArtiomTr/jest-coverage-report-action@v2
+        run: npm run test:ci -w packages/common
+      - uses: actions/upload-artifact@v2
+        if: success() || failure()
         with:
-          test-script: npm run test:ci -w packages/common
+          name: test-results
+          path: packages/common/junit.xml
 
   build:
     name: Build
