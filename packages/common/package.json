@@ -7,7 +7,7 @@
         "test": "jest --silent",
         "test:watch": "npm run test -- --watchAll",
         "test:coverage": "jest --coverage --silent",
-        "test:ci": "npm run test:coverage -- --ci --testLocationInResults --json --outputFile=\"report.json\"",
+        "test:ci": "npm run test -- --ci --testLocationInResults --json --outputFile=\"report.json\"",
         "dev": "rollup -c -w",
         "build": "rollup -c",
         "build:lint": "eslint src",
