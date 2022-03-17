@@ -137,7 +137,7 @@ adb logcat | grep -F "`adb shell ps | grep org.iota.zebra | tr -s [:space:] ' ' 
 
 ### Getting started
 
-The repository is set up as a monorepo using npm workspaces. Under the [identity-enabler](https://github.com/ZebraDevs/Zebra-Iota-Edge-SDK) folder, there is one subfolder for each of the reference applications. For each application the `src` directory contains the application source code and static web assets. Additionally, each application has a `config.ts` file with settings and contains an Android application in the `android` directory. The `packages` directory contains libraries shared by the applications, currently only the `common` package.
+The repository is set up as a monorepo using [npm workspaces](https://docs.npmjs.com/cli/v8/using-npm/workspaces). Under the [identity-enabler](https://github.com/ZebraDevs/Zebra-Iota-Edge-SDK) folder, there is one subfolder for each of the reference applications. For each application the `src` directory contains the application source code and static web assets. Additionally, each application has a `config.ts` file with settings and contains an Android application in the `android` directory. The `packages` directory contains libraries shared by the applications, currently only the `common` package.
 
 ```
 .
