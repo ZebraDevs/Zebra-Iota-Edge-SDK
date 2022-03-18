@@ -29,10 +29,11 @@ Run the Holder application in your browser with the below commands:
 git clone https://github.com/ZebraDevs/Zebra-Iota-Edge-SDK
 
 # Set up the project
-cd Zebra-Iota-Edge-SDK/identity-enabler/deviceId-mobile-app
+cd Zebra-Iota-Edge-SDK
 npm install
 
 # Build and run
+cd identity-enabler/deviceId-mobile-app
 npm run build:dev
 npm run start:dev
 
@@ -48,10 +49,11 @@ Before continuing please ensure that you have already installed the Android Stud
 git clone https://github.com/ZebraDevs/Zebra-Iota-Edge-SDK
 
 # Set up the project
-cd Zebra-Iota-Edge-SDK/identity-enabler/deviceId-mobile-app
+cd Zebra-Iota-Edge-SDK
 npm install
 
 # Build and run
+cd identity-enabler/deviceId-mobile-app
 npm run android
 ```
 

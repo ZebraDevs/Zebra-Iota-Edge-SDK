@@ -45,8 +45,8 @@ For the Identity Enabler go to the [identity-enabler](./identity-enabler) folder
 If you want to run the applications as Android application, for instance the Holder application, you just need to:
 
 ```console
-cd holder-mobile-app
 npm install
+cd holder-mobile-app
 npm run android
 ```
 
@@ -55,8 +55,8 @@ Afterwards the Web application code will be compiled and generated. Then, if you
 If you want to run the applications as local Web application, for instance the Verifier Application, you just need to:
 
 ```console
-cd verifier-mobile-app
 npm install
+cd verifier-mobile-app
 npm run build
 npm run start:dev
 ```

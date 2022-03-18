@@ -1,0 +1,30 @@
+{
+    "name": "@zebra-iota-edge-sdk/monorepo",
+    "version": "0.1.0",
+    "description": "This SDK allows building applications with Zebra Devices in combination with the IOTA Distributed Ledger Technology.",
+    "keywords": [
+        "zebra",
+        "iota"
+    ],
+    "author": {
+        "name": "Severin Skillman",
+        "email": "severin.skillman@iota.org"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ZebraDevs/Zebra-Iota-Edge-SDK.git"
+    },
+    "engines": {
+        "node": ">=14",
+        "npm": ">=7"
+    },
+    "scripts": {
+        "test": "npm test -ws",
+        "lint": "npm run build:lint -ws",
+        "format": "npm run build:format -ws"
+    },
+    "workspaces": [
+        "./packages/*",
+        "./identity-enabler/*"
+    ]
+}

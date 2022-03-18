@@ -16,10 +16,6 @@ on:
       - 'identity-enabler/verifier-mobile-app/**'
       - '!identity-enabler/verifier-mobile-app/android/**'
 
-defaults:
-  run:
-    working-directory: identity-enabler/verifier-mobile-app
-
 jobs:
   lint:
     name: Lint
@@ -30,13 +26,12 @@ jobs:
         with:
           node-version: '14'
           cache: 'npm'
-          cache-dependency-path: identity-enabler/verifier-mobile-app/package-lock.json
       - name: Update NPM
         run: npm install -g npm
       - name: Install dependencies
         run: npm install
       - name: Run ESLint
-        run: npm run build:lint
+        run: npm run build:lint -w identity-enabler/verifier-mobile-app
 
   test:
     name: Test
@@ -47,19 +42,20 @@ jobs:
         with:
           node-version: '14'
           cache: 'npm'
-          cache-dependency-path: identity-enabler/verifier-mobile-app/package-lock.json
       - name: Update NPM
         run: npm install -g npm
       - name: Install dependencies
         run: npm install
+      - name: Build common
+        run: npm run build -w packages/common
       - name: Run Jest
-        run: npm run test:ci
+        run: npm run test:ci -w identity-enabler/verifier-mobile-app
       - uses: actions/upload-artifact@v2
         if: success() || failure()
         with:
           name: test-results
           path: identity-enabler/verifier-mobile-app/junit.xml
-
+  
   build:
     name: Build
     runs-on: ubuntu-latest
@@ -69,13 +65,14 @@ jobs:
         with:
           node-version: '14'
           cache: 'npm'
-          cache-dependency-path: identity-enabler/verifier-mobile-app/package-lock.json
       - name: Update NPM
         run: npm install -g npm
       - name: Install dependencies
         run: npm install
+      - name: Build common
+        run: npm run build -w packages/common
       - name: Build
-        run: npm run build
+        run: npm run build -w identity-enabler/verifier-mobile-app
       - name: Upload public directory
         uses: actions/upload-artifact@v2
         with:

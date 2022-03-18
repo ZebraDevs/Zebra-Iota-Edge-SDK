@@ -1,0 +1,8 @@
+node_modules/**
+dist/**
+.gitignore
+.prettierignore
+.eslintignore
+*.md
+*.html
+package-lock.json

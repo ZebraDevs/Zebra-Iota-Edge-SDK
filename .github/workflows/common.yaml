@@ -1,4 +1,4 @@
-name: Holder Svelte app
+name: Common package
 
 on:
   push:
@@ -6,15 +6,13 @@ on:
       - main
       - dev
     paths: 
-      - 'identity-enabler/holder-mobile-app/**'
-      - '!identity-enabler/holder-mobile-app/android/**'
+      - 'packages/common/**'
   pull_request:
     branches:
       - main
       - dev
     paths: 
-      - 'identity-enabler/holder-mobile-app/**'
-      - '!identity-enabler/holder-mobile-app/android/**'
+      - 'packages/common/**'
 
 jobs:
   lint:
@@ -31,7 +29,7 @@ jobs:
       - name: Install dependencies
         run: npm install
       - name: Run ESLint
-        run: npm run build:lint -w identity-enabler/holder-mobile-app
+        run: npm run build:lint -w packages/common
 
   test:
     name: Test
@@ -46,15 +44,13 @@ jobs:
         run: npm install -g npm
       - name: Install dependencies
         run: npm install
-      - name: Build common
-        run: npm run build -w packages/common
       - name: Run Jest
-        run: npm run test:ci -w identity-enabler/holder-mobile-app
+        run: npm run test:ci -w packages/common
       - uses: actions/upload-artifact@v2
         if: success() || failure()
         with:
           name: test-results
-          path: identity-enabler/holder-mobile-app/junit.xml
+          path: packages/common/junit.xml
 
   build:
     name: Build
@@ -69,12 +65,10 @@ jobs:
         run: npm install -g npm
       - name: Install dependencies
         run: npm install
-      - name: Build common
-        run: npm run build -w packages/common
       - name: Build
-        run: npm run build -w identity-enabler/holder-mobile-app
+        run: npm run build -w packages/common
       - name: Upload public directory
         uses: actions/upload-artifact@v2
         with:
           name: public
-          path: identity-enabler/holder-mobile-app/public
+          path: packages/common/dist
