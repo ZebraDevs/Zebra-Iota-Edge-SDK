@@ -18,8 +18,7 @@ const config = {
     },
     setupFilesAfterEnv: ["@testing-library/jest-dom/extend-expect", "<rootDir>/jest-setup.ts"],
     collectCoverageFrom: ["src/**/*.{ts,tsx,svelte,js,jsx}"],
-    testEnvironment: "jsdom",
-    passWithNoTests: true
+    testEnvironment: "jsdom"
 };
 
 module.exports = config;
