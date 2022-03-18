@@ -32,35 +32,25 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        padding: 0 2rem;
-        font-family: "Proxima Nova", sans-serif;
     }
 
     .icon-credential {
-        color: inherit;
         font-size: 64px;
     }
 
     h2 {
         margin: 0;
-        font-size: 1.4em;
     }
 
     p {
+        margin-bottom: 0;
         line-height: 1.5em;
         font-size: smaller;
+        text-align: center;
     }
 
     p .emphasis {
         font-weight: bold;
         padding: 0 0.1rem;
-    }
-
-    a {
-        color: inherit;
-    }
-
-    a:visited {
-        color: unset;
     }
 </style>

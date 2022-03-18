@@ -9,8 +9,8 @@
     export let vp;
 
     function share() {
-        navigate("/createPresentation", { state: { vp } });
         close();
+        navigate("/createPresentation", { state: { vp } });
     }
 
     async function shareJSON() {
@@ -24,53 +24,37 @@
 
 <section>
     <div class="modal-wrapper">
-        <div class="btn-wrapper">
-            <Button
-                style="background: white; color: #051923; display: flex; justify-content: flex-start;
-                            padding: 0;
-                            height: fit-content;
-                            font-weight: 600;
-                            font-size: 2.3vh;
-                            line-height: 3.4vh;"
-                label="Share as data matrix"
-                onClick={share}
-            >
-                <i class="icon-qr" />
-            </Button>
-            <div class="border" />
-            <Button
-                style="background: white; color: #051923; display: flex; justify-content: flex-start;
-                            padding: 0;
-                            height: fit-content;
-                            font-weight: 600;
-                            font-size: 2.3vh;
-                            line-height: 3.4vh;"
-                label="Share as JSON"
-                onClick={shareJSON}
-            >
-                <i class="icon-link" />
-            </Button>
-        </div>
+        <h2>Share credential</h2>
+        <div class="border" />
+        <Button
+            style="background: white; justify-content: start; padding: 0 1.5rem;"
+            label="Share as data matrix"
+            onClick={share}
+        >
+            <i class="icon-qr" />
+        </Button>
+        <div class="border" />
+        <Button
+            style="background: white; justify-content: start; padding: 0 1.5rem;"
+            label="Share as JSON"
+            onClick={shareJSON}
+        >
+            <i class="icon-link" />
+        </Button>
     </div>
 </section>
 
 <style>
-    .btn-wrapper {
-        font-family: "Proxima Nova", sans-serif;
-        font-weight: 600 !important;
-        font-size: 6.3vh !important;
-        line-height: 3.4vh !important;
-        margin: 5.3vh;
+    h2 {
+        text-align: center;
+        margin: 1.5rem 0;
     }
 
     .border {
-        margin: 2.9vh 0;
-        border: 1px solid #dfdfdf;
+        border: 1px solid var(--black-10);
     }
 
-    .btn-wrapper i {
-        color: black;
+    i {
         margin-right: 0.5rem;
-        font-size: 1.5em;
     }
 </style>

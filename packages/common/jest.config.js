@@ -11,7 +11,7 @@ const config = {
         "^.+\\.ts$": "ts-jest",
         ".+\\.(css|styl|less|sass|scss)$": "jest-css-modules-transform"
     },
-    transformIgnorePatterns: ["node_modules/(?!(svelte-routing|capacitor-secure-storage-plugin|highlight.js)/)"],
+    transformIgnorePatterns: ["node_modules/(?!(svelte-routing)/)"],
     moduleFileExtensions: ["js", "ts", "svelte"],
     moduleNameMapper: {
         "^\\$lib(.*)$": "<rootDir>/src/lib$1"

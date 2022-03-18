@@ -13,16 +13,17 @@ module.exports = {
         "plugin:@typescript-eslint/recommended",
         "plugin:@typescript-eslint/recommended-requiring-type-checking",
         "prettier",
-        "plugin:unicorn/recommended"
+        "plugin:unicorn/recommended",
+        "plugin:jest-dom/recommended"
     ],
-    plugins: ["svelte3", "@typescript-eslint", "unicorn"],
+    plugins: ["svelte3", "@typescript-eslint", "unicorn", "jest-dom"],
     settings: {
         jsdoc: {
             ignoreInternal: true,
             mode: "typescript"
         }
     },
-    ignorePatterns: ["*.cjs", "svelte.config.js", "jest.config.js", "*.d.ts"],
+    ignorePatterns: ["*.cjs", "svelte.config.js", "jest.config.js", "jest-setup.ts", "*.d.ts"],
     overrides: [
         {
             files: ["*.svelte"],

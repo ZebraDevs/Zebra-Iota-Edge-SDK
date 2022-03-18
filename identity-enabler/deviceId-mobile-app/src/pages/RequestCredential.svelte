@@ -1,6 +1,6 @@
 <script lang="ts">
+    import { Page } from "@zebra-iota-edge-sdk/common";
     import { navigate } from "svelte-routing";
-    import { fly } from "svelte/transition";
     import Button from "../components/Button.svelte";
     import { showAlert } from "../lib/ui/helpers";
 
@@ -22,72 +22,54 @@
     }
 </script>
 
-<main transition:fly={{ x: 500, duration: 500 }}>
-    <header>
+<Page>
+    <div slot="header" class="options-wrapper">
         <i on:click={goBack} class="icon-chevron" />
-        <p>Request Device DID credential</p>
+        <h2>Request Device DID credential</h2>
         <i on:click={onClickDev} class="icon-code" />
-    </header>
+    </div>
 
-    <section>
-        <p class="subheader">Add Device DID credential</p>
+    <section slot="content">
+        <h1>Add Device DID credential</h1>
         <p class="description">Scan the Device Credential DataMatrix code generated in the Holder app</p>
     </section>
 
-    <footer>
+    <div slot="footer">
         <Button style="height: 64px; width: 64px; border-radius: 50%;" onClick={scan}>
             <i class="icon-scan" />
         </Button>
-    </footer>
-</main>
+    </div>
+</Page>
 
 <style>
-    main {
-        height: 100%;
-        flex-direction: column;
+    .options-wrapper {
         display: flex;
+        flex-direction: row;
         justify-content: space-between;
+        padding: 1.5rem;
+    }
+
+    h2 {
+        margin: 0 0.5rem;
+        align-self: center;
     }
 
     section {
-        padding: 0 2rem;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 0 1.5rem;
         text-align: center;
     }
 
-    header {
-        background-color: #aee693;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        height: 72px;
-        padding: 0 2.6vh;
-    }
-
-    header > p {
-        font-family: "Proxima Nova", sans-serif;
-        font-weight: 600;
-        font-size: 1.2em;
-        margin: 0;
-        z-index: 1;
-    }
-
-    p.subheader {
-        font-family: "Proxima Nova", sans-serif;
-        font-weight: 700;
-        font-size: 1.6em;
-        margin-bottom: 1.75vh;
-    }
-
     p.description {
-        font-family: "Proxima Nova", sans-serif;
-        font-size: 0.9em;
-        color: #6f7a8d;
+        color: var(--black-60);
     }
 
-    footer {
+    div[slot="footer"] {
         display: flex;
         justify-content: center;
-        align-items: center;
         padding: 1.5rem;
     }
 </style>

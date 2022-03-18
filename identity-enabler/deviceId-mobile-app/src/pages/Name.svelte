@@ -9,18 +9,9 @@
     import { showAlert } from "../lib/ui/helpers";
     import type { IdentityService } from "../services/identityService";
     import { __WEB__ } from "$lib/platforms";
+    import { Page } from "@zebra-iota-edge-sdk/common";
 
     let name = "";
-    let background;
-
-    function handleOuterClick(event: MouseEvent) {
-        if (event.target === background) {
-            event.preventDefault();
-            if (document.activeElement instanceof HTMLElement) {
-                document.activeElement.blur();
-            }
-        }
-    }
 
     async function save() {
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-boolean-literal-compare
@@ -54,8 +45,8 @@
     }
 </script>
 
-<main bind:this={background} on:click={handleOuterClick}>
-    <div class="content">
+<Page>
+    <div slot="content" class="content">
         <div>
             <Header text="Set the name of the device" />
         </div>
@@ -66,29 +57,16 @@
             <TextField bind:value={name} placeholder="Device name" />
         </div>
     </div>
-    <footer>
-        <Button
-            loadingText={"Generating identity"}
-            disabled={name.length === 0 || Boolean($loadingScreen)}
-            label="Next"
-            onClick={save}
-        />
-    </footer>
-</main>
+    <svelte:fragment slot="footer">
+        <Button disabled={name.length === 0 || Boolean($loadingScreen)} label="Next" onClick={save} />
+    </svelte:fragment>
+</Page>
 
 <style>
-    main {
-        height: 100%;
-        width: 100%;
-    }
-
     .content {
         display: flex;
         flex-direction: column;
         align-items: center;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
-        padding-bottom: 3.5em;
     }
 
     .content > * {
@@ -98,11 +76,5 @@
     img {
         mix-blend-mode: multiply;
         max-height: 150px;
-    }
-
-    footer {
-        position: fixed;
-        bottom: 0;
-        width: 100%;
     }
 </style>

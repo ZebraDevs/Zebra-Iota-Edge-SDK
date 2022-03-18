@@ -7,6 +7,7 @@
     import Button from "../components/Button.svelte";
     import ObjectList from "../components/ObjectList.svelte";
     import type { IdentityService } from "../services/identityService";
+    import { Page } from "@zebra-iota-edge-sdk/common";
 
     const credentialSubject = window.history.state.credentialSubject;
 
@@ -49,87 +50,36 @@
     }
 </script>
 
-<main>
-    <div class="header-wrapper">
-        <div class="options-wrapper">
-            <i on:click={goBack} class="icon-chevron" />
-            <i on:click={onClickDev} class="icon-code" />
-        </div>
-        <header>
-            <p>Device Claims</p>
-        </header>
+<Page>
+    <div slot="header" class="options-wrapper">
+        <i on:click={goBack} class="icon-chevron" />
+        <h2>Device Claims</h2>
+        <i on:click={onClickDev} class="icon-code" />
     </div>
-    <section>
+
+    <section slot="content">
         <ObjectList entries={flattenClaim(credentialSubject)} />
     </section>
-    <footer>
+
+    <svelte:fragment slot="footer">
         <Button label="Issue Device ID credential" onClick={createCredential} />
-    </footer>
-</main>
+    </svelte:fragment>
+</Page>
 
 <style>
-    main {
-        display: flex;
-        flex-direction: column;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
-        position: relative;
-        height: 100%;
-    }
-
-    .header-wrapper {
-        text-align: center;
-        background-color: #00a7ff;
-    }
-
-    header {
-        margin-left: auto;
-        margin-right: auto;
-        height: fit-content;
-        margin-bottom: 0;
-    }
-
-    header > p {
-        font-family: "Proxima Nova", sans-serif;
-        font-weight: 700;
-        font-size: 3.4vh;
-        line-height: 3.4vh;
-        color: #fff;
-        margin: 0.5rem 0 1.5rem 0;
-    }
-
-    header > p:nth-child(2) {
-        font-weight: 600;
-        text-transform: uppercase;
-        font-size: 1.7vh;
-        line-height: 2.3vh;
-    }
-
-    header > p:nth-child(3) {
-        margin: 1.6vh 0 0 0;
-    }
-
-    header > p:nth-child(4) {
-        margin-bottom: 0;
-        font-size: 1.7vh;
-    }
-
-    section {
-        margin: 0 7vw;
-        z-index: 0;
-    }
-
-    footer {
-        position: fixed;
-        width: 100%;
-        bottom: 0;
-        z-index: 1;
-    }
-
     .options-wrapper {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        margin: 3.5vh 3.5vh 0 3.5vh;
+    }
+
+    .options-wrapper,
+    section {
+        padding: 1.5rem;
+    }
+
+    h2 {
+        margin: 0 0.5rem;
+        align-self: center;
     }
 </style>

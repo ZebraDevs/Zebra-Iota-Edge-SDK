@@ -1,5 +1,5 @@
 {
-    "include": ["src/**/*"],
+    "include": ["src/**/*", "jest-setup.ts"],
     "exclude": ["node_modules/*", "dist/*"],
     "compilerOptions": {
         "target": "es2015",

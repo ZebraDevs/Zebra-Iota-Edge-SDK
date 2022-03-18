@@ -6,6 +6,7 @@
     import { navigate } from "svelte-routing";
     import { wait } from "../lib/helpers";
     import { BACK_BUTTON_EXIT_GRACE_PERIOD } from "../config";
+    import { Page } from "@zebra-iota-edge-sdk/common";
 
     const info = {
         header: "Create and store device digital identity",
@@ -41,31 +42,24 @@
     }
 </script>
 
-<main id="wrapper">
-    <div class="content">
+<Page>
+    <div slot="content" class="content">
         <div>
             <Header text={info.header} />
         </div>
         <img src="/img/{info.image}" alt="checklist" />
         <p class="info">{info.content}</p>
     </div>
-    <footer class="footerContainer">
+    <svelte:fragment slot="footer">
         <Button label={info.footer} onClick={onNext} />
-    </footer>
-</main>
+    </svelte:fragment>
+</Page>
 
 <style>
-    main {
-        height: 100%;
-    }
-
     .content {
         display: flex;
         flex-direction: column;
         align-items: center;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
-        padding-bottom: 3.5em;
     }
 
     .content > * {
@@ -73,12 +67,8 @@
     }
 
     .info {
-        font-family: "Proxima Nova", sans-serif;
-        font-style: normal;
-        font-weight: 400;
-        font-size: 0.9em;
         line-height: 1.5em;
-        color: #6f7a8d;
+        color: var(--black-60);
         text-align: center;
         padding: 0 8vw;
     }
@@ -86,11 +76,5 @@
     img {
         mix-blend-mode: multiply;
         max-height: 150px;
-    }
-
-    footer {
-        position: fixed;
-        bottom: 0;
-        width: 100%;
     }
 </style>

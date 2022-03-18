@@ -7,6 +7,7 @@
     import { BACK_BUTTON_EXIT_GRACE_PERIOD } from "../config";
     import { wait } from "../lib/helpers";
     import { firstLaunch } from "../lib/store";
+    import { Page } from "@zebra-iota-edge-sdk/common";
 
     const { App, Toast } = Plugins;
     let exitOnBack = false;
@@ -36,30 +37,23 @@
     }
 </script>
 
-<main id="wrapper">
-    <div class="content">
+<Page>
+    <div slot="content" class="content">
         <div>
             <Header text="Scan, verify and store credentials" />
         </div>
         <img src="/img/checklist.svg" alt="checklist" />
     </div>
-    <footer class="footerContainer">
+    <svelte:fragment slot="footer">
         <Button label="Next" onClick={onNext} />
-    </footer>
-</main>
+    </svelte:fragment>
+</Page>
 
 <style>
-    main {
-        height: 100%;
-    }
-
     .content {
         display: flex;
         flex-direction: column;
         align-items: center;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
-        padding-bottom: 3.5em;
     }
 
     .content > * {
@@ -69,11 +63,5 @@
     img {
         mix-blend-mode: multiply;
         max-height: 150px;
-    }
-
-    footer {
-        position: fixed;
-        bottom: 0;
-        width: 100%;
     }
 </style>

@@ -16,7 +16,7 @@ const config = {
     moduleNameMapper: {
         "^\\$lib(.*)$": "<rootDir>/src/lib$1"
     },
-    setupFilesAfterEnv: ["@testing-library/jest-dom/extend-expect"],
+    setupFilesAfterEnv: ["@testing-library/jest-dom/extend-expect", "<rootDir>/jest-setup.ts"],
     collectCoverageFrom: ["src/**/*.{ts,tsx,svelte,js,jsx}"],
     testEnvironment: "jsdom"
 };

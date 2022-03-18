@@ -11,11 +11,16 @@ import { playAudio } from "./ui/helpers";
  * Handles data string captured by Camera, DataWedge or Image selection.
  *
  * @param decodedText The decoded string to verify and persist.
+ * @param method How the code was decoded.
  * @returns Promise.
  */
-export async function handleScannerData(decodedText: string): Promise<void> {
+export async function handleScannerData(decodedText: string, method: "Camera" | "File" | "DataWedge"): Promise<void> {
     loadingScreen.set("Validating Credential...");
     let vp;
+
+    if (method !== "DataWedge") {
+        await playAudio("scanned");
+    }
 
     try {
         vp = JSON.parse(decodedText);

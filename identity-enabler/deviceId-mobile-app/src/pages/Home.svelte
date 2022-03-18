@@ -10,6 +10,7 @@
     import { BACK_BUTTON_EXIT_GRACE_PERIOD } from "../config";
     import { shortenDID } from "../lib/ui/helpers";
     import { credentialDisplayMap } from "../lib/ui/credentialDisplayMap";
+    import { Page } from "@zebra-iota-edge-sdk/common";
 
     const { App, Toast, Modals } = Plugins;
 
@@ -69,19 +70,22 @@
     }
 </script>
 
-<main>
-    {#if $account}
-        <header>
-            <div class="options-wrapper">
-                <i on:click={onClickReset} class="icon-reset" />
-                <i on:click={onClickDev} class="icon-code" />
+<Page>
+    <div slot="header">
+        <div class="options-wrapper">
+            <i on:click={onClickReset} class="icon-reset" />
+            <i on:click={onClickDev} class="icon-code" />
+        </div>
+        <div class="overlay">
+            <div class="logo">
+                <i class="icon-chip" />
             </div>
-            <div class="logo"><img src="/img/device.png" alt="logo" /></div>
-        </header>
-        <name-wrapper>
-            <p>Device {$account.name}</p>
-        </name-wrapper>
-        <section>
+            <h1>Device {$account.name}</h1>
+        </div>
+    </div>
+
+    <section slot="content">
+        {#if $account}
             {#each localCredentials as vp}
                 <div class="list">
                     <ListItem
@@ -104,71 +108,51 @@
                     />
                 </div>
             {/if}
-        </section>
-    {/if}
-</main>
+        {/if}
+    </section>
+</Page>
 
 <style>
-    main {
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-    }
-
-    header {
-        display: flex;
-        flex-direction: column;
-        height: 141px;
-        background-color: #aee693;
-    }
-
-    name-wrapper {
-        padding-top: 5.6vh;
-    }
-
-    section {
-        flex: 1;
-        align-content: space-between;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
-    }
-
-    .logo {
-        position: relative;
-        top: 3%;
-        border: 20px solid rgba(165, 165, 165, 0.1);
-        border-radius: 50%;
-        width: 100px;
-        height: 100px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin: 0 auto;
-    }
-
-    .logo > img {
-        width: 18vh;
-        height: 18vh;
-    }
-
-    .list {
-        padding: 0 20px;
-        margin-bottom: 2vh;
-    }
-
-    name-wrapper > p {
-        font-family: "Proxima Nova", sans-serif;
-        font-weight: 700;
-        font-size: 6vw;
-        line-height: 8vw;
-        text-align: center;
-        color: #131f37;
-    }
-
     .options-wrapper {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        margin: 3.5vh 3.5vh 0 3.5vh;
+        padding: 1.5rem;
+    }
+
+    .overlay {
+        position: absolute;
+        width: 100%;
+    }
+
+    .logo {
+        margin: -60px auto 0 auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 90px;
+        height: 90px;
+        background-color: white;
+        background-clip: padding-box;
+        border-radius: 50%;
+        border: 10px solid rgba(0, 0, 0, 0.055);
+    }
+
+    .logo > .icon-chip {
+        font-size: 55px;
+    }
+
+    h1 {
+        margin: 1rem 0 0 0;
+        text-align: center;
+    }
+
+    section {
+        padding: 1.5rem;
+        margin-top: 90px;
+    }
+
+    .list {
+        margin-bottom: 0.75rem;
     }
 </style>
