@@ -199,7 +199,7 @@ async function run() {
 // Run the tutorial
 run()
     .then(() => console.log("Complete!"))
-    .catch(() => console.error(err));
+    .catch(err => console.error(err));
 ```
 
 ## Further Reading
