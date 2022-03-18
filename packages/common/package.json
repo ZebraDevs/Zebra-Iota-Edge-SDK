@@ -27,6 +27,7 @@
         "eslint": "^8.8.0",
         "eslint-config-prettier": "^8.3.0",
         "eslint-plugin-import": "^2.23.2",
+        "eslint-plugin-jest-dom": "^4.0.1",
         "eslint-plugin-jsdoc": "^37.7.0",
         "eslint-plugin-svelte3": "^3.4.0",
         "eslint-plugin-unicorn": "^40.1.0",
@@ -65,36 +66,5 @@
     ],
     "bugs": {
         "url": "https://github.com/ZebraDevs/Zebra-Iota-Edge-SDK/issues"
-    },
-    "jest": {
-        "transform": {
-            "^.+\\.svelte$": [
-                "svelte-jester",
-                {
-                    "preprocess": "./svelte.config.test.cjs"
-                }
-            ],
-            "^.+\\.js$": "babel-jest",
-            "^.+\\.ts$": "ts-jest",
-            ".+\\.(css|styl|less|sass|scss)$": "jest-css-modules-transform"
-        },
-        "transformIgnorePatterns": [
-            "node_modules/(?!(svelte-routing)/)"
-        ],
-        "moduleFileExtensions": [
-            "js",
-            "ts",
-            "svelte"
-        ],
-        "moduleNameMapper": {
-            "^\\$lib(.*)$": "<rootDir>/src/lib$1"
-        },
-        "setupFilesAfterEnv": [
-            "@testing-library/jest-dom/extend-expect"
-        ],
-        "collectCoverageFrom": [
-            "src/**/*.{ts,tsx,svelte,js,jsx}"
-        ],
-        "testEnvironment": "jsdom"
     }
 }
