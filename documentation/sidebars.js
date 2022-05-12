@@ -65,5 +65,10 @@ module.exports = {
                 },
             ],
         },
+        {
+            type: 'doc',
+            label: 'Identity Tutorial',
+            id: 'in-app-tutorial',
+        },
     ],
 };
