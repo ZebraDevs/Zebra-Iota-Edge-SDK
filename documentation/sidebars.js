@@ -19,22 +19,22 @@ module.exports = {
                 {
                     type: 'doc',
                     label: '101: Understanding Decentralized Identities',
-                    id: 'tutorials/zebra-iota-edge-sdk/zebra-iota-edge-sdk-101-tutorial'
+                    id: 'zebra-iota-edge-sdk/zebra-iota-edge-sdk-101-tutorial'
                 },
                 {
                     type: 'doc',
                     label: '102: Managing credentials (Holder Application)',
-                    id: 'tutorials/zebra-iota-edge-sdk/zebra-iota-edge-sdk-102-tutorial'
+                    id: 'zebra-iota-edge-sdk/zebra-iota-edge-sdk-102-tutorial'
                 },
                 {
                     type: 'doc',
                     label: '103: Verifying Credentials',
-                    id: 'tutorials/zebra-iota-edge-sdk/zebra-iota-edge-sdk-103-tutorial'
+                    id: 'zebra-iota-edge-sdk/zebra-iota-edge-sdk-103-tutorial'
                 },
                 {
                     type: 'doc',
                     label: '104: Device Onboarding',
-                    id: 'tutorials/zebra-iota-edge-sdk/zebra-iota-edge-sdk-104-tutorial'
+                    id: 'zebra-iota-edge-sdk/zebra-iota-edge-sdk-104-tutorial'
                 },
             ],
         },
@@ -46,24 +46,29 @@ module.exports = {
                 {
                     type: 'doc',
                     label: '101: Device Events',
-                    id: 'tutorials/track-trace-ledger-api/track-trace-ledger-api-tutorial-101',
+                    id: 'track-trace-ledger-api/track-trace-ledger-api-tutorial-101',
                 },
                 {
                     type: 'doc',
                     label: '102: Consuming Events',
-                    id: 'tutorials/track-trace-ledger-api/track-trace-ledger-api-tutorial-102',
+                    id: 'track-trace-ledger-api/track-trace-ledger-api-tutorial-102',
                 },
                 {
                     type: 'doc',
                     label: '103: Digital Identity',
-                    id: 'tutorials/track-trace-ledger-api/track-trace-ledger-api-tutorial-103',
+                    id: 'track-trace-ledger-api/track-trace-ledger-api-tutorial-103',
                 },
                 {
                     type: 'doc',
                     label: '201: Business Events',
-                    id: 'tutorials/track-trace-ledger-api/track-trace-ledger-api-tutorial-201',
+                    id: 'track-trace-ledger-api/track-trace-ledger-api-tutorial-201',
                 },
             ],
+        },
+        {
+            type: 'doc',
+            label: 'Identity Tutorial',
+            id: 'in-app-tutorial',
         },
     ],
 };
