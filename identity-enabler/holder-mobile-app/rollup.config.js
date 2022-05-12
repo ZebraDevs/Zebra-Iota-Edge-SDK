@@ -36,7 +36,7 @@ export default {
                     dest: "public/wasm"
                 },
                 {
-                    src: "../../documentation/in-app-tutorial.md",
+                    src: "../../documentation/tutorials/in-app-tutorial.md",
                     dest: "public/docs"
                 }
             ]

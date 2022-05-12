@@ -6,7 +6,7 @@ export const IOTA_NODE_URL = "https://chrysalis-nodes.iota.org";
 
 export const IOTA_PERMANODE_URL = "https://chrysalis-chronicle.iota.org/api/mainnet/";
 
-export const TUTORIAL_URL = "/documentation/in-app-tutorial.md";
+export const TUTORIAL_URL = "/documentation/tutorials/in-app-tutorial.md";
 
 export const IDENTITY_WASM_PATH = "/wasm/identity_wasm_bg.wasm";
 

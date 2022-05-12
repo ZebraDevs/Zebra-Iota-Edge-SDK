@@ -8,7 +8,7 @@ export const IOTA_PERMANODE_URL = "https://chrysalis-chronicle.iota.org/api/main
 
 export const RANDOM_USER_DATA_API_URL = "https://randomuser.me/api/?nat=us,au,ca,ie,gb";
 
-export const TUTORIAL_URL = "/documentation/in-app-tutorial.md";
+export const TUTORIAL_URL = "/documentation/tutorials/in-app-tutorial.md";
 
 export const IDENTITY_WASM_PATH = "/wasm/identity_wasm_bg.wasm";
 
