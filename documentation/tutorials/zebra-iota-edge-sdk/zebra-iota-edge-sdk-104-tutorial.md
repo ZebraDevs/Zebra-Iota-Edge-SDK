@@ -68,9 +68,9 @@ adb shell am startservice -a org.iota.zebra.device_id.intent.action.SCAN -e com.
 ```
 
 <p align="center">
-<img alt="Data Wedge Profile 1" src="https://raw.githubusercontent.com/ZebraDevs/Zebra-Iota-Edge-SDK/main/docs/static/img/zebra-iota-edge-sdk/104/image3.png" width="30%"/>
-<img alt="Data Wedge Profile 2" src="https://raw.githubusercontent.com/ZebraDevs/Zebra-Iota-Edge-SDK/main/docs/static/img/zebra-iota-edge-sdk/104/image18.png" width="30%"/>
-<img alt="Data Wedge Profile 3" src="https://raw.githubusercontent.com/ZebraDevs/Zebra-Iota-Edge-SDK/main/docs/static/img/zebra-iota-edge-sdk/104/image22.png" width="30%"/>
+<img alt="Data Wedge Profile 1" src="https://raw.githubusercontent.com/ZebraDevs/Zebra-Iota-Edge-SDK/main/documentation/static/img/zebra-iota-edge-sdk/104/image3.png" width="30%"/>
+<img alt="Data Wedge Profile 2" src="https://raw.githubusercontent.com/ZebraDevs/Zebra-Iota-Edge-SDK/main/documentation/static/img/zebra-iota-edge-sdk/104/image18.png" width="30%"/>
+<img alt="Data Wedge Profile 3" src="https://raw.githubusercontent.com/ZebraDevs/Zebra-Iota-Edge-SDK/main/documentation/static/img/zebra-iota-edge-sdk/104/image22.png" width="30%"/>
 </p>
 
 Note: Also you should have previously defined a [DataWedge profile for the Holder Application](../zebra-iota-edge-sdk/zebra-iota-edge-sdk-102-tutorial.md#datawedge-profile).
@@ -82,9 +82,9 @@ Additional information on how Zebra DataWedge can be integrated is found at the 
 The first step to onboard a device is to obtain a new DID document. This process is conducted through a wizard, and is similar to the one we already described for the [_Holder Application_](../zebra-iota-edge-sdk/zebra-iota-edge-sdk-102-tutorial.md#create-an-identity). See below.
 
 <p align="center">
-<img alt="Identity device 1" src="https://raw.githubusercontent.com/ZebraDevs/Zebra-Iota-Edge-SDK/main/docs/static/img/zebra-iota-edge-sdk/104/image21.png" width="30%"/>
-<img alt="Identity device 2" src="https://raw.githubusercontent.com/ZebraDevs/Zebra-Iota-Edge-SDK/main/docs/static/img/zebra-iota-edge-sdk/104/image23.png" width="30%"/>
-<img alt="Identity device 3" src="https://raw.githubusercontent.com/ZebraDevs/Zebra-Iota-Edge-SDK/main/docs/static/img/zebra-iota-edge-sdk/104/image17.png" width="30%"/>
+<img alt="Identity device 1" src="https://raw.githubusercontent.com/ZebraDevs/Zebra-Iota-Edge-SDK/main/documentation/static/img/zebra-iota-edge-sdk/104/image21.png" width="30%"/>
+<img alt="Identity device 2" src="https://raw.githubusercontent.com/ZebraDevs/Zebra-Iota-Edge-SDK/main/documentation/static/img/zebra-iota-edge-sdk/104/image23.png" width="30%"/>
+<img alt="Identity device 3" src="https://raw.githubusercontent.com/ZebraDevs/Zebra-Iota-Edge-SDK/main/documentation/static/img/zebra-iota-edge-sdk/104/image17.png" width="30%"/>
 </p>
 
 After having obtained a new Decentralized Identity, which includes verification methods (i.e. public / private keys), the next step is to get a new Verifiable Credential that will contain all the claims associated with the device (serial number, manufacturer, etc.). Thus, it is first required that the device presents its claims to an issuer. In this case the issuer will be **the organization owning the device**. Such an organization will check for the ownership of the DID and the claims made. And, after a verification process, a new Verifiable Credential will be issued and signed. The issuer of such a Verifiable Credential will be the organization owning the device and the subject the device itself.
@@ -92,22 +92,22 @@ After having obtained a new Decentralized Identity, which includes verification 
 In our blueprint application the process described above is conducted as shown below. From the _DeviceID Application_ it is requested a new DeviceID credential. For that purpose, the device generates a QR code that encodes all its claims.
 
 <p align="center">
-<img alt="Request Credential 1" src="https://raw.githubusercontent.com/ZebraDevs/Zebra-Iota-Edge-SDK/main/docs/static/img/zebra-iota-edge-sdk/104/image16.png" width="30%" align="center"/>
+<img alt="Request Credential 1" src="https://raw.githubusercontent.com/ZebraDevs/Zebra-Iota-Edge-SDK/main/documentation/static/img/zebra-iota-edge-sdk/104/image16.png" width="30%" align="center"/>
 </p>
 
 Afterwards, such QR code is scanned by the [*Holder Application*](../zebra-iota-edge-sdk/zebra-iota-edge-sdk-102-tutorial.md) that will verify the claims, the ownership of the DID and will finally issue a new credential.
 
 <p align="center">
-<img alt="Device ID Credential" src="https://raw.githubusercontent.com/ZebraDevs/Zebra-Iota-Edge-SDK/main/docs/static/img/zebra-iota-edge-sdk/104/image8.png" width="30%"/>
-<img alt="Device ID Claims" src="https://raw.githubusercontent.com/ZebraDevs/Zebra-Iota-Edge-SDK/main/docs/static/img/zebra-iota-edge-sdk/104/image20.png" width="30%"/>
+<img alt="Device ID Credential" src="https://raw.githubusercontent.com/ZebraDevs/Zebra-Iota-Edge-SDK/main/documentation/static/img/zebra-iota-edge-sdk/104/image8.png" width="30%"/>
+<img alt="Device ID Claims" src="https://raw.githubusercontent.com/ZebraDevs/Zebra-Iota-Edge-SDK/main/documentation/static/img/zebra-iota-edge-sdk/104/image20.png" width="30%"/>
 </p>
 
 Once the new Credential is ready it is shared from the _Holder Application_ through a scannable DataMatrix code and imported by the _DeviceID application_.
 
 <p align="center">
-<img alt="Onboard device 1" src="https://raw.githubusercontent.com/ZebraDevs/Zebra-Iota-Edge-SDK/main/docs/static/img/zebra-iota-edge-sdk/104/image4.png" width="30%"/>
-<img alt="Onboard device 2" src="https://raw.githubusercontent.com/ZebraDevs/Zebra-Iota-Edge-SDK/main/docs/static/img/zebra-iota-edge-sdk/104/image12.png" width="30%"/>
-<img alt="Onboard device 3" src="https://raw.githubusercontent.com/ZebraDevs/Zebra-Iota-Edge-SDK/main/docs/static/img/zebra-iota-edge-sdk/104/image17.png" width="30%"/>
+<img alt="Onboard device 1" src="https://raw.githubusercontent.com/ZebraDevs/Zebra-Iota-Edge-SDK/main/documentation/static/img/zebra-iota-edge-sdk/104/image4.png" width="30%"/>
+<img alt="Onboard device 2" src="https://raw.githubusercontent.com/ZebraDevs/Zebra-Iota-Edge-SDK/main/documentation/static/img/zebra-iota-edge-sdk/104/image12.png" width="30%"/>
+<img alt="Onboard device 3" src="https://raw.githubusercontent.com/ZebraDevs/Zebra-Iota-Edge-SDK/main/documentation/static/img/zebra-iota-edge-sdk/104/image17.png" width="30%"/>
 </p>
 
 **Important Note**: In this version of the SDK we are using the _Holder Application_ itself as _Issuer Application_. Thus, in the end the device’s Credential is signed with the identity we have previously generated at the _Holder Application_. However, in a real solution there should be a specific _Issuer Application_ for this purpose. In the next version of the SDK we plan to provide a new blueprint for an _Issuer Application_.
