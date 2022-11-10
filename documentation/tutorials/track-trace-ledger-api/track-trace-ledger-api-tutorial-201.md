@@ -12,7 +12,7 @@ Business Events are complementary to Device Events, already introduced by the [1
 
 Typically, one or more Device Events (for instance RFID Read Device Events) yield to a Business Event. The transformation from a Device Event to a Business Event needs contextual or situational information that might depend on each application. Particularly, Business Events need *Reference ("Master") Data* to refer to. *Reference Data* can represent business locations, read points, devices, product classes, etc. In contrast to event visibility data, that is continuously generated, additions or changes to Reference Data happen sporadically.
 
-![Common Record of Truth](https://github.com/ZebraDevs/Zebra-Iota-Edge-SDK/blob/main/documentation/static/img/track-trace-ledger-api/tangle-supply-chain-common-record-of-truth.png?raw=true "Common Record of Truth")
+![Common Record of Truth](../images/tangle-supply-chain-common-record-of-truth.png "Common Record of Truth")
 
 ## Use Case
 
@@ -221,8 +221,8 @@ curl --location --request POST 'https://sandbox-api.zebra.com/v2/ledger/tangle/e
 --header 'apikey: <your_api_key>' \
 --header 'Content-Type: application/json' \
 --data-raw '{
-    "@context": "https://gs1.github.io/EPCIS/epcis-context.jsonld",
-    "isA": "ObjectEvent",
+    "@context": "https://ref.gs1.org/standards/epcis/epcis-context.jsonld",
+    "type": "ObjectEvent",
     "epcList": [
         "urn:jaif:id:obj:37SUN321456789A111222333AB+123456789012"
     ],
@@ -287,8 +287,8 @@ curl --location --request POST 'https://sandbox-api.zebra.com/v2/ledger/tangle/e
 --header 'apikey: <your_api_key>' \
 --header 'Content-Type: application/json' \
 --data-raw '{
-    "@context": "https://gs1.github.io/EPCIS/epcis-context.jsonld",
-    "isA": "ObjectEvent",
+    "@context": "https://ref.gs1.org/standards/epcis/epcis-context.jsonld",
+    "type": "ObjectEvent",
     "epcList": [
         "urn:jaif:id:obj:37SUN321456789A111222333AB+123456789012"
     ],
@@ -324,8 +324,8 @@ curl --location --request POST 'https://sandbox-api.zebra.com/v2/ledger/tangle/e
 --header 'apikey: <your_api_key>' \
 --header 'Content-Type: application/json' \
 --data-raw '{
-    "@context": "https://gs1.github.io/EPCIS/epcis-context.jsonld",
-    "isA": "ObjectEvent",
+    "@context": "https://ref.gs1.org/standards/epcis/epcis-context.jsonld",
+    "type": "ObjectEvent",
     "epcList": [
         "urn:jaif:id:obj:37SUN321456789A111222333AB+123456789012"
     ],
@@ -369,12 +369,12 @@ Response:
 ```json
 {
     "@context": [
-        "https://gs1.github.io/EPCIS/epcis-context.jsonld"
+        "https://ref.gs1.org/standards/epcis/epcis-context.jsonld"
     ],
-    "isA": "EPCISDocument",
+    "type": "EPCISDocument",
     "eventList": [
         {
-            "isA": "ObjectEvent",
+            "type": "ObjectEvent",
             "epcList": [
                 "urn:jaif:id:obj:37SUN321456789A111222333AB+123456789012"
             ],
@@ -415,6 +415,9 @@ Response:
 ```
 
 The URN returned with the locator provides the IOTA Streams channel ID that can be used to retrieve the different events from the Tangle (using the corresponding libraries such as [anchors](https://github.com/iotaledger/tangle.js/tree/main/libs/anchors)). 
+
+Note: The Streams Channel used to anchor the data on the Tangle is a **private channel** with a pre-shared key that is equal to
+the API Key of the client. Thus, if you want to later fetch the transaction's data using the Streams libraries you need to subscribe to the Channel using such a pre-shared key. The seed of the channel's author is managed internally by the API, thus you will not get access to it.
 
 ## Next Steps
 
